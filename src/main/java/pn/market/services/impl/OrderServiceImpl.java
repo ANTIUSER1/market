@@ -41,12 +41,12 @@ private OrderRepo orderRepo;
 
     @Override
     public List<Order> getAllDSsorted() {
-        return orderRepo.getAllOrdersSsortedDescById();
+        return orderRepo.getAllOrdersSortedDescById();
     }
 
     @Override
     public List<Order> getAllASsorted() {
-        return orderRepo.getAllOrdersSsortedAscById();
+        return orderRepo.getAllOrdersSortedAscById();
     }
 
 

@@ -13,8 +13,8 @@ import java.util.List;
 public interface OrderRepo extends JpaRepository<Order, Long> {
 
     @Query("SELECT od FROM Order i ORDER BY od.id DESC")
-    List<Order> getAllOrdersSsortedDescById();
+    List<Order> getAllOrdersSortedDescById();
     @Query("SELECT od FROM Order od ORDER BY od.id ASC")
-    List<Order> getAllOrdersSsortedAscById();
+    List<Order> getAllOrdersSortedAscById();
 
 }

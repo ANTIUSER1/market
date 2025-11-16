@@ -2,20 +2,15 @@ package pn.market.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
+import pn.market.entities.Cart;
 import pn.market.entities.Item;
 
 import java.util.List;
 
-@Repository
-@Transactional
-public interface ItemRepo extends JpaRepository<Item, Long> {
-
-
+public interface CartRepo extends JpaRepository<Cart, Long> {
     @Query("SELECT i FROM Item i ORDER BY i.id DESC")
-    List<Item> getAllItemsSortedDescById();
+    List<Cart> getAllCartSortedDescById();
     @Query("SELECT i FROM Item i ORDER BY i.id ASC")
-    List<Item> getAllItemsSortedAscById();
+    List<Cart> getAllCartSortedAscById();
 
 }

@@ -40,13 +40,13 @@ public class ItemServiceImpl implements TService<Item> {
 
     @Override
     public List<Item> getAllDSsorted() {
-        return itemRepo.getAllItemsSsortedDescById();
+        return itemRepo.getAllItemsSortedDescById();
     }
 
 
     @Override
     public List<Item> getAllASsorted() {
-        return itemRepo.getAllItemsSsortedAscById();
+        return itemRepo.getAllItemsSortedAscById();
     }
 
 
