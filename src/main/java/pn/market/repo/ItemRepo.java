@@ -15,6 +15,7 @@ public interface ItemRepo extends JpaRepository<Item, Long> {
 
     @Query("SELECT i FROM Item i ORDER BY i.id DESC")
     List<Item> getAllItemsSortedDescById();
+
     @Query("SELECT i FROM Item i ORDER BY i.id ASC")
     List<Item> getAllItemsSortedAscById();
 

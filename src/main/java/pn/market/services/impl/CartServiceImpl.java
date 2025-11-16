@@ -4,9 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pn.market.entities.Cart;
-import pn.market.entities.Order;
 import pn.market.repo.CartRepo;
-
 import pn.market.services.TService;
 
 import java.util.List;
@@ -15,9 +13,9 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class CartServiceImpl implements TService<Cart> {
-    
+
     @Autowired
-private CartRepo cartRepo;
+    private CartRepo cartRepo;
 
     @Override
     public Cart create(Cart cart) {
@@ -28,7 +26,7 @@ private CartRepo cartRepo;
     @Override
     public int createList(List<Cart> cartList) {
         log.info("add OrderList \n{}\n to db", cartList);
-        return   cartRepo.saveAll(cartList).size();
+        return cartRepo.saveAll(cartList).size();
     }
 
     @Override
@@ -38,7 +36,7 @@ private CartRepo cartRepo;
 
     @Override
     public List<Cart> getAllUnsorted() {
-        return cartRepo.findAll( );
+        return cartRepo.findAll();
     }
 
     @Override
@@ -55,8 +53,8 @@ private CartRepo cartRepo;
     @Override
     public void deleteById(Long id) {
         log.info("try remove Order with ID {} ", id);
-        Optional<Cart> cartOptional=cartRepo.findById(id);
-        if(cartOptional.isPresent()){
+        Optional<Cart> cartOptional = cartRepo.findById(id);
+        if (cartOptional.isPresent()) {
             log.info("remove Order   {} ", cartOptional.get());
             cartRepo.delete(cartOptional.get());
         }

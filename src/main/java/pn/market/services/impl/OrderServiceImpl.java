@@ -13,9 +13,9 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class OrderServiceImpl implements TService<Order> {
-    
+
     @Autowired
-private OrderRepo orderRepo;
+    private OrderRepo orderRepo;
 
     @Override
     public Order create(Order Order) {
@@ -26,7 +26,7 @@ private OrderRepo orderRepo;
     @Override
     public int createList(List<Order> orderList) {
         log.info("add OrderList \n{}\n to db", orderList);
-        return   orderRepo.saveAll(orderList).size();
+        return orderRepo.saveAll(orderList).size();
     }
 
     @Override
@@ -36,7 +36,7 @@ private OrderRepo orderRepo;
 
     @Override
     public List<Order> getAllUnsorted() {
-        return orderRepo.findAll( );
+        return orderRepo.findAll();
     }
 
     @Override
@@ -53,8 +53,8 @@ private OrderRepo orderRepo;
     @Override
     public void deleteById(Long id) {
         log.info("try remove Order with ID {} ", id);
-        Optional<Order> orderOptional=orderRepo.findById(id);
-        if(orderOptional.isPresent()){
+        Optional<Order> orderOptional = orderRepo.findById(id);
+        if (orderOptional.isPresent()) {
             log.info("remove Order   {} ", orderOptional.get());
             orderRepo.delete(orderOptional.get());
         }

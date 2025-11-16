@@ -25,7 +25,7 @@ public class ItemServiceImpl implements TService<Item> {
     @Override
     public int createList(List<Item> itemList) {
         log.info("add itemList \n{}\n to db", itemList);
-      return   itemRepo.saveAll(itemList).size();
+        return itemRepo.saveAll(itemList).size();
     }
 
     @Override
@@ -35,7 +35,7 @@ public class ItemServiceImpl implements TService<Item> {
 
     @Override
     public List<Item> getAllUnsorted() {
-        return itemRepo.findAll( );
+        return itemRepo.findAll();
     }
 
     @Override
@@ -53,11 +53,11 @@ public class ItemServiceImpl implements TService<Item> {
     @Override
     public void deleteById(Long id) {
         log.info("try remove item with ID {} ", id);
-       Optional<Item> itemOptional=itemRepo.findById(id);
-       if(itemOptional.isPresent()){
-           log.info("remove item   {} ", itemOptional.get());
-           itemRepo.delete(itemOptional.get());
-       }
+        Optional<Item> itemOptional = itemRepo.findById(id);
+        if (itemOptional.isPresent()) {
+            log.info("remove item   {} ", itemOptional.get());
+            itemRepo.delete(itemOptional.get());
+        }
         log.info("No kitems to remove   ");
     }
 }
