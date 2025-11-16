@@ -1,9 +1,10 @@
-package pn.market.repo;
+package pn.market.repo.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pn.market.entities.Item;
+import pn.market.repo.ItemRepo;
 import pn.market.services.ItemService;
 
 import java.util.List;
