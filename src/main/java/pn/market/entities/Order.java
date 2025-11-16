@@ -1,4 +1,4 @@
-package ru.yandex.practicum.mymarket.entities;
+package pn.market.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
