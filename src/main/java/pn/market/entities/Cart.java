@@ -22,12 +22,12 @@ public class Cart {
     private List<Item> itemList;
 
     public void addIte(Item item) {
-        if(itemList==null)itemList=new ArrayList<>();
+        if (itemList == null) itemList = new ArrayList<>();
         itemList.add(item);
     }
 
     public long getTotalSum() {
         return itemList.parallelStream()
-                .mapToLong(itm->itm.getPrice()).sum();
+                .mapToLong(itm -> itm.getPrice()).sum();
     }
 }
