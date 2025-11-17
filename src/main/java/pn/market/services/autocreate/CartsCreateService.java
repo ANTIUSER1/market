@@ -2,26 +2,26 @@ package pn.market.services.autocreate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pn.market.entities.Cart;
 import pn.market.entities.Item;
-import pn.market.entities.Order;
+import pn.market.services.impl.CartServiceImpl;
 import pn.market.services.impl.ItemServiceImpl;
-import pn.market.services.impl.OrderServiceImpl;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class OrdersCreateService {
+public class CartsCreateService {
 
     @Autowired
-    private OrderServiceImpl orderService;
+    private CartServiceImpl cartService;
 
     @Autowired
     private ItemServiceImpl itemService;
 
-    public Order createOrder(Item item) {
+    public Cart createCart(Item item) {
         if (item != null) {
-            Order result = new Order();
+            Cart result = new Cart();
             //  item.setOrder(result);
             result.addItem(item);
             return result;
@@ -30,17 +30,17 @@ public class OrdersCreateService {
     }
 
 
-    public Order addRandomIremSetToOrder(long orderId) {
-        Optional<Order> orderOptional = orderService.findById(orderId);
-        if (orderOptional.isPresent()) {
-            Order order = orderOptional.get();
+    public Cart addRandomIremSetToCart(long orderId) {
+        Optional<Cart> cartOptional = cartService.findById(orderId);
+        if (cartOptional.isPresent()) {
+            Cart cart = cartOptional.get();
             List<Item> itemList = itemService.getAllASsorted();
             for (Item item : itemList) {
-                if (Math.random() < 0.4 && !order.getItemList().contains(item)) {
-                    order.addItem(item);
+                if (Math.random() < 0.4 && !cart.getItemList().contains(item)) {
+                    cart.addItem(item);
                 }
             }
-            return order;
+            return cart;
         }
         return null;
     }

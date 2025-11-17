@@ -13,19 +13,23 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class CartServiceImpl implements TService<Cart> {
-
     @Autowired
     private CartRepo cartRepo;
 
     @Override
     public Cart create(Cart cart) {
-        log.info("add Order \n{}\n to db", cart);
+        log.info("add item \n{}\n to db", cart);
         return cartRepo.save(cart);
     }
 
     @Override
+    public Optional<Cart> findById(Long id) {
+        return cartRepo.findById(id);
+    }
+
+    @Override
     public int createList(List<Cart> cartList) {
-        log.info("add OrderList \n{}\n to db", cartList);
+        log.info("add itemList \n{}\n to db", cartList);
         return cartRepo.saveAll(cartList).size();
     }
 
@@ -41,23 +45,24 @@ public class CartServiceImpl implements TService<Cart> {
 
     @Override
     public List<Cart> getAllDSsorted() {
-        return cartRepo.getAllCartSortedDescById();
+        return cartRepo.getAllCartsSortedDescById();
     }
+
 
     @Override
     public List<Cart> getAllASsorted() {
-        return cartRepo.getAllCartSortedAscById();
+      return cartRepo.getAllCartsSortedAscById();
     }
 
 
     @Override
     public void deleteById(Long id) {
-        log.info("try remove Order with ID {} ", id);
-        Optional<Cart> cartOptional = cartRepo.findById(id);
-        if (cartOptional.isPresent()) {
-            log.info("remove Order   {} ", cartOptional.get());
-            cartRepo.delete(cartOptional.get());
+        log.info("try remove item with ID {} ", id);
+        Optional<Cart> itemOptional = cartRepo.findById(id);
+        if (itemOptional.isPresent()) {
+            log.info("remove item   {} ", itemOptional.get());
+            cartRepo.delete(itemOptional.get());
         }
-        log.info("No kOrders to remove   ");
+        log.info("No kitems to remove   ");
     }
 }

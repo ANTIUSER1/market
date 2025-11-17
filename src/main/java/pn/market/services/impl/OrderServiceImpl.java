@@ -24,6 +24,11 @@ public class OrderServiceImpl implements TService<Order> {
     }
 
     @Override
+    public Optional<Order> findById(Long id) {
+        return orderRepo.findById(id);
+    }
+
+    @Override
     public int createList(List<Order> orderList) {
         log.info("add OrderList \n{}\n to db", orderList);
         return orderRepo.saveAll(orderList).size();

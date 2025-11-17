@@ -31,14 +31,4 @@ public class ItemsCreateService {
         }
         return itemList;
     }
-
-//    public List<Item> addOrderInfo(List<Item> itemList, List<Order> orderList){
-//
-//        for(Item i:itemList){
-//            for(Order od:orderList){
-//                i.setOrder(od);
-//            }
-//        }
-//        return itemList;
-//    }
 }

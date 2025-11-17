@@ -2,10 +2,9 @@ package pn.market.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.ToString;
 
 @Data
-@ToString
+
 @Entity
 @Table(name = "items")
 public class Item {
@@ -19,11 +18,24 @@ public class Item {
     private Long price;
     private Integer count;
 
+    @Transient
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Order order;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Cart cart;
+//    @Transient
+//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//    private Cart cart;
 
-
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Item{");
+        sb.append("count=").append(count);
+        sb.append(", price=").append(price);
+        sb.append(", imgPath='").append(imgPath).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", title='").append(title).append('\'');
+        sb.append(", id=").append(id);
+        sb.append('}');
+        return sb.toString();
+    }
 }

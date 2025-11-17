@@ -7,6 +7,8 @@ public interface TService<T> {
 
     T create(T item);
 
+    Optional<T> findById(Long id);
+
     int createList(List<T> itemList);
 
     Optional<T> getById(Long id);

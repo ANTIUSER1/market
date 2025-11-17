@@ -18,11 +18,14 @@ public class Cart {
     private Long id;
 
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Item> itemList;
 
-    public void addIte(Item item) {
+    public Cart() {
         if (itemList == null) itemList = new ArrayList<>();
+    }
+
+    public void addItem(Item item) {
         itemList.add(item);
     }
 

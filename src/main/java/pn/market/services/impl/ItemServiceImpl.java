@@ -23,6 +23,11 @@ public class ItemServiceImpl implements TService<Item> {
     }
 
     @Override
+    public Optional<Item> findById(Long id) {
+        return itemRepo.findById(id);
+    }
+
+    @Override
     public int createList(List<Item> itemList) {
         log.info("add itemList \n{}\n to db", itemList);
         return itemRepo.saveAll(itemList).size();

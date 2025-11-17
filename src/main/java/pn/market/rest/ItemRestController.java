@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pn.market.entities.Item;
 import pn.market.repo.ItemRepo;
-import pn.market.repo.OrderRepo;
 import pn.market.services.autocreate.ItemsCreateService;
 import pn.market.services.autocreate.OrdersCreateService;
 
@@ -22,8 +21,6 @@ public class ItemRestController {
 
     @Autowired
     private ItemRepo itemRepo;
-    @Autowired
-    private OrderRepo orderRepo;
 
     @Autowired
     private ItemsCreateService itemsCreateService;
