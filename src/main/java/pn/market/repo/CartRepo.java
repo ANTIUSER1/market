@@ -18,4 +18,6 @@ public interface CartRepo extends JpaRepository<Cart, Long> {
     @Query("SELECT c FROM Cart c ORDER BY c.id ASC")
     List<Cart> getAllCartsSortedAscById();
 
+    @Query("SELECT MAX(c.id) FROM Cart c ")
+    long findMaxId();
 }

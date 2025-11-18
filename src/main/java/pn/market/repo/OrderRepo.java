@@ -18,4 +18,7 @@ public interface OrderRepo extends JpaRepository<Order, Long> {
     @Query("SELECT od FROM Order od ORDER BY od.id ASC")
     List<Order> getAllOrdersSortedAscById();
 
+    @Query("SELECT MAX(od.id) FROM Order od ")
+    Long findMaxId();
+
 }

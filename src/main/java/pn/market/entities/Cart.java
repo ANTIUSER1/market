@@ -14,7 +14,7 @@ import java.util.List;
 public class Cart {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 
@@ -34,5 +34,9 @@ public class Cart {
     public long getTotalSum() {
         return cartItems.parallelStream()
                 .mapToLong(itm -> itm.getPrice()).sum();
+    }
+
+    public long getSize() {
+        return cartItems.size();
     }
 }

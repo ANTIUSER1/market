@@ -15,5 +15,6 @@ public class ItemsCreateService {
 
     public List<Item> autoCreate() {
         return itemRepo.getAllItemsSortedAscById();
+
     }
 }

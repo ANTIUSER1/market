@@ -17,28 +17,35 @@ public class Order {
     private Long id;
 
     @OneToMany(
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER, orphanRemoval = true)
+            cascade = CascadeType.PERSIST,
+            fetch = FetchType.EAGER, orphanRemoval = false)
     @JoinColumn(name = "order_id")
-    private List<Item> itemList;
+    private List<Item> orderItems;
 
     public Order() {
-        if (itemList == null) itemList = new ArrayList<>();
+        if (orderItems == null) orderItems = new ArrayList<>();
     }
 
-    public void addItem(Item item) {
-        itemList.add(item);
-    }
 
-    public void addItemList(List<Item> items) {
-        itemList.addAll(items);
+    public void addItem(Item items) {
+        orderItems.add(items);
     }
 
     public long getTotalSum() {
-        return itemList.parallelStream()
+        return orderItems.parallelStream()
                 .mapToLong(itm -> itm.getPrice()).sum();
     }
 
+    public long getSize() {
+        return orderItems.size();
+    }
 
-
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Order{");
+        sb.append("id=").append(id);
+        sb.append(", orderItems=").append(orderItems);
+        sb.append('}');
+        return sb.toString();
+    }
 }

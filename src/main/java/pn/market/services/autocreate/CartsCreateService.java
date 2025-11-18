@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pn.market.entities.Cart;
 import pn.market.entities.Item;
+import pn.market.repo.CartRepo;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ public class CartsCreateService {
     @Autowired
     private ItemsCreateService itemsCreateService;
 
+    @Autowired
+    private CartRepo cartRepo;
     public Cart createRandomCart() {
         Cart cart = new Cart();
         List<Item> items = itemsCreateService.autoCreate();
@@ -21,6 +24,7 @@ public class CartsCreateService {
                 cart.getCartItems().add(item);
             }
         }
+        cart = cartRepo.save(cart);
         return cart;
     }
 }
