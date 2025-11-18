@@ -18,13 +18,16 @@ public class Item {
     private Long price;
     private Integer count;
 
-    @Transient
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Order order;
 
-//    @Transient
-//    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-//    private Cart cart;
+
+  @ManyToOne( fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinTable(
+          name = "items_carts",
+          joinColumns = @JoinColumn(name = "item_id"),
+          inverseJoinColumns = @JoinColumn(name = "cart_id"),
+          uniqueConstraints =  @UniqueConstraint(columnNames = {"item_id", "cart_id"})
+  )
+    private Cart cart;
 
     @Override
     public String toString() {

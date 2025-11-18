@@ -51,5 +51,16 @@ public class OrderRestController {
         return ResponseEntity.ok("order not exists");
     }
 
+    @GetMapping("/orders/addfromcart/{cartId}")
+    public ResponseEntity<?> addManyRandomItemsToNewOrderFromCart(@PathVariable("orderId") long orderId) {
+        Order order = ordersCreateService.addRandomIremSetToOrderFromCart(orderId);
+        if (order != null) {
+            order = orderRepo.save(order);
+            System.out.println("\n--   --\n " + order.toString());
+            return ResponseEntity.ok(order);
+        }
+        return ResponseEntity.ok("order not exists");
+    }
+
 }
 

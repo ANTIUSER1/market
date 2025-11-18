@@ -16,7 +16,6 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-
     @OneToMany(cascade = CascadeType.ALL)
     private List<Item> itemList;
 
@@ -26,6 +25,10 @@ public class Order {
 
     public void addItem(Item item) {
         itemList.add(item);
+    }
+
+    public void addItemList(List<Item> items) {
+        itemList.addAll(items);
     }
 
     public long getTotalSum() {

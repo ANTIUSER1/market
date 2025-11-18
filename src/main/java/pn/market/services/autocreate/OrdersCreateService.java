@@ -2,8 +2,10 @@ package pn.market.services.autocreate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pn.market.entities.Cart;
 import pn.market.entities.Item;
 import pn.market.entities.Order;
+import pn.market.services.impl.CartServiceImpl;
 import pn.market.services.impl.ItemServiceImpl;
 import pn.market.services.impl.OrderServiceImpl;
 
@@ -15,6 +17,9 @@ public class OrdersCreateService {
 
     @Autowired
     private OrderServiceImpl orderService;
+
+    @Autowired
+    private CartServiceImpl cartService;
 
     @Autowired
     private ItemServiceImpl itemService;
@@ -41,6 +46,16 @@ public class OrdersCreateService {
                 }
             }
             return order;
+        }
+        return null;
+    }
+
+    public Order addRandomIremSetToOrderFromCart(long cartId) {
+        Optional<Cart> cartOptional = cartService.findById(cartId);
+        if (cartOptional.isPresent()) {
+            Order result = new Order();
+            result.addItemList(cartOptional.get().getItemList());
+            return result;
         }
         return null;
     }

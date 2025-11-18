@@ -39,15 +39,15 @@ public class CartRestController {
         return ResponseEntity.ok("item not exists");
     }
 
-    @GetMapping("/carts/add/{orderId}")
-    public ResponseEntity<?> addManyRandomItemsToNewOrder(@PathVariable("orderId") long orderId) {
-        Cart cart = cartsCreateService.addRandomIremSetToCart(orderId);
+    @GetMapping("/carts/add/{cartId}")
+    public ResponseEntity<?> addManyRandomItemsToNewOrder(@PathVariable("cartId") long cartId) {
+        Cart cart = cartsCreateService.addRandomIremSetToCart(cartId);
         if (cart != null) {
             cart = cartRepo.save(cart);
             System.out.println("\n--   --\n " + cart.toString());
             return ResponseEntity.ok(cart);
         }
-        return ResponseEntity.ok("order not exists");
+        return ResponseEntity.ok("cart not exists");
     }
 
 }
