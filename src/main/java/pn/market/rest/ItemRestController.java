@@ -12,10 +12,11 @@ import pn.market.repo.ItemRepo;
 import pn.market.services.autocreate.ItemsCreateService;
 import pn.market.services.autocreate.OrdersCreateService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/items")
 @Slf4j
 public class ItemRestController {
 
@@ -28,6 +29,26 @@ public class ItemRestController {
     @Autowired
     private OrdersCreateService ordersCreateService;
 
+
+
+    @GetMapping("/setof/{count}")
+    public List<Item> createSet(@PathVariable("count") int count) {
+
+        List<Item> items = new ArrayList<>();
+        for(int i = 0; i < count; i++) {
+            Item item = new Item();
+            item.setTitle("Item " + i);
+            item.setDescription("Description " + i);
+            item.setCount((int) (100*Math.random()));
+            item.setImgPath( i+".jpg");
+            item.setPrice((long) (i+10000*Math.random()));
+            items.add(item);
+        }
+        items=itemRepo.saveAll(items);
+        return items;
+    }
+
+/*
     @GetMapping("/items/add/{num}")
     public ResponseEntity<?> addMuliply(@PathVariable("num") int n) {
         if (n < 0) {
@@ -43,4 +64,6 @@ public class ItemRestController {
         return ResponseEntity.ok(result);
         // return ResponseEntity.ok(0);
     }
+
+ */
 }

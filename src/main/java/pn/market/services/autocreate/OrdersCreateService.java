@@ -51,12 +51,12 @@ public class OrdersCreateService {
     }
 
     public Order addRandomIremSetToOrderFromCart(long cartId) {
-        Optional<Cart> cartOptional = cartService.findById(cartId);
-        if (cartOptional.isPresent()) {
-            Order result = new Order();
-            result.addItemList(cartOptional.get().getItemList());
-            return result;
-        }
+//        Optional<Cart> cartOptional = cartService.findById(cartId);
+//        if (cartOptional.isPresent()) {
+//            Order result = new Order();
+//            result.addItemList(cartOptional.get().getItemList());
+//            return result;
+//        }
         return null;
     }
 }

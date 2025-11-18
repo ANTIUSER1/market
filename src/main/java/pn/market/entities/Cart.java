@@ -18,19 +18,21 @@ public class Cart {
     private Long id;
 
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
-    private List<Item> itemList;
+    @OneToMany(
+            cascade = CascadeType.ALL,
+            fetch = FetchType.EAGER, orphanRemoval = true)
+    @JoinColumn(name = "cart_id")
+    private List<Item> cartItems = new ArrayList<>();
 
-    public Cart() {
-        if (itemList == null) itemList = new ArrayList<>();
-    }
+
+
 
     public void addItem(Item item) {
-        itemList.add(item);
+        cartItems.add(item);
     }
 
     public long getTotalSum() {
-        return itemList.parallelStream()
+        return cartItems.parallelStream()
                 .mapToLong(itm -> itm.getPrice()).sum();
     }
 }

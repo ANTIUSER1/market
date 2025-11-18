@@ -11,43 +11,27 @@ import pn.market.entities.Cart;
 import pn.market.entities.Item;
 import pn.market.repo.CartRepo;
 import pn.market.services.autocreate.CartsCreateService;
+import pn.market.services.autocreate.ItemsCreateService;
 import pn.market.services.impl.ItemServiceImpl;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/carts")
 @Slf4j
 public class CartRestController {
     @Autowired
-    ItemServiceImpl itemService;
+    private  CartsCreateService cartsCreateService;
+
     @Autowired
     private CartRepo cartRepo;
-    @Autowired
-    private CartsCreateService cartsCreateService;
 
-    @GetMapping("/carts/create/{itemId}")
-    public ResponseEntity<?> addItemToNewOrder(@PathVariable("itemId") long itemId) {
-        Optional<Item> item = itemService.findById(itemId);
-        if (item.isPresent()) {
-            Cart cart = cartsCreateService.createCart(item.get());
-            // item.get().setOrder(order);
-            cart = cartRepo.save(cart);
-            System.out.println("\n-- NEW --\n " + cart);
-            return ResponseEntity.ok(cart);
-        }
-        return ResponseEntity.ok("item not exists");
-    }
 
-    @GetMapping("/carts/add/{cartId}")
-    public ResponseEntity<?> addManyRandomItemsToNewOrder(@PathVariable("cartId") long cartId) {
-        Cart cart = cartsCreateService.addRandomIremSetToCart(cartId);
-        if (cart != null) {
-            cart = cartRepo.save(cart);
-            System.out.println("\n--   --\n " + cart.toString());
-            return ResponseEntity.ok(cart);
-        }
-        return ResponseEntity.ok("cart not exists");
+    @GetMapping("/add-to-cart")
+    public   Cart addToCart() {
+        Cart cart = cartsCreateService.createRandomCart();
+        return cartRepo.save(cart);
     }
 
 }

@@ -20,25 +20,4 @@ public class Item {
 
 
 
-  @ManyToOne( fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  @JoinTable(
-          name = "items_carts",
-          joinColumns = @JoinColumn(name = "item_id"),
-          inverseJoinColumns = @JoinColumn(name = "cart_id"),
-          uniqueConstraints =  @UniqueConstraint(columnNames = {"item_id", "cart_id"})
-  )
-    private Cart cart;
-
-    @Override
-    public String toString() {
-        final StringBuffer sb = new StringBuffer("Item{");
-        sb.append("count=").append(count);
-        sb.append(", price=").append(price);
-        sb.append(", imgPath='").append(imgPath).append('\'');
-        sb.append(", description='").append(description).append('\'');
-        sb.append(", title='").append(title).append('\'');
-        sb.append(", id=").append(id);
-        sb.append('}');
-        return sb.toString();
-    }
 }
