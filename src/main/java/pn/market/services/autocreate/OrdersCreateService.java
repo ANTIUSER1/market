@@ -56,7 +56,7 @@ public class OrdersCreateService {
             order.setOrderItems( new ArrayList<>());
             System.out.println(order);
           orderRepo.save(order);
-orderRepo.delete(order);
+          orderRepo.delete(order);
 
         }
     }
