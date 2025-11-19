@@ -1,5 +1,7 @@
 package pn.market.repo;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,7 +22,9 @@ public interface ItemRepo extends JpaRepository<Item, Long> {
     @Query("SELECT i FROM Item i ORDER BY i.id ASC")
     List<Item> getAllItemsSortedAscById();
 
-
+  // @Query("SELECT i FROM Item i  ")
+  //  List<Item> findAllAndPaging(Pageable parsable);
+Page<Item> findAll(Pageable parsable);
     /*
 
     --------------------------

@@ -2,6 +2,8 @@ package pn.market.services.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pn.market.entities.Cart;
 import pn.market.repo.CartRepo;
@@ -38,9 +40,11 @@ public class CartServiceImpl implements TService<Cart> {
         return cartRepo.findById(id);
     }
 
+
+
     @Override
-    public List<Cart> findAll(int page, int pageSize, String search, String sorted) {
-        return List.of();
+    public Page<Cart> findAllAndPaging(Pageable pageable) {
+        return null;
     }
 
     @Override
