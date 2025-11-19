@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import pn.market.additional.Paging;
 import pn.market.entities.Item;
 import pn.market.services.impl.ItemServiceImpl;
 
@@ -27,16 +28,19 @@ private ItemServiceImpl itemService;
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
             @RequestParam(value = "pageSize", required = false, defaultValue = "2") int pageSize,
             @RequestParam(value = "search", required = false, defaultValue = " ") String search,
-            @RequestParam(value = "sorted", required = false, defaultValue = "NO") String  sorted,
+            @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String  sorted,
             Model model
     ) {
         List<Item> items = itemService.findAll(page, pageSize, search, sorted);
         System.out.println(items);
-        System.out.println(items.size());
-        System.out.println( "Page: " + page + " PageSize: " + pageSize + " Search: " + search + " Sorted: " + sorted + " ");
+        System.out.println("ITEM SIZE :  "+items.size());
+        System.out.println( "Page: " + page +
+                " PageSize: " + pageSize +
+                " Search: " + search + " Sorted: " + sorted + " ");
         model.addAttribute("items", items);
         model.addAttribute("page", page);
-        model.addAttribute("pageSize", pageSize);
+
+        model.addAttribute("paging", new Paging(pageSize));
 
         return "items";
     }

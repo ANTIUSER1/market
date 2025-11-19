@@ -44,9 +44,16 @@ public class ItemServiceImpl implements TService<Item> {
 
     @Override
     public List<Item> findAll(int page, int pageSize, String search, String sorted) {
-   if(SORT_ALPHA.equalsIgnoreCase(sorted))
-        return itemRepo.findAllAndSortByTitle(page, pageSize, search);
-       else if(SORT_PRICE.equalsIgnoreCase(sorted))
+
+        System.out.println("\n---\n     SORTED --- "+sorted+"\n---");
+        System.out.println("\n---\n     SORTED --- "+ ( SORT_ALPHA.equalsIgnoreCase(sorted.trim())) +"\n---");
+   if(SORT_ALPHA.equalsIgnoreCase(sorted.trim())){
+
+       System.out.println("\n---\n SORT-BY-TITLE\n   \n---");
+      return itemRepo.findAllAndSortByTitle(page, pageSize, search);
+
+      }
+       else if(SORT_PRICE.equalsIgnoreCase(sorted.trim()))
       return itemRepo.findAllAndSortByPrice(page, pageSize, search);
        else
           return itemRepo.findAllNoSort(page, pageSize, search);
