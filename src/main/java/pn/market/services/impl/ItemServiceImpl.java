@@ -13,6 +13,10 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class ItemServiceImpl implements TService<Item> {
+    private static final String SORT_ALPHA = "ALPHA" ;
+    private static final String SORT_PRICE = "PRICE";
+
+
     @Autowired
     private ItemRepo itemRepo;
 
@@ -40,12 +44,15 @@ public class ItemServiceImpl implements TService<Item> {
 
     @Override
     public List<Item> findAll(int page, int pageSize, String search, String sorted) {
-        return itemRepo.findAll(page, pageSize, search, sorted);
+   if(SORT_ALPHA.equalsIgnoreCase(sorted))
+        return itemRepo.findAllAndSortByTitle(page, pageSize, search);
+       else if(SORT_PRICE.equalsIgnoreCase(sorted))
+      return itemRepo.findAllAndSortByPrice(page, pageSize, search);
+       else
+          return itemRepo.findAllNoSort(page, pageSize, search);
     }
 
-    public List<Item> findAll( String search  ) {
-        return itemRepo.find1All( search);
-    }
+
 
     @Override
     public List<Item> getAllUnsorted() {

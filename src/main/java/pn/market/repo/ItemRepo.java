@@ -20,29 +20,55 @@ public interface ItemRepo extends JpaRepository<Item, Long> {
     @Query("SELECT i FROM Item i ORDER BY i.id ASC")
     List<Item> getAllItemsSortedAscById();
 
+
+    /*
+
+    --------------------------
+
+
+     */
+
     @Query("""
             SELECT i FROM Item i
             WHERE i.title LIKE %:search% OR i.description LIKE %:search%
+            ORDER BY i.title  ASC
+            OFFSET :page
             """)
-    List<Item> find1All(
-            //  @Param("page")
+    List<Item> findAllAndSortByTitle(
+            @Param("page")
+            int page,
+            @Param("pageSize")
+            int pageSize,
+           @Param("search")
+            String search );
+
+    @Query("""
+            SELECT i FROM Item i
+            WHERE i.title LIKE %:search% OR i.description LIKE %:search%
+            ORDER BY i.price ASC
+            OFFSET :page
+            """)
+    List<Item> findAllAndSortByPrice(
+            @Param("page")
+            int page,
+            @Param("pageSize")
+            int pageSize,
             @Param("search")
             String search );
 
 
     @Query("""
-            SELECT i FROM Item i  
+            SELECT i FROM Item i
+            WHERE i.title LIKE %:search% OR i.description LIKE %:search%
+           
             """)
-    List<Item> findAll(
-          //  @Param("page")
+    List<Item> findAllNoSort(
+            @Param("page")
             int page,
-           // @Param("pageSize")
+            @Param("pageSize")
             int pageSize,
-            //@Param("search")
-            String search,
-            //@Param("sorted")
-            String sorted);
-
+            @Param("search")
+            String search );
     /*
 
 
