@@ -11,7 +11,7 @@ import pn.market.services.autocreate.CartsCreateService;
 @RestController
 @RequestMapping("/api/carts")
 @Slf4j
-public class CartRestController {
+public class CartRest {
     @Autowired
     private  CartsCreateService cartsCreateService;
 

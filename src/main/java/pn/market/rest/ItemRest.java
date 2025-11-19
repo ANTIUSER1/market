@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/items")
 @Slf4j
-public class ItemRestController {
+public class ItemRest {
 
     @Autowired
     private ItemRepo itemRepo;

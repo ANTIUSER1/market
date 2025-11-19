@@ -12,7 +12,7 @@ import pn.market.services.autocreate.OrdersCreateService;
 @RestController
 @RequestMapping("/api/orders")
 @Slf4j
-public class OrderRestController {
+public class OrderRest {
 
     @Autowired
     private OrdersCreateService ordersCreateService;
