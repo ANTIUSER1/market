@@ -39,6 +39,11 @@ public class CartServiceImpl implements TService<Cart> {
     }
 
     @Override
+    public List<Cart> findAll(int page, int pageSize, String search, String sorted) {
+        return List.of();
+    }
+
+    @Override
     public List<Cart> getAllUnsorted() {
         return cartRepo.findAll();
     }

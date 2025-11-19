@@ -39,6 +39,15 @@ public class ItemServiceImpl implements TService<Item> {
     }
 
     @Override
+    public List<Item> findAll(int page, int pageSize, String search, String sorted) {
+        return itemRepo.findAll(page, pageSize, search, sorted);
+    }
+
+    public List<Item> findAll( String search  ) {
+        return itemRepo.find1All( search);
+    }
+
+    @Override
     public List<Item> getAllUnsorted() {
         return itemRepo.findAll();
     }

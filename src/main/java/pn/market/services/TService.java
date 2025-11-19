@@ -13,6 +13,8 @@ public interface TService<T> {
 
     Optional<T> getById(Long id);
 
+    List<T> findAll(int page, int pageSize, String search, String sorted);
+
     List<T> getAllUnsorted();
 
     List<T> getAllDSsorted();

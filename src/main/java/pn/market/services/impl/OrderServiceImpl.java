@@ -40,6 +40,11 @@ public class OrderServiceImpl implements TService<Order> {
     }
 
     @Override
+    public List<Order> findAll(int page, int pageSize, String search, String sorted) {
+        return List.of();
+    }
+
+    @Override
     public List<Order> getAllUnsorted() {
         return orderRepo.findAll();
     }
