@@ -27,8 +27,6 @@ public class ItemController {
 @Autowired
 private ItemServiceImpl itemService;
 
-
-
     @GetMapping
     public String itemsIndex(
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
@@ -61,12 +59,6 @@ private ItemServiceImpl itemService;
         Item item = null;
         Optional<Item> itemOptional = itemService.findById(id);
         if (action != null && itemOptional.isPresent()) {
-            System.out.println(action);
-            System.out.println("    (ActionType.MINUS.equals(action)) "+ (ActionType.MINUS.name().equals(action)));
-            System.out.println("    \t     ActionType.MINUS.equals(action.trim()     "+ (ActionType.MINUS.name().equals(action.trim() )));
-            System.out.println("    \t     ActionType.PLUS.equals(action.trim()     "+ (ActionType.PLUS.name().equals(action.trim() )));
-            System.out.println("    \t \t\t    ActionType.PLUS    "+  ActionType.PLUS );
-            System.out.println("    \t \t\t    ActionType.MINUS    "+  ActionType.MINUS);
             if (ActionType.MINUS.name().equals(action.trim())) item = itemService.minus(itemOptional.get());
             else if (ActionType.PLUS.name().equals(action.trim()))  item = itemService.plus(itemOptional.get());
             if(item!=null)model.addAttribute("item", item );
