@@ -8,6 +8,15 @@ spring:
     multipart:
       max-file-size: 20480 KB
 
+  web:
+    resources:
+      static-locations:  classpath:./static,file:C:/opt/market/
+#      static-locations: classpath:./static
+
+#      static-locations: classpath:file:./static/ C:/opt/market/
+#  mvc:
+#    static-path-pattern: /**
+
   jpa:
     database: POSTGRESQL
     show-sql: true
