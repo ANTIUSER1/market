@@ -24,7 +24,6 @@ public class FileService {
                 if (isImage(fileExt)) {
                    if (id > 0) {
                        uploadDir = uploadDir + imgFolderName;
-                       System.out.println("**!!!!!!*\n\t\tuploadDir = " + uploadDir + "\n*!!!!**");
                        File fid=new File(uploadDir);
                        if (!fid.exists()) {
                            fid.mkdirs();

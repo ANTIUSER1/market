@@ -49,12 +49,7 @@ public class OrdersCreateService {
         Optional<Order> orderOptional = orderRepo.findById(maxOrderId);
         if (orderOptional.isPresent()) {
             Order order = orderOptional.get();
-
-//            for (Item item : order.getOrderItems()) {
-//                em.detach(item);
-//            }
             order.setOrderItems( new ArrayList<>());
-            System.out.println(order);
           orderRepo.save(order);
           orderRepo.delete(order);
 
