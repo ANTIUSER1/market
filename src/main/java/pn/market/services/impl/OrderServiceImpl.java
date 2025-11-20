@@ -20,23 +20,6 @@ public class OrderServiceImpl implements TService<Order> {
     private OrderRepo orderRepo;
 
     @Override
-    public Order create(Order Order) {
-        log.info("add Order \n{}\n to db", Order);
-        return orderRepo.save(Order);
-    }
-
-    @Override
-    public Optional<Order> findById(Long id) {
-        return orderRepo.findById(id);
-    }
-
-    @Override
-    public int createList(List<Order> orderList) {
-        log.info("add OrderList \n{}\n to db", orderList);
-        return orderRepo.saveAll(orderList).size();
-    }
-
-    @Override
     public Optional<Order> getById(Long id) {
         return orderRepo.findById(id);
     }
@@ -46,30 +29,4 @@ public class OrderServiceImpl implements TService<Order> {
         return null;
     }
 
-    @Override
-    public List<Order> getAllUnsorted() {
-        return orderRepo.findAll();
-    }
-
-    @Override
-    public List<Order> getAllDSsorted() {
-        return orderRepo.getAllOrdersSortedDescById();
-    }
-
-    @Override
-    public List<Order> getAllASsorted() {
-        return orderRepo.getAllOrdersSortedAscById();
-    }
-
-
-    @Override
-    public void deleteById(Long id) {
-        log.info("try remove Order with ID {} ", id);
-        Optional<Order> orderOptional = orderRepo.findById(id);
-        if (orderOptional.isPresent()) {
-            log.info("remove Order   {} ", orderOptional.get());
-            orderRepo.delete(orderOptional.get());
-        }
-        log.info("No kOrders to remove   ");
-    }
 }

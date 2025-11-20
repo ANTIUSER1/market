@@ -19,26 +19,9 @@ import java.util.Optional;
 public class ItemServiceImpl implements TService<Item> {
 
 
-
     @Autowired
     private ItemRepo itemRepo;
 
-    @Override
-    public Item create(Item item) {
-        log.info("add item \n{}\n to db", item);
-        return itemRepo.save(item);
-    }
-
-    @Override
-    public Optional<Item> findById(Long id) {
-        return itemRepo.findById(id);
-    }
-
-    @Override
-    public int createList(List<Item> itemList) {
-        log.info("add itemList \n{}\n to db", itemList);
-        return itemRepo.saveAll(itemList).size();
-    }
 
     @Override
     public Optional<Item> getById(Long id) {
@@ -51,32 +34,4 @@ public class ItemServiceImpl implements TService<Item> {
         return itemRepo.findAll(pageable);
     }
 
-
-    @Override
-    public List<Item> getAllUnsorted() {
-        return itemRepo.findAll();
-    }
-
-    @Override
-    public List<Item> getAllDSsorted() {
-        return itemRepo.getAllItemsSortedDescById();
-    }
-
-
-    @Override
-    public List<Item> getAllASsorted() {
-        return itemRepo.getAllItemsSortedAscById();
-    }
-
-
-    @Override
-    public void deleteById(Long id) {
-        log.info("try remove item with ID {} ", id);
-        Optional<Item> itemOptional = itemRepo.findById(id);
-        if (itemOptional.isPresent()) {
-            log.info("remove item   {} ", itemOptional.get());
-            itemRepo.delete(itemOptional.get());
-        }
-        log.info("No kitems to remove   ");
-    }
 }
