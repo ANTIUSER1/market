@@ -52,11 +52,12 @@ public class ItemRest {
     }
 
 
-    @PutMapping("/items/img/{id}")
+    @PutMapping("/img/{id}")
     public ResponseEntity<?> loadItemImage(
-            long id,
-            @RequestParam("file") MultipartFile file
+           @PathVariable("id") Long id, @RequestParam("file") MultipartFile file
     ) throws IOException {
+        System.out.println("\n ----  IMG UPLOAD FOR id = " + id);
+        System.out.println("\n ----  IMG  is null = " + (file == null) + " id = " + id);
         if (file != null) {
             Item item = itemService.uploadFile(file, id);
             if (item != null)
