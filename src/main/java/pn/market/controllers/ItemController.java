@@ -15,82 +15,65 @@ import pn.market.additional.SORT_TYPE;
 import pn.market.entities.Item;
 import pn.market.services.impl.ItemServiceImpl;
 
-import java.util.List;
-
 @Controller
 @RequestMapping("/")
 public class ItemController {
 @Autowired
 private ItemServiceImpl itemService;
+/*
     @GetMapping
     public String index( Model model ) {
         System.out.println("------------asd -----------------");
         return "asd";
     }
 
-    @GetMapping("/items")
-    public String items(
+ */
+
+    @GetMapping
+    public String itemsIndex(
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
             @RequestParam(value = "pageSize", required = false, defaultValue = "2") int pageSize,
             @RequestParam(value = "search", required = false, defaultValue = " ") String search,
             @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String  sorted,
             Model model
     ) {
-//        List<Item> items = itemService.findAll(page, pageSize, search, sorted);
-//        System.out.println(items);
-//        System.out.println("ITEM SIZE :  "+items.size());
-//        System.out.println( "Page: " + page +
-//                " PageSize: " + pageSize +
-//                " Search: " + search + " Sorted: " + sorted + " ");
-//        model.addAttribute("items", items);
-//        model.addAttribute("page", page);
-//
-//
-//        model.addAttribute("paging",  new Paging( pageSize, page,
-//                false, false) );
-
-        return "asd";
+        model = createModel(page, pageSize, search, sorted, model);
+        return "items";
     }
 
-
-    @GetMapping("/items1")
-    public String pagingItems(
+    @GetMapping("/items")
+    public String items(
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
             @RequestParam(value = "pageSize", required = false, defaultValue = "3") int pageSize,
             @RequestParam(value = "search", required = false, defaultValue = " ") String search,
             @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String  sorted,
             Model model
     ) {
-
-        Pageable pageable = PageRequest.of(page, 10);
-        if(SORT_TYPE.ALPHA.name().equals(sorted)){
-            pageable = PageRequest.of(page, pageSize,
-                    Sort.Direction.ASC, "title");
-        }
-        if(SORT_TYPE.PRICE.name().equals(sorted)){
-            pageable = PageRequest.of(page, pageSize,
-                    Sort.Direction.ASC, "price");
-        }
-
-        Page<Item> items = itemService.findAllAndPaging( pageable );
-        System.out.println(items);
-        System.out.println("ITEM TOTTAL SIZE :  "+items.getSize());
-        System.out.println( "\nPage: " + page +
-                "\n pgSize: " + pageSize +
-                "\n Search: " + search +
-                "\n Sorted: " + sorted + "\n ");
-        System.out.println(
-                " \n ITEMS INFO: total pg  "+items .getTotalPages()+
-                " \n ITEMS INFO: total elem  "+items .getTotalElements()+
-                " \n ITEMS INFO: total nextPageable().getPageNumber  "+items.nextPageable().getPageNumber()
-                );
-        model.addAttribute("items", items.get().toList());
-        model.addAttribute("page", page);
-
-        model.addAttribute("paging",
-                new Paging( pageSize, page,
-                items.hasNext(), items.hasPrevious()) );
+        model = createModel(page, pageSize, search, sorted, model);
         return "items";
     }
 
+    private Model createModel(int page, int pageSize, String search, String sorted, Model model) {
+        Pageable pageable = createPageble(page, pageSize, sorted);
+        Page<Item> items = itemService.findAllAndPaging(pageable);
+        model.addAttribute("items", items.get().toList());
+        model.addAttribute("page", page);
+        model.addAttribute("paging",
+                new Paging(pageSize, page,
+                        items.hasNext(), items.hasPrevious()));
+        return model;
+    }
+
+    private Pageable createPageble(int page, int pageSize, String sorted) {
+        Pageable pageable = PageRequest.of(page, 10);
+        if (SORT_TYPE.ALPHA.name().equals(sorted)) {
+            pageable = PageRequest.of(page, pageSize,
+                    Sort.Direction.ASC, "title");
+        }
+        if (SORT_TYPE.PRICE.name().equals(sorted)) {
+            pageable = PageRequest.of(page, pageSize,
+                    Sort.Direction.ASC, "price");
+        }
+        return pageable;
+    }
 }
