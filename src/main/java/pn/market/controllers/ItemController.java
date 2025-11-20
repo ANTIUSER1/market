@@ -6,33 +6,33 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import pn.market.additional.ActionType;
 import pn.market.additional.Paging;
 import pn.market.additional.SortType;
 import pn.market.entities.Item;
 import pn.market.services.impl.ItemServiceImpl;
 
-import java.io.IOException;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
 @Slf4j
 public class ItemController {
-@Autowired
-private ItemServiceImpl itemService;
+    @Autowired
+    private ItemServiceImpl itemService;
 
     @GetMapping
     public String itemsIndex(
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
             @RequestParam(value = "pageSize", required = false, defaultValue = "2") int pageSize,
             @RequestParam(value = "search", required = false, defaultValue = " ") String search,
-            @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String  sorted,
+            @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted,
             Model model
     ) {
         model = createModel(page, pageSize, search, sorted, model);
@@ -44,7 +44,7 @@ private ItemServiceImpl itemService;
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
             @RequestParam(value = "pageSize", required = false, defaultValue = "3") int pageSize,
             @RequestParam(value = "search", required = false, defaultValue = " ") String search,
-            @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String  sorted,
+            @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted,
             Model model
     ) {
         model = createModel(page, pageSize, search, sorted, model);
@@ -60,8 +60,8 @@ private ItemServiceImpl itemService;
         Optional<Item> itemOptional = itemService.findById(id);
         if (action != null && itemOptional.isPresent()) {
             if (ActionType.MINUS.name().equals(action.trim())) item = itemService.minus(itemOptional.get());
-            else if (ActionType.PLUS.name().equals(action.trim()))  item = itemService.plus(itemOptional.get());
-            if(item!=null)model.addAttribute("item", item );
+            else if (ActionType.PLUS.name().equals(action.trim())) item = itemService.plus(itemOptional.get());
+            if (item != null) model.addAttribute("item", item);
             else {
                 log.error("Item of {} not found, or action not set", id);
                 return "items";
@@ -72,22 +72,22 @@ private ItemServiceImpl itemService;
         return "items";
     }
 
-/*
-    @PostMapping("/items/img/{id}")
-    public ResponseEntity<?> loadItemImage(
-            long id,
-            @RequestParam("file") MultipartFile file
-    ) throws IOException {
-        if (file != null) {
-            Item item = itemService.uploadFile(file, id);
-            if (item != null)
-                return ResponseEntity.ok(item);
+    /*
+        @PostMapping("/items/img/{id}")
+        public ResponseEntity<?> loadItemImage(
+                long id,
+                @RequestParam("file") MultipartFile file
+        ) throws IOException {
+            if (file != null) {
+                Item item = itemService.uploadFile(file, id);
+                if (item != null)
+                    return ResponseEntity.ok(item);
+            }
+            return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.badRequest().build();
-    }
 
 
- */
+     */
     private Model createModel(int page, int pageSize, String search, String sorted, Model model) {
         Pageable pageable = createPageble(page, pageSize, sorted);
         Page<Item> items = itemService.findAllAndPaging(pageable);

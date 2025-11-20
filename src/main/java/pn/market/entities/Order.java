@@ -42,10 +42,9 @@ public class Order {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("Order{");
-        sb.append("id=").append(id);
-        sb.append(", orderItems=").append(orderItems);
-        sb.append('}');
-        return sb.toString();
+        String sb = "Order{" + "id=" + id +
+                ", orderItems=" + orderItems +
+                '}';
+        return sb;
     }
 }

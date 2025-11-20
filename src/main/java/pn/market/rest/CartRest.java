@@ -13,10 +13,10 @@ import pn.market.services.autocreate.CartsCreateService;
 @Slf4j
 public class CartRest {
     @Autowired
-    private  CartsCreateService cartsCreateService;
+    private CartsCreateService cartsCreateService;
 
     @GetMapping("/add-to-cart")
-    public   Cart addToCart() {
+    public Cart addToCart() {
         return cartsCreateService.createRandomCart();
     }
 

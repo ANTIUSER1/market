@@ -30,7 +30,7 @@ public class CartServiceImpl implements TService<Cart> {
         return cartRepo.findById(id);
     }
 
- @Override
+    @Override
     public Page<Cart> findAllAndPaging(Pageable pageable) {
         return cartRepo.findAll(pageable);
     }
@@ -41,53 +41,54 @@ public class CartServiceImpl implements TService<Cart> {
     }
 
     public Optional<Cart> getCartByItemID(Long itemId) {
-       Optional<Item> itemOptional=itemRepo.findById(itemId);
-        Optional<Cart> cartOptional=getLast();
-        if(itemOptional.isPresent() && cartOptional.isPresent() ){
-           Item item=itemOptional.get();
-return cartOptional;
+        Optional<Item> itemOptional = itemRepo.findById(itemId);
+        Optional<Cart> cartOptional = getLast();
+        if (itemOptional.isPresent() && cartOptional.isPresent()) {
+            Item item = itemOptional.get();
+            return cartOptional;
 
-       }return Optional.empty();
+        }
+        return Optional.empty();
     }
 
     public Optional<Cart> getLast() {
-        long cId=   cartRepo.findMaxId();
-        Optional<Cart> cartOptional=cartRepo.findById(cId);
-        if(cartOptional.isPresent()){
+        long cId = cartRepo.findMaxId();
+        Optional<Cart> cartOptional = cartRepo.findById(cId);
+        if (cartOptional.isPresent()) {
             return cartOptional;
         }
         return Optional.empty();
     }
 
     public Cart plusItem(Long itemId) {
-        Optional<Item> itemOptional=itemRepo.findById(itemId);
-        Optional<Cart> cartOptional=getLast();
-        if(itemOptional.isPresent() && cartOptional.isPresent() ){
-            Item item=itemOptional.get();
-            Cart cart=cartOptional.get();
+        Optional<Item> itemOptional = itemRepo.findById(itemId);
+        Optional<Cart> cartOptional = getLast();
+        if (itemOptional.isPresent() && cartOptional.isPresent()) {
+            Item item = itemOptional.get();
+            Cart cart = cartOptional.get();
             cart.plusItem(item);
             itemService.plus(item);
-            if (!cart.isiTtemInCart(item)){
+            if (!cart.isiTtemInCart(item)) {
                 cart.plusItem(item);
             }
-            return  cartRepo.save(cart);
-        }else
+            return cartRepo.save(cart);
+        } else
             return null;
     }
 
     public Cart minusItem(Long itemId) {
-        Optional<Item> itemOptional=itemRepo.findById(itemId);
-        Optional<Cart> cartOptional=getLast();
-        if(itemOptional.isPresent() && cartOptional.isPresent() ){
-            Item item=itemOptional.get();
-            Cart cart=cartOptional.get();
+        Optional<Item> itemOptional = itemRepo.findById(itemId);
+        Optional<Cart> cartOptional = getLast();
+        if (itemOptional.isPresent() && cartOptional.isPresent()) {
+            Item item = itemOptional.get();
+            Cart cart = cartOptional.get();
             cart.plusItem(item);
             itemService.minus(item);
-            if (!cart.isiTtemInCart(item)){
+            if (!cart.isiTtemInCart(item)) {
                 cart.minusItem(item);
             }
-            return  cartRepo.save(cart);
-        }else
+            return cartRepo.save(cart);
+        } else
             return null;
     }
 }

@@ -12,8 +12,6 @@ import pn.market.additional.ActionType;
 import pn.market.entities.Cart;
 import pn.market.services.impl.CartServiceImpl;
 
-import java.util.Optional;
-
 @Controller
 @RequestMapping("/cart")
 @Slf4j
@@ -26,21 +24,21 @@ public class CartController {
             @RequestParam("itemId") Long itemId,
             @RequestParam("action") String action,
             Model model) {
-         Cart cart = null;
-        if (action != null  && itemId != null) {
+        Cart cart = null;
+        if (action != null && itemId != null) {
             if (ActionType.PLUS.name().equals(action.trim())) cart = cartService.plusItem(itemId);
             if (ActionType.MINUS.name().equals(action.trim())) cart = cartService.minusItem(itemId);
-           if(cart!=null) {
+            if (cart != null) {
                 model.addAttribute("items", cart.getCartItems());
                 return "cart";
             }
         }
-return "items";
+        return "items";
     }
 
 
     @GetMapping
-    public String getCart () {
+    public String getCart() {
         return "asd";
     }
-    }
+}

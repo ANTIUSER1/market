@@ -25,11 +25,10 @@ public class Cart {
     private List<Item> cartItems = new ArrayList<>();
 
 
-
-
     public void plusItem(Item item) {
         cartItems.add(item);
     }
+
     public void minusItem(Item item) {
         cartItems.remove(item);
     }

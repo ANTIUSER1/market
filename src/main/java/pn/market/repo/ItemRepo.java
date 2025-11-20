@@ -14,7 +14,7 @@ import java.util.List;
 @Transactional
 public interface ItemRepo extends JpaRepository<Item, Long> {
 
-  @Query("SELECT i FROM Item i ORDER BY i.id DESC")
+    @Query("SELECT i FROM Item i ORDER BY i.id DESC")
     List<Item> getAllItemsSortedDescById();
 
     @Query("SELECT i FROM Item i ORDER BY i.id ASC")

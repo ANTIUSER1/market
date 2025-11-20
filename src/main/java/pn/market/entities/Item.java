@@ -23,7 +23,7 @@ public class Item {
     }
 
     public void minusCount() {
-       if(count>0) count--;
+        if (count > 0) count--;
     }
 
 }

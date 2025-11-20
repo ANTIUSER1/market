@@ -1,6 +1,5 @@
 package pn.market.services.impl;
 
-import jakarta.servlet.ServletContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,7 +11,6 @@ import pn.market.entities.Item;
 import pn.market.repo.ItemRepo;
 import pn.market.services.TService;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -58,21 +56,21 @@ public class ItemServiceImpl implements TService<Item> {
 
     public Item uploadFile(MultipartFile file, long id) throws IOException {
         Optional<Item> itemOptional = itemRepo.findById(id);
-       Item item=null;
+        Item item = null;
         if (itemOptional.isPresent()) {
             item = itemOptional.get();
-            String dirToUpload= createImagePath( );
-            String fileName = fileService.storeFile(file,dirToUpload, id);
+            String dirToUpload = createImagePath();
+            String fileName = fileService.storeFile(file, dirToUpload, id);
             if (fileName != null) {
                 item.setImgPath(fileName);
             }
-         }
-        return  itemRepo.save(item);
+        }
+        return itemRepo.save(item);
     }
 
     private String createImagePath() {
-        imgPath=imgPath.split("file:")[1]
-                .replace("//","/")
+        imgPath = imgPath.split("file:")[1]
+                .replace("//", "/")
                 .replace(",", "");
 
         return imgPath;
