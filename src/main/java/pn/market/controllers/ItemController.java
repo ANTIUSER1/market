@@ -6,18 +6,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import pn.market.additional.ActionType;
 import pn.market.additional.Paging;
 import pn.market.additional.SortType;
 import pn.market.entities.Item;
 import pn.market.services.impl.ItemServiceImpl;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Controller
@@ -72,6 +72,18 @@ private ItemServiceImpl itemService;
         return "items";
     }
 
+    @PostMapping("/items/img/{id}")
+    public ResponseEntity<?> loadItemImage(
+            long id,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
+        if (file != null) {
+            Item item = itemService.uploadFile(file, id);
+            if (item != null)
+                return ResponseEntity.ok(item);
+        }
+        return ResponseEntity.badRequest().build();
+    }
     private Model createModel(int page, int pageSize, String search, String sorted, Model model) {
         Pageable pageable = createPageble(page, pageSize, sorted);
         Page<Item> items = itemService.findAllAndPaging(pageable);

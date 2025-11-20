@@ -4,6 +4,9 @@ server:
 spring:
   application:
     name: 03-lesson
+  servlet:
+    multipart:
+      max-file-size: 20480
 
   jpa:
     database: POSTGRESQL

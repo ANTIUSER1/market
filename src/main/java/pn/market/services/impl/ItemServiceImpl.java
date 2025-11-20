@@ -5,20 +5,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import pn.market.entities.Item;
 import pn.market.repo.ItemRepo;
 import pn.market.services.TService;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @Service
 @Slf4j
 public class ItemServiceImpl implements TService<Item> {
 
+    @Autowired
+    private FileService fileService;
+
 
     @Autowired
     private ItemRepo itemRepo;
-
 
     @Override
     public Optional<Item> getById(Long id) {
@@ -44,5 +48,16 @@ public class ItemServiceImpl implements TService<Item> {
     public Item minus(Item item) {
         item.minusCount();
         return itemRepo.save(item);
+    }
+
+
+    public Item uploadFile(MultipartFile file, long id) throws IOException {
+        Optional<Item> itemOptional = itemRepo.findById(id);
+       Item item=null;
+        if (itemOptional.isPresent()) {
+            item = itemOptional.get();
+            String fileName = fileService.storeFile(file);
+        }
+        return  item;
     }
 }
