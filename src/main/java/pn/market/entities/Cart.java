@@ -27,8 +27,11 @@ public class Cart {
 
 
 
-    public void addItem(Item item) {
+    public void plusItem(Item item) {
         cartItems.add(item);
+    }
+    public void minusItem(Item item) {
+        cartItems.remove(item);
     }
 
     public long getTotalSum() {
@@ -38,5 +41,9 @@ public class Cart {
 
     public long getSize() {
         return cartItems.size();
+    }
+
+    public boolean isiTtemInCart(Item item) {
+        return cartItems.contains(item);
     }
 }

@@ -38,13 +38,11 @@ public class ItemServiceImpl implements TService<Item> {
 
     public Item plus(Item item) {
         item.plusCount();
-        System.out.println("ITEM-PLUS ");
         return itemRepo.save(item);
     }
 
     public Item minus(Item item) {
         item.minusCount();
-        System.out.println("ITEM-MINUS ");
         return itemRepo.save(item);
     }
 }

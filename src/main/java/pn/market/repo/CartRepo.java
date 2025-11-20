@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pn.market.entities.Cart;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional
@@ -20,4 +21,5 @@ public interface CartRepo extends JpaRepository<Cart, Long> {
 
     @Query("SELECT MAX(c.id) FROM Cart c ")
     long findMaxId();
+
 }
