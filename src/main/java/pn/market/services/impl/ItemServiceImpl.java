@@ -1,7 +1,9 @@
 package pn.market.services.impl;
 
+import jakarta.servlet.ServletContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -10,6 +12,7 @@ import pn.market.entities.Item;
 import pn.market.repo.ItemRepo;
 import pn.market.services.TService;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -17,9 +20,11 @@ import java.util.Optional;
 @Slf4j
 public class ItemServiceImpl implements TService<Item> {
 
+    @Value("${spring.web.resources.static-locations}")
+    private String imgPath;
+
     @Autowired
     private FileService fileService;
-
 
     @Autowired
     private ItemRepo itemRepo;
@@ -56,9 +61,22 @@ public class ItemServiceImpl implements TService<Item> {
        Item item=null;
         if (itemOptional.isPresent()) {
             item = itemOptional.get();
-            String fileName = fileService.storeFile(file);
-        }
-        System.out.println(" \n\n ITEM  "+item+"\n\n");
-        return  item;
+            String dirToUpload= createImagePath( );
+            String fileName = fileService.storeFile(file,dirToUpload, id);
+            if (fileName != null) {
+                item.setImgPath(fileName);
+            }
+         }
+        return  itemRepo.save(item);
     }
+
+    private String createImagePath() {
+        imgPath=imgPath.split("file:")[1]
+                .replace("//","/")
+                .replace(",", "");
+
+        return imgPath;
+    }
+
+
 }

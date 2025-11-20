@@ -1,7 +1,9 @@
 package pn.market.rest;
 
+import jakarta.servlet.ServletContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,6 +13,7 @@ import pn.market.services.autocreate.ItemsCreateService;
 import pn.market.services.autocreate.OrdersCreateService;
 import pn.market.services.impl.ItemServiceImpl;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +22,7 @@ import java.util.List;
 @RequestMapping("/api/items")
 @Slf4j
 public class ItemRest {
+
 
     @Autowired
     private ItemRepo itemRepo;
@@ -33,6 +37,8 @@ public class ItemRest {
     private OrdersCreateService ordersCreateService;
 
 
+    @Autowired
+    private ServletContext servletContext;
 
     @GetMapping("/setof/{count}")
     public List<Item> createSet(@PathVariable("count") int count) {
@@ -55,8 +61,6 @@ public class ItemRest {
     public ResponseEntity<?> loadItemImage(
            @PathVariable("id") Long id, @RequestParam("file") MultipartFile file
     ) throws IOException {
-        System.out.println("\n ----  IMG UPLOAD FOR id = " + id);
-        System.out.println("\n ----  IMG  is null = " + (file == null) + " id = " + id);
         if (file != null) {
             Item item = itemService.uploadFile(file, id);
             if (item != null)
