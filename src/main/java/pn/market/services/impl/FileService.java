@@ -11,9 +11,15 @@ public class FileService {
         if (file.isEmpty()) {
             return null;
         } else {
-            String fileName = file.getOriginalFilename();
             byte[] bytes = file.getBytes();
-            System.out.println(fileName);
+            String fullFileName = file.getOriginalFilename();
+            System.out.println("***\nfullFileName = " + fullFileName + "\n***");
+           fullFileName = fullFileName.replace("\\", "/");
+            String[] fileNameSplit = fullFileName.split("/");
+            if (fileNameSplit.length > 1) {
+               String fileName = fileNameSplit[fileNameSplit.length - 1];
+             System.out.println("***\nfileName = " + fileName + "\n***");
+            }
 
 
             return file.getOriginalFilename();

@@ -6,7 +6,7 @@ spring:
     name: 03-lesson
   servlet:
     multipart:
-      max-file-size: 20480
+      max-file-size: 20480 KB
 
   jpa:
     database: POSTGRESQL

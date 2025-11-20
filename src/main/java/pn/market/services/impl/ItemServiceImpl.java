@@ -58,6 +58,7 @@ public class ItemServiceImpl implements TService<Item> {
             item = itemOptional.get();
             String fileName = fileService.storeFile(file);
         }
+        System.out.println(" \n\n ITEM  "+item+"\n\n");
         return  item;
     }
 }

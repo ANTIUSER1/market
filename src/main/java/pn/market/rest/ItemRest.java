@@ -2,15 +2,16 @@ package pn.market.rest;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import pn.market.entities.Item;
 import pn.market.repo.ItemRepo;
 import pn.market.services.autocreate.ItemsCreateService;
 import pn.market.services.autocreate.OrdersCreateService;
+import pn.market.services.impl.ItemServiceImpl;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,9 @@ public class ItemRest {
 
     @Autowired
     private ItemsCreateService itemsCreateService;
+
+    @Autowired
+    private ItemServiceImpl itemService;
 
     @Autowired
     private OrdersCreateService ordersCreateService;
@@ -47,22 +51,17 @@ public class ItemRest {
         return items;
     }
 
-/*
-    @GetMapping("/items/add/{num}")
-    public ResponseEntity<?> addMuliply(@PathVariable("num") int n) {
-        if (n < 0) {
-            return null;
+
+    @PutMapping("/items/img/{id}")
+    public ResponseEntity<?> loadItemImage(
+            long id,
+            @RequestParam("file") MultipartFile file
+    ) throws IOException {
+        if (file != null) {
+            Item item = itemService.uploadFile(file, id);
+            if (item != null)
+                return ResponseEntity.ok(item);
         }
-        List<Item> itemList = itemsCreateService.autoCreate(n);
-
-
-        int result = itemRepo.saveAll(itemList).size();
-        for (Item itl : itemList)
-            System.out.println(itl);
-
-        return ResponseEntity.ok(result);
-        // return ResponseEntity.ok(0);
+        return ResponseEntity.badRequest().build();
     }
-
- */
 }

@@ -72,6 +72,7 @@ private ItemServiceImpl itemService;
         return "items";
     }
 
+/*
     @PostMapping("/items/img/{id}")
     public ResponseEntity<?> loadItemImage(
             long id,
@@ -84,6 +85,9 @@ private ItemServiceImpl itemService;
         }
         return ResponseEntity.badRequest().build();
     }
+
+
+ */
     private Model createModel(int page, int pageSize, String search, String sorted, Model model) {
         Pageable pageable = createPageble(page, pageSize, sorted);
         Page<Item> items = itemService.findAllAndPaging(pageable);
