@@ -1,5 +1,5 @@
 package pn.market.additional;
 
-public enum SORT_TYPE {
+public enum SortType {
     ALPHA, PRICE;
 }

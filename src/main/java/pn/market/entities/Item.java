@@ -18,6 +18,12 @@ public class Item {
     private Long price;
     private Integer count;
 
+    public void plusCount() {
+        count++;
+    }
 
+    public void minusCount() {
+       if(count>0) count--;
+    }
 
 }

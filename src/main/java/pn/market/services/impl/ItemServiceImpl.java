@@ -3,15 +3,12 @@ package pn.market.services.impl;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pn.market.entities.Item;
 import pn.market.repo.ItemRepo;
 import pn.market.services.TService;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -34,4 +31,20 @@ public class ItemServiceImpl implements TService<Item> {
         return itemRepo.findAll(pageable);
     }
 
+    @Override
+    public Optional<Item> findById(Long id) {
+        return itemRepo.findById(id);
+    }
+
+    public Item plus(Item item) {
+        item.plusCount();
+        System.out.println("ITEM-PLUS ");
+        return itemRepo.save(item);
+    }
+
+    public Item minus(Item item) {
+        item.minusCount();
+        System.out.println("ITEM-MINUS ");
+        return itemRepo.save(item);
+    }
 }

@@ -26,22 +26,22 @@
     <div class="row p-2">
         <div class="col">
             <div class="card">
-                <img alt="Нет изображения" class="p-2" height="300" th:src="${'/'+item.imgPath()}" width="300">
+                <img alt="Нет изображения" class="p-2" height="300" th:src="${'/'+item.imgPath}" width="300">
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${item.title()}"></h5>
+                    <h5 class="card-title" th:text="${item.title }"></h5>
                     <h5>
                         <span class="badge text-bg-success justify-content-end"
-                              th:text="${item.price()}+' руб.'"></span>
+                              th:text="${item.price }+' руб.'"></span>
                     </h5>
-                    <p class="card-text" th:text="${item.description()}"></p>
-                    <form method="post" th:action="@{${'/items/'+item.id()}}">
+                    <p class="card-text" th:text="${item.description }"></p>
+                    <form method="post" th:action="@{${'/items/'+item.id }}">
                         <div class="hstack gap-3">
                             <button class="btn btn-outline-secondary" name="action" type="submit" value="MINUS">-
                             </button>
-                            <span th:text="${item.count()}"></span>
+                            <span th:text="${item.count }"></span>
                             <button class="btn btn-outline-secondary" name="action" type="submit" value="PLUS">+
                             </button>
-                            <button class="btn btn-warning ms-auto bi bi-cart4" name="action" th:if="${item.count()==0}"
+                            <button class="btn btn-warning ms-auto bi bi-cart4" name="action" th:if="${item.count ==0}"
                                     type="submit"
                                     value="PLUS"></button>
                         </div>

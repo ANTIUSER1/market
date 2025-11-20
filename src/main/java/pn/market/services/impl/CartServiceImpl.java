@@ -9,7 +9,6 @@ import pn.market.entities.Cart;
 import pn.market.repo.CartRepo;
 import pn.market.services.TService;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -28,5 +27,10 @@ public class CartServiceImpl implements TService<Cart> {
     @Override
     public Page<Cart> findAllAndPaging(Pageable pageable) {
         return cartRepo.findAll(pageable);
+    }
+
+    @Override
+    public Optional<Cart> findById(Long id) {
+        return cartRepo.findById(id);
     }
 }
