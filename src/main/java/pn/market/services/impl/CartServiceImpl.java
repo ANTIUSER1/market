@@ -27,6 +27,6 @@ public class CartServiceImpl implements TService<Cart> {
 
     @Override
     public Page<Cart> findAllAndPaging(Pageable pageable) {
-        return null;
+        return cartRepo.findAll(pageable);
     }
 }
