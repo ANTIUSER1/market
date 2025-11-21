@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pn.market.entities.Order;
@@ -20,7 +22,7 @@ public class OrderController {
     @Autowired
     private OrderServiceImpl orderService;
 
-    @RequestMapping
+    @GetMapping
     public String asdOrders(  Model model) {
         List<Order> orderList = orderService.findAllOrders();
        System.out.println("  ORDER LIST SIZE  "+orderList.size());
@@ -33,10 +35,11 @@ model.addAttribute("orders",orderList);
     }
 
 
-    @RequestMapping("/")
+    @GetMapping("/{id}")
     public String getOrderById(
             Model model,
-            @RequestParam("id") Long id
+            @PathVariable("id") Long id,
+            @RequestParam(value = "newOrder") boolean newOrder
     ) {
         Optional<Order> order = orderService.findById(id);
         if ( order.isPresent()){
@@ -45,5 +48,15 @@ model.addAttribute("orders",orderList);
         }
         return "items";
     }
+
+    @GetMapping("/buy/{id}")
+    public String buyOrder(
+            @PathVariable("id") Long id
+    ) {
+        orderService.buyOrder(id);
+        return "redirect:/orders";
+//            return "redirect:/orders/{id}?newOrder=true";
+    }
+
 
 }

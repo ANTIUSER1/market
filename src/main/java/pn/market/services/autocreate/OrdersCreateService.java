@@ -44,7 +44,7 @@ public class OrdersCreateService {
         return null;
     }
 
-    public void buy() {
+    public void buyLastOrder() {
         long maxOrderId = orderRepo.findMaxId();
         Optional<Order> orderOptional = orderRepo.findById(maxOrderId);
         if (orderOptional.isPresent()) {

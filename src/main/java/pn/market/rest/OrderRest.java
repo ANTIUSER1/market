@@ -28,7 +28,7 @@ public class OrderRest {
 
     @GetMapping(value = "/buy")
     public String buy() {
-        ordersCreateService.buy();
+        ordersCreateService.buyLastOrder();
         return "Order deleted";
     }
 
