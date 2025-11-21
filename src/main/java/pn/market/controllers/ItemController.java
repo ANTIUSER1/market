@@ -72,22 +72,6 @@ public class ItemController {
         return "items";
     }
 
-    /*
-        @PostMapping("/items/img/{id}")
-        public ResponseEntity<?> loadItemImage(
-                long id,
-                @RequestParam("file") MultipartFile file
-        ) throws IOException {
-            if (file != null) {
-                Item item = itemService.uploadFile(file, id);
-                if (item != null)
-                    return ResponseEntity.ok(item);
-            }
-            return ResponseEntity.badRequest().build();
-        }
-
-
-     */
     private Model createModel(int page, int pageSize, String search, String sorted, Model model) {
         Pageable pageable = createPageble(page, pageSize, sorted);
         Page<Item> items = itemService.findAllAndPaging(pageable);

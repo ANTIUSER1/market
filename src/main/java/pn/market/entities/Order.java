@@ -20,30 +20,30 @@ public class Order {
             cascade = CascadeType.PERSIST,
             fetch = FetchType.EAGER, orphanRemoval = false)
     @JoinColumn(name = "order_id")
-    private List<Item> orderItems;
+    private List<Item> items;
 
     public Order() {
-        if (orderItems == null) orderItems = new ArrayList<>();
+        if (items == null) items = new ArrayList<>();
     }
 
 
     public void addItem(Item items) {
-        orderItems.add(items);
+        this.items.add(items);
     }
 
     public long getTotalSum() {
-        return orderItems.parallelStream()
+        return items.parallelStream()
                 .mapToLong(itm -> itm.getPrice()).sum();
     }
 
     public long getSize() {
-        return orderItems.size();
+        return items.size();
     }
 
     @Override
     public String toString() {
         String sb = "Order{" + "id=" + id +
-                ", orderItems=" + orderItems +
+                ", orderItems=" + items +
                 '}';
         return sb;
     }

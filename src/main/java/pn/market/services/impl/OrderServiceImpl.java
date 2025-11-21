@@ -9,6 +9,7 @@ import pn.market.entities.Order;
 import pn.market.repo.OrderRepo;
 import pn.market.services.TService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -32,5 +33,7 @@ public class OrderServiceImpl implements TService<Order> {
     public Optional<Order> findById(Long id) {
         return orderRepo.findById(id);
     }
-
+    public List<Order> findAllOrders() {
+        return orderRepo.findAll();
+    }
 }
