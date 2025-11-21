@@ -36,9 +36,4 @@ public class CartController {
         return "items";
     }
 
-
-    @GetMapping
-    public String getCart() {
-        return "asd";
-    }
 }

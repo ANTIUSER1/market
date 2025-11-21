@@ -35,7 +35,8 @@ public class Cart {
 
     public long getTotalSum() {
         return cartItems.parallelStream()
-                .mapToLong(itm -> itm.getPrice()).sum();
+                .mapToLong(itm -> itm.getCount()* itm.getPrice())
+                 .sum();
     }
 
     public long getSize() {
