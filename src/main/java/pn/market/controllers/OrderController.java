@@ -4,10 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import pn.market.entities.Order;
 import pn.market.services.impl.OrderServiceImpl;
 
@@ -49,13 +46,12 @@ model.addAttribute("orders",orderList);
         return "items";
     }
 
-    @GetMapping("/buy/{id}")
+    @PostMapping("/buy/{id}")
     public String buyOrder(
             @PathVariable("id") Long id
     ) {
         orderService.buyOrder(id);
-        return "redirect:/orders";
-//            return "redirect:/orders/{id}?newOrder=true";
+              return "redirect:/orders/{id}?newOrder=true";
     }
 
 

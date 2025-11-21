@@ -23,7 +23,7 @@ public class Cart {
             fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "cart_id")
     private List<Item> cartItems = new ArrayList<>();
- 
+
     public void plusItem(Item item) {
         cartItems.add(item);
     }
