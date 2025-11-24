@@ -11,5 +11,4 @@ public interface TService<T> {
 
     Page<T> findAllAndPaging(Pageable pageable);
 
-   // Optional<T> findById(Long id);
 }
