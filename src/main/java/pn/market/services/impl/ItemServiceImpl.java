@@ -37,10 +37,6 @@ public class ItemServiceImpl implements TService<Item> {
         return itemRepo.findAll(pageable);
     }
 
-//    @Override
-//    public Optional<Item> findById(Long id) {
-//        return itemRepo.findById(id);
-//    }
 
     public Item plus(Item item) {
         item.plusCount();
