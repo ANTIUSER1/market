@@ -17,12 +17,16 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @OneToMany(
             cascade = CascadeType.ALL,
             fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "cart_id")
     private List<Item> cartItems = new ArrayList<>();
 
+    public Cart() {
+        cartItems = new ArrayList<>();
+    }
     public void plusItem(Item item) {
         cartItems.add(item);
     }

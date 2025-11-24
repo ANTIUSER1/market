@@ -58,7 +58,7 @@ public class ItemController {
             @RequestParam(value = "action", required = false) String action,
             Model model) {
         Item item = null;
-        Optional<Item> itemOptional = itemService.findById(id);
+        Optional<Item> itemOptional = itemService.getById(id);
         if (action != null && itemOptional.isPresent()) {
             if (ActionType.MINUS.name().equals(action.trim())) item = itemService.minus(itemOptional.get());
             else if (ActionType.PLUS.name().equals(action.trim())) item = itemService.plus(itemOptional.get());

@@ -36,10 +36,10 @@ public class CartServiceImpl implements TService<Cart> {
         return cartRepo.findAll(pageable);
     }
 
-    @Override
-    public Optional<Cart> findById(Long id) {
-        return cartRepo.findById(id);
-    }
+//    @Override
+//    public Optional<Cart> findById(Long id) {
+//        return cartRepo.findById(id);
+//    }
 
     public Optional<Cart> getCartByItemID(Long itemId) {
         Optional<Item> itemOptional = itemRepo.findById(itemId);

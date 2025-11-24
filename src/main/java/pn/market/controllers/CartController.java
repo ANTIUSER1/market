@@ -28,7 +28,7 @@ public class CartController {
         if (action != null && itemId != null) {
             if (ActionType.PLUS.name().equals(action.trim())) cart = cartService.plusItem(itemId);
             if (ActionType.MINUS.name().equals(action.trim())) cart = cartService.minusItem(itemId);
-            if (cart != null) {
+            if (cart != null  && cart.getCartItems()!=null && cart.getCartItems().size() > 0) {
                 model.addAttribute("items", cart.getCartItems());
                 return "cart";
             }

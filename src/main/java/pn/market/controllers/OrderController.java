@@ -37,7 +37,7 @@ model.addAttribute("orders",orderList);
             @PathVariable("id") Long id,
             @RequestParam(value = "newOrder") boolean newOrder
     ) {
-        Optional<Order> order = orderService.findById(id);
+        Optional<Order> order = orderService.getById(id);
         if ( order.isPresent()){
             model.addAttribute("order", order.get());
             return "order";

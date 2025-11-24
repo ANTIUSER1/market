@@ -30,10 +30,10 @@ public class OrderServiceImpl implements TService<Order> {
         return null;
     }
 
-    @Override
-    public Optional<Order> findById(Long id) {
-        return orderRepo.findById(id);
-    }
+//    @Override
+//    public Optional<Order> findById(Long id) {
+//        return orderRepo.findById(id);
+//    }
 
     public List<Order> findAllOrders() {
         return orderRepo.findAll();
