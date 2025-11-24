@@ -64,12 +64,10 @@ public class ItemController {
             else if (ActionType.PLUS.name().equals(action.trim())) item = itemService.plus(itemOptional.get());
             if (item != null) model.addAttribute("item", item);
             else {
-                log.error("Item of {} not found, or action not set", id);
                 return "items";
             }
             return "item";
         }
-        log.error("Item of {} not found, or action not set", id);
         return "items";
     }
 

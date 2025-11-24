@@ -7,7 +7,7 @@ import lombok.ToString;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+
 @ToString
 @Entity
 @Table(name = "carts")
@@ -27,6 +27,23 @@ public class Cart {
     public Cart() {
         cartItems = new ArrayList<>();
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Item> getCartItems() {
+        return cartItems;
+    }
+
+    public void setCartItems(List<Item> cartItems) {
+        this.cartItems = cartItems;
+    }
+
     public void plusItem(Item item) {
         cartItems.add(item);
     }

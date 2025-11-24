@@ -36,18 +36,6 @@ public class CartServiceImpl implements TService<Cart> {
         return cartRepo.findAll(pageable);
     }
 
-
-    public Optional<Cart> getCartByItemID(Long itemId) {
-        Optional<Item> itemOptional = itemRepo.findById(itemId);
-        Optional<Cart> cartOptional = getLast();
-        if (itemOptional.isPresent() && cartOptional.isPresent()) {
-            Item item = itemOptional.get();
-            return cartOptional;
-
-        }
-        return Optional.empty();
-    }
-
     public Optional<Cart> getLast() {
         long cId = cartRepo.findMaxId();
         Optional<Cart> cartOptional = cartRepo.findById(cId);

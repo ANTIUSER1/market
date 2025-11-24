@@ -6,7 +6,6 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
 
 @Entity
 @Table(name = "orders")
@@ -24,6 +23,22 @@ public class Order {
 
     public Order() {
         if (items == null) items = new ArrayList<>();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
     }
 
     public void addItem(Item items) {
