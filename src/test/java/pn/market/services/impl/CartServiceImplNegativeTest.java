@@ -30,6 +30,7 @@ class CartServiceImplNegativeTest {
 
     private Cart cart;
     private Item item;
+
     @BeforeEach
     void init() {
          cart = new Cart();
@@ -37,6 +38,7 @@ class CartServiceImplNegativeTest {
         cart.setId(1L);
         cart.setCartItems( new ArrayList<>());
     }
+
     @Test
     void getById() {
         when( cartRepo.findById(1L) ).thenReturn(Optional.of(cart));
