@@ -11,11 +11,8 @@ spring:
   web:
     resources:
       static-locations:  classpath:./static,file:C:/opt/market/,file:C:/opt/market/images/
-#      static-locations: classpath:./static
-
-#      static-locations: classpath:file:./static/ C:/opt/market/
-#  mvc:
-#    static-path-pattern: /**
+  mvc:
+    static-path-pattern: /**
 
   jpa:
     database: POSTGRESQL
