@@ -21,7 +21,6 @@ import java.util.List;
 @Slf4j
 public class ItemRest {
 
-
     @Autowired
     private ItemRepo itemRepo;
 
@@ -34,13 +33,11 @@ public class ItemRest {
     @Autowired
     private OrdersCreateService ordersCreateService;
 
-
     @Autowired
     private ServletContext servletContext;
 
     @GetMapping("/setof/{count}")
     public List<Item> createSet(@PathVariable("count") int count) {
-
         List<Item> items = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             Item item = new Item();
@@ -66,4 +63,5 @@ public class ItemRest {
         }
         return ResponseEntity.badRequest().build();
     }
+
 }

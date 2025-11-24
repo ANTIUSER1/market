@@ -34,10 +34,10 @@ public class OrderServiceImpl implements TService<Order> {
     public Optional<Order> findById(Long id) {
         return orderRepo.findById(id);
     }
+
     public List<Order> findAllOrders() {
         return orderRepo.findAll();
     }
-
 
     public void buyOrder(long id) {
         Optional<Order> orderOptional = orderRepo.findById(id);
@@ -49,4 +49,5 @@ public class OrderServiceImpl implements TService<Order> {
 
         }
     }
+
 }

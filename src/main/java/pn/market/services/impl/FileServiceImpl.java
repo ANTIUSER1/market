@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 @Service
-public class FileService {
+public class FileServiceImpl {
 
     public String storeFile(MultipartFile file, String uploadDir, long id) throws IOException {
         if (file.isEmpty()) {
@@ -34,12 +34,9 @@ public class FileService {
                     }
                 }
             }
-
-
             return null;
         }
     }
-
 
     public boolean isImage(String ext) {
         return ext.equalsIgnoreCase("jpg") ||
@@ -47,4 +44,5 @@ public class FileService {
                 ext.equalsIgnoreCase("png") ||
                 ext.equalsIgnoreCase("gif");
     }
+
 }

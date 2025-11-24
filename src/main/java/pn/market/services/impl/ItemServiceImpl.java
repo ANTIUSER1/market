@@ -22,7 +22,7 @@ public class ItemServiceImpl implements TService<Item> {
     private String imgPath;
 
     @Autowired
-    private FileService fileService;
+    private FileServiceImpl fileService;
 
     @Autowired
     private ItemRepo itemRepo;
@@ -31,7 +31,6 @@ public class ItemServiceImpl implements TService<Item> {
     public Optional<Item> getById(Long id) {
         return itemRepo.findById(id);
     }
-
 
     @Override
     public Page<Item> findAllAndPaging(Pageable pageable) {
@@ -52,7 +51,6 @@ public class ItemServiceImpl implements TService<Item> {
         item.minusCount();
         return itemRepo.save(item);
     }
-
 
     public Item uploadFile(MultipartFile file, long id) throws IOException {
         Optional<Item> itemOptional = itemRepo.findById(id);
@@ -75,6 +73,5 @@ public class ItemServiceImpl implements TService<Item> {
 
         return imgPath;
     }
-
 
 }

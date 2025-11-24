@@ -6,7 +6,6 @@ public class Paging {
     private final boolean hasNext;
     private final boolean hasPrevious;
 
-
     public Paging(int pageSize, int pageNumber,
                   boolean hasNext, boolean hasPrevious) {
         this.pageSize = pageSize;

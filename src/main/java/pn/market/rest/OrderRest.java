@@ -20,7 +20,6 @@ public class OrderRest {
     @Autowired
     private OrderRepo orderRepo;
 
-
     @GetMapping("/add-to-order")
     public Order addToCart() {
         return ordersCreateService.createOrder();
@@ -31,7 +30,6 @@ public class OrderRest {
         ordersCreateService.buyLastOrder();
         return "Order deleted";
     }
-
 
 }
 

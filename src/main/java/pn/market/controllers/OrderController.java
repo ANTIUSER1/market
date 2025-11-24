@@ -31,7 +31,6 @@ model.addAttribute("orders",orderList);
         return "orders";
     }
 
-
     @GetMapping("/{id}")
     public String getOrderById(
             Model model,
@@ -47,9 +46,7 @@ model.addAttribute("orders",orderList);
     }
 
     @PostMapping("/buy/{id}")
-    public String buyOrder(
-            @PathVariable("id") Long id
-    ) {
+    public String buyOrder(@PathVariable("id") Long id) {
         orderService.buyOrder(id);
               return "redirect:/orders/{id}?newOrder=true";
     }
