@@ -9,7 +9,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -23,25 +24,26 @@ class FileServiceImplNegativeTest {
 
     @Mock
     private FileServiceImpl fileService;
+
     @BeforeEach
-    void init(){
+    void init() {
         fileName = "1.jpg";
         fileNameTarget = "t-1.jpg";
         ext = "opn";
-        file = new MockMultipartFile(fileName,  "image/jpeg".getBytes() );
+        file = new MockMultipartFile(fileName, "image/jpeg".getBytes());
         id = 1;
     }
 
     @Test
     void storeFile() throws IOException {
-        when(fileService.storeFile(file,fileNameTarget, id)).thenReturn(fileName);
-     assertNotEquals(ext, fileService.storeFile(file, fileNameTarget,  id));
+        when(fileService.storeFile(file, fileNameTarget, id)).thenReturn(fileName);
+        assertNotEquals(ext, fileService.storeFile(file, fileNameTarget, id));
     }
 
 
     @Test
     void isImage() {
-when(fileService.isImage(ext)).thenReturn(false);
+        when(fileService.isImage(ext)).thenReturn(false);
         assertFalse(fileService.isImage(ext));
     }
 }

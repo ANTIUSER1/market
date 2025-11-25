@@ -35,28 +35,28 @@ class OrderServiceImplNegativeTest {
 
     @BeforeEach
     void init() {
-       order = new Order();
+        order = new Order();
         item = new Item();
         order.setId(1L);
-        order.setItems( new ArrayList<>());
+        order.setItems(new ArrayList<>());
     }
 
 
     @Test
     void getById() {
-        when( orderRepo.findById(1L) ).thenReturn(Optional.of(order));
+        when(orderRepo.findById(1L)).thenReturn(Optional.of(order));
         when(orderService.getById(1L)).thenReturn(Optional.of(order));
         assertFalse(orderService.getById(1L).isEmpty());
-        assertNotEquals(order.getId(), orderService.getById(1L).get().getId()+1L);
+        assertNotEquals(order.getId(), orderService.getById(1L).get().getId() + 1L);
     }
 
     @Test
     void findAllAndPaging() {
         when(itemRepo.findAll()).thenReturn(new ArrayList<>());
         Pageable pageable = PageRequest.of(0, 5);
-        Page<Order> page =  Page.empty( pageable );
+        Page<Order> page = Page.empty(pageable);
         when(orderService.findAllAndPaging(pageable)).thenReturn(page);
-        assertFalse(orderService.findAllAndPaging(pageable).getTotalPages() == 2);
+        assertNotEquals(2, orderService.findAllAndPaging(pageable).getTotalPages());
     }
 
     @Test

@@ -33,34 +33,34 @@ class CartServiceImplNegativeTest {
 
     @BeforeEach
     void init() {
-         cart = new Cart();
-         item = new Item();
+        cart = new Cart();
+        item = new Item();
         cart.setId(1L);
-        cart.setCartItems( new ArrayList<>());
+        cart.setCartItems(new ArrayList<>());
     }
 
     @Test
     void getById() {
-        when( cartRepo.findById(1L) ).thenReturn(Optional.of(cart));
+        when(cartRepo.findById(1L)).thenReturn(Optional.of(cart));
         when(cartService.getById(1L)).thenReturn(Optional.of(cart));
         assertTrue(cartService.getById(1L).isPresent());
-        assertNotEquals(cart.getId(), cartService.getById(1L).get().getId()+1L);
+        assertNotEquals(cart.getId(), cartService.getById(1L).get().getId() + 1L);
     }
 
     @Test
     void findAllAndPaging() {
         when(itemRepo.findAll()).thenReturn(new ArrayList<>());
         Pageable pageable = PageRequest.of(0, 5);
-        Page<Cart> page =  Page.empty( pageable );
+        Page<Cart> page = Page.empty(pageable);
         when(cartService.findAllAndPaging(pageable)).thenReturn(page);
-        assertFalse(cartService.findAllAndPaging(pageable).getTotalPages() == 2);
+        assertNotEquals(2, cartService.findAllAndPaging(pageable).getTotalPages());
     }
 
     @Test
     void getLast() {
         when(cartRepo.findMaxId()).thenReturn(100L);
-when(cartService.getLast()).thenReturn(Optional.ofNullable(cart));
-assertFalse(cartService.getLast().isEmpty());
+        when(cartService.getLast()).thenReturn(Optional.ofNullable(cart));
+        assertFalse(cartService.getLast().isEmpty());
     }
 
     @Test

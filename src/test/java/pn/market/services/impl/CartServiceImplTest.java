@@ -3,19 +3,14 @@ package pn.market.services.impl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import pn.market.entities.Cart;
 import pn.market.entities.Item;
 import pn.market.repo.CartRepo;
 import pn.market.repo.ItemRepo;
-
-import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -35,16 +30,18 @@ class CartServiceImplTest {
 
     private Cart cart;
     private Item item;
+
     @BeforeEach
     void init() {
-         cart = new Cart();
-         item = new Item();
+        cart = new Cart();
+        item = new Item();
         cart.setId(1L);
-        cart.setCartItems( new ArrayList<>());
+        cart.setCartItems(new ArrayList<>());
     }
+
     @Test
     void getById() {
-        when( cartRepo.findById(1L) ).thenReturn(Optional.of(cart));
+        when(cartRepo.findById(1L)).thenReturn(Optional.of(cart));
         when(cartService.getById(1L)).thenReturn(Optional.of(cart));
         assertTrue(cartService.getById(1L).isPresent());
         assertEquals(cart.getId(), cartService.getById(1L).get().getId());
@@ -54,16 +51,16 @@ class CartServiceImplTest {
     void findAllAndPaging() {
         when(itemRepo.findAll()).thenReturn(new ArrayList<>());
         Pageable pageable = PageRequest.of(0, 5);
-        Page<Cart> page =  Page.empty( pageable );
+        Page<Cart> page = Page.empty(pageable);
         when(cartService.findAllAndPaging(pageable)).thenReturn(page);
-        assertTrue(cartService.findAllAndPaging(pageable).getTotalPages() == 0);
+        assertEquals(0, cartService.findAllAndPaging(pageable).getTotalPages());
     }
 
     @Test
     void getLast() {
         when(cartRepo.findMaxId()).thenReturn(100L);
-when(cartService.getLast()).thenReturn(Optional.ofNullable(cart));
-assertTrue(cartService.getLast().isPresent());
+        when(cartService.getLast()).thenReturn(Optional.ofNullable(cart));
+        assertTrue(cartService.getLast().isPresent());
     }
 
     @Test

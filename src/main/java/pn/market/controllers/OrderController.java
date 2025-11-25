@@ -20,14 +20,13 @@ public class OrderController {
     private OrderServiceImpl orderService;
 
     @GetMapping
-    public String asdOrders(  Model model) {
+    public String asdOrders(Model model) {
         List<Order> orderList = orderService.findAllOrders();
-       System.out.println("  ORDER LIST SIZE  "+orderList.size());
-       for (Order order:orderList) {
-           System.out.println(order);
-       }
-       System.out.println("  ");
-model.addAttribute("orders",orderList);
+        for (Order order : orderList) {
+            System.out.println(order);
+        }
+        System.out.println("  ");
+        model.addAttribute("orders", orderList);
         return "orders";
     }
 
@@ -38,7 +37,7 @@ model.addAttribute("orders",orderList);
             @RequestParam(value = "newOrder") boolean newOrder
     ) {
         Optional<Order> order = orderService.getById(id);
-        if ( order.isPresent()){
+        if (order.isPresent()) {
             model.addAttribute("order", order.get());
             return "order";
         }
@@ -48,7 +47,7 @@ model.addAttribute("orders",orderList);
     @PostMapping("/buy/{id}")
     public String buyOrder(@PathVariable("id") Long id) {
         orderService.buyOrder(id);
-              return "redirect:/orders/{id}?newOrder=true";
+        return "redirect:/orders/{id}?newOrder=true";
     }
 
 }

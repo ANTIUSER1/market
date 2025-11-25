@@ -6,13 +6,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import pn.market.entities.Cart;
 import pn.market.entities.Item;
-import pn.market.repo.CartRepo;
-import pn.market.repo.ItemRepo;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.when;
 

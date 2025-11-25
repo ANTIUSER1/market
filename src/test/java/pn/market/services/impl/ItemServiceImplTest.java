@@ -9,16 +9,15 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
-import pn.market.entities.Cart;
 import pn.market.entities.Item;
-import pn.market.entities.Order;
 import pn.market.repo.ItemRepo;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -31,7 +30,7 @@ class ItemServiceImplTest {
     private String ext;
     private Item item;
     private String imgPath;
-private Long id;
+    private Long id;
 
     @Mock
     private ItemRepo itemRepo;
@@ -44,20 +43,20 @@ private Long id;
         fileNameTarget = "t-1.jpg";
         ext = "jpg";
 
-        file = new MockMultipartFile(fileName,  "image/jpeg".getBytes() );
+        file = new MockMultipartFile(fileName, "image/jpeg".getBytes());
         id = 1L;
 
         item = new Item();
         item.setId(1L);
-        imgPath = "path"    ;
+        imgPath = "path";
     }
 
 
     @Test
     void getById() {
-        when ( itemRepo.findById(1L) ).thenReturn(Optional.of(item));
-        when ( itemService.getById(1L) ).thenReturn(Optional.of(item));
-        assertTrue( itemService.getById(1L).isPresent());
+        when(itemRepo.findById(1L)).thenReturn(Optional.of(item));
+        when(itemService.getById(1L)).thenReturn(Optional.of(item));
+        assertTrue(itemService.getById(1L).isPresent());
         assertEquals(item, itemService.getById(1L).get());
     }
 
@@ -65,9 +64,9 @@ private Long id;
     void findAllAndPaging() {
         when(itemRepo.findAll()).thenReturn(new ArrayList<>());
         Pageable pageable = PageRequest.of(0, 5);
-        Page<Item> page =  Page.empty( pageable );
+        Page<Item> page = Page.empty(pageable);
         when(itemService.findAllAndPaging(pageable)).thenReturn(page);
-        assertTrue(itemService.findAllAndPaging(pageable).getTotalPages() == 0);
+        assertEquals(0, itemService.findAllAndPaging(pageable).getTotalPages());
     }
 
     @Test
@@ -88,7 +87,7 @@ private Long id;
     @Test
     void uploadFile() throws IOException {
         item.setImgPath(imgPath);
-        when(itemService.uploadFile(file,id)).thenReturn(item);
-        assertEquals(item.getImgPath(), itemService.uploadFile(file,id).getImgPath());
+        when(itemService.uploadFile(file, id)).thenReturn(item);
+        assertEquals(item.getImgPath(), itemService.uploadFile(file, id).getImgPath());
     }
 }

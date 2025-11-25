@@ -15,14 +15,13 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 class AllRepoTest {
 
+    private final List<Item> items = new ArrayList<>();
     @MockitoBean
     private CartRepo cartRepo;
     @MockitoBean
     private OrderRepo orderRepo;
     @MockitoBean
     private ItemRepo itemRepo;
-
-    private final List<Item> items = new ArrayList<>();
 
     @BeforeEach
     void init() {
