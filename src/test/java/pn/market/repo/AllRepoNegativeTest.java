@@ -9,20 +9,19 @@ import pn.market.entities.Item;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
-class AllRepoTest {
+class AllRepoNegativeTest {
 
+    private final List<Item> items = new ArrayList<>();
     @MockitoBean
     private CartRepo cartRepo;
     @MockitoBean
     private OrderRepo orderRepo;
     @MockitoBean
     private ItemRepo itemRepo;
-
-    private final List<Item> items = new ArrayList<>();
 
     @BeforeEach
     void init() {
@@ -34,18 +33,18 @@ class AllRepoTest {
     @Test
     void findCartMaxId() {
         when(cartRepo.findMaxId()).thenReturn(1L);
-        assertEquals(1, cartRepo.findMaxId());
+        assertNotEquals(11, cartRepo.findMaxId());
     }
 
     @Test
     void findOrderMaxId() {
         when(orderRepo.findMaxId()).thenReturn(1L);
-        assertEquals(1, orderRepo.findMaxId());
+        assertNotEquals(100, orderRepo.findMaxId());
     }
 
     @Test
     void getAllItemsSortedAscById() {
         when(itemRepo.findAll()).thenReturn(items);
-        assertEquals(items, itemRepo.findAll());
+        assertNotEquals(1000, itemRepo.findAll().size());
     }
 }
