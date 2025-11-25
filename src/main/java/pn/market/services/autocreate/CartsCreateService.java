@@ -24,6 +24,7 @@ public class CartsCreateService {
             if (Math.random() > 0.7) {
                 cart.getCartItems().add(item);
             }
+            System.out.println(item);
         }
         cart = cartRepo.save(cart);
         return cart;

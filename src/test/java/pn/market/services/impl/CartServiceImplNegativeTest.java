@@ -2,11 +2,11 @@ package pn.market.services.impl;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import pn.market.entities.Cart;
 import pn.market.entities.Item;
 import pn.market.repo.CartRepo;
@@ -21,11 +21,11 @@ import static org.mockito.Mockito.when;
 @SpringBootTest
 class CartServiceImplNegativeTest {
 
-    @Mock
+    @MockitoBean
     private CartRepo cartRepo;
-    @Mock
+    @MockitoBean
     private ItemRepo itemRepo;
-    @Mock
+    @MockitoBean
     private CartServiceImpl cartService;
 
     private Cart cart;
