@@ -10,7 +10,7 @@ spring:
 
   web:
     resources:
-      static-locations:  classpath:./static,file:C:/opt/market/,file:C:/opt/market/images/
+      static-locations: classpath:./static,file:C:/opt/market/,file:C:/opt/market/images/
   mvc:
     static-path-pattern: /**
 

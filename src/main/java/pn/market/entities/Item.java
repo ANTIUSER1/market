@@ -1,7 +1,6 @@
 package pn.market.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
 
 
 @Entity

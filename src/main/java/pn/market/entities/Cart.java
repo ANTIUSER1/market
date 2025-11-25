@@ -1,7 +1,6 @@
 package pn.market.entities;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.ToString;
 
 import java.util.ArrayList;
@@ -54,8 +53,8 @@ public class Cart {
 
     public long getTotalSum() {
         return cartItems.parallelStream()
-                .mapToLong(itm -> itm.getCount()* itm.getPrice())
-                 .sum();
+                .mapToLong(itm -> itm.getCount() * itm.getPrice())
+                .sum();
     }
 
     public long getSize() {
