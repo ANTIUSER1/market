@@ -22,10 +22,7 @@ class CartsCreateServiceTest {
 @MockitoBean
 private ItemsCreateService itemsCreateService;
 
-    @MockitoBean
-    private CartRepo cartRepo;
-    @MockitoBean
-    private ItemRepo itemRepo;
+
     @MockitoBean
     private CartsCreateService  cartService;
 
