@@ -27,21 +27,28 @@ private ItemsCreateService itemsCreateService;
     @MockitoBean
     private ItemRepo itemRepo;
     @MockitoBean
-    private CartServiceImpl cartService;
+    private CartsCreateService  cartService;
 
  private Cart cart;
-
+private       List<Item> items;
 
     @BeforeEach
     void init() {
         cart = new Cart();
         cart.setId(1L);
+        items= new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            items.add(new Item());
+        }
+        cart.setCartItems(items);
     }
 
     @Test
     void createRandomCart() {
 
-        when(itemsCreateService.autoCreate()).thenReturn( new ArrayList<Item>());
-
+        when(itemsCreateService.autoCreate()).thenReturn( items);
+when( cartService.createRandomCart()).thenReturn(cart);
+assertTrue(cart.getId()==1L);
+assertEquals(3, cart.getCartItems().size() );
     }
 }
