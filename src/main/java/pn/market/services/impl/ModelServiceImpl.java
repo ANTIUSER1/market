@@ -32,11 +32,11 @@ public class ModelServiceImpl implements ModelService {
     @Override
     public Pageable createPageble(int page, int pageSize, String sorted) {
         Pageable pageable = PageRequest.of(page, 10);
-        if (SortType.ALPHA.name().equals(sorted)) {
+        if (SortType.ALPHA.name().equalsIgnoreCase(sorted)) {
             pageable = PageRequest.of(page, pageSize,
                     Sort.Direction.ASC, "title");
         }
-        if (SortType.PRICE.name().equals(sorted)) {
+        if (SortType.PRICE.name().equalsIgnoreCase(sorted)) {
             pageable = PageRequest.of(page, pageSize,
                     Sort.Direction.ASC, "price");
         }
