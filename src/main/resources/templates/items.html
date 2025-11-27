@@ -10,6 +10,7 @@
 </head>
 
 <body class="bg-light" style="background-color:#ddddd0">
+<div  th:if="${paging!=null && items!=null }">
 <form id="main">
     <div class="container p-2">
         <div class="row p-2">
@@ -120,6 +121,7 @@
 
 
 </form>
+        </div>
 </body>
 
 </html>
