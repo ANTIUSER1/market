@@ -1,5 +1,6 @@
 package pn.market.controllers;
 
+import org.hibernate.annotations.AttributeAccessor;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import pn.market.services.impl.ItemServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
@@ -32,11 +34,13 @@ class ItemControllerTest {
 
 
     private List<Item> items;
+private  Item item;
 
     @BeforeEach
     void setUp() {
         items = new ArrayList<>();
         items.add(new Item());
+        item=new Item();
     }
 
     @Test
@@ -58,10 +62,20 @@ class ItemControllerTest {
     }
 
     @Test
-    void items() {
+    void items() throws Exception {
+
     }
 
     @Test
-    void item() {
+    void item() throws Exception {
+        Pageable pageable = Pageable.ofSize(2);
+        when(itemService.getById(1L)).thenReturn(Optional.ofNullable(item));
+        assertTrue(itemService.getById(1L).isPresent());
+     //  Item item1=itemService.getById(1L).get();
+        mvc.perform(MockMvcRequestBuilders.get("/items/{id}", 1)
+                        .param("id", "1")
+                        .param("action", "false")
+                )
+                .andExpect(status().isOk());
     }
 }

@@ -16,6 +16,7 @@ import pn.market.additional.ActionType;
 import pn.market.additional.Paging;
 import pn.market.additional.SortType;
 import pn.market.entities.Item;
+import pn.market.services.ModelService;
 import pn.market.services.impl.ItemServiceImpl;
 
 import java.util.Optional;
@@ -28,6 +29,9 @@ public class ItemController {
     @Autowired
     private ItemServiceImpl itemService;
 
+@Autowired
+private ModelService modelService;
+
     @GetMapping
     public String itemsIndex(
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
@@ -36,7 +40,7 @@ public class ItemController {
             @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted,
             Model model
     ) {
-        model = createModel(page, pageSize, search, sorted, model);
+        model = modelService.createModel(page, pageSize, search, sorted, model);
         return "items";
     }
 
@@ -48,7 +52,7 @@ public class ItemController {
             @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted,
             Model model
     ) {
-        model = createModel(page, pageSize, search, sorted, model);
+        model = modelService. createModel(page, pageSize, search, sorted, model);
         return "items";
     }
 
@@ -70,29 +74,4 @@ public class ItemController {
         }
         return "items";
     }
-
-    private Model createModel(int page, int pageSize, String search, String sorted, Model model) {
-        Pageable pageable = createPageble(page, pageSize, sorted);
-        Page<Item> items = itemService.findAllAndPaging(pageable);
-        model.addAttribute("items", items.get().toList());
-        model.addAttribute("page", page);
-        model.addAttribute("paging",
-                new Paging(pageSize, page,
-                        items.hasNext(), items.hasPrevious()));
-        return model;
-    }
-
-    private Pageable createPageble(int page, int pageSize, String sorted) {
-        Pageable pageable = PageRequest.of(page, 10);
-        if (SortType.ALPHA.name().equals(sorted)) {
-            pageable = PageRequest.of(page, pageSize,
-                    Sort.Direction.ASC, "title");
-        }
-        if (SortType.PRICE.name().equals(sorted)) {
-            pageable = PageRequest.of(page, pageSize,
-                    Sort.Direction.ASC, "price");
-        }
-        return pageable;
-    }
-
 }
