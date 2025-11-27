@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -49,18 +50,26 @@ private  Item item;
     @BeforeEach
     void setUp() {
         items = new ArrayList<>();
-        items.add(new Item());
-        item=new Item();
+       Item item = new Item();
+       item.setPrice(100L);
+       item.setId(100L);
+       item.setTitle("test");
+       item.setDescription("test-d");
+       item.setImgPath("p");
+       item.setCount(100);
+        items.add( item );
+       // item=new Item();
 
     }
 
     @Test
     void itemsIndex() throws Exception {
-//    Pageable pageable = PageRequest.of(0, 2,
-//            Sort.Direction.ASC, "title");
-//         when(itemService.findAllAndPaging(pageable))
+    Pageable pageable = PageRequest.of(0, 2,
+            Sort.Direction.ASC, "title");
+         when(itemService.findAllAndPaging( any() ))
+                 .thenReturn(new PageImpl<>(items, pageable, 2));
 //                .thenReturn(new PageImpl<>(items, pageable, 2));
-//        assertTrue(itemService.findAllAndPaging(pageable).getTotalPages() == 1);
+        assertTrue(itemService.findAllAndPaging(pageable).getTotalPages() == 1);
 
         mvc.perform(MockMvcRequestBuilders.get("/")
                         .param("page", "0")
@@ -68,7 +77,7 @@ private  Item item;
                         .param("search", "")
                         .param("sorted", "ALPHA")
                 )
-                /*
+
 
                 .andExpect(model().attribute("items", items))
                 .andExpect(model().attribute("page", 0))
@@ -76,7 +85,7 @@ private  Item item;
                 .andExpect(model().attribute("paging",
                                 new Paging(2, 0, true, false))
                 )
-                 */
+
                     .andExpect(view().name("items"))
                     .andExpect(status().isOk()
                 )
