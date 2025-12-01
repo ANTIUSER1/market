@@ -11,6 +11,7 @@ import pn.market.additional.Paging;
 import pn.market.additional.SortType;
 import pn.market.entities.Item;
 import pn.market.services.ModelService;
+
 @Service
 public class ModelServiceImpl implements ModelService {
 
@@ -24,8 +25,7 @@ public class ModelServiceImpl implements ModelService {
         model.addAttribute("items", items.get().toList());
         model.addAttribute("page", page);
         model.addAttribute("paging",
-                new Paging(pageSize, page,
-                        items.hasNext(), items.hasPrevious()));
+                new Paging(pageSize, page, items.hasNext(), items.hasPrevious()));
         return model;
     }
 
