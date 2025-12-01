@@ -1,6 +1,9 @@
 package pn.market.controllers;
 
+import org.assertj.core.matcher.AssertionMatcher;
+import org.hamcrest.Matcher;
 import org.hibernate.annotations.AttributeAccessor;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -60,8 +63,49 @@ private  Item item;
 
     }
 
+
+
     @Test
     void itemsIndex() throws Exception {
+        Pageable pageable =
+                PageRequest.of(0,
+                        2,
+                        Sort.Direction.ASC,
+                        "title");
+
+        when(itemService.findAllAndPaging(any())).thenReturn(new PageImpl<>(items, pageable, 2));
+
+        var expected = new Paging(2, 0, true, false);
+        Matcher<Paging> pagingMatcher = new AssertionMatcher<>() {
+            @Override
+            public void assertion(Paging actual) throws AssertionError {
+                Assertions.assertEquals(expected.getPageSize(), actual.getPageSize());
+            }
+        };
+
+        mvc.perform(MockMvcRequestBuilders.get("/")
+                        .param("page", "0")
+                        .param("pageSize", "2")
+                        .param("search", "")
+                        .param("sorted", "ALPHA"))
+                //.andExpect(model().attribute("items", items))
+                .andExpect(model().attribute("page", 0))
+                .andExpect(model().attribute("paging", pagingMatcher))
+                .andExpect(view().name("items"))
+                .andExpect(status().isOk());
+
+    }
+
+
+
+
+
+
+
+
+
+    @Test
+    void itemsIndex0() throws Exception {
     Pageable pageable = PageRequest.of(0, 2,
             Sort.Direction.ASC, "title");
          when(itemService.findAllAndPaging( any() ))
