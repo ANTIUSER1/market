@@ -1,21 +1,57 @@
 package pn.market.controllers;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import pn.market.additional.ActionType;
+import pn.market.entities.Cart;
+import pn.market.entities.Item;
+import pn.market.services.impl.CartServiceImpl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
-@AutoConfigureMockMvc
+@WebMvcTest({CartController.class})
+@Import({CartServiceImpl.class})
 class CartControllerNegativeTest {
 
     @Autowired
     private MockMvc mvc;
+
+    @MockitoBean
+    private CartServiceImpl cartService;
+
+    private Cart cart;
+
+    private List<Item> items;
+
+    @BeforeEach
+    void init() {
+        items = new ArrayList<>();
+        Item    item = new Item();
+        item.setPrice(100L);
+        item.setId(100L);
+        item.setTitle("test");
+        item.setDescription("test-d");
+        item.setImgPath("p");
+        item.setCount(100);
+        items.add(item);
+
+        cart = new Cart(1L);
+        cart.getCartItems().addAll(items);
+
+    }
+
+
 
     @Test
     void addItem() throws Exception {
