@@ -49,5 +49,4 @@ public class OrderController {
         orderService.buyOrder(id);
         return "redirect:/orders/{id}?newOrder=true";
     }
-
 }

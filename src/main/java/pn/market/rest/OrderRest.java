@@ -30,6 +30,5 @@ public class OrderRest {
         ordersCreateService.buyLastOrder();
         return "Order deleted";
     }
-
 }
 

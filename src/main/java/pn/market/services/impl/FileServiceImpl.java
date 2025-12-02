@@ -44,5 +44,4 @@ public class FileServiceImpl {
                 ext.equalsIgnoreCase("png") ||
                 ext.equalsIgnoreCase("gif");
     }
-
 }

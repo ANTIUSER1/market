@@ -26,5 +26,3 @@ spring:
     password: 123
     driverClassName: org.postgresql.Driver
 
-
-

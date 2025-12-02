@@ -12,5 +12,4 @@ public interface CartRepo extends JpaRepository<Cart, Long> {
 
     @Query("SELECT MAX(c.id) FROM Cart c ")
     long findMaxId();
-
 }

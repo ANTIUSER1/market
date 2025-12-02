@@ -12,5 +12,4 @@ public interface OrderRepo extends JpaRepository<Order, Long> {
 
     @Query("SELECT MAX(od.id) FROM Order od ")
     Long findMaxId();
-
 }

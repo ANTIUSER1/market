@@ -21,9 +21,6 @@ public class OrdersCreateService {
     @Autowired
     OrderRepo orderRepo;
 
-    @Autowired
-    EntityManager em;
-
     public Order createOrder() {
         long maxCartId = cartRepo.findMaxId();
         if (maxCartId < 1) {
@@ -52,7 +49,6 @@ public class OrdersCreateService {
             order.setItems(new ArrayList<>());
             orderRepo.save(order);
             orderRepo.delete(order);
-
         }
     }
 }
