@@ -19,9 +19,10 @@ class CartControllerNegativeTest {
 
     @Test
     void addItem() throws Exception {
-        mvc.perform(post("/cart/items-0")
+        mvc.perform(post("/cart/items-negative")
                         .param("itemId", "1")
                         .param("action", ActionType.MINUS.name()))
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().isNotFound());
     }
+
 }

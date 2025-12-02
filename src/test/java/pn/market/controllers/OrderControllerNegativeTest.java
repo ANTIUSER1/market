@@ -26,7 +26,6 @@ class OrderControllerNegativeTest {
     @Autowired
     private MockMvc mvc;
 
-
     private Order order;
 
     @BeforeEach

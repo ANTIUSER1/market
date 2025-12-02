@@ -1,6 +1,7 @@
 package pn.market.controllers;
 
 
+import org.assertj.core.error.MultipleAssertionsError;
 import org.assertj.core.matcher.AssertionMatcher;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Assertions;
@@ -33,7 +34,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest({ItemController.class})
 @Import({ItemServiceImpl.class, ModelServiceImpl.class})
-class ItemControllerTest {
+class ItemControllerNegativeTest {
 
     @MockitoBean
     private ItemServiceImpl itemService;
@@ -80,16 +81,13 @@ class ItemControllerTest {
                 Assertions.assertEquals(expected.getPageSize(), actual.getPageSize());
             }
         };
-        mvc.perform(MockMvcRequestBuilders.get("/")
+        mvc.perform(MockMvcRequestBuilders.get("/negative")
                         .param("page", "0")
                         .param("pageSize", "2")
                         .param("search", "")
                         .param("sorted", "ALPHA"))
-                .andExpect(model().attribute("items", items))
-                .andExpect(model().attribute("page", 0))
-                .andExpect(model().attribute("paging", pagingMatcher))
-                .andExpect(view().name("items"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNotFound());
+
 
     }
 
@@ -112,17 +110,12 @@ class ItemControllerTest {
                 Assertions.assertEquals(expected.getPageSize(), actual.getPageSize());
             }
         };
-        mvc.perform(MockMvcRequestBuilders.get("/")
+        mvc.perform(MockMvcRequestBuilders.get("/items-negative")
                         .param("page", "0")
                         .param("pageSize", "2")
                         .param("search", "")
                         .param("sorted", "ALPHA"))
-                .andExpect(model().attribute("items", items))
-                .andExpect(model().attribute("page", 0))
-                .andExpect(model().attribute("paging", pagingMatcher))
-                .andExpect(view().name("items"))
-                .andExpect(status().isOk());
-
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -131,11 +124,11 @@ class ItemControllerTest {
         Pageable pageable = Pageable.ofSize(2);
         when(itemService.getById(1L)).thenReturn(Optional.ofNullable(item));
         assertTrue(itemService.getById(1L).isPresent());
-        mvc.perform(MockMvcRequestBuilders.get("/items/{id}", 1)
-                        .param("id", "1")
+        mvc.perform(MockMvcRequestBuilders.get("/items-negative/{id}", 1111)
+                        .param("id", "1111")
                         .param("action", "false")
                 )
-                .andExpect(status().isOk());
+                .andExpect(status().isNotFound());
 
     }
 
