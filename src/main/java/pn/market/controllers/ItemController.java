@@ -2,10 +2,6 @@ package pn.market.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pn.market.additional.ActionType;
-import pn.market.additional.Paging;
-import pn.market.additional.SortType;
 import pn.market.entities.Item;
 import pn.market.services.ModelService;
 import pn.market.services.impl.ItemServiceImpl;
@@ -29,8 +23,8 @@ public class ItemController {
     @Autowired
     private ItemServiceImpl itemService;
 
-@Autowired
-private ModelService modelService;
+    @Autowired
+    private ModelService modelService;
 
     @GetMapping
     public String itemsIndex(
@@ -52,7 +46,7 @@ private ModelService modelService;
             @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted,
             Model model
     ) {
-        model = modelService. createModel(page, pageSize, search, sorted, model);
+        model = modelService.createModel(page, pageSize, search, sorted, model);
         return "items";
     }
 

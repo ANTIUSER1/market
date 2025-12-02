@@ -96,7 +96,7 @@ class ItemControllerTest {
 
     @Test
     void items() throws Exception {
-    
+
         Pageable pageable =
                 PageRequest.of(0,
                         2,

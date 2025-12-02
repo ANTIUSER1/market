@@ -1,7 +1,6 @@
 package pn.market.controllers;
 
 
-import org.assertj.core.error.MultipleAssertionsError;
 import org.assertj.core.matcher.AssertionMatcher;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Assertions;
@@ -29,7 +28,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
 @WebMvcTest({ItemController.class})
@@ -94,7 +93,7 @@ class ItemControllerNegativeTest {
 
     @Test
     void items() throws Exception {
-    
+
         Pageable pageable =
                 PageRequest.of(0,
                         2,
