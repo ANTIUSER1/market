@@ -34,8 +34,8 @@ public class ItemController {
             @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted,
             Model model
     ) {
-        model = modelService.createModel(page, pageSize, search, sorted, model);
-        return "items";
+      //  model = modelService.createModel(page, pageSize, search, sorted, model);
+        return "asd";
     }
 
     @GetMapping("/items")
