@@ -31,24 +31,14 @@ public class ItemServiceImpl implements TService<Item> {
 
     @Override
     public Optional<Item> getById(Long id) {
-        return Optional.empty();
-                //itemRepo.findById(id);
+        return   itemRepo.findById(id).blockOptional();
     }
 
     @Override
     public Page<Item> findAllAndPaging(Pageable pageable) {
         List<Item> items = itemRepo.findAll().collectList().block();
-//System.out.println(items);
 Page<Item> page = new PageImpl<>(items, pageable, items.size());
 System.out.println(page);
-System.out.println(
-        "\n CONTENT  "+ page.getContent() +
-        "\nPAGE NUM "+ page.getNumber() +
-        "\nTOTAL PAGES "+ page.getTotalPages() + " " +
-        "\nPG TOTAL ELEM "+  page.getTotalElements()+
-        "\n CONTENT SIZE "+page.getContent().size()
-
-);
         return page;
     }
 
