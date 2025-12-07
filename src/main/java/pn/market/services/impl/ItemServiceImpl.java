@@ -44,26 +44,26 @@ System.out.println(page);
 
     public Item plus(Item item) {
         item.plusCount();
-        return null;
+        return itemRepo.save(item).block();
     }
 
     public Item minus(Item item) {
         item.minusCount();
-        return null;
+        return itemRepo.save(item).block();
     }
 
     public Item uploadFile(MultipartFile file, long id) throws IOException {
-//        Optional<Item> itemOptional = itemRepo.findById(id);
-//        Item item = null;
-//        if (itemOptional.isPresent()) {
-//            item = itemOptional.get();
-//            String dirToUpload = createImagePath();
-//            String fileName = fileService.storeFile(file, dirToUpload, id);
-//            if (fileName != null) {
-//                item.setImgPath(fileName);
-//            }
-//        }
-        return null;
+        Optional<Item> itemOptional = itemRepo.findById(id).blockOptional();
+        Item item = null;
+        if (itemOptional.isPresent()) {
+            item = itemOptional.get();
+            String dirToUpload = createImagePath();
+            String fileName = fileService.storeFile(file, dirToUpload, id);
+            if (fileName != null) {
+                item.setImgPath(fileName);
+            }
+        }
+        return item;
     }
 
     private String createImagePath() {
