@@ -28,52 +28,54 @@ public class CartServiceImpl implements TService<Cart> {
 
     @Override
     public Optional<Cart> getById(Long id) {
-        return cartRepo.findById(id);
+        return Optional.empty();
+                //cartRepo.findById(id);
     }
 
     @Override
     public Page<Cart> findAllAndPaging(Pageable pageable) {
-        return cartRepo.findAll(pageable);
+        return null;
+                //cartRepo.findAll(pageable);
     }
 
     public Optional<Cart> getLast() {
-        long cId = cartRepo.findMaxId();
-        Optional<Cart> cartOptional = cartRepo.findById(cId);
-        if (cartOptional.isPresent()) {
-            return cartOptional;
-        }
+        long cId = -1000; //cartRepo.findMaxId();
+//        Optional<Cart> cartOptional = cartRepo.findById(cId);
+//        if (cartOptional.isPresent()) {
+//            return cartOptional;
+//        }
         return Optional.empty();
     }
 
     public Cart plusItem(Long itemId) {
-        Optional<Item> itemOptional = itemRepo.findById(itemId);
-        Optional<Cart> cartOptional = getLast();
-        if (itemOptional.isPresent() && cartOptional.isPresent()) {
-            Item item = itemOptional.get();
-            Cart cart = cartOptional.get();
-            cart.plusItem(item);
-            itemService.plus(item);
-            if (!cart.isiTtemInCart(item)) {
-                cart.plusItem(item);
-            }
-            return cartRepo.save(cart);
-        } else
+//        Optional<Item> itemOptional = itemRepo.findById(itemId);
+//        Optional<Cart> cartOptional = getLast();
+//        if (itemOptional.isPresent() && cartOptional.isPresent()) {
+//            Item item = itemOptional.get();
+//            Cart cart = cartOptional.get();
+//            cart.plusItem(item);
+//            itemService.plus(item);
+//            if (!cart.isiTtemInCart(item)) {
+//                cart.plusItem(item);
+//            }
+//            return cartRepo.save(cart);
+//        }
             return null;
     }
 
     public Cart minusItem(Long itemId) {
-        Optional<Item> itemOptional = itemRepo.findById(itemId);
-        Optional<Cart> cartOptional = getLast();
-        if (itemOptional.isPresent() && cartOptional.isPresent()) {
-            Item item = itemOptional.get();
-            Cart cart = cartOptional.get();
-            cart.plusItem(item);
-            itemService.minus(item);
-            if (!cart.isiTtemInCart(item)) {
-                cart.minusItem(item);
-            }
-            return cartRepo.save(cart);
-        } else
+//        Optional<Item> itemOptional = itemRepo.findById(itemId);
+//        Optional<Cart> cartOptional = getLast();
+//        if (itemOptional.isPresent() && cartOptional.isPresent()) {
+//            Item item = itemOptional.get();
+//            Cart cart = cartOptional.get();
+//            cart.plusItem(item);
+//            itemService.minus(item);
+//            if (!cart.isiTtemInCart(item)) {
+//                cart.minusItem(item);
+//            }
+//            return cartRepo.save(cart);
+//        }
             return null;
     }
 }

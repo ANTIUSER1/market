@@ -29,36 +29,37 @@ public class ItemServiceImpl implements TService<Item> {
 
     @Override
     public Optional<Item> getById(Long id) {
-        return itemRepo.findById(id);
+        return Optional.empty();
+                //itemRepo.findById(id);
     }
 
     @Override
     public Page<Item> findAllAndPaging(Pageable pageable) {
-        return itemRepo.findAll(pageable);
+        return null;
     }
 
     public Item plus(Item item) {
         item.plusCount();
-        return itemRepo.save(item);
+        return null;
     }
 
     public Item minus(Item item) {
         item.minusCount();
-        return itemRepo.save(item);
+        return null;
     }
 
     public Item uploadFile(MultipartFile file, long id) throws IOException {
-        Optional<Item> itemOptional = itemRepo.findById(id);
-        Item item = null;
-        if (itemOptional.isPresent()) {
-            item = itemOptional.get();
-            String dirToUpload = createImagePath();
-            String fileName = fileService.storeFile(file, dirToUpload, id);
-            if (fileName != null) {
-                item.setImgPath(fileName);
-            }
-        }
-        return itemRepo.save(item);
+//        Optional<Item> itemOptional = itemRepo.findById(id);
+//        Item item = null;
+//        if (itemOptional.isPresent()) {
+//            item = itemOptional.get();
+//            String dirToUpload = createImagePath();
+//            String fileName = fileService.storeFile(file, dirToUpload, id);
+//            if (fileName != null) {
+//                item.setImgPath(fileName);
+//            }
+//        }
+        return null;
     }
 
     private String createImagePath() {

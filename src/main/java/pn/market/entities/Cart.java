@@ -1,26 +1,28 @@
 package pn.market.entities;
 
-import jakarta.persistence.*;
+//import jakarta.persistence.*;
 import lombok.ToString;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 @ToString
-@Entity
+//@Entity
 @Table(name = "carts")
 public class Cart {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+   // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
 
-    @OneToMany(
-            cascade = CascadeType.ALL,
-            fetch = FetchType.EAGER, orphanRemoval = true)
-    @JoinColumn(name = "cart_id")
+//    @OneToMany(
+//            cascade = CascadeType.ALL,
+//            fetch = FetchType.EAGER, orphanRemoval = true)
+//    @JoinColumn(name = "cart_id")
     private List<Item> cartItems = new ArrayList<>();
 
     public Cart() {

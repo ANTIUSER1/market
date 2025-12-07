@@ -22,7 +22,8 @@ public class OrderServiceImpl implements TService<Order> {
 
     @Override
     public Optional<Order> getById(Long id) {
-        return orderRepo.findById(id);
+        return Optional.empty();
+                //orderRepo.findById(id);
     }
 
     @Override
@@ -31,11 +32,13 @@ public class OrderServiceImpl implements TService<Order> {
     }
 
     public List<Order> findAllOrders() {
-        return orderRepo.findAll();
+        return List.of();
+                //orderRepo.findAll();
     }
 
     public void buyOrder(long id) {
-        Optional<Order> orderOptional = orderRepo.findById(id);
+        Optional<Order> orderOptional =Optional.empty();
+                //orderRepo.findById(id);
         if (orderOptional.isPresent()) {
             Order order = orderOptional.get();
             order.setItems(new ArrayList<>());

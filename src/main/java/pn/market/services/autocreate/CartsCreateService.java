@@ -27,7 +27,8 @@ public class CartsCreateService {
                 cart.getCartItems().add(item);
             }
         }
-        cart = cartRepo.save(cart);
+        cart = new Cart();
+                //cartRepo.save(cart);
         return cart;
     }
 }

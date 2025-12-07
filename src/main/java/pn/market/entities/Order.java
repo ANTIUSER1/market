@@ -1,23 +1,25 @@
 package pn.market.entities;
 
-import jakarta.persistence.*;
+//import jakarta.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-@Entity
+//@Entity
 @Table(name = "orders")
 public class Order {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany(
-            cascade = CascadeType.PERSIST,
-            fetch = FetchType.EAGER, orphanRemoval = false)
-    @JoinColumn(name = "order_id")
+//    @OneToMany(
+//            cascade = CascadeType.PERSIST,
+//            fetch = FetchType.EAGER, orphanRemoval = false)
+//    @JoinColumn(name = "order_id")
     private List<Item> items;
 
     public Order() {

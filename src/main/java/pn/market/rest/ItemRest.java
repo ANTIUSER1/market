@@ -48,7 +48,7 @@ public class ItemRest {
             item.setPrice((long) (i + 10000 * Math.random()));
             items.add(item);
         }
-        items = itemRepo.saveAll(items);
+//        items = itemRepo.saveAll(items);
         return items;
     }
 

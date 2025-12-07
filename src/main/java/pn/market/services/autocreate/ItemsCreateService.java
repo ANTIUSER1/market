@@ -14,7 +14,8 @@ public class ItemsCreateService {
     private ItemRepo itemRepo;
 
     public List<Item> autoCreate() {
-        return itemRepo.getAllItemsSortedAscById();
+        return List.of();
+                //itemRepo.getAllItemsSortedAscById();
 
     }
 }
