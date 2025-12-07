@@ -11,6 +11,7 @@ import pn.market.additional.Paging;
 import pn.market.additional.SortType;
 import pn.market.entities.Item;
 import pn.market.services.ModelService;
+import reactor.core.publisher.Mono;
 
 @Service
 public class ModelServiceImpl implements ModelService {
@@ -19,7 +20,7 @@ public class ModelServiceImpl implements ModelService {
     private ItemServiceImpl itemService;
 
     @Override
-    public Model createModel(int page, int pageSize, String search, String sorted, Model model) {
+    public Mono<Model> createModel(int page, int pageSize, String search, String sorted, Model model) {
        Pageable pageable = createPageble(page, pageSize, sorted);
         Page<Item> items =  itemService.findAllAndPaging(pageable);
         model.addAttribute("items", items.get().toList());
@@ -27,15 +28,7 @@ public class ModelServiceImpl implements ModelService {
         model.addAttribute("paging",
                 new Paging(pageSize, page,
                         items.hasNext(), items.hasPrevious()));
-        return model;
-
-//        Page<Item> items = itemService.findAllAndPaging(pageable);
-//        model.addAttribute("items", items.get().toList());
-//        model.addAttribute("page", page);
-//        model.addAttribute("paging",
-//                new Paging(pageSize, page,
-//                        items.hasNext(), items.hasPrevious()));
-        //return null;
+        return Mono.just( model );
     }
 
     @Override
