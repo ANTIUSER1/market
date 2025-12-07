@@ -5,12 +5,10 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 
-//@Entity
 @Table(name = "items")
 public class Item {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String description;
@@ -74,4 +72,16 @@ public class Item {
         if (count > 0) count--;
     }
 
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Item{");
+        sb.append("id=").append(id);
+        sb.append(", title='").append(title).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", imgPath='").append(imgPath).append('\'');
+        sb.append(", price=").append(price);
+        sb.append(", count=").append(count);
+        sb.append('}');
+        return sb.toString();
+    }
 }

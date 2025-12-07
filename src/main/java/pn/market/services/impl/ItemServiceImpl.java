@@ -12,6 +12,7 @@ import pn.market.repo.ItemRepo;
 import pn.market.services.TService;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -35,6 +36,9 @@ public class ItemServiceImpl implements TService<Item> {
 
     @Override
     public Page<Item> findAllAndPaging(Pageable pageable) {
+        List<Item> items = itemRepo.findAll().collectList().block();
+System.out.println(items);
+
         return null;
     }
 
