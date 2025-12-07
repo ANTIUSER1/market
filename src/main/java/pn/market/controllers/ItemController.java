@@ -35,7 +35,7 @@ public class ItemController {
             Model model
     ) {
   model = modelService.createModel(page, pageSize, search, sorted, model);
-        return "asd";
+        return "items";
     }
 
     @GetMapping("/items")

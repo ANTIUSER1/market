@@ -21,7 +21,13 @@ public class ModelServiceImpl implements ModelService {
     @Override
     public Model createModel(int page, int pageSize, String search, String sorted, Model model) {
        Pageable pageable = createPageble(page, pageSize, sorted);
-        itemService.findAllAndPaging(pageable);
+        Page<Item> items =  itemService.findAllAndPaging(pageable);
+        model.addAttribute("items", items.get().toList());
+        model.addAttribute("page", page);
+        model.addAttribute("paging",
+                new Paging(pageSize, page,
+                        items.hasNext(), items.hasPrevious()));
+        return model;
 
 //        Page<Item> items = itemService.findAllAndPaging(pageable);
 //        model.addAttribute("items", items.get().toList());
@@ -29,7 +35,7 @@ public class ModelServiceImpl implements ModelService {
 //        model.addAttribute("paging",
 //                new Paging(pageSize, page,
 //                        items.hasNext(), items.hasPrevious()));
-        return null;
+        //return null;
     }
 
     @Override

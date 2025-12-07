@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -37,9 +38,18 @@ public class ItemServiceImpl implements TService<Item> {
     @Override
     public Page<Item> findAllAndPaging(Pageable pageable) {
         List<Item> items = itemRepo.findAll().collectList().block();
-System.out.println(items);
+//System.out.println(items);
+Page<Item> page = new PageImpl<>(items, pageable, items.size());
+System.out.println(page);
+System.out.println(
+        "\n CONTENT  "+ page.getContent() +
+        "\nPAGE NUM "+ page.getNumber() +
+        "\nTOTAL PAGES "+ page.getTotalPages() + " " +
+        "\nPG TOTAL ELEM "+  page.getTotalElements()+
+        "\n CONTENT SIZE "+page.getContent().size()
 
-        return null;
+);
+        return page;
     }
 
     public Item plus(Item item) {
