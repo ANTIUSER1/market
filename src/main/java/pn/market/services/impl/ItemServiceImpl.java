@@ -32,9 +32,6 @@ public class ItemServiceImpl implements TService<Item> {
     @Autowired
     private ItemRepo itemRepo;
 
-    @Autowired
-    private DatabaseClient databaseClient;
-
     @Override
     public Optional<Item> getById(Long id) {
         return   itemRepo.findById(id).blockOptional();
