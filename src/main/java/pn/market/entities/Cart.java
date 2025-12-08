@@ -10,19 +10,12 @@ import java.util.List;
 
 
 @ToString
-//@Entity
-@Table(name = "carts")
+@Table(name = "carts", schema = "market")
 public class Cart {
 
     @Id
-   // @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-//    @OneToMany(
-//            cascade = CascadeType.ALL,
-//            fetch = FetchType.EAGER, orphanRemoval = true)
-//    @JoinColumn(name = "cart_id")
     private List<Item> cartItems = new ArrayList<>();
 
     public Cart() {
