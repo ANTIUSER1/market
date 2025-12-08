@@ -26,7 +26,7 @@ public class CartController {
             @RequestParam("action") String action,
             Model model) {
         Cart cart = null;
-
+      
         if (action != null && itemId != null) {
             if (ActionType.PLUS.name().equals(action.trim())) cart = cartService.plusItem(itemId);
             if (ActionType.MINUS.name().equals(action.trim())) cart = cartService.minusItem(itemId);
