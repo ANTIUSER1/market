@@ -50,6 +50,11 @@ System.out.println(page);
         return items.collectList().block();
     }
 
+    public List<Item> getItemsByOrderId(Long id) {
+        Flux<Item> items = itemRepo.findByOrderId(id);
+        return items.collectList().block();
+    }
+
     public long getTotalSum( List<Item> items) {
        return items.stream()
                .mapToLong( i-> i.getPrice()*i.getCount() ).sum();

@@ -32,8 +32,7 @@ public class OrderServiceImpl implements TService<Order> {
     }
 
     public List<Order> findAllOrders() {
-        return List.of();
-                //orderRepo.findAll();
+        return  orderRepo.findAll().collectList().block();
     }
 
     public void buyOrder(long id) {

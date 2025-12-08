@@ -18,7 +18,10 @@ import java.util.List;
 public interface ItemRepo extends ReactiveCrudRepository<Item, Long> {
 
     @Query("SELECT * FROM items i WHERE i.cart_id = :cartId  ORDER BY i.id ASC")
-    Flux<Item> findByCartId(Long id);
+    Flux<Item> findByCartId(Long cartId);
+
+    @Query("SELECT * FROM items i WHERE i.order_id = :orderId  ORDER BY i.id ASC")
+    Flux<Item> findByOrderId(Long orderId);
 
 
 }
