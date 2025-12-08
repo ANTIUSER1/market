@@ -44,7 +44,7 @@ System.out.println(page);
     }
 
     public List<Item> getItemsByCartId(Long id) {
-        Flux<Item> items = itemRepo.findByCartId(id); 
+        Flux<Item> items = itemRepo.findByCartId(id);
         return items.collectList().block();
     }
 
