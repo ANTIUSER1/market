@@ -42,13 +42,15 @@ System.out.println(page);
         return page;
     }
 
-    public Item plus(Item item) {
+    public Item plus(Item item, long cartId) {
         item.plusCount();
-        return itemRepo.save(item).block();
+            item.setCartId(cartId);
+            return itemRepo.save(item).block();
     }
 
     public Item minus(Item item) {
         item.minusCount();
+        item.setCartId(null);
         return itemRepo.save(item).block();
     }
 

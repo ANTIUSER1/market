@@ -11,7 +11,6 @@ import pn.market.entities.Item;
 import pn.market.repo.CartRepo;
 import pn.market.repo.ItemRepo;
 import pn.market.services.TService;
-import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
@@ -34,17 +33,17 @@ public class CartServiceImpl implements TService<Cart> {
     @Override
     public Optional<Cart> getById(Long id) {
         return Optional.empty();
-                //cartRepo.findById(id);
+        //cartRepo.findById(id);
     }
 
     @Override
     public Page<Cart> findAllAndPaging(Pageable pageable) {
         return null;
-                //cartRepo.findAll(pageable);
+        //cartRepo.findAll(pageable);
     }
 
     public Optional<Cart> getLast() {
-        long cId =cartRepo.findMaxId(databaseClient).block();
+        long cId = cartRepo.findMaxId(databaseClient).block();
         System.out.println("getLast   : cId = " + cId + "\n");
         Optional<Cart> cartOptional = cartRepo.findById(cId).blockOptional();
         if (cartOptional.isPresent()) {
@@ -53,7 +52,7 @@ public class CartServiceImpl implements TService<Cart> {
         return Optional.empty();
     }
 
-    public  Cart  plusItem(Long itemId) {
+    public Cart plusItem(Long itemId) {
         System.out.println("plusItem   : itemId = " + itemId + "\n");
         Optional<Item> itemOptional = itemRepo.findById(itemId).blockOptional();
         System.out.println("plusItem   : itemOptional = " + itemOptional.get() + "\n");
@@ -62,23 +61,43 @@ public class CartServiceImpl implements TService<Cart> {
         System.out.println("plusItem   : cartOptional present = " + cartOptional.get() + "\n");
         if (itemOptional.isPresent() && cartOptional.isPresent()) {
             Item item = itemOptional.get();
-            Cart cart = cartOptional.get();
-            item.setCartId(cart.getId());
-            itemService.plus(item); 
-            System.out.println("plusItem  UPDATE   : cart = " + cart + "\n");
-            System.out.println("plusItem  UPDATE   : item = " + item + "\n");
-            itemRepo.save(item);
-              cartRepo.save(cart);
-              return cart;
+            if (item.getCartId() == null) {
+                Cart cart = cartOptional.get();
+                itemService.plus(item, cart.getId());
+                System.out.println("plusItem  UPDATE   : cart = " + cart + "\n");
+                System.out.println("plusItem  UPDATE   : item = " + item + "\n");
+                itemRepo.save(item);
+                cartRepo.save(cart);
+                return cart;
+            }
         }
         log.error("plusItem   : itemId = " + itemId + " NO DATA\n");
-            return null;
+        return null;
     }
 
     public Cart minusItem(Long itemId) {
-//        Optional<Item> itemOptional = itemRepo.findById(itemId);
-//        Optional<Cart> cartOptional = getLast();
-//        if (itemOptional.isPresent() && cartOptional.isPresent()) {
+        System.out.println("minusItem    : itemId = " + itemId + "\n");
+        Optional<Item> itemOptional = itemRepo.findById(itemId).blockOptional();
+
+        Optional<Cart> cartOptional = getLast();
+System.out.println("minusItem    : cartOptional = " + cartOptional + "\n");
+        System.out.println("minusItem    : (itemOptional.isPresent() && cartOptional.isPresent()) = "
+                + (itemOptional.isPresent() && cartOptional.isPresent()) + "\n");
+        if (itemOptional.isPresent() && cartOptional.isPresent()) {
+            Item item = itemOptional.get();
+            System.out.println("minusItem    : item = " + item + "\n");
+            System.out.println("minusItem    : item.getCartId() = " + item.getCartId() + "\n");
+            if (item.getCartId() != null) {
+                Cart cart = cartOptional.get();
+                System.out.println("minusItem     : item = " + item + "\n");
+            //    item.setCartId(null);
+                itemService.minus(item);
+                itemRepo.save(item);
+                cartRepo.save(cart);
+                System.out.println("minusItem  UPDATE   : item = " + item + "\n");
+                return cart;
+            }
+        }
 //            Item item = itemOptional.get();
 //            Cart cart = cartOptional.get();
 //            cart.plusItem(item);
@@ -86,8 +105,8 @@ public class CartServiceImpl implements TService<Cart> {
 //            if (!cart.isiTtemInCart(item)) {
 //                cart.minusItem(item);
 //            }
-//            return cartRepo.save(cart);
-//        }
-            return null;
+//////            return cartRepo.save(cart);
+//////        }
+        return null;
     }
 }
