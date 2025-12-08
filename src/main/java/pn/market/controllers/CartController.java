@@ -27,7 +27,7 @@ public class CartController {
     @Autowired
     private ItemServiceImpl itemService;
 
-    @GetMapping("/items")
+    @PostMapping("/items")
     public String addItem(
             @RequestParam("itemId") Long itemId,
             @RequestParam("action") String action,

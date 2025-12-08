@@ -25,7 +25,7 @@ public class OrderController {
         for (Order order : orderList) {
             System.out.println(order);
         }
-        System.out.println("  ");
+        System.out.println("  "+orderList);
         model.addAttribute("orders", orderList);
         return "orders";
     }
