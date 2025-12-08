@@ -89,5 +89,11 @@ public class Item {
         this.cartId = cartId;
     }
 
+    public Long getItemId() {
+        return itemId;
+    }
 
+    public void setItemId(Long itemId) {
+        this.itemId = itemId;
+    }
 }

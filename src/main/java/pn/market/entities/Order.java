@@ -19,6 +19,10 @@ public class Order {
     public Order() {
     }
 
+    public Order(Long id) {
+        this.id = id;
+    }
+
     public Long getId() {
         return id;
     }
@@ -26,9 +30,4 @@ public class Order {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public long getSize() {
-        return items.size();
-    }
-
 }
