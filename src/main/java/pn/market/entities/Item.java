@@ -20,6 +20,7 @@ public class Item {
 
 
     private Long cartId;
+    private Long itemId;
 
 
 
