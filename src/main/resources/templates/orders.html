@@ -10,8 +10,6 @@
 </head>
 
 <body class="bg-light">
-
-
 <div  th:if="${ orderData!=null }">
 <div class="container p-2">
     <div class="row p-2">
@@ -30,23 +28,16 @@
             <div class="card">
 
 
-
-<!--                <div >-->
-<!--                <p th:text="${orderdata.order}"></p>-->
-<!--                <p th:text="${orderdata.items}"></p>-->
-<!--                    <hr />-->
-<!--                </div>-->
-
                 <div class="card-header">
                     <a th:href="${'/orders/'+orderdata.order.id}"
                        th:text="${'Заказ №'+orderdata.order.id}"></a>
                 </div>
                 <ul class="list-group list-group-flush" th:each="item : ${orderdata.items}">
                     <li class="list-group-item"
-                        th:text="${item.title+' ('+item.count+' шт.) '+(item.price*item.count)+' руб.'}"/>
+                        th:text="${item.title+' ( '+item.count+' шт. '    }"/>
                 </ul>
                 <div class="card-footer">
-<!--                    <b th:text="${'Сумма: '+orderdata.getTotalSum }+' руб.'"></b>-->
+                    <b th:text="${'Сумма: '+orderdata.totalSumm }+' руб.'"></b>
                 </div>
 
 
