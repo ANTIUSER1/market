@@ -55,7 +55,7 @@ System.out.println(page);
 
     public long getTotalSum( List<Item> items) {
        return items.stream()
-               .map( i-> i.getPrice()*i.getCount() )
+               .mapToLong( i-> i.getPrice()*i.getCount() ).sum();
 
 
 
