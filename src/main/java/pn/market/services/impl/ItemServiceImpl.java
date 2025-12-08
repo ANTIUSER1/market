@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import pn.market.entities.Item;
 import pn.market.repo.ItemRepo;
 import pn.market.services.TService;
+import reactor.core.publisher.Flux;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,6 +41,14 @@ public class ItemServiceImpl implements TService<Item> {
 Page<Item> page = new PageImpl<>(items, pageable, items.size());
 System.out.println(page);
         return page;
+    }
+
+    public List<Item> getItemsByCartId(Long id) {
+        Flux<Item> items = itemRepo.findByCartId(id);
+        for(Item item : items.collectList().block()) {
+            System.out.println(item);
+        }
+        return items.collectList().block();
     }
 
     public Item plus(Item item, long cartId) {
@@ -75,4 +84,5 @@ System.out.println(page);
 
         return imgPath;
     }
+
 }

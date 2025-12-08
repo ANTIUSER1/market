@@ -10,7 +10,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pn.market.additional.ActionType;
 import pn.market.entities.Cart;
+import pn.market.entities.Item;
 import pn.market.services.impl.CartServiceImpl;
+import pn.market.services.impl.ItemServiceImpl;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/cart")
@@ -19,6 +23,9 @@ public class CartController {
 
     @Autowired
     private CartServiceImpl cartService;
+
+    @Autowired
+    private ItemServiceImpl itemService;
 
     @GetMapping("/items")
     public String addItem(
@@ -30,8 +37,10 @@ public class CartController {
         if (action != null && itemId != null) {
             if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) cart = cartService.plusItem(itemId) ;
             if (ActionType.MINUS.name().equals(action.trim())) cart = cartService.minusItem(itemId);
+
             if ( cart != null ) {
-              //  model.addAttribute("items", cart.getCartItems());
+                List<Item> items=itemService.getItemsByCartId(cart.getId());
+                model.addAttribute("items", items);
                 return "cart";
             }
         }else
