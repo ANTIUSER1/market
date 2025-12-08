@@ -59,22 +59,24 @@ public class CartServiceImpl implements TService<Cart> {
         Optional<Cart> cartOptional = getLast();
         System.out.println("plusItem   : cartOptional present = " + cartOptional.isPresent() + "\n");
         System.out.println("plusItem   : cartOptional present = " + cartOptional.get() + "\n");
+        Cart cart = null;
         if (itemOptional.isPresent() && cartOptional.isPresent()) {
-            Item item = itemOptional.get();
-           if (item.getCartId() == null) {
-                Cart cart = cartOptional.get();
+            Item item = itemOptional.get();cart = cartOptional.get();
+            if (item.getCartId() == null) {
                 itemService.plus(item, cart.getId());
                 System.out.println("plusItem  UPDATE   : cart = " + cart + "\n");
                 System.out.println("plusItem  UPDATE   : item = " + item + "\n");
                 itemRepo.save(item);
                 cartRepo.save(cart);
                 return cart;
-            }else{
-               log.error("plusItem   : itemId = " + itemId + " ALREADY IN CART\n");
-           }
+            } else {
+                log.error("plusItem   : itemId = " + itemId + " ALREADY IN CART\n");
+            }
+        } else {
+            log.error("plusItem   : item = " + itemId + " NO DATA\n");
         }
-        log.error("plusItem   : itemId = " + itemId + " NO DATA\n");
-        return null;
+
+        return cart;
     }
 
     public Cart minusItem(Long itemId) {
@@ -82,7 +84,7 @@ public class CartServiceImpl implements TService<Cart> {
         Optional<Item> itemOptional = itemRepo.findById(itemId).blockOptional();
 
         Optional<Cart> cartOptional = getLast();
-System.out.println("minusItem    : cartOptional = " + cartOptional + "\n");
+        System.out.println("minusItem    : cartOptional = " + cartOptional + "\n");
         System.out.println("minusItem    : (itemOptional.isPresent() && cartOptional.isPresent()) = "
                 + (itemOptional.isPresent() && cartOptional.isPresent()) + "\n");
         if (itemOptional.isPresent() && cartOptional.isPresent()) {
@@ -92,7 +94,7 @@ System.out.println("minusItem    : cartOptional = " + cartOptional + "\n");
             if (item.getCartId() != null) {
                 Cart cart = cartOptional.get();
                 System.out.println("minusItem     : item = " + item + "\n");
-            //    item.setCartId(null);
+                //    item.setCartId(null);
                 itemService.minus(item);
                 itemRepo.save(item);
                 cartRepo.save(cart);
