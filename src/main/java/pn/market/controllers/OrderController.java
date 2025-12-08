@@ -29,15 +29,16 @@ public class OrderController {
     public String asdOrders(Model model) {
         List<Order> orderList = orderService.findAllOrders();
       List<OrderContainer> orderContainers= new ArrayList<>();
-        for (Order order : orderList) {
+         for (Order order : orderList) {
 
           OrderContainer orderContainer =
                   new OrderContainer( );
            orderContainer.setOrder(order);
            orderContainer.setItems(itemService.getItemsByOrderId(order.getId()));
+         // orderContainer.totalSumm();
             orderContainers.add (orderContainer);
-
-        }
+           }
+//        System.out.println(orderContainers);
        model.addAttribute("orderData", orderContainers);
         return "orders";
     }

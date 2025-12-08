@@ -34,6 +34,16 @@ public class OrderContainer {
     }
 
     public long totalSumm(){
-        return items.stream().mapToLong(Item::getPrice).sum();
+     totalSSS();
+        return  items.stream().mapToLong(i-> i.getPrice()*i.getCount()).sum()  ;
     }
+
+    public void totalSSS(){
+      for(Item i:items) {
+          System.out.println(
+                  i.getTitle() + "   " +
+                  i.getCount()+ "   "+i.getPrice()+"     ::::::    "+i.getPrice()*i.getCount());
+      }
+    }
+
 }
