@@ -6,12 +6,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pn.market.entities.Item;
 import pn.market.repo.ItemRepo;
 import pn.market.services.TService;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.List;
@@ -29,6 +31,9 @@ public class ItemServiceImpl implements TService<Item> {
 
     @Autowired
     private ItemRepo itemRepo;
+
+    @Autowired
+    private DatabaseClient databaseClient;
 
     @Override
     public Optional<Item> getById(Long id) {
@@ -48,6 +53,14 @@ System.out.println(page);
         return items.collectList().block();
     }
 
+    public long getTotalSum( List<Item> items) {
+       return items.stream()
+               .map( i-> i.getPrice()*i.getCount() )
+
+
+
+        
+    }
     public Item plus(Item item, long cartId) {
         item.plusCount();
             item.setCartId(cartId);

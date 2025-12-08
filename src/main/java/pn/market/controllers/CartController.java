@@ -40,6 +40,9 @@ public class CartController {
 
             if ( cart != null ) {
                 List<Item> items=itemService.getItemsByCartId(cart.getId());
+                long  total = itemService.getTotalSum(cart.getId());
+                System.out.println("total = " + total);
+                model.addAttribute("total", total  );
                 model.addAttribute("items", items);
                 return "cart";
             }
