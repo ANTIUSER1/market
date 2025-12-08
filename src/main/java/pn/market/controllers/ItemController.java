@@ -34,7 +34,7 @@ public class ItemController {
             @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted,
             Model model
     ) {
-  model = modelService.createModel(page, pageSize, search, sorted, model).block();
+        model = modelService.createModel(page, pageSize, search, sorted, model).block();
         return "items";
     }
 
@@ -60,8 +60,8 @@ public class ItemController {
         if (action != null && itemOptional.isPresent()) {
             if (ActionType.MINUS.name().equalsIgnoreCase(action.trim())) item = itemService.minus(itemOptional.get());
             else if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())
-            && itemOptional.get().getCartId() != null)
-                item = itemService.plus(itemOptional.get(),  itemOptional.get().getCartId() );
+                    && itemOptional.get().getCartId() != null)
+                item = itemService.plus(itemOptional.get(), itemOptional.get().getCartId());
             if (item != null) model.addAttribute("item", item);
             else {
                 return "items";

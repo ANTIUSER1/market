@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pn.market.entities.Item;
 import pn.market.entities.Order;
 import pn.market.entities.OrderContainer;
 import pn.market.services.impl.ItemServiceImpl;
@@ -24,22 +23,23 @@ public class OrderController {
     private OrderServiceImpl orderService;
 
     @Autowired
-    private ItemServiceImpl  itemService;
+    private ItemServiceImpl itemService;
+
     @GetMapping
     public String asdOrders(Model model) {
         List<Order> orderList = orderService.findAllOrders();
-      List<OrderContainer> orderContainers= new ArrayList<>();
-         for (Order order : orderList) {
+        List<OrderContainer> orderContainers = new ArrayList<>();
+        for (Order order : orderList) {
 
-          OrderContainer orderContainer =
-                  new OrderContainer( );
-           orderContainer.setOrder(order);
-           orderContainer.setItems(itemService.getItemsByOrderId(order.getId()));
-         // orderContainer.totalSumm();
-            orderContainers.add (orderContainer);
-           }
+            OrderContainer orderContainer =
+                    new OrderContainer();
+            orderContainer.setOrder(order);
+            orderContainer.setItems(itemService.getItemsByOrderId(order.getId()));
+            // orderContainer.totalSumm();
+            orderContainers.add(orderContainer);
+        }
 //        System.out.println(orderContainers);
-       model.addAttribute("orderData", orderContainers);
+        model.addAttribute("orderData", orderContainers);
         return "orders";
     }
 

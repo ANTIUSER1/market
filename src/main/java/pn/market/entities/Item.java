@@ -1,12 +1,13 @@
 package pn.market.entities;
 
 //import jakarta.persistence.*;
+
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 @ToString
-@Table(name = "items" , schema = "market")
+@Table(name = "items", schema = "market")
 public class Item {
 
     @Id
@@ -18,11 +19,8 @@ public class Item {
     private Integer count;
 
 
-
     private Long cartId;
     private Long itemId;
-
-
 
 
     public Long getId() {

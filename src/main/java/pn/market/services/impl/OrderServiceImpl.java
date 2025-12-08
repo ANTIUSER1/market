@@ -9,7 +9,6 @@ import pn.market.entities.Order;
 import pn.market.repo.OrderRepo;
 import pn.market.services.TService;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,7 +22,7 @@ public class OrderServiceImpl implements TService<Order> {
     @Override
     public Optional<Order> getById(Long id) {
         return Optional.empty();
-                //orderRepo.findById(id);
+        //orderRepo.findById(id);
     }
 
     @Override
@@ -32,15 +31,15 @@ public class OrderServiceImpl implements TService<Order> {
     }
 
     public List<Order> findAllOrders() {
-        return  orderRepo.findAll().collectList().block();
+        return orderRepo.findAll().collectList().block();
     }
 
     public void buyOrder(long id) {
-        Optional<Order> orderOptional =Optional.empty();
-                //orderRepo.findById(id);
+        Optional<Order> orderOptional = Optional.empty();
+        //orderRepo.findById(id);
         if (orderOptional.isPresent()) {
             Order order = orderOptional.get();
-       //     order.setItems(new ArrayList<>());
+            //     order.setItems(new ArrayList<>());
             orderRepo.save(order);
             orderRepo.delete(order);
 

@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,18 +34,18 @@ public class CartController {
         Cart cart = null;
 
         if (action != null && itemId != null) {
-            if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) cart = cartService.plusItem(itemId) ;
+            if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) cart = cartService.plusItem(itemId);
             if (ActionType.MINUS.name().equals(action.trim())) cart = cartService.minusItem(itemId);
 
-            if ( cart != null ) {
-                List<Item> items=itemService.getItemsByCartId(cart.getId());
-                long  total = itemService.getTotalSum(items);
-                 model.addAttribute("total", total  );
+            if (cart != null) {
+                List<Item> items = itemService.getItemsByCartId(cart.getId());
+                long total = itemService.getTotalSum(items);
+                model.addAttribute("total", total);
                 model.addAttribute("items", items);
                 return "cart";
             }
-        }else
-        log.info("Cart is empty -- Data no present");
+        } else
+            log.info("Cart is empty -- Data no present");
         return "items";
     }
 }

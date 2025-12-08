@@ -1,12 +1,10 @@
 package pn.market.entities;
 
 //import jakarta.persistence.*;
+
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 @ToString

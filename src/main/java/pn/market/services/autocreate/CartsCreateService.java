@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class CartsCreateService {
 
-    private static final double RANDOM_VALUE = 0.7 ;
+    private static final double RANDOM_VALUE = 0.7;
 
     @Autowired
     private ItemsCreateService itemsCreateService;
@@ -24,11 +24,11 @@ public class CartsCreateService {
         List<Item> items = itemsCreateService.autoCreate();
         for (Item item : items) {
             if (Math.random() > RANDOM_VALUE) {
-            //    cart.getCartItems().add(item);
+                //    cart.getCartItems().add(item);
             }
         }
         cart = new Cart();
-                //cartRepo.save(cart);
+        //cartRepo.save(cart);
         return cart;
     }
 }

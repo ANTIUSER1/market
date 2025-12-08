@@ -61,7 +61,8 @@ public class CartServiceImpl implements TService<Cart> {
         System.out.println("plusItem   : cartOptional present = " + cartOptional.get() + "\n");
         Cart cart = null;
         if (itemOptional.isPresent() && cartOptional.isPresent()) {
-            Item item = itemOptional.get();cart = cartOptional.get();
+            Item item = itemOptional.get();
+            cart = cartOptional.get();
             if (item.getCartId() == null) {
                 itemService.plus(item, cart.getId());
                 itemRepo.save(item);
