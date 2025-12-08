@@ -26,15 +26,12 @@ public class CartController {
             @RequestParam("action") String action,
             Model model) {
         Cart cart = null;
-      
+
         if (action != null && itemId != null) {
-            if (ActionType.PLUS.name().equals(action.trim())) cart = cartService.plusItem(itemId);
+            if (ActionType.PLUS.name().equals(action.trim())) cart = cartService.plusItem(itemId) ;
             if (ActionType.MINUS.name().equals(action.trim())) cart = cartService.minusItem(itemId);
-            if (cart != null &&
-                    cart.getCartItems() != null &&
-                    cart.getCartItems().size() > 0
-            ) {
-                model.addAttribute("items", cart.getCartItems());
+            if ( cart != null ) {
+              //  model.addAttribute("items", cart.getCartItems());
                 return "cart";
             }
         }else

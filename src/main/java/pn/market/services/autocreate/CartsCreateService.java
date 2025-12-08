@@ -24,7 +24,7 @@ public class CartsCreateService {
         List<Item> items = itemsCreateService.autoCreate();
         for (Item item : items) {
             if (Math.random() > RANDOM_VALUE) {
-                cart.getCartItems().add(item);
+            //    cart.getCartItems().add(item);
             }
         }
         cart = new Cart();

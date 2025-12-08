@@ -16,10 +16,7 @@ public class Cart {
     @Id
     private Long id;
 
-    private List<Item> cartItems = new ArrayList<>();
-
     public Cart() {
-        cartItems = new ArrayList<>();
     }
 
     public Cart(Long id) {
@@ -35,33 +32,5 @@ public class Cart {
         this.id = id;
     }
 
-    public List<Item> getCartItems() {
-        return cartItems;
-    }
 
-    public void setCartItems(List<Item> cartItems) {
-        this.cartItems = cartItems;
-    }
-
-    public void plusItem(Item item) {
-        cartItems.add(item);
-    }
-
-    public void minusItem(Item item) {
-        cartItems.remove(item);
-    }
-
-    public long getTotalSum() {
-        return cartItems.parallelStream()
-                .mapToLong(itm -> itm.getCount() * itm.getPrice())
-                .sum();
-    }
-
-    public long getSize() {
-        return cartItems.size();
-    }
-
-    public boolean isiTtemInCart(Item item) {
-        return cartItems.contains(item);
-    }
 }

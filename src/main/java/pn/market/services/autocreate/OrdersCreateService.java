@@ -30,10 +30,10 @@ public class OrdersCreateService {
         Optional<Cart> cartOptional = Optional.empty();// cartRepo.findById(maxCartId);
         if (cartOptional.isPresent()) {
             Cart cart = cartOptional.get();
-            for (int k = 0; k < cart.getCartItems().size(); k++) {
-                Item item = cart.getCartItems().remove(k);
-                order.addItem(item);
-            }
+//            for (int k = 0; k < cart.getCartItems().size(); k++) {
+//                Item item = cart.getCartItems().remove(k);
+//                order.addItem(item);
+//            }
 //            order = orderRepo.save(order);
             cartRepo.save(cart);
             return order;

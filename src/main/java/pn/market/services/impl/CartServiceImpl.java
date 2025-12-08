@@ -4,18 +4,23 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Service;
 import pn.market.entities.Cart;
 import pn.market.entities.Item;
 import pn.market.repo.CartRepo;
 import pn.market.repo.ItemRepo;
 import pn.market.services.TService;
+import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
 @Service
 @Slf4j
 public class CartServiceImpl implements TService<Cart> {
+
+    @Autowired
+    private DatabaseClient databaseClient;
 
     @Autowired
     private CartRepo cartRepo;
@@ -39,27 +44,38 @@ public class CartServiceImpl implements TService<Cart> {
     }
 
     public Optional<Cart> getLast() {
-        long cId = -1000; //cartRepo.findMaxId();
-//        Optional<Cart> cartOptional = cartRepo.findById(cId);
-//        if (cartOptional.isPresent()) {
-//            return cartOptional;
-//        }
+        long cId =cartRepo.findMaxId(databaseClient).block();
+        System.out.println("getLast   : cId = " + cId + "\n");
+        Optional<Cart> cartOptional = cartRepo.findById(cId).blockOptional();
+        if (cartOptional.isPresent()) {
+            return cartOptional;
+        }
         return Optional.empty();
     }
 
-    public Cart plusItem(Long itemId) {
-//        Optional<Item> itemOptional = itemRepo.findById(itemId);
-//        Optional<Cart> cartOptional = getLast();
-//        if (itemOptional.isPresent() && cartOptional.isPresent()) {
-//            Item item = itemOptional.get();
-//            Cart cart = cartOptional.get();
-//            cart.plusItem(item);
-//            itemService.plus(item);
+    public  Cart  plusItem(Long itemId) {
+        System.out.println("plusItem   : itemId = " + itemId + "\n");
+        Optional<Item> itemOptional = itemRepo.findById(itemId).blockOptional();
+        System.out.println("plusItem   : itemOptional = " + itemOptional.get() + "\n");
+        Optional<Cart> cartOptional = getLast();
+        System.out.println("plusItem   : cartOptional present = " + cartOptional.isPresent() + "\n");
+        System.out.println("plusItem   : cartOptional present = " + cartOptional.get() + "\n");
+        if (itemOptional.isPresent() && cartOptional.isPresent()) {
+            Item item = itemOptional.get();
+            Cart cart = cartOptional.get();
+            item.setCartId(cart.getId());
+           // cart.plusItem(item);
+            itemService.plus(item);
 //            if (!cart.isiTtemInCart(item)) {
 //                cart.plusItem(item);
 //            }
-//            return cartRepo.save(cart);
-//        }
+            System.out.println("plusItem  UPDATE   : cart = " + cart + "\n");
+            System.out.println("plusItem  UPDATE   : item = " + item + "\n");
+            itemRepo.save(item);
+              cartRepo.save(cart);
+              return cart;
+        }
+        log.error("plusItem   : itemId = " + itemId + " NO DATA\n");
             return null;
     }
 
