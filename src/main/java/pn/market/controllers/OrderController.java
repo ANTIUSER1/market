@@ -56,6 +56,6 @@ public class OrderController {
     @PostMapping("/buy/{id}")
     public String buyOrder(@PathVariable("id") Long id) {
         orderService.buyOrder(id);
-        return "redirect:/orders/{id}?newOrder=true";
+        return "redirect:/{id}?newOrder=true";
     }
 }
