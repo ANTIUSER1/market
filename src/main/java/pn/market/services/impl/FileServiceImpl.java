@@ -2,6 +2,7 @@ package pn.market.services.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,7 +11,7 @@ import java.nio.file.Files;
 @Service
 public class FileServiceImpl {
 
-    public String storeFile(MultipartFile file, String uploadDir, long id) throws IOException {
+    public Mono<String> storeFile(MultipartFile file, String uploadDir, long id) throws IOException {
         if (file.isEmpty()) {
             return null;
         } else {
@@ -30,7 +31,8 @@ public class FileServiceImpl {
                         }
                         File copied = new File(uploadDir + imgPreffix + id + "." + fileExt);
                         Files.write(copied.toPath(), fbytes);
-                        return imgFolderName + imgPreffix + id + "." + fileExt;
+                        return
+                                Mono.just( imgFolderName + imgPreffix + id + "." + fileExt);
                     }
                 }
             }
