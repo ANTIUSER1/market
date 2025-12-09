@@ -21,8 +21,7 @@ public class OrderServiceImpl implements TService<Order> {
 
     @Override
     public Optional<Order> getById(Long id) {
-        return Optional.empty();
-        //orderRepo.findById(id);
+        return  orderRepo.findById(id).blockOptional();
     }
 
     @Override
