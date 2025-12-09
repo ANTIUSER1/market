@@ -10,7 +10,8 @@
 </head>
 
 <body class="bg-light">
-<div th:if="${order!=null }">
+<p th:text="${orderData}"></p>
+<div th:if="${orderData!=null }">
     <div class="alert alert-success alert-dismissible fade show" role="alert" th:if="${newOrder}">
         Поздравляем! Успешная покупка! &#128578;
         <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
@@ -31,10 +32,10 @@
         </div>
         <div class="row p-2">
             <div class="col">
-                <h2 th:text="${'Заказ №'+order.id}"></h2>
+                <h2 th:text="${'Заказ №'+orderData.order.id}"></h2>
             </div>
         </div>
-        <div class="row p-2" th:each="item : ${order.items}">
+        <div class="row p-2" th:each="item : ${orderData.items}">
             <div class="col">
                 <div class="card">
                     <div class="card-header">
@@ -52,7 +53,8 @@
         </div>
         <div class="row p-2">
             <div class="col">
-                <h3 th:text="${'Сумма: '+order.totalSum}+' руб.'"></h3>
+                <h3 th:text="${'Сумма: '+orderData.totalSumm}+' руб.'"></h3>
+
             </div>
         </div>
     </div>

@@ -45,18 +45,9 @@ public class OrderController {
             @RequestParam(value = "newOrder") boolean newOrder
     ) {
         Optional<Order> order = orderService.getById(id);
-        System.out.println("    newOrder = " + newOrder);
-        System.out.println("    order present  = " + order.isPresent());
-
-
         if (order.isPresent()) {
-
             OrderContainer orderContainer = orderContainerService.create(order.get());
-
-            System.out.println("    ORDER    = " + order);
-            System.out.println("    ORDER Container    = " + orderContainer);
-            System.out.println("    newOrder = " + newOrder);
-         //   model.addAttribute("order", order.get());
+            model.addAttribute("orderData", orderContainer);
             return "order";
         }
         return "items";
