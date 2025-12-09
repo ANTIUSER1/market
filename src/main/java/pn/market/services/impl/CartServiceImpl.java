@@ -68,7 +68,6 @@ public class CartServiceImpl implements TService<Cart> {
         } else {
             log.error("plusItem   : item = " + itemId + " NO DATA\n");
         }
-
         return cart;
     }
 
