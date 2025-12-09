@@ -10,13 +10,12 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-@Slf4j
+
 @Service
 public class FileServiceImpl {
 
     public Mono<String> storeFile(MultipartFile file, String uploadDir, long id) throws IOException {
         if (file.isEmpty()) {
-            log.warn("File is empty");
             return null;
         } else {
             Mono<Boolean> dirCreated = Mono.just(false);
@@ -46,17 +45,11 @@ public class FileServiceImpl {
                             return
                                     Mono.just(imgFolderName + imgPreffix + id + "." + fileExt);
                         }else {
-                            log.error("Can not create filePath ...");
                             return null;
                         }
                     }
-                } else {
-                    log.warn("File is not an image  --Extension is not valid ");
                 }
-            } else {
-                log.warn("File is not an image  --Extension is empty ");
             }
-
         return null;
     }
 }

@@ -15,7 +15,6 @@ import pn.market.services.TService;
 import java.util.Optional;
 
 @Service
-@Slf4j
 public class CartServiceImpl implements TService<Cart> {
 
     @Autowired
@@ -66,7 +65,6 @@ public class CartServiceImpl implements TService<Cart> {
             itemService.plus(item, cart.getId());
             return cart;
         } else {
-            log.error("plusItem   : item = " + itemId + " NO DATA\n");
         }
         return cart;
     }

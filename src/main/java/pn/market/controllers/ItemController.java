@@ -2,6 +2,7 @@ package pn.market.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/")
-@Slf4j
+
 public class ItemController {
 
     @Autowired
@@ -25,6 +26,9 @@ public class ItemController {
 
     @Autowired
     private ModelService modelService;
+
+    @Autowired
+    private DatabaseClient databaseClient;
 
     @GetMapping
     public String itemsIndex(
@@ -64,13 +68,10 @@ public class ItemController {
             if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
                 if (itemOptional.get().getCartId() != null) {
                     item = itemService.plus(itemOptional.get(), itemOptional.get().getCartId());
-                } else {
-                    log.error(" INCORRECT ITEM REQUEST : ITEM  {} IS NOT IN CART", id);
                 }
             }
             if (item != null) model.addAttribute("item", item);
             else {
-                log.error(" INCORRECT ITEM REQUEST : ITEM  {} IS NOT IN CART", id);
                 model.addAttribute("errorMSG", "INCORRECT ITEM REQUEST : ITEM  " + id + " IS NOT IN CART");
                 return "items";
             }

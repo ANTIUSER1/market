@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/orders")
-@Slf4j
+
 public class OrderController {
 
     @Autowired

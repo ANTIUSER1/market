@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pn.market.entities.Item;
@@ -18,7 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Slf4j
+
 public class ItemServiceImpl implements TService<Item> {
 
     @Value("${spring.web.resources.static-locations}")
@@ -29,6 +30,9 @@ public class ItemServiceImpl implements TService<Item> {
 
     @Autowired
     private ItemRepo itemRepo;
+
+@Autowired
+private DatabaseClient databaseClient;
 
     @Override
     public Optional<Item> getById(Long id) {

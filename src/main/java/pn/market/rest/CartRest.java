@@ -10,7 +10,7 @@ import pn.market.services.autocreate.CartsCreateService;
 
 @RestController
 @RequestMapping("/api/carts")
-@Slf4j
+
 public class CartRest {
 
     @Autowired

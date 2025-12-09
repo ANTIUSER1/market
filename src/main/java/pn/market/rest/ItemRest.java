@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/items")
-@Slf4j
+
 public class ItemRest {
 
     @Autowired

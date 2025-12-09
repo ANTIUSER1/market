@@ -17,7 +17,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/cart")
-@Slf4j
+
 public class CartController {
 
     @Autowired
@@ -44,8 +44,6 @@ public class CartController {
                 model.addAttribute("items", items);
                 return "cart";
             }
-        } else
-            log.info("Cart is empty -- Data no present");
-        return "items";
+        }    return "items";
     }
 }

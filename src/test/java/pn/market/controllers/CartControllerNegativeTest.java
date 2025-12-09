@@ -45,7 +45,6 @@ class CartControllerNegativeTest {
         items.add(item);
 
         cart = new Cart(1L);
-        cart.getCartItems().addAll(items);
 
     }
 
