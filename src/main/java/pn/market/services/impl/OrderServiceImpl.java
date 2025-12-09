@@ -46,17 +46,9 @@ public class OrderServiceImpl implements TService<Order> {
         Optional<Order> orderOptional = orderRepo.findById(id).blockOptional();
         if (orderOptional.isPresent()) {
             Order order = orderOptional.get();
-            System.out.println("    ORDER TO BUY  GET "+order);
-
             List<Item> items=itemRepo.findByOrderId(id).collectList().block();
             itemService.setNullOderId(items);
-//                 order.setItems(new ArrayList<>());
-
-           // orderRepo.save(order);
-
-            System.out.println("    ORDER TO BUY-- SAVE  "+order);
-            orderRepo.delete(order).log().block();
-
-        }
+            orderRepo.delete(order).block();
+ }
     }
 }

@@ -90,7 +90,7 @@ public class ItemServiceImpl implements TService<Item> {
         for (Item item : items) {
             item.setOrderId(null);
         }
-itemRepo.saveAll(items).log().blockLast();
+itemRepo.saveAll(items).blockLast();
     }
 
     private String createImagePath() {

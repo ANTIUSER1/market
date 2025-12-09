@@ -65,8 +65,8 @@ public class CartServiceImpl implements TService<Cart> {
             cart = cartOptional.get();
             if (item.getCartId() == null) {
                 itemService.plus(item, cart.getId());
-                itemRepo.save(item);
-                cartRepo.save(cart);
+                itemRepo.save(item).block();
+                cartRepo.save(cart).block();
                 return cart;
             } else {
                 log.error("plusItem   : itemId = " + itemId + " ALREADY IN CART\n");
@@ -95,21 +95,12 @@ public class CartServiceImpl implements TService<Cart> {
                 System.out.println("minusItem     : item = " + item + "\n");
                 //    item.setCartId(null);
                 itemService.minus(item);
-                itemRepo.save(item);
-                cartRepo.save(cart);
+                itemRepo.save(item).block();
+                cartRepo.save(cart).block();
                 System.out.println("minusItem  UPDATE   : item = " + item + "\n");
                 return cart;
             }
         }
-//            Item item = itemOptional.get();
-//            Cart cart = cartOptional.get();
-//            cart.plusItem(item);
-//            itemService.minus(item);
-//            if (!cart.isiTtemInCart(item)) {
-//                cart.minusItem(item);
-//            }
-//////            return cartRepo.save(cart);
-//////        }
         return null;
     }
 }
