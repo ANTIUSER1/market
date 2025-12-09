@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import pn.market.entities.Order;
 import pn.market.entities.OrderContainer;
 import pn.market.services.impl.ItemServiceImpl;
+import pn.market.services.impl.OrderContainerServiceImpl;
 import pn.market.services.impl.OrderServiceImpl;
 
 import java.util.ArrayList;
@@ -25,17 +26,14 @@ public class OrderController {
     @Autowired
     private ItemServiceImpl itemService;
 
+    @Autowired
+    private OrderContainerServiceImpl orderContainerService;
+
     @GetMapping
     public String asdOrders(Model model) {
         List<Order> orderList = orderService.findAllOrders();
-        List<OrderContainer> orderContainers = new ArrayList<>();
-        for (Order order : orderList) {
-            OrderContainer orderContainer =
-                    new OrderContainer();
-            orderContainer.setOrder(order);
-            orderContainer.setItems(itemService.getItemsByOrderId(order.getId()));
-            orderContainers.add(orderContainer);
-        }
+        List<OrderContainer> orderContainers = orderContainerService.createOrderContainerList(orderList);
+
         model.addAttribute("orderData", orderContainers);
         return "orders";
     }
@@ -48,6 +46,8 @@ public class OrderController {
     ) {
         Optional<Order> order = orderService.getById(id);
         if (order.isPresent()) {
+            System.out.println("    ORDER    = " + order);
+            System.out.println("    newOrder = " + newOrder);
          //   model.addAttribute("order", order.get());
             return "order";
         }
