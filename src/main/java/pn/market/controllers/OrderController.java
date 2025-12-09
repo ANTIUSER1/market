@@ -30,15 +30,12 @@ public class OrderController {
         List<Order> orderList = orderService.findAllOrders();
         List<OrderContainer> orderContainers = new ArrayList<>();
         for (Order order : orderList) {
-
             OrderContainer orderContainer =
                     new OrderContainer();
             orderContainer.setOrder(order);
             orderContainer.setItems(itemService.getItemsByOrderId(order.getId()));
-            // orderContainer.totalSumm();
             orderContainers.add(orderContainer);
         }
-//        System.out.println(orderContainers);
         model.addAttribute("orderData", orderContainers);
         return "orders";
     }
@@ -51,7 +48,7 @@ public class OrderController {
     ) {
         Optional<Order> order = orderService.getById(id);
         if (order.isPresent()) {
-            model.addAttribute("order", order.get());
+         //   model.addAttribute("order", order.get());
             return "order";
         }
         return "items";
