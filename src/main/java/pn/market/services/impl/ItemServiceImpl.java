@@ -76,7 +76,7 @@ public class ItemServiceImpl implements TService<Item> {
         if (itemOptional.isPresent()) {
             item = itemOptional.get();
             String dirToUpload = createImagePath();
-            String fileName = fileService.storeFile(file, dirToUpload, id);
+            String fileName = fileService.storeFile(file, dirToUpload, id).block();
             if (fileName != null) {
                 item.setImgPath(fileName);
             }
