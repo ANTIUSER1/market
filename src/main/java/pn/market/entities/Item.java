@@ -71,12 +71,16 @@ public class Item {
         this.count = count;
     }
 
-    public void plusCount() {
+    public void plusCount(long cartId) {
         count++;
+        this.cartId = cartId;
     }
 
     public void minusCount() {
         if (count > 0) count--;
+        if (count == 0) {
+            this.cartId = null;
+        }
     }
 
     public Long getCartId() {

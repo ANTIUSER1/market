@@ -25,11 +25,10 @@ public class OrderContainer {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("OrderContainer{");
-        sb.append("order=").append(order);
-        sb.append(", items=").append(items);
-        sb.append('}');
-        return sb.toString();
+        String sb = "OrderContainer{" + "order=" + order +
+                ", items=" + items +
+                '}';
+        return sb;
     }
 
     public long totalSumm() {

@@ -14,7 +14,7 @@ public class OrderContainerServiceImpl {
     @Autowired
     private ItemServiceImpl itemService;
 
-    public OrderContainer create(Order order){
+    public OrderContainer create(Order order) {
         OrderContainer orderContainer =
                 new OrderContainer();
         orderContainer.setOrder(order);
@@ -23,7 +23,7 @@ public class OrderContainerServiceImpl {
         return orderContainer;
     }
 
-    public List<OrderContainer> createOrderContainerList(List<Order> orderList){
+    public List<OrderContainer> createOrderContainerList(List<Order> orderList) {
         List<OrderContainer> orderContainers = new ArrayList<>();
         for (Order order : orderList) {
             OrderContainer orderContainer =

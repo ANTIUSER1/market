@@ -30,7 +30,7 @@ public class OrderServiceImpl implements TService<Order> {
 
     @Override
     public Optional<Order> getById(Long id) {
-        return  orderRepo.findById(id).blockOptional();
+        return orderRepo.findById(id).blockOptional();
     }
 
     @Override
@@ -46,9 +46,9 @@ public class OrderServiceImpl implements TService<Order> {
         Optional<Order> orderOptional = orderRepo.findById(id).blockOptional();
         if (orderOptional.isPresent()) {
             Order order = orderOptional.get();
-            List<Item> items=itemRepo.findByOrderId(id).collectList().block();
+            List<Item> items = itemRepo.findByOrderId(id).collectList().block();
             itemService.setNullOderId(items);
             orderRepo.delete(order).block();
- }
+        }
     }
 }

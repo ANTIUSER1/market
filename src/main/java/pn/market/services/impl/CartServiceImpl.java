@@ -63,14 +63,8 @@ public class CartServiceImpl implements TService<Cart> {
         if (itemOptional.isPresent() && cartOptional.isPresent()) {
             Item item = itemOptional.get();
             cart = cartOptional.get();
-            if (item.getCartId() == null) {
-                itemService.plus(item, cart.getId());
-                itemRepo.save(item).block();
-                cartRepo.save(cart).block();
-                return cart;
-            } else {
-                log.error("plusItem   : itemId = " + itemId + " ALREADY IN CART\n");
-            }
+            itemService.plus(item, cart.getId());
+            return cart;
         } else {
             log.error("plusItem   : item = " + itemId + " NO DATA\n");
         }
@@ -86,21 +80,22 @@ public class CartServiceImpl implements TService<Cart> {
         System.out.println("minusItem    : cartOptional = " + cartOptional + "\n");
         System.out.println("minusItem    : (itemOptional.isPresent() && cartOptional.isPresent()) = "
                 + (itemOptional.isPresent() && cartOptional.isPresent()) + "\n");
+        Cart cart = null;
         if (itemOptional.isPresent() && cartOptional.isPresent()) {
             Item item = itemOptional.get();
             System.out.println("minusItem    : item = " + item + "\n");
             System.out.println("minusItem    : item.getCartId() = " + item.getCartId() + "\n");
             if (item.getCartId() != null) {
-                Cart cart = cartOptional.get();
+                cart = cartOptional.get();
                 System.out.println("minusItem     : item = " + item + "\n");
                 //    item.setCartId(null);
                 itemService.minus(item);
                 itemRepo.save(item).block();
-                cartRepo.save(cart).block();
+//                cartRepo.save(cart).block();
                 System.out.println("minusItem  UPDATE   : item = " + item + "\n");
                 return cart;
             }
         }
-        return null;
+        return cart;
     }
 }

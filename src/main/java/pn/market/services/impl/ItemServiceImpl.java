@@ -61,14 +61,12 @@ public class ItemServiceImpl implements TService<Item> {
     }
 
     public Item plus(Item item, long cartId) {
-         item.plusCount();
-        item.setCartId(cartId);
+        item.plusCount(cartId);
         return itemRepo.save(item).block();
     }
 
     public Item minus(Item item) {
         item.minusCount();
-        item.setCartId(null);
         return itemRepo.save(item).block();
     }
 
@@ -90,7 +88,7 @@ public class ItemServiceImpl implements TService<Item> {
         for (Item item : items) {
             item.setOrderId(null);
         }
-itemRepo.saveAll(items).blockLast();
+        itemRepo.saveAll(items).blockLast();
     }
 
     private String createImagePath() {
