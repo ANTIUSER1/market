@@ -57,15 +57,21 @@ public class ItemController {
             Model model) {
         Item item = null;
         Optional<Item> itemOptional = itemService.getById(id);
-
-
         if (action != null && itemOptional.isPresent()) {
-            if (ActionType.MINUS.name().equalsIgnoreCase(action.trim())) item = itemService.minus(itemOptional.get());
-            else if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())
-                    && itemOptional.get().getCartId() != null)
-                item = itemService.plus(itemOptional.get(), itemOptional.get().getCartId());
+              if (ActionType.MINUS.name().equalsIgnoreCase(action.trim()))
+                item = itemService.minus(itemOptional.get());
+
+             if (ActionType.PLUS.name().equalsIgnoreCase(action.trim()) ) {
+                 if (itemOptional.get().getCartId() != null) {
+                      item = itemService.plus(itemOptional.get(), itemOptional.get().getCartId());
+                 } else {
+                     log.error(" INCORRECT ITEM REQUEST : ITEM  {} IS NOT IN CART",id);
+                 }
+             }
             if (item != null) model.addAttribute("item", item);
             else {
+                log.error(" INCORRECT ITEM REQUEST : ITEM  {} IS NOT IN CART",id);
+                model.addAttribute("errorMSG", "INCORRECT ITEM REQUEST : ITEM  " + id + " IS NOT IN CART");
                 return "items";
             }
             model.addAttribute("action", action);

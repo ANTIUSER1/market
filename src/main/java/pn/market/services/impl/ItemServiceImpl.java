@@ -61,7 +61,7 @@ public class ItemServiceImpl implements TService<Item> {
     }
 
     public Item plus(Item item, long cartId) {
-        item.plusCount();
+         item.plusCount();
         item.setCartId(cartId);
         return itemRepo.save(item).block();
     }
