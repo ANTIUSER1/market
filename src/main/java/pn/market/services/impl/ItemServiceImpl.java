@@ -86,6 +86,13 @@ public class ItemServiceImpl implements TService<Item> {
         return item;
     }
 
+    public void setNullOderId(List<Item> items) {
+        for (Item item : items) {
+            item.setOrderId(null);
+        }
+itemRepo.saveAll(items).log().blockLast();
+    }
+
     private String createImagePath() {
         imgPath = imgPath.split("file:")[1]
                 .replace("//", "/")

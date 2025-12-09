@@ -53,9 +53,11 @@ public class OrderController {
         return "items";
     }
 
-    @PostMapping("/buy/{id}")
+    @GetMapping("/buy/{id}")
     public String buyOrder(@PathVariable("id") Long id) {
         orderService.buyOrder(id);
-        return "redirect:/{id}?newOrder=true";
+        Optional<Order> order = orderService.getById(id);
+        System.out.println("      RESULT ::: ORDER PRESENT ::: " +order.isPresent());
+        return "redirect:/orders";
     }
 }

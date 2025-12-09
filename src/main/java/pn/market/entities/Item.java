@@ -20,7 +20,7 @@ public class Item {
 
 
     private Long cartId;
-    private Long itemId;
+    private Long orderId;
 
 
     public Long getId() {
@@ -87,11 +87,11 @@ public class Item {
         this.cartId = cartId;
     }
 
-    public Long getItemId() {
-        return itemId;
+    public Long getOrderId() {
+        return orderId;
     }
 
-    public void setItemId(Long itemId) {
-        this.itemId = itemId;
+    public void setOrderId(Long orderId) {
+        this.orderId = orderId;
     }
 }
