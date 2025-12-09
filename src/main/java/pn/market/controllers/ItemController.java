@@ -57,6 +57,8 @@ public class ItemController {
             Model model) {
         Item item = null;
         Optional<Item> itemOptional = itemService.getById(id);
+
+
         if (action != null && itemOptional.isPresent()) {
             if (ActionType.MINUS.name().equalsIgnoreCase(action.trim())) item = itemService.minus(itemOptional.get());
             else if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())
@@ -66,6 +68,9 @@ public class ItemController {
             else {
                 return "items";
             }
+            model.addAttribute("action", action);
+            model.addAttribute("item", item);
+
             return "item";
         }
         return "items";
