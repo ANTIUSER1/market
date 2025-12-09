@@ -53,7 +53,6 @@ public class FileServiceImpl {
                 } else {
                     log.warn("File is not an image  --Extension is not valid ");
                 }
-
             } else {
                 log.warn("File is not an image  --Extension is empty ");
             }
