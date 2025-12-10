@@ -1,6 +1,5 @@
 package pn.market.services.impl;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -50,11 +49,33 @@ public Mono<Item> findById(Long id) {
     }
 
     @Override
-    public Page<Item> findAllAndPaging(Pageable pageable) {
-        List<Item> items = itemRepo.findAll().collectList().block();
-        Page<Item> page = new PageImpl<>(items, pageable, items.size());
-        System.out.println(page);
-        return page;
+    public  Mono<Page<Item>>  findAllAndPaging(Pageable pageable) {
+
+
+        int pageSize = pageable.getPageSize();
+        int offset = pageable.getPageNumber() * pageSize;
+
+        Flux<Item> itemsFlux = itemRepo.findAll()
+                .skip(offset)
+                .take(pageSize);
+
+        Mono<Long> countMono = itemRepo.count();
+
+        return Mono.zip(itemsFlux.collectList(), countMono)
+                .map(tuple -> {
+                    List<Item> items = tuple.getT1();
+                    long total = tuple.getT2();
+                    return new PageImpl<>(items, pageable, total);
+                });
+//    Flux<Item> itemsFlux = itemRepo.findAll() ;
+//        Mono<Page<Item>> page = itemsFlux
+//                .collectList()
+//                .map(items -> new PageImpl<>(items, pageable, items.size())) ;
+//
+////
+////                //new PageImpl<>(items, pageable, items.size());
+////       System.out.println("CREATE PAGE : "+ page);
+     // return  page;
     }
 
     public List<Item> getItemsByCartId(Long id) {

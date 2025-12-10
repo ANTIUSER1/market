@@ -12,6 +12,7 @@ import pn.market.repo.CartRepo;
 import pn.market.repo.ItemRepo;
 import pn.market.services.TService;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
@@ -42,7 +43,7 @@ public class CartServiceImpl implements TService<Cart> {
     }
 
     @Override
-    public Page<Cart> findAllAndPaging(Pageable pageable) {
+    public   Mono<Page<Cart>> findAllAndPaging(Pageable pageable) {
         return null;
         //cartRepo.findAll(pageable);
     }

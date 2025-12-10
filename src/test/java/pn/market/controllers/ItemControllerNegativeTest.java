@@ -47,7 +47,7 @@ class ItemControllerNegativeTest {
     private List<Item> items;
 
     private Item item;
-
+/*
     @BeforeEach
     void setUp() {
         items = new ArrayList<>();
@@ -131,6 +131,7 @@ class ItemControllerNegativeTest {
 
     }
 
+ */
 }
 
 

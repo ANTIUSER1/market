@@ -2,6 +2,8 @@ package pn.market.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Controller;
@@ -38,6 +40,27 @@ public class ItemController {
 
     @Autowired
     private DatabaseClient databaseClient;
+
+    @GetMapping("/i-all")
+    public    Mono<Rendering> iAllI(
+            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "2") int pageSize,
+            @RequestParam(value = "search", required = false, defaultValue = " ") String search,
+            @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted
+    ){
+        Pageable pageable = modelService.createPageble(page, pageSize, sorted);
+      //  Page<Item> items = itemService.findAllAndPaging(pageable);
+        Mono<Page<Item>> pageMono=itemService.findAllAndPaging(pageable);
+        Flux<Item> itemFlux = itemService.findAll();
+        Rendering r = Rendering.view("items_all")
+                .modelAttribute("items", itemFlux)
+                .build();
+
+        return Mono.just(r);
+
+
+    }
+
 
     @GetMapping("/all/{id}")
     public    Mono<Rendering> getAllItems(   @PathVariable Long id    ){

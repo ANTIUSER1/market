@@ -11,6 +11,7 @@ import pn.market.repo.ItemRepo;
 import pn.market.repo.OrderRepo;
 import pn.market.services.TService;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +41,7 @@ public class OrderServiceImpl implements TService<Order> {
     }
 
     @Override
-    public Page<Order> findAllAndPaging(Pageable pageable) {
+    public Mono<Page<Order>> findAllAndPaging(Pageable pageable) {
         return null;
     }
 

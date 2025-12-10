@@ -22,12 +22,12 @@ public class ModelServiceImpl implements ModelService {
     @Override
     public Mono<Model> createModel(int page, int pageSize, String search, String sorted, Model model) {
         Pageable pageable = createPageble(page, pageSize, sorted);
-        Page<Item> items = itemService.findAllAndPaging(pageable);
-        model.addAttribute("items", items.get().toList());
+        Mono<Page<Item>> items = itemService.findAllAndPaging(pageable);
+        model.addAttribute("items", items );
         model.addAttribute("page", page);
-        model.addAttribute("paging",
-                new Paging(pageSize, page,
-                        items.hasNext(), items.hasPrevious()));
+//        model.addAttribute("paging",
+//                new Paging(pageSize, page,
+//                        items.doOnNext(), items.hasPrevious()));
         return Mono.just(model);
     }
 
