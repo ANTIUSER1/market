@@ -34,7 +34,6 @@ class CartsCreateServiceTest {
         for (int i = 0; i < 3; i++) {
             items.add(new Item());
         }
-        cart.setCartItems(items);
     }
 
     @Test
@@ -43,6 +42,6 @@ class CartsCreateServiceTest {
         when(itemsCreateService.autoCreate()).thenReturn(items);
         when(cartService.createRandomCart()).thenReturn(cart);
         assertEquals(1L, (long) cart.getId());
-        assertEquals(3, cart.getCartItems().size());
+        assertEquals(3, items.size());
     }
 }

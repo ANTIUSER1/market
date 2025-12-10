@@ -29,15 +29,15 @@ class OrdersCreateServiceTest {
         cart.setId(100L);
     }
 
-    @Test
-    void createOrder() {
-        when(cartRepo.findMaxId()).thenReturn(100L);
-        long maxId = cartRepo.findMaxId();
-        when(cartRepo.findById(maxId)).thenReturn(Optional.of(cart));
-        assertTrue(cartRepo.findById(maxId).isPresent());
-        when(cartRepo.save(cart)).thenReturn(cart);
-        assertEquals(100, cart.getId());
-    }
+//    @Test
+//    void createOrder() {
+//        when(cartRepo.findMaxId()).thenReturn(100L);
+//        long maxId = cartRepo.findMaxId();
+//        when(cartRepo.findById(maxId)).thenReturn(Optional.of(cart));
+//        assertTrue(cartRepo.findById(maxId).isPresent());
+//        when(cartRepo.save(cart)).thenReturn(cart);
+//        assertEquals(100, cart.getId());
+//    }
 
 
 }

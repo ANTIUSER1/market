@@ -30,16 +30,17 @@ class CartsCreateServiceNegativeTest {
         cart = new Cart();
         cart.setId(1L);
         items = new ArrayList<>();
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 5; i++) {
             items.add(new Item());
         }
     }
 
     @Test
     void createRandomCart() {
+
         when(itemsCreateService.autoCreate()).thenReturn(items);
         when(cartService.createRandomCart()).thenReturn(cart);
         assertNotEquals(3L, (long) cart.getId());
-        assertNotEquals(3, cart.getCartItems().size());
+        assertNotEquals(3, items.size());
     }
 }

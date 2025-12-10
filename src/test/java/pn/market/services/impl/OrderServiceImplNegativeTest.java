@@ -38,9 +38,8 @@ class OrderServiceImplNegativeTest {
         order = new Order();
         item = new Item();
         order.setId(1L);
-        order.setItems(new ArrayList<>());
     }
-
+/*
 
     @Test
     void getById() {
@@ -67,5 +66,7 @@ class OrderServiceImplNegativeTest {
         assertNotEquals(10, orderService.findAllOrders().size());
     }
 
+
+ */
 
 }

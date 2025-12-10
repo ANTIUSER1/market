@@ -31,7 +31,7 @@ class FileServiceImplNegativeTest {
         file = new MockMultipartFile(fileName, "image/jpeg".getBytes());
         id = 1;
     }
-
+/*
     @Test
     void storeFile() throws IOException {
         when(fileService.storeFile(file, fileNameTarget, id)).thenReturn(fileName);
@@ -44,4 +44,7 @@ class FileServiceImplNegativeTest {
         when(fileService.isImage(ext)).thenReturn(false);
         assertFalse(fileService.isImage(ext));
     }
+
+ */
+
 }

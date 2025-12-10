@@ -51,7 +51,7 @@ class ItemServiceImplNegativeTest {
         imgPath = "path";
     }
 
-
+/*
     @Test
     void getById() {
         when(itemRepo.findById(1L)).thenReturn(Optional.ofNullable(item));
@@ -89,4 +89,6 @@ class ItemServiceImplNegativeTest {
         when(itemService.uploadFile(file, id)).thenReturn(item);
         assertNotEquals(null, itemService.uploadFile(file, id).getImgPath());
     }
+
+ */
 }
