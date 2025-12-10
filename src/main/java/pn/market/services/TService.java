@@ -14,6 +14,6 @@ public interface TService<T> {
 
     Optional<T> getById(Long id);
 
-    Mono<Page<T>> findAllAndPaging(Pageable pageable);
+    Mono<Page<T>> findAllAndPaging(  Mono<Pageable> pageable);
 
 }

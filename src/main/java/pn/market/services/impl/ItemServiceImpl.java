@@ -31,13 +31,14 @@ public class ItemServiceImpl implements TService<Item> {
     @Autowired
     private ItemRepo itemRepo;
 
-@Autowired
-private DatabaseClient databaseClient;
+    @Autowired
+    private DatabaseClient databaseClient;
 
 
-public Mono<Item> findById(Long id) {
-    return itemRepo.findById(id);
-}
+    public Mono<Item> findById(Long id) {
+        return itemRepo.findById(id);
+    }
+
     @Override
     public Flux<Item> findAll() {
         return itemRepo.findAll();
@@ -47,25 +48,27 @@ public Mono<Item> findById(Long id) {
     public Optional<Item> getById(Long id) {
         return itemRepo.findById(id).blockOptional();
     }
+    int pageSize;  int offset;
 
     @Override
-    public  Mono<Page<Item>>  findAllAndPaging(Pageable pageable) {
-
-
-        int pageSize = pageable.getPageSize();
-        int offset = pageable.getPageNumber() * pageSize;
-
-        Flux<Item> itemsFlux = itemRepo.findAll()
+    public Mono<Page<Item>> findAllAndPaging(   Mono<Pageable>  pageable) {
+        Mono<Pageable>      pageableMono=pageable.map(p->{
+            pageSize = p.getPageSize();
+            offset = p.getPageNumber() * pageSize;
+            return p;
+                }
+        );
+         Flux<Item> itemsFlux = itemRepo.findAll()
                 .skip(offset)
                 .take(pageSize);
-
         Mono<Long> countMono = itemRepo.count();
 
-        return Mono.zip(itemsFlux.collectList(), countMono)
+        return Mono.zip(itemsFlux.collectList(), countMono, pageable)
                 .map(tuple -> {
                     List<Item> items = tuple.getT1();
                     long total = tuple.getT2();
-                    return new PageImpl<>(items, pageable, total);
+                    Pageable p=tuple.getT3();
+                    return new PageImpl<>(items, p, total);
                 });
 //    Flux<Item> itemsFlux = itemRepo.findAll() ;
 //        Mono<Page<Item>> page = itemsFlux
@@ -75,7 +78,7 @@ public Mono<Item> findById(Long id) {
 ////
 ////                //new PageImpl<>(items, pageable, items.size());
 ////       System.out.println("CREATE PAGE : "+ page);
-     // return  page;
+        // return  page;
     }
 
     public List<Item> getItemsByCartId(Long id) {

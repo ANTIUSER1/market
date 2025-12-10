@@ -48,7 +48,7 @@ public class ItemController {
             @RequestParam(value = "search", required = false, defaultValue = " ") String search,
             @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted
     ){
-        Pageable pageable = modelService.createPageble(page, pageSize, sorted);
+        Mono<Pageable> pageable = modelService.createPageble(page, pageSize, sorted);
       //  Page<Item> items = itemService.findAllAndPaging(pageable);
         Mono<Page<Item>> pageMono=itemService.findAllAndPaging(pageable);
         Flux<Item> itemFlux = itemService.findAll();

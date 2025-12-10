@@ -8,5 +8,5 @@ public interface ModelService {
 
     Mono<Model> createModel(int page, int pageSize, String search, String sorted, Model model);
 
-    Pageable createPageble(int page, int pageSize, String sorted);
+    Mono<Pageable> createPageble(int page, int pageSize, String sorted);
 }
