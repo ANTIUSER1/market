@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.result.view.Rendering;
+import org.thymeleaf.spring6.context.webflux.IReactiveDataDriverContextVariable;
+import org.thymeleaf.spring6.context.webflux.ReactiveDataDriverContextVariable;
 import pn.market.additional.ActionType;
 import pn.market.entities.Item;
 import pn.market.services.ModelService;
@@ -21,6 +23,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Optional;
+
+
 
 @Controller
 @RequestMapping("/")
@@ -35,21 +39,16 @@ public class ItemController {
     @Autowired
     private DatabaseClient databaseClient;
 
-    @GetMapping("/all")
-    public Mono<Rendering> getAllItems(   ){
-//        Mono<Item> item=itemService.findById(id);
-//
-//       System.out.println(item==null);
-
-     String name = "AS DDS";
-     System.out.println(name);
-
+    @GetMapping("/all/{id}")
+    public    Mono<Rendering> getAllItems(   @PathVariable Long id    ){
+        Mono<Item> itemFlux = itemService.findById(id);
         Rendering r = Rendering.view("all")
-
-                .modelAttribute("item", name   )
-                .status(HttpStatus.OK)
+                .modelAttribute("items", itemFlux)
                 .build();
+
         return Mono.just(r);
+
+
     }
 
     @GetMapping
