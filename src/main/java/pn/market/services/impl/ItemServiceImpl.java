@@ -13,6 +13,7 @@ import pn.market.entities.Item;
 import pn.market.repo.ItemRepo;
 import pn.market.services.TService;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.List;
@@ -34,6 +35,10 @@ public class ItemServiceImpl implements TService<Item> {
 @Autowired
 private DatabaseClient databaseClient;
 
+
+public Mono<Item> findById(Long id) {
+    return itemRepo.findById(id);
+}
     @Override
     public Flux<Item> findAll() {
         return itemRepo.findAll();

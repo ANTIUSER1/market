@@ -1,6 +1,6 @@
 package pn.market.rest;
 
-import jakarta.servlet.ServletContext;
+//import jakarta.servlet.ServletContext;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,8 +33,8 @@ public class ItemRest {
     @Autowired
     private OrdersCreateService ordersCreateService;
 
-    @Autowired
-    private ServletContext servletContext;
+//    @Autowired
+//    private ServletContext servletContext;
 
     @GetMapping("/setof/{count}")
     public List<Item> createSet(@PathVariable("count") int count) {

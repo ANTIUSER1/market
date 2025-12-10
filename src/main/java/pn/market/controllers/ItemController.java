@@ -2,9 +2,12 @@ package pn.market.controllers;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,10 +36,18 @@ public class ItemController {
     private DatabaseClient databaseClient;
 
     @GetMapping("/all")
-    public Mono<Rendering> getAllItems(    ){
-        Flux<Item> items = itemService.findAll();
-        Rendering r = Rendering.view("items")
-                .modelAttribute("info", items)
+    public Mono<Rendering> getAllItems(   ){
+//        Mono<Item> item=itemService.findById(id);
+//
+//       System.out.println(item==null);
+
+     String name = "AS DDS";
+     System.out.println(name);
+
+        Rendering r = Rendering.view("all")
+
+                .modelAttribute("item", name   )
+                .status(HttpStatus.OK)
                 .build();
         return Mono.just(r);
     }
