@@ -10,6 +10,9 @@
 </head>
 
 <body class="bg-light" style="background-color:#ddddd0">
+
+<p th:text="${info}"></p>
+
 <h3 th:if="${errorMSG!=null}">Ошибка: <span th:text="${errorMSG}"></span></h3>
 <div th:if="${paging!=null && items!=null }">
     <form id="main">

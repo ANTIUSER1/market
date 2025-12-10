@@ -35,6 +35,11 @@ public class ItemServiceImpl implements TService<Item> {
 private DatabaseClient databaseClient;
 
     @Override
+    public Flux<Item> findAll() {
+        return itemRepo.findAll();
+    }
+
+    @Override
     public Optional<Item> getById(Long id) {
         return itemRepo.findById(id).blockOptional();
     }

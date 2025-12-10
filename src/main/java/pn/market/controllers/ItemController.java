@@ -9,10 +9,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.reactive.result.view.Rendering;
 import pn.market.additional.ActionType;
 import pn.market.entities.Item;
 import pn.market.services.ModelService;
 import pn.market.services.impl.ItemServiceImpl;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.Optional;
 
@@ -28,6 +31,15 @@ public class ItemController {
 
     @Autowired
     private DatabaseClient databaseClient;
+
+    @GetMapping("/all")
+    public Mono<Rendering> getAllItems(    ){
+        Flux<Item> items = itemService.findAll();
+        Rendering r = Rendering.view("items")
+                .modelAttribute("info", items)
+                .build();
+        return Mono.just(r);
+    }
 
     @GetMapping
     public String itemsIndex(

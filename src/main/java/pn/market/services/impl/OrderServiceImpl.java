@@ -10,6 +10,7 @@ import pn.market.entities.Order;
 import pn.market.repo.ItemRepo;
 import pn.market.repo.OrderRepo;
 import pn.market.services.TService;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,6 +28,11 @@ public class OrderServiceImpl implements TService<Order> {
     @Autowired
     private ItemServiceImpl itemService;
 
+
+    @Override
+    public Flux<Order> findAll() {
+        return null;
+    }
 
     @Override
     public Optional<Order> getById(Long id) {

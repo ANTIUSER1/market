@@ -11,6 +11,7 @@ import pn.market.entities.Item;
 import pn.market.repo.CartRepo;
 import pn.market.repo.ItemRepo;
 import pn.market.services.TService;
+import reactor.core.publisher.Flux;
 
 import java.util.Optional;
 
@@ -28,6 +29,11 @@ public class CartServiceImpl implements TService<Cart> {
 
     @Autowired
     private ItemServiceImpl itemService;
+
+    @Override
+    public Flux<Cart> findAll() {
+        return null;
+    }
 
     @Override
     public Optional<Cart> getById(Long id) {
