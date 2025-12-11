@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import pn.market.additional.Paging;
 import pn.market.entities.Item;
 import pn.market.entities.Order;
 import pn.market.repo.ItemRepo;
@@ -41,7 +42,9 @@ public class OrderServiceImpl implements TService<Order> {
     }
 
     @Override
-    public Mono<Page<Order>> findAllAndPaging( Mono<Pageable> pageable) {
+    public Mono<Paging> findAllAndPaging(Mono<Pageable> pageable) {
+
+//    public Mono<Page<Order>> findAllAndPaging( Mono<Pageable> pageable) {
         return null;
     }
 
