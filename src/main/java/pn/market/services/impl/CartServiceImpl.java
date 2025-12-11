@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Service;
+import pn.market.additional.Paging;
 import pn.market.entities.Cart;
 import pn.market.entities.Item;
 import pn.market.repo.CartRepo;
@@ -43,7 +44,8 @@ public class CartServiceImpl implements TService<Cart> {
     }
 
     @Override
-    public   Mono<Page<Cart>> findAllAndPaging( Mono<Pageable>  pageable) {
+    public   Mono<Paging> findAllAndPaging(Mono<Pageable>  pageable) {
+//    public   Mono<Page<Cart>> findAllAndPaging( Mono<Pageable>  pageable) {
         return null;
         //cartRepo.findAll(pageable);
     }
