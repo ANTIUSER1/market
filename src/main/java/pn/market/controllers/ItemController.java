@@ -72,7 +72,7 @@ public class ItemController {
 
         Mono<Rendering> r=    Mono.just(  Rendering.view("item")
                 .modelAttribute("item", itemMono)
-                .modelAttribute("item", action  )
+                .modelAttribute("action", action  )
                 .build()) ;
         return  r;    }
 

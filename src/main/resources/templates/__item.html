@@ -17,34 +17,34 @@
 <!--<span th:text="${item==null}"></span>-->
 <!--<p th:text="${items}"></p>-->
 
-<hr />
-tt ==<span th:text="${tt}"></span>     tt=nunll: <span th:text="${tt==null}"></span> <br />
-page==null ==<span th:text="${page==null}"></span><br />
-page ==<span th:text="${page}"></span><br />
-paging==null ==<span th:text="${paging==null}"></span><br />
-paging ==<span th:text="${paging}"></span><br />
-<hr />
-<hr />
-<span th:text="${paging!=null && items!=null }"></span>
-<span th:text="${paging.pageSize }"></span>
-<br />
-<br />
-<br />
-<h4>
-  page  <span th:text="${page}"></span> <br /><br />
-  paging  <span th:text="${paging}"></span> <br />
-  p NUMBER <span th:text="${paging.getPageNumber()}"></span><br />
-  p NUMBER <span th:text="${paging.pageNumber }"></span><br />
-   p SIZE <span th:text="${paging.pageSize}"></span><br />
-       prev <span th:text="${paging.hasPrevious }"></span><br />
-    next <span th:text="${paging.hasNext }"></span><br />
-    total  <span th:text="${paging.totalPages }"></span><br />
-<!--    total  <span th:text="${paging.getTotalPages }"></span><br />-->
+<!--<hr />-->
+<!--tt ==<span th:text="${tt}"></span>     tt=nunll: <span th:text="${tt==null}"></span> <br />-->
+<!--page==null ==<span th:text="${page==null}"></span><br />-->
+<!--page ==<span th:text="${page}"></span><br />-->
+<!--paging==null ==<span th:text="${paging==null}"></span><br />-->
+<!--paging ==<span th:text="${paging}"></span><br />-->
+<!--<hr />-->
+<!--<hr />-->
+<!--<span th:text="${paging!=null && items!=null }"></span>-->
+<!--<span th:text="${paging.pageSize }"></span>-->
+<!--<br />-->
+<!--<br />-->
+<!--<br />-->
+<!--<h4>-->
+<!--  page  <span th:text="${page}"></span> <br /><br />-->
+<!--  paging  <span th:text="${paging}"></span> <br />-->
+<!--  p NUMBER <span th:text="${paging.getPageNumber()}"></span><br />-->
+<!--  p NUMBER <span th:text="${paging.pageNumber }"></span><br />-->
+<!--   p SIZE <span th:text="${paging.pageSize}"></span><br />-->
+<!--       prev <span th:text="${paging.hasPrevious }"></span><br />-->
+<!--    next <span th:text="${paging.hasNext }"></span><br />-->
+<!--    total  <span th:text="${paging.totalPages }"></span><br />-->
+<!--&lt;!&ndash;    total  <span th:text="${paging.getTotalPages }"></span><br />&ndash;&gt;-->
 
-</h4>
-<h2>
+<!--</h4>-->
+<!--<h2>-->
 
-</h2>
+<!--</h2>-->
 <hr />
 <!--<div th:each="itemsRow : ${items}">-->
 <!--    <span th:text="${'Страница: '+paging.pageNumber}"></span>  &#45;&#45;&#45;&#45;-->
@@ -61,6 +61,11 @@ paging ==<span th:text="${paging}"></span><br />
 <!--    </h5>-->
 <!--        </div>-->
 
+<h4>
+        <span th:text="${item!=null  }"></span> <span th:text="${action}"></span> <br />
+        <span th:text="${item}"></span> <br />
+        <span  th:text="${item.title }"></span> <br />
+</h4>
 
 </body>
 
