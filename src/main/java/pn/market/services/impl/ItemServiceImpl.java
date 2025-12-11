@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import pn.market.additional.Paging;
 import pn.market.entities.Item;
 import pn.market.repo.ItemRepo;
 import pn.market.services.TService;
@@ -50,8 +51,9 @@ public class ItemServiceImpl implements TService<Item> {
     }
     int pageSize;  int offset;
 
+
     @Override
-    public Mono<Page<Item>> findAllAndPaging(   Mono<Pageable>  pageable) {
+    public Mono<Paging> findAllAndPaging(Mono<Pageable>  pageable) {
         Mono<Pageable>      pageableMono=pageable.map(p->{
             pageSize = p.getPageSize();
             offset = p.getPageNumber() * pageSize;
@@ -68,7 +70,19 @@ public class ItemServiceImpl implements TService<Item> {
                     List<Item> items = tuple.getT1();
                     long total = tuple.getT2();
                     Pageable p=tuple.getT3();
-                    return new PageImpl<>(items, p, total);
+boolean hasPrevious=p.hasPrevious();
+boolean hasNext=p.next()==null;
+
+                    Paging paging=new Paging(
+                            p.getPageSize(), p.getPageNumber(),
+                            (int) (total/p.getPageSize()+1),
+                            hasNext,hasPrevious);
+System.out.println("PAGING VALUE " +paging);
+System.out.println("PAGING VALUE " +paging);
+System.out.println("PAGING VALUE " +paging);
+System.out.println("PAGING VALUE " +paging);
+System.out.println("PAGING VALUE " +paging);
+                return paging;
                 });
 
  }

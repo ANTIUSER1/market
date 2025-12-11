@@ -1,10 +1,8 @@
 package pn.market.controllers;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,9 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.result.view.Rendering;
-import org.thymeleaf.spring6.context.webflux.IReactiveDataDriverContextVariable;
-import org.thymeleaf.spring6.context.webflux.ReactiveDataDriverContextVariable;
 import pn.market.additional.ActionType;
+import pn.market.additional.Paging;
 import pn.market.entities.Item;
 import pn.market.services.ModelService;
 import pn.market.services.impl.ItemServiceImpl;
@@ -48,15 +45,28 @@ public class ItemController {
             @RequestParam(value = "search", required = false, defaultValue = " ") String search,
             @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted
     ){
-        Mono<Pageable> pageable = modelService.createPageble(page, pageSize, sorted);
-      //  Page<Item> items = itemService.findAllAndPaging(pageable);
-        Mono<Page<Item>> pageMono=itemService.findAllAndPaging(pageable);
-        Flux<Item> itemFlux = itemService.findAll();
-        Rendering r = Rendering.view("items_all")
-                .modelAttribute("items", itemFlux)
-                .build();
+        Flux< Item>  itemFlux = itemService.findAll();
+        Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
+        Mono<Paging> pageMono=itemService.findAllAndPaging(pageableMono);
+//        Mono<Page<Item>> pageMono=itemService.findAllAndPaging(pageableMono);
 
-        return Mono.just(r);
+        Mono<Rendering> r=    Mono.just(  Rendering.view("items_all")
+                .modelAttribute("tt", "itemFlux")
+                .modelAttribute("items", itemFlux)
+                .modelAttribute("paging", pageMono  )
+                .modelAttribute("page", pageableMono        )
+                .build())
+                ;
+
+        System.out.println("r view = " + r.block().view());
+        System.out.println("r attr = " + r.block(). modelAttributes().values());
+//r=Mono.zip(r,pageMono).map(tuple->{
+//        var r1=tuple.getT1();
+//        var page1=tuple.getT2();
+//        r1.modelAttribute("page", page1);
+//        return r1;
+//});
+        return  r;
 
 
     }
