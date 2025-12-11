@@ -1,5 +1,8 @@
 package pn.market.additional;
 
+import lombok.ToString;
+
+@ToString
 public class Paging {
     private final int pageSize;
     private final int pageNumber;
