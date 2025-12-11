@@ -48,29 +48,33 @@ public class ItemController {
         Flux< Item>  itemFlux = itemService.findAll();
         Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
         Mono<Paging> pageMono=itemService.findAllAndPaging(pageableMono);
-//        Mono<Page<Item>> pageMono=itemService.findAllAndPaging(pageableMono);
 
         Mono<Rendering> r=    Mono.just(  Rendering.view("items_all")
-                .modelAttribute("tt", "itemFlux")
                 .modelAttribute("items", itemFlux)
                 .modelAttribute("paging", pageMono  )
                 .modelAttribute("page", pageableMono        )
-                .build())
-                ;
-
-        System.out.println("r view = " + r.block().view());
-        System.out.println("r attr = " + r.block(). modelAttributes().values());
-//r=Mono.zip(r,pageMono).map(tuple->{
-//        var r1=tuple.getT1();
-//        var page1=tuple.getT2();
-//        r1.modelAttribute("page", page1);
-//        return r1;
-//});
-        return  r;
+                .build()) ;
+        return  r;    }
 
 
-    }
+    @GetMapping("/i-all/{id}")
+    public    Mono<Rendering> iById(
+            @PathVariable("id") Long id,
+            @RequestParam(value = "action", required = false) String action
+    ){
 
+        Mono<Item> itemMono = itemService.findById(id);
+
+//        Flux< Item>  itemFlux = itemService.findAll();
+//        Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
+//        Mono<Paging> pageMono=itemService.findAllAndPaging(pageableMono);
+
+
+        Mono<Rendering> r=    Mono.just(  Rendering.view("item")
+                .modelAttribute("item", itemMono)
+                .modelAttribute("item", action  )
+                .build()) ;
+        return  r;    }
 
     @GetMapping("/all/{id}")
     public    Mono<Rendering> getAllItems(   @PathVariable Long id    ){
