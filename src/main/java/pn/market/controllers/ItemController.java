@@ -1,13 +1,10 @@
 package pn.market.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +21,6 @@ import reactor.core.publisher.Mono;
 import java.util.Optional;
 
 
-
 @Controller
 @RequestMapping("/")
 public class ItemController {
@@ -39,46 +35,45 @@ public class ItemController {
     private DatabaseClient databaseClient;
 
     @GetMapping("/i-all")
-    public    Mono<Rendering> iAllI(
+    public Mono<Rendering> iAllI(
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
             @RequestParam(value = "pageSize", required = false, defaultValue = "2") int pageSize,
             @RequestParam(value = "search", required = false, defaultValue = " ") String search,
             @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted
-    ){
-        Flux< Item>  itemFlux = itemService.findAll();
+    ) {
+        Flux<Item> itemFlux = itemService.findAll();
         Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
-        Mono<Paging> pageMono=itemService.findAllAndPaging(pageableMono);
+        Mono<Paging> pageMono = itemService.findAllAndPaging(pageableMono);
 
-        Mono<Rendering> r=    Mono.just(  Rendering.view("__items")
+        Mono<Rendering> r = Mono.just(Rendering.view("__items")
                 .modelAttribute("items", itemFlux)
-                .modelAttribute("paging", pageMono  )
-                .modelAttribute("page", pageableMono        )
-                .build()) ;
-        return  r;    }
+                .modelAttribute("paging", pageMono)
+                .modelAttribute("page", pageableMono)
+                .build());
+        return r;
+    }
 
 
     @GetMapping("/i-all/{id}")
-    public    Mono<Rendering> iById(
+    public Mono<Rendering> iById(
             @PathVariable("id") Long id,
             @RequestParam(value = "action", required = false) String action
-    ){
-
+    ) {
         Mono<Item> itemMono = itemService.findById(id);
+       Mono<Long> cartIdMono = itemService.getItemCartId(itemMono);
+        Mono<Item> item=itemService.plus(itemMono, cartIdMono);
 
-//        Flux< Item>  itemFlux = itemService.findAll();
-//        Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
-//        Mono<Paging> pageMono=itemService.findAllAndPaging(pageableMono);
-
-
-        Mono<Rendering> r=    Mono.just(  Rendering.view("item")
+        Mono<Rendering> r = Mono.just(Rendering.view("item")
                 .modelAttribute("item", itemMono)
-                .modelAttribute("action", action  )
-                .build()) ;
-        return  r;    }
+                .modelAttribute("action", action)
+                .build());
+        return r;
+    }
 
     @GetMapping("/all/{id}")
-    public    Mono<Rendering> getAllItems(   @PathVariable Long id    ){
+    public Mono<Rendering> getAllItems(@PathVariable Long id) {
         Mono<Item> itemFlux = itemService.findById(id);
+
         Rendering r = Rendering.view("all")
                 .modelAttribute("items", itemFlux)
                 .build();
@@ -117,6 +112,7 @@ public class ItemController {
             @PathVariable("id") Long id,
             @RequestParam(value = "action", required = false) String action,
             Model model) {
+
         Item item = null;
         Optional<Item> itemOptional = itemService.getById(id);
         if (action != null && itemOptional.isPresent()) {
@@ -139,5 +135,6 @@ public class ItemController {
             return "item";
         }
         return "items";
+
     }
 }
