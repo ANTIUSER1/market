@@ -70,16 +70,8 @@ public class ItemServiceImpl implements TService<Item> {
                     Pageable p=tuple.getT3();
                     return new PageImpl<>(items, p, total);
                 });
-//    Flux<Item> itemsFlux = itemRepo.findAll() ;
-//        Mono<Page<Item>> page = itemsFlux
-//                .collectList()
-//                .map(items -> new PageImpl<>(items, pageable, items.size())) ;
-//
-////
-////                //new PageImpl<>(items, pageable, items.size());
-////       System.out.println("CREATE PAGE : "+ page);
-        // return  page;
-    }
+
+ }
 
     public List<Item> getItemsByCartId(Long id) {
         Flux<Item> items = itemRepo.findByCartId(id);
