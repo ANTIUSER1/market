@@ -77,14 +77,8 @@ boolean hasNext=p.next()==null;
                             p.getPageSize(), p.getPageNumber(),
                             (int) (total/p.getPageSize()+1),
                             hasNext,hasPrevious);
-System.out.println("PAGING VALUE " +paging);
-System.out.println("PAGING VALUE " +paging);
-System.out.println("PAGING VALUE " +paging);
-System.out.println("PAGING VALUE " +paging);
-System.out.println("PAGING VALUE " +paging);
                 return paging;
                 });
-
  }
 
     public List<Item> getItemsByCartId(Long id) {
