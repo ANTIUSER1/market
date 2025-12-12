@@ -60,6 +60,35 @@ public class ItemController {
             @RequestParam(value = "action", required = false) String action
     ) {
 
+        Mono<Item> itemMono = itemService.findById(id);
+        Mono<Long> cartIdMono = itemService.getItemCartId(itemMono);
+        itemMono = Mono.zip(itemMono, cartIdMono).map(t -> {
+            Item i = t.getT1();
+            long cartId = t.getT2();
+            Mono<Item> mi = null;
+            if (action != null) {
+                if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
+                    System.out.println("i --b = " + i);
+                    mi = itemService.plusForMono(i, cartId);
+
+
+                    System.out.println("i --a  = " + i);
+                }
+
+                if (ActionType.MINUS.name().equalsIgnoreCase(action.trim())) {
+                    System.out.println("i --b = " + i);
+                    mi = itemService.minusForMono(i);
+                    System.out.println("i --a  = " + i);
+                }
+            }
+            if (mi != null) return mi;
+            else return Mono.just(i);
+        }).flatMap(i -> i);
+
+
+        //}
+
+        /*
         Mono<Item> itemMono = itemService.findById(id)
                 .map(
                         i -> {
@@ -82,6 +111,10 @@ public class ItemController {
                             if (mi != null) return mi;
                             else return Mono.just(i);
                         }).flatMap(i -> i);
+
+
+        */
+
 
                /*
         Mono<Item> itemMono = itemService.findById(id);
@@ -106,7 +139,7 @@ public class ItemController {
                             return i;
                         });
                 */
-        Mono<Long> cartIdMono = itemService.getItemCartId(itemMono);
+        //Mono<Long> cartIdMono = itemService.getItemCartId(itemMono);
         /*
         itemMono = Mono.zip(itemMono, cartIdMono).map(t -> {
 
