@@ -2,8 +2,6 @@ package pn.market.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Service;
@@ -41,7 +39,6 @@ public class ItemServiceImpl implements TService<Item> {
     }
 
 
-
     @Override
     public Flux<Item> findAll() {
         return itemRepo.findAll();
@@ -51,18 +48,20 @@ public class ItemServiceImpl implements TService<Item> {
     public Optional<Item> getById(Long id) {
         return itemRepo.findById(id).blockOptional();
     }
-    int pageSize;  int offset;
+
+    int pageSize;
+    int offset;
 
 
     @Override
-    public Mono<Paging> findAllAndPaging(Mono<Pageable>  pageable) {
-        Mono<Pageable>      pageableMono=pageable.map(p->{
-            pageSize = p.getPageSize();
-            offset = p.getPageNumber() * pageSize;
-            return p;
+    public Mono<Paging> findAllAndPaging(Mono<Pageable> pageable) {
+        Mono<Pageable> pageableMono = pageable.map(p -> {
+                    pageSize = p.getPageSize();
+                    offset = p.getPageNumber() * pageSize;
+                    return p;
                 }
         );
-         Flux<Item> itemsFlux = itemRepo.findAll()
+        Flux<Item> itemsFlux = itemRepo.findAll()
                 .skip(offset)
                 .take(pageSize);
         Mono<Long> countMono = itemRepo.count();
@@ -71,17 +70,17 @@ public class ItemServiceImpl implements TService<Item> {
                 .map(tuple -> {
                     List<Item> items = tuple.getT1();
                     long total = tuple.getT2();
-                    Pageable p=tuple.getT3();
-boolean hasPrevious=p.hasPrevious();
-boolean hasNext=p.next()==null;
+                    Pageable p = tuple.getT3();
+                    boolean hasPrevious = p.hasPrevious();
+                    boolean hasNext = p.next() == null;
 
-                    Paging paging=new Paging(
+                    Paging paging = new Paging(
                             p.getPageSize(), p.getPageNumber(),
-                            (int) (total/p.getPageSize()+1),
-                            hasNext,hasPrevious);
-                return paging;
+                            (int) (total / p.getPageSize() + 1),
+                            hasNext, hasPrevious);
+                    return paging;
                 });
- }
+    }
 
     public List<Item> getItemsByCartId(Long id) {
         Flux<Item> items = itemRepo.findByCartId(id);
@@ -100,9 +99,50 @@ boolean hasNext=p.next()==null;
 
     }
 
+    public Mono<Item> plusForMono(Item item, long cartId) {
+        item.plusCount(cartId);
+        return itemRepo.save(item);
+    }
+
     public Item plus(Item item, long cartId) {
         item.plusCount(cartId);
         return itemRepo.save(item).block();
+    }
+
+    /*
+     Long id=null;
+    public Mono<Item> plus(Mono<Item> itemMono, Mono<Long> cartId) {
+//        Item item = itemMono.block();
+//        item.plusCount();
+//        item.setCartId(cartId.block());
+//        itemRepo.save(item);
+System.out.println("cartId = " + cartId.log());
+
+        Mono<Item> r = Mono.zip(itemMono, cartId)
+                .log( )
+                .map(t -> {
+                    System.out.println("t = " + t);
+                            id = t.getT1().getId();
+                 t.getT1().setCartId(t.getT2());
+                 t.getT1().plusCount();
+                    return   itemRepo.save(t.getT1()) ;
+                           // .flatMap(i->itemRepo.findById( id));
+                }).flatMap(i->i)
+//                .flatMap(i->itemRepo.findById( id))
+//                .log()
+                //.subscribe(i->System.out.println("i = " + i));
+
+//                .retryWhen(Retry.fixedDelay(5, Duration.ofSeconds(10)))
+//                .doOnError(e -> System.out.println("Произошла ошибка: " + e.getMessage()))
+                ;
+
+        return r;
+    }
+
+     */
+    public Mono<Item> minusForMono(Item item) {
+        item.minusCount();
+        return itemRepo.save(item);
     }
 
     public Item minus(Item item) {
@@ -131,6 +171,12 @@ boolean hasNext=p.next()==null;
         itemRepo.saveAll(items).blockLast();
     }
 
+
+    public Mono<Long> getItemCartId(Mono<Item> itemMono) {
+        if (itemMono == null) return null;
+        return itemMono.map(Item::getCartId);
+    }
+
     private String createImagePath() {
         imgPath = imgPath.split("file:")[1]
                 .replace("//", "/")
@@ -139,4 +185,7 @@ boolean hasNext=p.next()==null;
         return imgPath;
     }
 
+    public Mono<Item> save(Item i) {
+        return itemRepo.save(i);
+    }
 }

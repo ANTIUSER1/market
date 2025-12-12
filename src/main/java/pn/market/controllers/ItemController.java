@@ -59,9 +59,40 @@ public class ItemController {
             @PathVariable("id") Long id,
             @RequestParam(value = "action", required = false) String action
     ) {
-        Mono<Item> itemMono = itemService.findById(id);
-       Mono<Long> cartIdMono = itemService.getItemCartId(itemMono);
-        Mono<Item> item=itemService.plus(itemMono, cartIdMono);
+        Mono<Item> itemMono = itemService.findById(id)
+                .map(
+                        i -> {
+                            if (action != null) {
+                                if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
+                                    System.out.println("i --b = " + i);
+                                    itemService.plusForMono(i, 1L);
+                                    System.out.println("i --a  = " + i);
+                                }
+
+                                if (ActionType.MINUS.name().equalsIgnoreCase(action.trim())) {
+                                    System.out.println("i --b = " + i);
+                                    itemService.minusForMono(i);
+                                    System.out.println("i --a  = " + i);
+                                }
+                            }
+
+                            return i;
+                        });
+
+
+        //.flatMap(i1 -> i1 )   ;
+
+
+//        Mono<Item> itemMono1 = Mono.zip(itemMono, itemMono)
+//                .map(t -> {
+//                    System.out.println("t = " + t.getT1());
+//                    return t.getT1();
+//                        }
+//
+//                        );
+        //------------------------------------------------------------
+//        Mono<Long> cartIdMono = itemService.getItemCartId(itemMono);
+//        Mono<Item> item=itemService.plus(itemMono, cartIdMono);
 
         Mono<Rendering> r = Mono.just(Rendering.view("item")
                 .modelAttribute("item", itemMono)
