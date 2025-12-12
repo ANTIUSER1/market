@@ -79,9 +79,6 @@ public class ItemController {
                                     System.out.println("i --a  = " + i);
                                 }
                             }
-//                            System.out.println("i --b = " + i);
-//                            Mono<Item> mi = itemService.plusForMono(i, 1L);
-//                            System.out.println("i ++a  = " + i);
                             if (mi != null) return mi;
                             else return Mono.just(i);
                         }).flatMap(i -> i);
