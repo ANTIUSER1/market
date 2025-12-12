@@ -101,7 +101,8 @@ public class ItemServiceImpl implements TService<Item> {
 
     public Mono<Item> plusForMono(Item item, long cartId) {
         item.plusCount(cartId);
-        return itemRepo.save(item);
+        System.out.println("       plusForMono  item = " + item);
+        return itemRepo.save(item);//.flatMap(i -> itemRepo.findById(i.getId())).log();
     }
 
     public Item plus(Item item, long cartId) {

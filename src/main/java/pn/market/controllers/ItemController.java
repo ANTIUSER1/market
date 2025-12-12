@@ -59,13 +59,26 @@ public class ItemController {
             @PathVariable("id") Long id,
             @RequestParam(value = "action", required = false) String action
     ) {
+
         Mono<Item> itemMono = itemService.findById(id)
+                .map(
+                        i -> {
+                            System.out.println("i --b = " + i);
+                            Mono<Item> mi = itemService.plusForMono(i, 1L);
+                            System.out.println("i ++a  = " + i);
+                            return mi;
+                        }).flatMap(i -> i);
+
+               /*
+        Mono<Item> itemMono = itemService.findById(id);
                 .map(
                         i -> {
                             if (action != null) {
                                 if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
                                     System.out.println("i --b = " + i);
                                     itemService.plusForMono(i, 1L);
+
+
                                     System.out.println("i --a  = " + i);
                                 }
 
@@ -78,7 +91,31 @@ public class ItemController {
 
                             return i;
                         });
+                */
+        Mono<Long> cartIdMono = itemService.getItemCartId(itemMono);
+        /*
+        itemMono = Mono.zip(itemMono, cartIdMono).map(t -> {
 
+            Item i = t.getT1();
+            long cartId = t.getT2();
+
+            if (action != null) {
+                if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
+                    System.out.println("i ++b = " + i);
+                    itemService.plusForMono(i, cartId);
+                    System.out.println("i ++a  = " + i);
+                }
+                if (ActionType.MINUS.name().equalsIgnoreCase(action.trim())) {
+                    System.out.println("i --b = " + i);
+                    itemService.minusForMono(i);
+                    System.out.println("i --a  = " + i);
+                }
+            }
+
+            return i;
+        });
+
+         */
         Mono<Rendering> r = Mono.just(Rendering.view("item")
                 .modelAttribute("item", itemMono)
                 .modelAttribute("action", action)

@@ -31,13 +31,13 @@ spring:
     url: r2dbc:postgresql://192.168.2.100:5432/pract?currentSchema=market   # URL подключения к базе данных
     username: postgres                              # Имя пользователя базы данных
     password: 123                          # Пароль пользователя
-    pool:
-      enabled: true                               # Включение пула соединений
-      initial-size: 10                            # Начальное количество соединений в пуле
-      max-size: 50                                # Максимальное количество соединений
-      max-idle-time: 5s                          # Время бездействия соединения перед закрытием
-      max-life-time: 10m                          # Максимальное время жизни соединения
-      validation-query: SELECT 1                  # SQL-запрос для проверки
+    #    pool:
+    #      enabled: true                               # Включение пула соединений
+    #      initial-size: 10                            # Начальное количество соединений в пуле
+    #      max-size: 50                                # Максимальное количество соединений
+    #      max-idle-time: 50s                          # Время бездействия соединения перед закрытием
+    #      max-life-time: 10m                          # Максимальное время жизни соединения
+    #      validation-query: SELECT 1                  # SQL-запрос для проверки
 
     logging:
       level:
