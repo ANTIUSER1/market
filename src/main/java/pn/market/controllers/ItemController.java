@@ -63,10 +63,27 @@ public class ItemController {
         Mono<Item> itemMono = itemService.findById(id)
                 .map(
                         i -> {
-                            System.out.println("i --b = " + i);
-                            Mono<Item> mi = itemService.plusForMono(i, 1L);
-                            System.out.println("i ++a  = " + i);
-                            return mi;
+                            Mono<Item> mi = null;
+                            if (action != null) {
+                                if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
+                                    System.out.println("i --b = " + i);
+                                    mi = itemService.plusForMono(i, 1L);
+
+
+                                    System.out.println("i --a  = " + i);
+                                }
+
+                                if (ActionType.MINUS.name().equalsIgnoreCase(action.trim())) {
+                                    System.out.println("i --b = " + i);
+                                    mi = itemService.minusForMono(i);
+                                    System.out.println("i --a  = " + i);
+                                }
+                            }
+//                            System.out.println("i --b = " + i);
+//                            Mono<Item> mi = itemService.plusForMono(i, 1L);
+//                            System.out.println("i ++a  = " + i);
+                            if (mi != null) return mi;
+                            else return Mono.just(i);
                         }).flatMap(i -> i);
 
                /*
