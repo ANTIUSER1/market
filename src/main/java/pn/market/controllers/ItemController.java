@@ -79,21 +79,6 @@ public class ItemController {
                             return i;
                         });
 
-
-        //.flatMap(i1 -> i1 )   ;
-
-
-//        Mono<Item> itemMono1 = Mono.zip(itemMono, itemMono)
-//                .map(t -> {
-//                    System.out.println("t = " + t.getT1());
-//                    return t.getT1();
-//                        }
-//
-//                        );
-        //------------------------------------------------------------
-//        Mono<Long> cartIdMono = itemService.getItemCartId(itemMono);
-//        Mono<Item> item=itemService.plus(itemMono, cartIdMono);
-
         Mono<Rendering> r = Mono.just(Rendering.view("item")
                 .modelAttribute("item", itemMono)
                 .modelAttribute("action", action)
