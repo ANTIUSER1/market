@@ -29,7 +29,7 @@ public class ItemController {
     @Autowired
     private ItemServiceImpl itemService;
     @Autowired
-    CartServiceImpl cartService;
+    private CartServiceImpl cartService;
 
     @Autowired
     private ModelService modelService;
@@ -64,13 +64,16 @@ public class ItemController {
     ) {
 
         Mono<Item> itemMono = itemService.findById(id);
-        Mono<Long> cartIdMono = itemService.findById(id)
-                .map(i -> {
-                    System.out.println("------------------i.getCartId() = " + i.getCartId());
-                    if (i.getCartId() == null) {
-                        return cartService.createNewCart();
-                    } else return Mono.just(i.getCartId());
-                }).flatMap(i -> i);
+        Mono<Long> cartIdMono = cartService.createCartForItemIfNotExists(id);
+
+//                itemService.findById(id)
+//                .map(i -> {
+//                    System.out.println("------------------i.getCartId() = " + i.getCartId());
+//                    if (i.getCartId() == null) {
+//                        return cartService.createNewCart();
+//                    } else return Mono.just(i.getCartId());
+//                }).flatMap(i -> i);
+
 
         itemMono = Mono.zip(itemMono, cartIdMono).map(t -> {
             Item i = t.getT1();

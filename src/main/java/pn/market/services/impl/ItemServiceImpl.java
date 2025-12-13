@@ -30,6 +30,7 @@ public class ItemServiceImpl implements TService<Item> {
     @Autowired
     private ItemRepo itemRepo;
 
+
     @Autowired
     private DatabaseClient databaseClient;
 
@@ -95,9 +96,8 @@ public class ItemServiceImpl implements TService<Item> {
     public long getTotalSum(List<Item> items) {
         return items.stream()
                 .mapToLong(i -> i.getPrice() * i.getCount()).sum();
-
-
     }
+
 
     public Mono<Item> plusForMono(Item item, long cartId) {
         item.plusCount(cartId);
