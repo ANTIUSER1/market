@@ -154,7 +154,7 @@ public class ItemServiceImpl implements TService<Item> {
         return imgPath;
     }
 
-    public Mono<Item> save(Item i) {
-        return itemRepo.save(i);
-    }
+//    public Mono<Item> save(Item i) {
+//        return itemRepo.save(i);
+//    }
 }
