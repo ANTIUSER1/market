@@ -83,11 +83,35 @@ public class CartServiceImpl implements TService<Cart> {
             Item i = t.getT1();
             Cart c = t.getT2();
             i.setCartId(c.getId());
+            i.plusCount(c.getId());
             itemRepo.save(i);
             return Mono.just(c);
         }).flatMap(c -> c);
         return result;
     }
+
+    public Mono<Cart> removeItem(Long itemId) {
+        Mono<Cart> cartMono = itemRepo.findById(itemId)
+                .map(i -> {
+                    Mono<Cart> result = Mono.just(new Cart(-1L));
+                    result = getLastCartId();
+
+                    return result;
+                }).flatMap(c -> c);
+        Mono<Cart> result = Mono.zip(
+                itemRepo.findById(itemId), cartMono
+        ).map(t -> {
+
+            Item i = t.getT1();
+            Cart c = t.getT2();
+            i.setCartId(null);
+            i.minusCount();
+            itemRepo.save(i);
+            return Mono.just(c);
+        }).flatMap(c -> c);
+        return result;
+    }
+
 
     public Cart plusItem(Long itemId) {
         System.out.println("plusItem   : itemId = " + itemId + "\n");
@@ -108,9 +132,6 @@ public class CartServiceImpl implements TService<Cart> {
     }
 
 
-    //    public Mono<Cart> removeItem(Long itemId) {
-//
-//    }
     public Cart minusItem(Long itemId) {
         System.out.println("minusItem    : itemId = " + itemId + "\n");
         Optional<Item> itemOptional = itemRepo.findById(itemId).blockOptional();

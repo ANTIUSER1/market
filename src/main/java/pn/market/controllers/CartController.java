@@ -37,11 +37,10 @@ public class CartController {
         if (action != null && itemId != null) {
             if (ActionType.PLUS.name().equalsIgnoreCase(action.trim()))
                 cart = cartService.addItem(itemId);
-//            if (ActionType.MINUS.name().equals(action.trim()))
-//                cart = cartService.minusItem(itemId);
+            if (ActionType.MINUS.name().equals(action.trim()))
+                cart = cartService.removeItem(itemId);
 
         }
-//
         Flux<Item> itemsFlux = cart.map(c -> {
             Flux<Item> mfc = itemService.getItemsByCart(c.getId());
             Mono<List<Item>> mlc = itemService.getItemsByCart(c.getId()).collectList();
