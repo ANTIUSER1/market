@@ -1,8 +1,6 @@
 package pn.market.services.impl;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Service;
@@ -44,7 +42,7 @@ public class CartServiceImpl implements TService<Cart> {
     }
 
     @Override
-    public   Mono<Paging> findAllAndPaging(Mono<Pageable>  pageable) {
+    public Mono<Paging> findAllAndPaging(Mono<Pageable> pageable) {
 //    public   Mono<Page<Cart>> findAllAndPaging( Mono<Pageable>  pageable) {
         return null;
         //cartRepo.findAll(pageable);
@@ -103,5 +101,11 @@ public class CartServiceImpl implements TService<Cart> {
             }
         }
         return cart;
+    }
+
+    public Mono<Long> createNewCart() {
+        System.out.println("          CART ID ++ NULL  createNewCart");
+        System.out.println("          CART ID ++ NULL  createNewCart");
+        return cartRepo.save(new Cart()).map(cart -> cart.getId());
     }
 }

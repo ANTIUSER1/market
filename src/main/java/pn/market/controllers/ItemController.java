@@ -14,6 +14,7 @@ import pn.market.additional.ActionType;
 import pn.market.additional.Paging;
 import pn.market.entities.Item;
 import pn.market.services.ModelService;
+import pn.market.services.impl.CartServiceImpl;
 import pn.market.services.impl.ItemServiceImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -27,6 +28,8 @@ public class ItemController {
 
     @Autowired
     private ItemServiceImpl itemService;
+    @Autowired
+    CartServiceImpl cartService;
 
     @Autowired
     private ModelService modelService;
@@ -61,10 +64,29 @@ public class ItemController {
     ) {
 
         Mono<Item> itemMono = itemService.findById(id);
-        Mono<Long> cartIdMono = itemService.getItemCartId(itemMono);
+        Mono<Long> cartIdMono = itemService.findById(id)
+                .map(i -> {
+                    System.out.println("------------------i.getCartId() = " + i.getCartId());
+                    if (i.getCartId() == null) {
+                        return cartService.createNewCart();
+                    } else return Mono.just(i.getCartId());
+                }).flatMap(i -> i);
+
+
+//Mono.defer(() -> cartService.createNewCart())
+        System.out.println("cartIdMono = " + cartIdMono);
+        System.out.println("cartIdMono = " + cartIdMono);
+        System.out.println("cartIdMono = " + cartIdMono);
+        System.out.println("cartIdMono = " + cartIdMono);
+
+        // cartIdMono = cartIdMono
+
+        //if (cartIdMono == null) cartIdMono = cartService.createNewCart();
         itemMono = Mono.zip(itemMono, cartIdMono).map(t -> {
             Item i = t.getT1();
             long cartId = t.getT2();
+
+            System.out.println("   C   CCC " + cartId);
             Mono<Item> mi = null;
             if (action != null) {
                 if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
