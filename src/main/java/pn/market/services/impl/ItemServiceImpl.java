@@ -82,6 +82,11 @@ public class ItemServiceImpl implements TService<Item> {
                 });
     }
 
+    public Flux<Item> getItemsByCart(Long id) {
+        Flux<Item> items = itemRepo.findByCartId(id);
+        return items;
+    }
+
     public List<Item> getItemsByCartId(Long id) {
         Flux<Item> items = itemRepo.findByCartId(id);
         return items.collectList().block();
@@ -95,6 +100,12 @@ public class ItemServiceImpl implements TService<Item> {
     public long getTotalSum(List<Item> items) {
         return items.stream()
                 .mapToLong(i -> i.getPrice() * i.getCount()).sum();
+    }
+
+    public Mono<Long> getTotalSum(Flux<Item> items) {
+        return items.collectList()
+                .map(i -> i.stream()
+                        .mapToLong(it -> it.getPrice() * it.getCount()).sum());
     }
 
 
@@ -163,4 +174,6 @@ public class ItemServiceImpl implements TService<Item> {
         }
         return Mono.just(i);
     }
+
 }
+

@@ -48,6 +48,13 @@ public class CartServiceImpl implements TService<Cart> {
         //cartRepo.findAll(pageable);
     }
 
+
+    public Mono<Cart> getLastCartId() {
+        return cartRepo.findMaxId(databaseClient)
+                .map(id -> cartRepo.findById(id))
+                .flatMap(c -> c);
+    }
+
     public Optional<Cart> getLast() {
         long cId = cartRepo.findMaxId(databaseClient).block();
         System.out.println("getLast   : cId = " + cId + "\n");
@@ -56,6 +63,30 @@ public class CartServiceImpl implements TService<Cart> {
             return cartOptional;
         }
         return Optional.empty();
+    }
+
+    public Mono<Cart> addItem(Long itemId) {
+        Mono<Cart> cartMono = itemRepo.findById(itemId)
+                .map(i -> {
+                    Mono<Cart> result = Mono.just(new Cart(-1L));
+                    if (i.getCartId() == null) {
+                        result = cartRepo.save(new Cart());
+                    } else {
+                        result = getLastCartId();
+                    }
+                    return result;
+                }).flatMap(c -> c);
+        Mono<Cart> result = Mono.zip(
+                itemRepo.findById(itemId), cartMono
+        ).map(t -> {
+
+            Item i = t.getT1();
+            Cart c = t.getT2();
+            i.setCartId(c.getId());
+            itemRepo.save(i);
+            return Mono.just(c);
+        }).flatMap(c -> c);
+        return result;
     }
 
     public Cart plusItem(Long itemId) {
@@ -76,6 +107,10 @@ public class CartServiceImpl implements TService<Cart> {
         return cart;
     }
 
+
+    //    public Mono<Cart> removeItem(Long itemId) {
+//
+//    }
     public Cart minusItem(Long itemId) {
         System.out.println("minusItem    : itemId = " + itemId + "\n");
         Optional<Item> itemOptional = itemRepo.findById(itemId).blockOptional();
