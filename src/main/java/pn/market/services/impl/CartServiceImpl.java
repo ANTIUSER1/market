@@ -104,8 +104,6 @@ public class CartServiceImpl implements TService<Cart> {
     }
 
     public Mono<Long> createNewCart() {
-        System.out.println("          CART ID ++ NULL  createNewCart");
-        System.out.println("          CART ID ++ NULL  createNewCart");
         return cartRepo.save(new Cart()).map(cart -> cart.getId());
     }
 
