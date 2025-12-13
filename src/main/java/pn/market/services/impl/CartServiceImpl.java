@@ -110,7 +110,6 @@ public class CartServiceImpl implements TService<Cart> {
     public Mono<Long> createCartForItemIfNotExists(long itemId) {
         Mono<Long> cartIdMono = itemService.findById(itemId)
                 .map(i -> {
-                    System.out.println("------------------i.getCartId() = " + i.getCartId());
                     if (i.getCartId() == null) {
                         return this.createNewCart();
                     } else return Mono.just(i.getCartId());
