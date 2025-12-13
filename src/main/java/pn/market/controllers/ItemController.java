@@ -74,31 +74,32 @@ public class ItemController {
 //                    } else return Mono.just(i.getCartId());
 //                }).flatMap(i -> i);
 
-
-        itemMono = Mono.zip(itemMono, cartIdMono).map(t -> {
-            Item i = t.getT1();
-            long cartId = t.getT2();
-
-            System.out.println("   C   CCC " + cartId);
-            Mono<Item> mi = null;
-            if (action != null) {
-                if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
-                    System.out.println("i --b = " + i);
-                    mi = itemService.plusForMono(i, cartId);
-
-
-                    System.out.println("i --a  = " + i);
-                }
-
-                if (ActionType.MINUS.name().equalsIgnoreCase(action.trim())) {
-                    System.out.println("i --b = " + i);
-                    mi = itemService.minusForMono(i);
-                    System.out.println("i --a  = " + i);
-                }
-            }
-            if (mi != null) return mi;
-            else return Mono.just(i);
-        }).flatMap(i -> i);
+//itemMono, cartIdMono,action
+        itemMono = cartService.placeItemToCart(id, action);
+//                Mono.zip(itemMono, cartIdMono).map(t -> {
+//            Item i = t.getT1();
+//            long cartId = t.getT2();
+//
+//            System.out.println("   C   CCC " + cartId);
+//            Mono<Item> mi = null;
+//            if (action != null) {
+//                if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
+//                    System.out.println("i --b = " + i);
+//                    mi = itemService.plusForMono(i, cartId);
+//
+//
+//                    System.out.println("i --a  = " + i);
+//                }
+//
+//                if (ActionType.MINUS.name().equalsIgnoreCase(action.trim())) {
+//                    System.out.println("i --b = " + i);
+//                    mi = itemService.minusForMono(i);
+//                    System.out.println("i --a  = " + i);
+//                }
+//            }
+//            if (mi != null) return mi;
+//            else return Mono.just(i);
+//        }).flatMap(i -> i);
 
 
         //}

@@ -30,10 +30,8 @@ public class ItemServiceImpl implements TService<Item> {
     @Autowired
     private ItemRepo itemRepo;
 
-
     @Autowired
     private DatabaseClient databaseClient;
-
 
     public Mono<Item> findById(Long id) {
         return itemRepo.findById(id);

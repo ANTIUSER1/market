@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Service;
+import pn.market.additional.ActionType;
 import pn.market.additional.Paging;
 import pn.market.entities.Cart;
 import pn.market.entities.Item;
@@ -110,8 +111,6 @@ public class CartServiceImpl implements TService<Cart> {
     }
 
     public Mono<Long> createCartForItemIfNotExists(long itemId) {
-
-        //   Mono<Item> itemMono = this.findById(itemId);
         Mono<Long> cartIdMono = itemService.findById(itemId)
                 .map(i -> {
                     System.out.println("------------------i.getCartId() = " + i.getCartId());
@@ -120,5 +119,38 @@ public class CartServiceImpl implements TService<Cart> {
                     } else return Mono.just(i.getCartId());
                 }).flatMap(i -> i);
         return cartIdMono;
+    }
+
+    public Mono<Item> placeItemToCart(long itemId, String action) {
+
+        Mono<Item> itemMono = Mono.zip(
+                        itemService.findById(itemId),
+                        this.createCartForItemIfNotExists(itemId)
+                )
+                .map(t -> {
+                    Item i = t.getT1();
+                    long cartId = t.getT2();
+
+                    System.out.println("   C   CCC " + cartId);
+                    Mono<Item> mi = null;
+                    if (action != null) {
+                        if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
+                            System.out.println("i --b = " + i);
+                            mi = itemService.plusForMono(i, cartId);
+
+
+                            System.out.println("i --a  = " + i);
+                        }
+
+                        if (ActionType.MINUS.name().equalsIgnoreCase(action.trim())) {
+                            System.out.println("i --b = " + i);
+                            mi = itemService.minusForMono(i);
+                            System.out.println("i --a  = " + i);
+                        }
+                    }
+                    if (mi != null) return mi;
+                    else return Mono.just(i);
+                }).flatMap(i -> i);
+        return itemMono;
     }
 }
