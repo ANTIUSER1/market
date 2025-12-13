@@ -4,13 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.result.view.Rendering;
-import pn.market.additional.ActionType;
 import pn.market.additional.Paging;
 import pn.market.entities.Item;
 import pn.market.services.ModelService;
@@ -18,8 +16,6 @@ import pn.market.services.impl.CartServiceImpl;
 import pn.market.services.impl.ItemServiceImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.Optional;
 
 
 @Controller
@@ -70,6 +66,8 @@ public class ItemController {
         return r;
     }
 
+
+    //test possibility
     @GetMapping("/all/{id}")
     public Mono<Rendering> getAllItems(@PathVariable Long id) {
         Mono<Item> itemFlux = itemService.findById(id);
@@ -83,6 +81,7 @@ public class ItemController {
 
     }
 
+    /*
     @GetMapping
     public String itemsIndex(
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
@@ -135,6 +134,7 @@ public class ItemController {
             return "item";
         }
         return "items";
-
     }
+
+     */
 }
