@@ -72,16 +72,6 @@ public class ItemController {
                     } else return Mono.just(i.getCartId());
                 }).flatMap(i -> i);
 
-
-//Mono.defer(() -> cartService.createNewCart())
-        System.out.println("cartIdMono = " + cartIdMono);
-        System.out.println("cartIdMono = " + cartIdMono);
-        System.out.println("cartIdMono = " + cartIdMono);
-        System.out.println("cartIdMono = " + cartIdMono);
-
-        // cartIdMono = cartIdMono
-
-        //if (cartIdMono == null) cartIdMono = cartService.createNewCart();
         itemMono = Mono.zip(itemMono, cartIdMono).map(t -> {
             Item i = t.getT1();
             long cartId = t.getT2();
