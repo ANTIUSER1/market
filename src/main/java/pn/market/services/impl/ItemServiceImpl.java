@@ -108,37 +108,7 @@ public class ItemServiceImpl implements TService<Item> {
         return itemRepo.save(item).block();
     }
 
-    /*
-     Long id=null;
-    public Mono<Item> plus(Mono<Item> itemMono, Mono<Long> cartId) {
-//        Item item = itemMono.block();
-//        item.plusCount();
-//        item.setCartId(cartId.block());
-//        itemRepo.save(item);
-System.out.println("cartId = " + cartId.log());
 
-        Mono<Item> r = Mono.zip(itemMono, cartId)
-                .log( )
-                .map(t -> {
-                    System.out.println("t = " + t);
-                            id = t.getT1().getId();
-                 t.getT1().setCartId(t.getT2());
-                 t.getT1().plusCount();
-                    return   itemRepo.save(t.getT1()) ;
-                           // .flatMap(i->itemRepo.findById( id));
-                }).flatMap(i->i)
-//                .flatMap(i->itemRepo.findById( id))
-//                .log()
-                //.subscribe(i->System.out.println("i = " + i));
-
-//                .retryWhen(Retry.fixedDelay(5, Duration.ofSeconds(10)))
-//                .doOnError(e -> System.out.println("Произошла ошибка: " + e.getMessage()))
-                ;
-
-        return r;
-    }
-
-     */
     public Mono<Item> minusForMono(Item item) {
         item.minusCount();
         return itemRepo.save(item);
