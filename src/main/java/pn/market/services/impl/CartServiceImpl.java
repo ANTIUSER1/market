@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Service;
-import pn.market.additional.ActionType;
 import pn.market.additional.Paging;
 import pn.market.entities.Cart;
 import pn.market.entities.Item;
@@ -130,23 +129,9 @@ public class CartServiceImpl implements TService<Cart> {
                 .map(t -> {
                     Item i = t.getT1();
                     long cartId = t.getT2();
-
-                    System.out.println("   C   CCC " + cartId);
                     Mono<Item> mi = null;
                     if (action != null) {
-                        if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
-                            System.out.println("i --b = " + i);
-                            mi = itemService.plusForMono(i, cartId);
-
-
-                            System.out.println("i --a  = " + i);
-                        }
-
-                        if (ActionType.MINUS.name().equalsIgnoreCase(action.trim())) {
-                            System.out.println("i --b = " + i);
-                            mi = itemService.minusForMono(i);
-                            System.out.println("i --a  = " + i);
-                        }
+                        mi = itemService.addToCart(i, cartId, action);
                     }
                     if (mi != null) return mi;
                     else return Mono.just(i);

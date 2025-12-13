@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import pn.market.additional.ActionType;
 import pn.market.additional.Paging;
 import pn.market.entities.Item;
 import pn.market.repo.ItemRepo;
@@ -154,4 +155,13 @@ public class ItemServiceImpl implements TService<Item> {
         return imgPath;
     }
 
+    public Mono<Item> addToCart(Item i, long cartId, String action) {
+        if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
+            return this.plusForMono(i, cartId);
+        }
+        if (ActionType.MINUS.name().equalsIgnoreCase(action.trim())) {
+            return this.minusForMono(i);
+        }
+        return Mono.just(i);
+    }
 }
