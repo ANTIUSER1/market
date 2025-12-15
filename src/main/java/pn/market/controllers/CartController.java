@@ -36,7 +36,7 @@ public class CartController {
         }).flatMapMany(f -> f);
         Mono<Long> total = itemService.getTotalSum(itemsFlux);
         Mono<Rendering> r =
-                Mono.just(Rendering.view("_cart-test")
+                Mono.just(Rendering.view("cart")
                         .modelAttribute("items", itemsFlux)
                         .modelAttribute("total", total)
                         .build());
