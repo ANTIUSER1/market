@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.result.view.Rendering;
-import pn.market.additional.ActionType;
 import pn.market.entities.Item;
 import pn.market.services.impl.CartServiceImpl;
 import pn.market.services.impl.ItemServiceImpl;
@@ -30,12 +29,13 @@ public class CartController {
             @RequestParam("action") String action
 
     ) {
-        Mono<Item> itemMono = null;
-        if (action != null && itemId != null) {
-            if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
-                System.out.println("   P:  PLUS");
-                itemMono = cartService.placeItemToCart(itemId, action);
-                //cartService.addItemToCart(itemId);
+        Mono<Item> itemMono = cartService.placeItemToCart(itemId, action);
+
+//        if (action != null && itemId != null) {
+//            //  if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
+//            System.out.println("   P:  PLUS");
+//            itemMono = cartService.placeItemToCart(itemId, action);
+        //cartService.addItemToCart(itemId);
 
 
                        /*
@@ -58,14 +58,11 @@ public class CartController {
 
                         */
 
-            }
-            if (ActionType.MINUS.name().equals(action.trim())) {
-                itemMono = cartService.removeItemFromCart(itemId);
-            }
-        }
-        if (itemMono == null) {
-            return Mono.empty();
-        }
+        //  }
+//        }
+//        if (itemMono == null) {
+//            return Mono.empty();
+//        }
 
         Flux<Item> itemsFlux = itemMono.map(i -> {
             return itemService.getItemsByCartIdToFlux(i.getCartId());
