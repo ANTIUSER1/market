@@ -120,11 +120,6 @@ public class ItemServiceImpl implements TService<Item> {
     }
 
 
-    public Mono<Item> minusForMono(Item item) {
-        item.minusCount();
-        return itemRepo.save(item);
-    }
-
     public Item minus(Item item) {
         item.minusCount();
         return itemRepo.save(item).block();
@@ -186,6 +181,20 @@ public class ItemServiceImpl implements TService<Item> {
 
     public Flux<Item> getItemsByCartIdToFlux(Long id) {
         return itemRepo.findByCartId(id);
+    }
+
+    public Mono<Item> minusForMono(Item item) {
+        item.minusCount();
+        return itemRepo.save(item);
+    }
+
+
+    public Mono<Item> removeItemFromCart(long itemId) {
+        return this.findById(itemId)
+                .map(i -> {
+                    this.minusForMono(i);
+                    return this.save(i);
+                }).flatMap(i -> i);
     }
 }
 

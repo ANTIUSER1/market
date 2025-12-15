@@ -75,7 +75,6 @@ public class ItemController {
         Rendering r = Rendering.view("all")
                 .modelAttribute("items", itemFlux)
                 .build();
-
         return Mono.just(r);
 
 
