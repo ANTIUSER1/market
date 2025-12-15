@@ -175,5 +175,17 @@ public class ItemServiceImpl implements TService<Item> {
         return Mono.just(i);
     }
 
+    public Mono<Item> save(Item i) {
+        return itemRepo.save(i);
+    }
+
+
+    //****************
+    //****************
+    //****************
+
+    public Flux<Item> getItemsByCartIdToFlux(Long id) {
+        return itemRepo.findByCartId(id);
+    }
 }
 

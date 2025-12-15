@@ -7,14 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.result.view.Rendering;
 import pn.market.additional.ActionType;
-import pn.market.entities.Cart;
 import pn.market.entities.Item;
 import pn.market.services.impl.CartServiceImpl;
 import pn.market.services.impl.ItemServiceImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/cart")
@@ -33,27 +30,35 @@ public class CartController {
             @RequestParam("action") String action
 
     ) {
-        Mono<Cart> cart = null;
+        Mono<Item> itemMono = null;
         if (action != null && itemId != null) {
             if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
-
+//cartIdMono=cartService.createCartForItemIfNotExists( itemId );
             }
 
             if (ActionType.MINUS.name().equals(action.trim())) {
-                cart = cartService.removeItem(itemId);
+                itemMono = itemService.findById(itemId)
+                        .map(i -> {
+                            itemService.minusForMono(i);
+                            return itemService.save(i);
+                        }).flatMap(i -> i);
             }
         }
-        Flux<Item> itemsFlux = cart.map(c -> {
-            Flux<Item> mfc = itemService.getItemsByCart(c.getId());
-            Mono<List<Item>> mlc = itemService.getItemsByCart(c.getId()).collectList();
-            return mfc;
+        if (itemMono == null) {
+            return Mono.empty();
+        }
+        Flux<Item> itemsFlux = itemMono.map(i -> {
+            return itemService.getItemsByCartIdToFlux(i.getCartId());
         }).flatMapMany(f -> f);
+
+
         Mono<Long> total = itemService.getTotalSum(itemsFlux);
 
-        Mono<Rendering> r = Mono.just(Rendering.view("_test-cart")
-                .modelAttribute("items", itemsFlux)
-                .modelAttribute("total", total)
-                .build());
+        Mono<Rendering> r =// Mono.empty();
+                Mono.just(Rendering.view("_cart-test")
+                        .modelAttribute("items", itemsFlux)
+                        .modelAttribute("total", total)
+                        .build());
 
         return r;
     }
