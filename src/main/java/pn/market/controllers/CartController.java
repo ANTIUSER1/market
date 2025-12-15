@@ -33,22 +33,22 @@ public class CartController {
         Mono<Item> itemMono = null;
         if (action != null && itemId != null) {
             if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
+                System.out.println("   P:  PLUS");
+                itemMono = itemService.findById(itemId)
+                        .map(i -> {
+                            if (i.getCartId() != null) {
+                                System.out.println("   CART EXISTS   PLUS =" + i.getCartId());
+                                return itemService.plusForMono(i, i.getCartId());
+                            } else {
+                                System.out.println("   CART NOT EXISTS   PLUS =" + i.getCartId());
+                                return cartService.placeItemToCart(i.getId(), "PLUS");
+
+                            }
+                        }).flatMap(i -> i);
 //cartIdMono=cartService.createCartForItemIfNotExists( itemId );
             }
-
-            if (
-                    ActionType.MINUS.name().equals(action.trim())) {
-
+            if (ActionType.MINUS.name().equals(action.trim())) {
                 itemMono = itemService.removeItemFromCart(itemId);
-                /*
-                itemMono =
-                        itemService.findById(itemId)
-                                .map(i -> {
-                                    itemService.minusForMono(i);
-                                    return itemService.save(i);
-                                }).flatMap(i -> i);
-
-                 */
             }
         }
         if (itemMono == null) {
