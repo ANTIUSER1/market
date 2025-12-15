@@ -35,11 +35,13 @@ public class CartController {
     ) {
         Mono<Cart> cart = null;
         if (action != null && itemId != null) {
-            if (ActionType.PLUS.name().equalsIgnoreCase(action.trim()))
-                cart = cartService.addItem(itemId);
-            if (ActionType.MINUS.name().equals(action.trim()))
-                cart = cartService.removeItem(itemId);
+            if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
 
+            }
+
+            if (ActionType.MINUS.name().equals(action.trim())) {
+                cart = cartService.removeItem(itemId);
+            }
         }
         Flux<Item> itemsFlux = cart.map(c -> {
             Flux<Item> mfc = itemService.getItemsByCart(c.getId());
@@ -48,7 +50,7 @@ public class CartController {
         }).flatMapMany(f -> f);
         Mono<Long> total = itemService.getTotalSum(itemsFlux);
 
-        Mono<Rendering> r = Mono.just(Rendering.view("_cart")
+        Mono<Rendering> r = Mono.just(Rendering.view("_test-cart")
                 .modelAttribute("items", itemsFlux)
                 .modelAttribute("total", total)
                 .build());
