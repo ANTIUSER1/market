@@ -36,30 +36,34 @@ public class CartController {
 //cartIdMono=cartService.createCartForItemIfNotExists( itemId );
             }
 
-            if (ActionType.MINUS.name().equals(action.trim())) {
-                itemMono = itemService.findById(itemId)
-                        .map(i -> {
-                            itemService.minusForMono(i);
-                            return itemService.save(i);
-                        }).flatMap(i -> i);
+            if (
+                    ActionType.MINUS.name().equals(action.trim())) {
+
+                itemMono = itemService.removeItemFromCart(itemId);
+                /*
+                itemMono =
+                        itemService.findById(itemId)
+                                .map(i -> {
+                                    itemService.minusForMono(i);
+                                    return itemService.save(i);
+                                }).flatMap(i -> i);
+
+                 */
             }
         }
         if (itemMono == null) {
             return Mono.empty();
         }
+
         Flux<Item> itemsFlux = itemMono.map(i -> {
             return itemService.getItemsByCartIdToFlux(i.getCartId());
         }).flatMapMany(f -> f);
-
-
         Mono<Long> total = itemService.getTotalSum(itemsFlux);
-
-        Mono<Rendering> r =// Mono.empty();
+        Mono<Rendering> r =
                 Mono.just(Rendering.view("_cart-test")
                         .modelAttribute("items", itemsFlux)
                         .modelAttribute("total", total)
                         .build());
-
         return r;
     }
     /*
