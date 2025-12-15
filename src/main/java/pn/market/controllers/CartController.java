@@ -31,39 +31,6 @@ public class CartController {
     ) {
         Mono<Item> itemMono = cartService.placeItemToCart(itemId, action);
 
-//        if (action != null && itemId != null) {
-//            //  if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
-//            System.out.println("   P:  PLUS");
-//            itemMono = cartService.placeItemToCart(itemId, action);
-        //cartService.addItemToCart(itemId);
-
-
-                       /*
-                        itemService.findById(itemId)
-
-                                .map(i -> {
-                                    if (i.getCartId() != null) {
-                                        System.out.println("   CART EXISTS   PLUS =" + i.getCartId());
-                                        return itemService.plusForMono(i, i.getCartId());
-                                    } else {
-                                        System.out.println("   CART NOT EXISTS   PLUS =" + i.getCartId());
-                                   //    Mono<Long> longMono = cartService.createNewCart();
-                                        return cartService.placeItemToCart(i.getId(), action);
-//                                        return cartService.placeItemToCart(i.getId(), "PLUS");
-
-
-                                    }
-                                }).flatMap(i -> i);
-
-
-                        */
-
-        //  }
-//        }
-//        if (itemMono == null) {
-//            return Mono.empty();
-//        }
-
         Flux<Item> itemsFlux = itemMono.map(i -> {
             return itemService.getItemsByCartIdToFlux(i.getCartId());
         }).flatMapMany(f -> f);

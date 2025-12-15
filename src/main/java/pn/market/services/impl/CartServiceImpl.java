@@ -55,16 +55,18 @@ public class CartServiceImpl implements TService<Cart> {
                 .flatMap(c -> c);
     }
 
-    public Optional<Cart> getLast() {
-        long cId = cartRepo.findMaxId(databaseClient).block();
-        System.out.println("getLast   : cId = " + cId + "\n");
-        Optional<Cart> cartOptional = cartRepo.findById(cId).blockOptional();
-        if (cartOptional.isPresent()) {
-            return cartOptional;
+    /*
+        public Optional<Cart> getLast() {
+            long cId = cartRepo.findMaxId(databaseClient).block();
+            System.out.println("getLast   : cId = " + cId + "\n");
+            Optional<Cart> cartOptional = cartRepo.findById(cId).blockOptional();
+            if (cartOptional.isPresent()) {
+                return cartOptional;
+            }
+            return Optional.empty();
         }
-        return Optional.empty();
-    }
-
+      */
+/*
     public Mono<Cart> addItem(Long itemId) {
         Mono<Cart> cartMono = itemRepo.findById(itemId)
                 .map(i -> {
@@ -90,6 +92,8 @@ public class CartServiceImpl implements TService<Cart> {
         return result;
     }
 
+ */
+/*
     public Mono<Cart> removeItem(Long itemId) {
         Mono<Cart> cartMono = itemRepo.findById(itemId)
                 .map(i -> {
@@ -111,8 +115,8 @@ public class CartServiceImpl implements TService<Cart> {
         }).flatMap(c -> c);
         return result;
     }
-
-
+*/
+/*
     public Cart plusItem(Long itemId) {
         System.out.println("plusItem   : itemId = " + itemId + "\n");
         Optional<Item> itemOptional = itemRepo.findById(itemId).blockOptional();
@@ -130,8 +134,8 @@ public class CartServiceImpl implements TService<Cart> {
         }
         return cart;
     }
-
-
+*/
+/*
     public Cart minusItem(Long itemId) {
         System.out.println("minusItem    : itemId = " + itemId + "\n");
         Optional<Item> itemOptional = itemRepo.findById(itemId).blockOptional();
@@ -158,7 +162,7 @@ public class CartServiceImpl implements TService<Cart> {
         }
         return cart;
     }
-
+*/
     public Mono<Long> createNewCart() {
         return cartRepo.save(new Cart()).map(cart -> cart.getId());
     }
