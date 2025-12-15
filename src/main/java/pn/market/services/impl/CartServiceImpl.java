@@ -180,7 +180,6 @@ public class CartServiceImpl implements TService<Cart> {
     public Mono<Item> placeItemToCart(long itemId, String action) {
         Mono<Item> itemMono = Mono.zip(
                         itemService.findById(itemId), this.getLastCartId()
-//                        this.createCartForItemIfNotExists(itemId)
                 )
                 .map(t -> {
                     Item i = t.getT1();
