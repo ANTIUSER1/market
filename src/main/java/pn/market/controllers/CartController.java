@@ -34,21 +34,33 @@ public class CartController {
         if (action != null && itemId != null) {
             if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
                 System.out.println("   P:  PLUS");
-                itemMono = itemService.findById(itemId)
-                        .map(i -> {
-                            if (i.getCartId() != null) {
-                                System.out.println("   CART EXISTS   PLUS =" + i.getCartId());
-                                return itemService.plusForMono(i, i.getCartId());
-                            } else {
-                                System.out.println("   CART NOT EXISTS   PLUS =" + i.getCartId());
-                                return cartService.placeItemToCart(i.getId(), "PLUS");
+                itemMono = cartService.placeItemToCart(itemId, action);
+                //cartService.addItemToCart(itemId);
 
-                            }
-                        }).flatMap(i -> i);
-//cartIdMono=cartService.createCartForItemIfNotExists( itemId );
+
+                       /*
+                        itemService.findById(itemId)
+
+                                .map(i -> {
+                                    if (i.getCartId() != null) {
+                                        System.out.println("   CART EXISTS   PLUS =" + i.getCartId());
+                                        return itemService.plusForMono(i, i.getCartId());
+                                    } else {
+                                        System.out.println("   CART NOT EXISTS   PLUS =" + i.getCartId());
+                                   //    Mono<Long> longMono = cartService.createNewCart();
+                                        return cartService.placeItemToCart(i.getId(), action);
+//                                        return cartService.placeItemToCart(i.getId(), "PLUS");
+
+
+                                    }
+                                }).flatMap(i -> i);
+
+
+                        */
+
             }
             if (ActionType.MINUS.name().equals(action.trim())) {
-                itemMono = itemService.removeItemFromCart(itemId);
+                itemMono = cartService.removeItemFromCart(itemId);
             }
         }
         if (itemMono == null) {
@@ -66,6 +78,8 @@ public class CartController {
                         .build());
         return r;
     }
+
+
     /*
     @GetMapping("/items")
     public String addItem(
