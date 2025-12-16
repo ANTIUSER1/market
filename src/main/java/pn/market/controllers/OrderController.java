@@ -1,21 +1,11 @@
 package pn.market.controllers;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import pn.market.entities.Order;
-import pn.market.entities.OrderContainer;
 import pn.market.services.impl.ItemServiceImpl;
 import pn.market.services.impl.OrderContainerServiceImpl;
 import pn.market.services.impl.OrderServiceImpl;
-
-import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/orders")
@@ -30,6 +20,10 @@ public class OrderController {
 
     @Autowired
     private OrderContainerServiceImpl orderContainerService;
+
+
+
+    /*
 
     @GetMapping
     public String asdOrders(Model model) {
@@ -62,4 +56,6 @@ public class OrderController {
         System.out.println("      RESULT ::: ORDER PRESENT ::: " + order.isPresent());
         return "redirect:/orders";
     }
+
+     */
 }

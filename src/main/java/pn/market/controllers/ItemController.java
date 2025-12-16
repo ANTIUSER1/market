@@ -44,7 +44,7 @@ public class ItemController {
         Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
         Mono<Paging> pageMono = itemService.findAllAndPaging(pageableMono);
 
-        Mono<Rendering> r = Mono.just(Rendering.view("__items")
+        Mono<Rendering> r = Mono.just(Rendering.view("items")
                 .modelAttribute("items", itemFlux)
                 .modelAttribute("paging", pageMono)
                 .modelAttribute("page", pageableMono)
