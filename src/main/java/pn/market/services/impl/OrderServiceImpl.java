@@ -1,12 +1,9 @@
 package pn.market.services.impl;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pn.market.additional.Paging;
-import pn.market.entities.Item;
 import pn.market.entities.Order;
 import pn.market.repo.ItemRepo;
 import pn.market.repo.OrderRepo;
@@ -14,7 +11,6 @@ import pn.market.services.TService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,7 +29,7 @@ public class OrderServiceImpl implements TService<Order> {
 
     @Override
     public Flux<Order> findAll() {
-        return null;
+        return orderRepo.findAll();
     }
 
     @Override
@@ -43,11 +39,9 @@ public class OrderServiceImpl implements TService<Order> {
 
     @Override
     public Mono<Paging> findAllAndPaging(Mono<Pageable> pageable) {
-
-//    public Mono<Page<Order>> findAllAndPaging( Mono<Pageable> pageable) {
         return null;
     }
-
+/*
     public List<Order> findAllOrders() {
         return orderRepo.findAll().collectList().block();
     }
@@ -61,4 +55,6 @@ public class OrderServiceImpl implements TService<Order> {
             orderRepo.delete(order).block();
         }
     }
+
+ */
 }
