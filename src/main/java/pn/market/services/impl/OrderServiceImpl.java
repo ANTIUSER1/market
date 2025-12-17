@@ -43,6 +43,21 @@ public class OrderServiceImpl implements TService<Order> {
     public Mono<Order> save(Order order) {
         return orderRepo.save(order);
     }
+
+    public void buyOrder(long orderId) {
+        System.out.println("     BUY ORDER " + orderId);
+        itemService.removeFromOrder(orderId);
+        orderRepo.deleteById(orderId).subscribe();
+    }
+        /*
+        if (orderOptional.isPresent()) {
+            Order order = orderOptional.get();
+            List<Item> items = itemRepo.findByOrderId(id).collectList().block();
+            itemService.setNullOderId(items);
+            orderRepo.delete(order).block();
+        }
+
+         */
     /*
     public List<Order> findAllOrders() {
         return orderRepo.findAll().collectList().block();

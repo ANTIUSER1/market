@@ -31,6 +31,7 @@ public class OrderController {
                 .map(od -> {
                     itemService.getItemsByOrderId(od.getId())
                             .subscribe(u -> od.addItem(u));
+                    System.out.println("      RESULT ::: ORDER PRESENT ::: " + od);
                     return od;
                 });
         Mono<Rendering> r =
@@ -60,6 +61,12 @@ public class OrderController {
                         .build());
 
         return r;
+    }
+
+    @GetMapping("/buy/{id}")
+    public String buyOrder(@PathVariable("id") Long id) {
+        orderService.buyOrder(id);
+        return "redirect:/orders";
     }
 
     /*

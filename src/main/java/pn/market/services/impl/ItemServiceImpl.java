@@ -194,5 +194,23 @@ public class ItemServiceImpl implements TService<Item> {
                     return this.save(i);
                 }).flatMap(i -> i);
     }
+
+    public void saveAll(List<Item> items) {
+        System.out.println("         saveAll  " + items);
+        itemRepo.saveAll(items).subscribe();
+    }
+
+    public void removeFromOrder(long orderId) {
+        itemRepo.findByOrderId(orderId).collectList()
+                .map(items -> {
+                    for (Item item : items) {
+                        item.setOrderId(null);
+                        item.setCount(0);
+                        itemRepo.save(item).subscribe();
+                    }
+                    return items;
+                })
+                .subscribe();
+    }
 }
 

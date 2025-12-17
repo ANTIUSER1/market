@@ -55,4 +55,11 @@ public class Order {
                 i -> i.getPrice() * i.getCount()
         ).sum();
     }
+
+    public void clearItems() {
+        items.stream().forEach(i -> {
+            i.setCount(0);
+            i.setOrderId(null);
+        });
+    }
 }
