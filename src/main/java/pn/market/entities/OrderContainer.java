@@ -1,7 +1,9 @@
 package pn.market.entities;
 
+import lombok.ToString;
 import reactor.core.publisher.Flux;
 
+@ToString
 public class OrderContainer {
 
     private Order order;
@@ -21,13 +23,6 @@ public class OrderContainer {
 
     public void setItems(Flux<Item> itemList) {
         this.items = itemList;
-    }
-
-    @Override
-    public String toString() {
-        String sb = "OrderContainer{" + "order=" + order +
-                '}';
-        return sb;
     }
 
 

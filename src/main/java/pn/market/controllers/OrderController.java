@@ -6,12 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.reactive.result.view.Rendering;
 import pn.market.entities.Order;
-import pn.market.entities.OrderContainer;
 import pn.market.services.impl.ItemServiceImpl;
 import pn.market.services.impl.OrderContainerServiceImpl;
 import pn.market.services.impl.OrderServiceImpl;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/orders")
@@ -29,21 +29,19 @@ public class OrderController {
 
     @GetMapping
     public Mono<Rendering> allOrders() {
-        Flux<Order> orders = orderService.findAll();
-        Flux<OrderContainer> orderContainers = orders
+        //  Mono<TmpClass> monoTmp = Mono.just(new TmpClass());
+        Mono<List<Order>> orders = orderService.findAll()
                 .map(od -> {
-                    System.out.println("      ----------ORDER ::: " + od);
-                    return orderContainerService.create(od);
-
+                    itemService.getItemsByOrderId(od.getId())
+                            .subscribe(u -> od.getItems().add(u));
+                    return od;
                 })
-                .flatMap(od -> od);
-
-
-        Mono<Rendering> r = //Mono.empty()
+                .collectList();
+        Mono<Rendering> r =
                 Mono.just(Rendering.view("_orders")
-                        .modelAttribute("orderData", orderContainers)
+                        .modelAttribute("orderData", orders)
+                        .modelAttribute("orderMethods", itemService)
                         .build());
-
         return r;
     }
 

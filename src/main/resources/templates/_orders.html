@@ -4,24 +4,47 @@
 <head>
     <meta charset="utf-8">
     <title>Витрина магазина</title>
-    <link crossorigin="anonymous" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
-          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" rel="stylesheet">
-</head>
+   </head>
 
-<body class="bg-light">
+<body>
 
+<!--            <span th:text="${orderdata.getInt(5)}">   </span><hr />-->
+<!--            <span th:text="${orderdata.intList( )}">   </span>-->
+
+<p th:text="${orderMethods.getItemsByOrderId(452).subscribe()}"></p>
 <p th:text="${ orderData }"></p>
 <div th:each="orderdata : ${orderData}">
-    <p>
-        N <span th:text="${orderdata.order.id}">   </span>
-        <span th:text="${ orderdata.items.count}"></span>
-        <span th:text="${ orderdata.items.count}"></span>
-
-    </p>
-
+    <h3>
+            <span th:text="${orderdata.id}">   </span><hr />
+<!--            <span th:text="${orderdata.items}">   </span><hr />-->
+    </h3>
+        <div th:each="hi : ${orderdata.items}">
+                <span th:text="${hi}"> <br /> </span>
+            </div>
+<!--        <div th:each="hi : ${orderMethods}" >-->
+<!--        <div th:each="hi : ${orderMethods.getItemsByOrderId(orderdata.id)}" >-->
+<!--        <div th:each="hi : ${orderData.items}" >-->
+<!--            <span th:text="${hi}"> <br />-->
+<!--&lt;!&ndash;            </span>  ::: <span th:text="${orderdata.getInt(hi)}">   </span>&ndash;&gt;-->
+<!--        </div>-->
+</div>
 
 </div>
+
+<!--        <div th:each="item : ${orderdata.Items.}">-->
+<!--            <span th:text="${item}">-->
+<!--&lt;!&ndash;        </span> <span th:text="${item.count}">   </span> &ndash;&gt;-->
+<!--&lt;!&ndash;            <span th:text="'Price : ${orderData}">&ndash;&gt;-->
+<!--        </div>-->
+
+
+-----------------------------------
+<!--    <p th:each="item : ${orderItems}">-->
+<!--        <span th:text="${item.title}">   </span>-->
+<!--                <span th:text="${item.count}">   </span> -->
+<!--    </p>-->
+
+<!--</div>-->
 </body>
 
 </html>

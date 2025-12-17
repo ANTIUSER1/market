@@ -41,7 +41,11 @@ public class OrderServiceImpl implements TService<Order> {
     public Mono<Paging> findAllAndPaging(Mono<Pageable> pageable) {
         return null;
     }
-/*
+
+    public Mono<Order> save(Order order) {
+        return orderRepo.save(order);
+    }
+    /*
     public List<Order> findAllOrders() {
         return orderRepo.findAll().collectList().block();
     }

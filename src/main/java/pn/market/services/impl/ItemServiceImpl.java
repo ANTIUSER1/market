@@ -93,8 +93,7 @@ public class ItemServiceImpl implements TService<Item> {
     }
 
     public Flux<Item> getItemsByOrderId(Long id) {
-        Flux<Item> items = itemRepo.findByOrderId(id);
-        return items;
+        return itemRepo.findByOrderId(id);
     }
 
     public long getTotalSum(List<Item> items) {
