@@ -44,4 +44,12 @@ public class Order {
     public void setItems(List<Item> items) {
         this.items = items;
     }
+
+    public void addItem(Item item) {
+        items.add(item);
+    }
+
+    public long totalsum() {
+        return items.stream().mapToLong(i -> i.getPrice() * i.getCount()).sum();
+    }
 }

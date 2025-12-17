@@ -29,18 +29,16 @@ public class OrderController {
 
     @GetMapping
     public Mono<Rendering> allOrders() {
-        //  Mono<TmpClass> monoTmp = Mono.just(new TmpClass());
         Mono<List<Order>> orders = orderService.findAll()
                 .map(od -> {
                     itemService.getItemsByOrderId(od.getId())
-                            .subscribe(u -> od.getItems().add(u));
+                            .subscribe(u -> od.addItem(u));
                     return od;
                 })
                 .collectList();
         Mono<Rendering> r =
                 Mono.just(Rendering.view("_orders")
                         .modelAttribute("orderData", orders)
-                        .modelAttribute("orderMethods", itemService)
                         .build());
         return r;
     }

@@ -11,7 +11,6 @@
 <!--            <span th:text="${orderdata.getInt(5)}">   </span><hr />-->
 <!--            <span th:text="${orderdata.intList( )}">   </span>-->
 
-<p th:text="${orderMethods.getItemsByOrderId(452).subscribe()}"></p>
 <p th:text="${ orderData }"></p>
 <div th:each="orderdata : ${orderData}">
     <h3>
@@ -19,7 +18,11 @@
 <!--            <span th:text="${orderdata.items}">   </span><hr />-->
     </h3>
         <div th:each="hi : ${orderdata.items}">
-                <span th:text="${hi}"> <br /> </span>
+                <span th:text="${hi.title}">  </span><br />
+              Price  <span th:text="${hi.price}">  </span><br />
+              Count  <span th:text="${hi.count}">  </span><br />
+<!--            TOTAL <span th:text="${hi.totalsum()}">  </span><hr />-->
+         <hr />
             </div>
 <!--        <div th:each="hi : ${orderMethods}" >-->
 <!--        <div th:each="hi : ${orderMethods.getItemsByOrderId(orderdata.id)}" >-->
