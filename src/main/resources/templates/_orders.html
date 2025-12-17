@@ -18,10 +18,10 @@
 <!--            <span th:text="${orderdata.items}">   </span><hr />-->
     </h3>
         <div th:each="hi : ${orderdata.items}">
-                <span th:text="${hi.title}">  </span><br />
-              Price  <span th:text="${hi.price}">  </span><br />
-              Count  <span th:text="${hi.count}">  </span><br />
-<!--            TOTAL <span th:text="${hi.totalsum()}">  </span><hr />-->
+                <span th:text="${hi.title}">  </span>
+              Price  <span th:text="${hi.price}">  </span>
+              Count  <span th:text="${hi.count}">  </span>
+
          <hr />
             </div>
 <!--        <div th:each="hi : ${orderMethods}" >-->

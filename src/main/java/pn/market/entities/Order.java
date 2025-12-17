@@ -45,11 +45,9 @@ public class Order {
         this.items = items;
     }
 
+
     public void addItem(Item item) {
         items.add(item);
     }
 
-    public long totalsum() {
-        return items.stream().mapToLong(i -> i.getPrice() * i.getCount()).sum();
-    }
 }
