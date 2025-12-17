@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.reactive.result.view.Rendering;
 import pn.market.entities.Order;
 import pn.market.services.impl.ItemServiceImpl;
-import pn.market.services.impl.OrderContainerServiceImpl;
 import pn.market.services.impl.OrderServiceImpl;
 import reactor.core.publisher.Mono;
 
@@ -24,8 +23,6 @@ public class OrderController {
     @Autowired
     private ItemServiceImpl itemService;
 
-    @Autowired
-    private OrderContainerServiceImpl orderContainerService;
 
     @GetMapping
     public Mono<Rendering> allOrders() {
