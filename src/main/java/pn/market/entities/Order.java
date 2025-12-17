@@ -50,4 +50,9 @@ public class Order {
         items.add(item);
     }
 
+    public long totalSumm() {
+        return items.stream().mapToLong(
+                i -> i.getPrice() * i.getCount()
+        ).sum();
+    }
 }

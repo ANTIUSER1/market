@@ -5,14 +5,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.result.view.Rendering;
 import pn.market.entities.Order;
 import pn.market.services.impl.ItemServiceImpl;
 import pn.market.services.impl.OrderServiceImpl;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/orders")
@@ -28,13 +26,12 @@ public class OrderController {
 
     @GetMapping
     public Mono<Rendering> allOrders() {
-        Mono<List<Order>> orders = orderService.findAll()
+        Flux<Order> orders = orderService.findAll()
                 .map(od -> {
                     itemService.getItemsByOrderId(od.getId())
                             .subscribe(u -> od.addItem(u));
                     return od;
-                })
-                .collectList();
+                });
         Mono<Rendering> r =
                 Mono.just(Rendering.view("orders")
                         .modelAttribute("orderData", orders)
@@ -44,13 +41,21 @@ public class OrderController {
 
     @GetMapping("/{id}")
     public Mono<Rendering> getOrderById(
-            @PathVariable("id") Long id,
-            @RequestParam(value = "newOrder") boolean newOrder
+            @PathVariable("id") Long id
+            //      @RequestParam(value = "newOrder") boolean newOrder
     ) {
-        Mono<Order> order = orderService.getById(id);
+        Mono<Order> order = orderService.getById(id)
+                .map(od -> {
+                    itemService.getItemsByOrderId(od.getId())
+                            .subscribe(u -> od.addItem(u));
+                    return od;
+                });
 
-        Mono<Rendering> r = Mono.empty();
+        Mono<Rendering> r = //Mono.empty();
 
+                Mono.just(Rendering.view("order")
+                        .modelAttribute("orderData", order)
+                        .build());
 
         return r;
     }

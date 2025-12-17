@@ -36,6 +36,8 @@
                             th:text="${item.title+' ( '+item.count+' шт. '+ item.price+' руб.  ' }"/>
                     </ul>
                     <div class="card-footer">
+                        <h4 th:text="${'Сумма: '+orderData.totalSumm}+' руб.'"></h4>
+
                         <!--                        <b th:text="${'  Сумма: '+orderData.totalSumm }+' руб.'"></b>-->
                     </div>
                 </div>

@@ -32,15 +32,14 @@
         </div>
         <div class="row p-2">
             <div class="col">
-                <h2 th:text="${'Заказ №'+orderData.order.id}"></h2>
+                <h2 th:text="${'Заказ №'+orderData.id}"></h2>
             </div>
         </div>
         <div class="row p-2" th:each="item : ${orderData.items}">
             <div class="col">
-                <div class="card">
-                    <div class="card-header">
-                        <b th:text="${item.title}"></b>
-                    </div>
+                <h2 class="card">
+                    <h2 th:text="${item.title}">
+                    </h2>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item" th:text="${item.count}+' шт.'"/>
                         <li class="list-group-item" th:text="${item.price}+' руб.'"/>
@@ -52,10 +51,8 @@
             </div>
         </div>
         <div class="row p-2">
-            <div class="col">
-                <h3 th:text="${'Сумма: '+orderData.totalSumm}+' руб.'"></h3>
+             <h4 th:text="${'Сумма: '+orderData.totalSumm}+' руб.'"></h4>
 
-            </div>
         </div>
     </div>
 
