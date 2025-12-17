@@ -1,19 +1,16 @@
 package pn.market.services;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import pn.market.additional.Paging;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.Optional;
 
 public interface TService<T> {
 
 
     Flux<T> findAll();
 
-    Optional<T> getById(Long id);
+    Mono<T> getById(Long id);
 
     Mono<Paging> findAllAndPaging(Mono<Pageable> pageable);
 //    Mono<Page<T>> findAllAndPaging(  Mono<Pageable> pageable);

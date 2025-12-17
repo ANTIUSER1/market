@@ -3,7 +3,9 @@ package pn.market.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.result.view.Rendering;
 import pn.market.entities.Order;
 import pn.market.services.impl.ItemServiceImpl;
@@ -37,6 +39,19 @@ public class OrderController {
                 Mono.just(Rendering.view("orders")
                         .modelAttribute("orderData", orders)
                         .build());
+        return r;
+    }
+
+    @GetMapping("/{id}")
+    public Mono<Rendering> getOrderById(
+            @PathVariable("id") Long id,
+            @RequestParam(value = "newOrder") boolean newOrder
+    ) {
+        Mono<Order> order = orderService.getById(id);
+
+        Mono<Rendering> r = Mono.empty();
+
+
         return r;
     }
 

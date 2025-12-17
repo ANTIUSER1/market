@@ -45,8 +45,8 @@ public class ItemServiceImpl implements TService<Item> {
     }
 
     @Override
-    public Optional<Item> getById(Long id) {
-        return itemRepo.findById(id).blockOptional();
+    public Mono<Item> getById(Long id) {
+        return itemRepo.findById(id);
     }
 
     int pageSize;

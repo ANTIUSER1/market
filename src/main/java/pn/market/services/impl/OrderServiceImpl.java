@@ -11,8 +11,6 @@ import pn.market.services.TService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Optional;
-
 @Service
 
 public class OrderServiceImpl implements TService<Order> {
@@ -33,8 +31,8 @@ public class OrderServiceImpl implements TService<Order> {
     }
 
     @Override
-    public Optional<Order> getById(Long id) {
-        return orderRepo.findById(id).blockOptional();
+    public Mono<Order> getById(Long id) {
+        return orderRepo.findById(id);
     }
 
     @Override
