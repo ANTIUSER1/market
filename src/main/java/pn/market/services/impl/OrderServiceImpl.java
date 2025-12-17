@@ -49,29 +49,4 @@ public class OrderServiceImpl implements TService<Order> {
         itemService.removeFromOrder(orderId);
         orderRepo.deleteById(orderId).subscribe();
     }
-        /*
-        if (orderOptional.isPresent()) {
-            Order order = orderOptional.get();
-            List<Item> items = itemRepo.findByOrderId(id).collectList().block();
-            itemService.setNullOderId(items);
-            orderRepo.delete(order).block();
-        }
-
-         */
-    /*
-    public List<Order> findAllOrders() {
-        return orderRepo.findAll().collectList().block();
-    }
-
-    public void buyOrder(long id) {
-        Optional<Order> orderOptional = orderRepo.findById(id).blockOptional();
-        if (orderOptional.isPresent()) {
-            Order order = orderOptional.get();
-            List<Item> items = itemRepo.findByOrderId(id).collectList().block();
-            itemService.setNullOderId(items);
-            orderRepo.delete(order).block();
-        }
-    }
-
- */
 }

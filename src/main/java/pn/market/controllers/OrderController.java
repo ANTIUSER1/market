@@ -53,8 +53,7 @@ public class OrderController {
                     return od;
                 });
 
-        Mono<Rendering> r = //Mono.empty();
-
+        Mono<Rendering> r =
                 Mono.just(Rendering.view("order")
                         .modelAttribute("orderData", order)
                         .modelAttribute("newOrder", newOrder)
@@ -68,40 +67,4 @@ public class OrderController {
         orderService.buyOrder(id);
         return "redirect:/orders";
     }
-
-    /*
-
-    @GetMapping
-    public String asdOrders(Model model) {
-        List<Order> orderList = orderService.findAllOrders();
-        List<OrderContainer> orderContainers = orderContainerService.createOrderContainerList(orderList);
-
-        model.addAttribute("orderData", orderContainers);
-        return "orders";
-    }
-
-    @GetMapping("/{id}")
-    public String getOrderById(
-            Model model,
-            @PathVariable("id") Long id,
-            @RequestParam(value = "newOrder") boolean newOrder
-    ) {
-        Optional<Order> order = orderService.getById(id);
-        if (order.isPresent()) {
-            OrderContainer orderContainer = orderContainerService.create(order.get());
-            model.addAttribute("orderData", orderContainer);
-            return "order";
-        }
-        return "items";
-    }
-
-    @GetMapping("/buy/{id}")
-    public String buyOrder(@PathVariable("id") Long id) {
-        orderService.buyOrder(id);
-        Optional<Order> order = orderService.getById(id);
-        System.out.println("      RESULT ::: ORDER PRESENT ::: " + order.isPresent());
-        return "redirect:/orders";
-    }
-
-     */
 }

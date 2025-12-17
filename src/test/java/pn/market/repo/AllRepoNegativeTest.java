@@ -27,8 +27,8 @@ class AllRepoNegativeTest {
     private OrderRepo orderRepo;
     @MockitoBean
     private ItemRepo itemRepo;
-@Autowired
-private DatabaseClient databaseClient;
+    @Autowired
+    private DatabaseClient databaseClient;
 
     @BeforeEach
     void init() {
@@ -39,14 +39,14 @@ private DatabaseClient databaseClient;
 
     @Test
     void findCartMaxId() {
-        when(cartRepo.findMaxId(databaseClient)).thenReturn(Mono.just( 1L));
-        assertNotEquals(Mono.just( 1L), cartRepo.findMaxId( databaseClient));
+        when(cartRepo.findMaxId(databaseClient)).thenReturn(Mono.just(1L));
+        assertNotEquals(Mono.just(1L), cartRepo.findMaxId(databaseClient));
     }
 
 
     @Test
     void getAllItemsSortedAscById() {
-        when(itemRepo.findAll()).thenReturn(Flux.just(new Item(), new Item() ));
-        assertNotEquals(Flux.just( 1000), itemRepo.findAll().collectList().block().size());
+        when(itemRepo.findAll()).thenReturn(Flux.just(new Item(), new Item()));
+        assertNotEquals(Flux.just(1000), itemRepo.findAll().collectList().block().size());
     }
 }

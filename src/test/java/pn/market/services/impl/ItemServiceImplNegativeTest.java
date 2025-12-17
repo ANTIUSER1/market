@@ -1,24 +1,12 @@
 package pn.market.services.impl;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 import pn.market.entities.Item;
 import pn.market.repo.ItemRepo;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class ItemServiceImplNegativeTest {

@@ -22,22 +22,20 @@ import java.util.Optional;
 
 public class ItemServiceImpl implements TService<Item> {
 
+    int pageSize;
+    int offset;
     @Value("${spring.web.resources.static-locations}")
     private String imgPath;
-
     @Autowired
     private FileServiceImpl fileService;
-
     @Autowired
     private ItemRepo itemRepo;
-
     @Autowired
     private DatabaseClient databaseClient;
 
     public Mono<Item> findById(Long id) {
         return itemRepo.findById(id);
     }
-
 
     @Override
     public Flux<Item> findAll() {
@@ -48,10 +46,6 @@ public class ItemServiceImpl implements TService<Item> {
     public Mono<Item> getById(Long id) {
         return itemRepo.findById(id);
     }
-
-    int pageSize;
-    int offset;
-
 
     @Override
     public Mono<Paging> findAllAndPaging(Mono<Pageable> pageable) {
@@ -171,11 +165,6 @@ public class ItemServiceImpl implements TService<Item> {
     public Mono<Item> save(Item i) {
         return itemRepo.save(i);
     }
-
-
-    //****************
-    //****************
-    //****************
 
     public Flux<Item> getItemsByCartIdToFlux(Long id) {
         return itemRepo.findByCartId(id);

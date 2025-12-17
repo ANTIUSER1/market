@@ -39,14 +39,14 @@ class AllRepoTest {
 
     @Test
     void findCartMaxId() {
-        when(cartRepo.findMaxId(databaseClient)).thenReturn(Mono.just( 1L));
+        when(cartRepo.findMaxId(databaseClient)).thenReturn(Mono.just(1L));
         assertEquals(1, cartRepo.findMaxId(databaseClient));
     }
 
 
     @Test
     void getAllItemsSortedAscById() {
-        when(itemRepo.findAll()).thenReturn(Flux.just( new Item(), new Item()) );
+        when(itemRepo.findAll()).thenReturn(Flux.just(new Item(), new Item()));
         assertEquals(items.size(), itemRepo.findAll().collectList().blockOptional().get().size());
     }
 }

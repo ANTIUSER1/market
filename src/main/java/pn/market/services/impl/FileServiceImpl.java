@@ -1,6 +1,5 @@
 package pn.market.services.impl;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import reactor.core.publisher.Mono;
@@ -44,21 +43,21 @@ public class FileServiceImpl {
                         if (monoPath.block() != null) {
                             return
                                     Mono.just(imgFolderName + imgPreffix + id + "." + fileExt);
-                        }else {
+                        } else {
                             return null;
                         }
                     }
                 }
             }
-        return null;
+            return null;
+        }
     }
-}
 
-public boolean isImage(String ext) {
-    return ext.equalsIgnoreCase("jpg") ||
-            ext.equalsIgnoreCase("jpeg") ||
-            ext.equalsIgnoreCase("png") ||
-            ext.equalsIgnoreCase("gif");
-}
+    public boolean isImage(String ext) {
+        return ext.equalsIgnoreCase("jpg") ||
+                ext.equalsIgnoreCase("jpeg") ||
+                ext.equalsIgnoreCase("png") ||
+                ext.equalsIgnoreCase("gif");
+    }
 
 }

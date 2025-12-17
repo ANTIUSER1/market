@@ -11,11 +11,11 @@ public class Paging {
     private final boolean hasPrevious;
 
     public Paging(int pageSize,
-                  int pageNumber,int totalPages,
+                  int pageNumber, int totalPages,
                   boolean hasNext, boolean hasPrevious) {
         this.pageSize = pageSize;
         this.pageNumber = pageNumber;
-        this.totalPages=totalPages;
+        this.totalPages = totalPages;
         this.hasNext = hasNext;
         this.hasPrevious = hasPrevious;
     }

@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <title>Витрина магазина</title>
-   </head>
+</head>
 
 <body>
 
@@ -14,22 +14,23 @@
 <p th:text="${ orderData }"></p>
 <div th:each="orderdata : ${orderData}">
     <h3>
-            <span th:text="${orderdata.id}">   </span><hr />
-<!--            <span th:text="${orderdata.items}">   </span><hr />-->
+        <span th:text="${orderdata.id}">   </span>
+        <hr/>
+        <!--            <span th:text="${orderdata.items}">   </span><hr />-->
     </h3>
-        <div th:each="hi : ${orderdata.items}">
-                <span th:text="${hi.title}">  </span>
-              Price  <span th:text="${hi.price}">  </span>
-              Count  <span th:text="${hi.count}">  </span>
+    <div th:each="hi : ${orderdata.items}">
+        <span th:text="${hi.title}">  </span>
+        Price <span th:text="${hi.price}">  </span>
+        Count <span th:text="${hi.count}">  </span>
 
-         <hr />
-            </div>
-<!--        <div th:each="hi : ${orderMethods}" >-->
-<!--        <div th:each="hi : ${orderMethods.getItemsByOrderId(orderdata.id)}" >-->
-<!--        <div th:each="hi : ${orderData.items}" >-->
-<!--            <span th:text="${hi}"> <br />-->
-<!--&lt;!&ndash;            </span>  ::: <span th:text="${orderdata.getInt(hi)}">   </span>&ndash;&gt;-->
-<!--        </div>-->
+        <hr/>
+    </div>
+    <!--        <div th:each="hi : ${orderMethods}" >-->
+    <!--        <div th:each="hi : ${orderMethods.getItemsByOrderId(orderdata.id)}" >-->
+    <!--        <div th:each="hi : ${orderData.items}" >-->
+    <!--            <span th:text="${hi}"> <br />-->
+    <!--&lt;!&ndash;            </span>  ::: <span th:text="${orderdata.getInt(hi)}">   </span>&ndash;&gt;-->
+    <!--        </div>-->
 </div>
 
 </div>

@@ -1,22 +1,12 @@
 package pn.market.services.impl;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import pn.market.entities.Cart;
 import pn.market.entities.Item;
 import pn.market.repo.CartRepo;
 import pn.market.repo.ItemRepo;
-
-import java.util.ArrayList;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class CartServiceImplTest {

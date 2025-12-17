@@ -13,7 +13,6 @@ import pn.market.services.impl.OrderServiceImpl;
 import java.util.ArrayList;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
