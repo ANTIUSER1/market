@@ -34,7 +34,7 @@ public class OrderController {
                 })
                 .collectList();
         Mono<Rendering> r =
-                Mono.just(Rendering.view("_orders")
+                Mono.just(Rendering.view("orders")
                         .modelAttribute("orderData", orders)
                         .build());
         return r;

@@ -15,27 +15,28 @@
         <div class="row p-2">
             <div class="col">
                 <div class="hstack gap-3">
-                    <h2>
+                    <h3>
                         <span class="badge text-bg-success">Витрина магазина</span>
-                    </h2>
+                    </h3>
                     <a class="btn btn-secondary bi bi-cart4 ms-auto" href="/cart/items"> Корзина</a>
                     <a class="btn btn-secondary bi bi-arrow-left-square" href="/items"> Главная</a>
                 </div>
             </div>
         </div>
-        <div class="row p-2" th:each="orderdata : ${orderData}">
+        <div class="row p-2" th:each="orderData : ${orderData}">
             <div class="col">
                 <div class="card">
                     <div class="card-header">
-                        <a th:href="${'/orders/'+orderdata.order.id}"
-                           th:text="${'Заказ №'+orderdata.order.id}"></a>
+                        Order <span th:text="${orderData.id}"></span>
+                        <a th:href="${'/orders/'+orderData.id}"
+                           th:text="${'Заказ №'+orderData.id}"></a>
                     </div>
-                    <ul class="list-group list-group-flush" th:each="item : ${orderdata.items}">
+                    <ul class="list-group list-group-flush" th:each="item : ${orderData.items}">
                         <li class="list-group-item"
                             th:text="${item.title+' ( '+item.count+' шт. '+ item.price+' руб.  ' }"/>
                     </ul>
                     <div class="card-footer">
-                        <b th:text="${'  Сумма: '+orderdata.totalSumm }+' руб.'"></b>
+                        <!--                        <b th:text="${'  Сумма: '+orderData.totalSumm }+' руб.'"></b>-->
                     </div>
                 </div>
             </div>
