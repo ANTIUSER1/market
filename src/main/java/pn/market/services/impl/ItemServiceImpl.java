@@ -81,19 +81,19 @@ public class ItemServiceImpl implements TService<Item> {
         return items;
     }
 
-    public List<Item> getItemsByCartId(Long id) {
-        Flux<Item> items = itemRepo.findByCartId(id);
-        return items.collectList().block();
-    }
+//    public List<Item> getItemsByCartId(Long id) {
+//        Flux<Item> items = itemRepo.findByCartId(id);
+//        return items.collectList().block();
+//    }
 
     public Flux<Item> getItemsByOrderId(Long id) {
         return itemRepo.findByOrderId(id);
     }
 
-    public long getTotalSum(List<Item> items) {
-        return items.stream()
-                .mapToLong(i -> i.getPrice() * i.getCount()).sum();
-    }
+//    public long getTotalSum(List<Item> items) {
+//        return items.stream()
+//                .mapToLong(i -> i.getPrice() * i.getCount()).sum();
+//    }
 
     public Mono<Long> getTotalSum(Flux<Item> items) {
         return items.collectList()
@@ -106,16 +106,16 @@ public class ItemServiceImpl implements TService<Item> {
         return itemRepo.save(item);//.flatMap(i -> itemRepo.findById(i.getId())).log();
     }
 
-    public Item plus(Item item, long cartId) {
-        item.plusCount(cartId);
-        return itemRepo.save(item).block();
-    }
-
-
-    public Item minus(Item item) {
-        item.minusCount();
-        return itemRepo.save(item).block();
-    }
+//    public Item plus(Item item, long cartId) {
+//        item.plusCount(cartId);
+//        return itemRepo.save(item).block();
+//    }
+//
+//
+//    public Item minus(Item item) {
+//        item.minusCount();
+//        return itemRepo.save(item).block();
+//    }
 
     public Item uploadFile(MultipartFile file, long id) throws IOException {
         Optional<Item> itemOptional = itemRepo.findById(id).blockOptional();
@@ -131,20 +131,20 @@ public class ItemServiceImpl implements TService<Item> {
         return item;
     }
 
-    public void setNullOderId(List<Item> items) {
-        for (Item item : items) {
-            item.setOrderId(null);
-        }
-        itemRepo.saveAll(items).blockLast();
-    }
+//    public void setNullOderId(List<Item> items) {
+//        for (Item item : items) {
+//            item.setOrderId(null);
+//        }
+//        itemRepo.saveAll(items).blockLast();
+//    }
 
 
-    public Mono<Long> getItemCartId(Mono<Item> itemMono) {
-        if (itemMono == null) return null;
-        return itemMono.map(Item::getCartId);
-    }
+//    public Mono<Long> getItemCartId(Mono<Item> itemMono) {
+//        if (itemMono == null) return null;
+//        return itemMono.map(Item::getCartId);
+//    }
 
-    private String createImagePath() {
+    String createImagePath() {
         imgPath = imgPath.split("file:")[1]
                 .replace("//", "/")
                 .replace(",", "");
@@ -176,18 +176,18 @@ public class ItemServiceImpl implements TService<Item> {
     }
 
 
-    public Mono<Item> removeItemFromCart(long itemId) {
-        return this.findById(itemId)
-                .map(i -> {
-                    this.minusForMono(i);
-                    return this.save(i);
-                }).flatMap(i -> i);
-    }
+//    public Mono<Item> removeItemFromCart(long itemId) {
+//        return this.findById(itemId)
+//                .map(i -> {
+//                    this.minusForMono(i);
+//                    return this.save(i);
+//                }).flatMap(i -> i);
+//    }
 
-    public void saveAll(List<Item> items) {
-        System.out.println("         saveAll  " + items);
-        itemRepo.saveAll(items).subscribe();
-    }
+//    public void saveAll(List<Item> items) {
+//        System.out.println("         saveAll  " + items);
+//        itemRepo.saveAll(items).subscribe();
+//    }
 
     public void removeFromOrder(long orderId) {
         itemRepo.findByOrderId(orderId).collectList()
