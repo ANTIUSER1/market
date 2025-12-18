@@ -41,16 +41,12 @@ public class CartServiceImpl implements TService<Cart> {
 
     @Override
     public Mono<Paging> findAllAndPaging(Mono<Pageable> pageable) {
-//    public   Mono<Page<Cart>> findAllAndPaging( Mono<Pageable>  pageable) {
         return null;
-        //cartRepo.findAll(pageable);
     }
 
 
     public Mono<Long> getLastCartId() {
         return cartRepo.findMaxId(databaseClient);
-//                .map(id -> cartRepo.findById(id))
-//                .flatMap(c -> c);
     }
 
     /*
@@ -171,24 +167,30 @@ public class CartServiceImpl implements TService<Cart> {
                     if (i.getCartId() == null) {
                         return this.createNewCart();
                     } else return Mono.just(i.getCartId());
-                }).flatMap(i -> i);
+                }).flatMap(ci -> ci);
         return cartIdMono;
     }
 
     public Mono<Item> placeItemToCart(long itemId, String action) {
         Mono<Item> itemMono = Mono.zip(
-                        itemService.findById(itemId), this.getLastCartId()
+                        itemService.findById(itemId),
+                        this.createCartForItemIfNotExists(itemId)
+
                 )
                 .map(t -> {
+               
                     Item i = t.getT1();
-                    long cartId = t.getT2();
+                    Long cartId = t.getT2();
+
                     Mono<Item> mi = null;
                     if (action != null) {
                         mi = itemService.addToCart(i, cartId, action);
                     }
                     if (mi != null) return mi;
                     else return Mono.just(i);
-                }).flatMap(i -> i);
+
+                })
+                .flatMap(i -> i);
         return itemMono;
     }
 }
