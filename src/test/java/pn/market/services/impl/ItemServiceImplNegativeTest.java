@@ -1,12 +1,20 @@
 package pn.market.services.impl;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 import pn.market.entities.Item;
 import pn.market.repo.ItemRepo;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class ItemServiceImplNegativeTest {
@@ -29,7 +37,7 @@ class ItemServiceImplNegativeTest {
     void init() {
         fileName = "1.jpg";
         fileNameTarget = "t-1.jpg";
-        ext = "op";
+        ext = "jpg";
 
         file = new MockMultipartFile(fileName, "image/jpeg".getBytes());
         id = 1L;
@@ -39,44 +47,78 @@ class ItemServiceImplNegativeTest {
         imgPath = "path";
     }
 
-/*
     @Test
-    void getById() {
-        when(itemRepo.findById(1L)).thenReturn(Optional.ofNullable(item));
-        when(itemService.getById(1L)).thenReturn(Optional.ofNullable(item));
-        assertFalse(itemService.getById(1L).isEmpty());
+    void findAllAndPagingTest() {
+        when(itemRepo.findAll()).thenReturn(Flux.empty());
+        when(itemService.findAllAndPaging(Mono.empty())).thenReturn(Mono.empty());
+        assertNotEquals(Flux.empty(), itemService.findAllAndPaging(Mono.empty()));
     }
 
     @Test
-    void findAllAndPaging() {
-        when(itemRepo.findAll()).thenReturn(new ArrayList<>());
-        Pageable pageable = PageRequest.of(0, 5);
-        Page<Item> page = Page.empty(pageable);
-        when(itemService.findAllAndPaging(pageable)).thenReturn(page);
-        assertNotEquals(10, itemService.findAllAndPaging(pageable).getTotalPages());
+    void getItemsByCartTest() {
+        when(itemRepo.findByCartId(1L)).thenReturn(Flux.empty());
+        when(itemService.getItemsByCart(1L)).thenReturn(Flux.empty());
+        assertNotEquals(Mono.empty(), itemService.getItemsByCart(1L));
     }
 
     @Test
-    void plus() {
-        item.setCount(1);
-        when(itemService.plus(item)).thenReturn(item);
-        assertNotEquals(100, itemService.plus(item).getCount());
-
+    void getItemsByOrderIdTest() {
+        when(itemRepo.findByOrderId(1L)).thenReturn(Flux.empty());
+        when(itemService.getItemsByOrderId(1L)).thenReturn(Flux.empty());
+        assertNotEquals(Mono.empty(), itemService.getItemsByOrderId(1L));
     }
 
     @Test
-    void minus() {
-        item.setCount(2);
-        when(itemService.plus(item)).thenReturn(item);
-        assertNotEquals(100, itemService.plus(item).getCount());
+    void getTotalSumTest() {
+        when(itemService.getTotalSum(Flux.empty())).thenReturn(Mono.just(100L));
+        assertNotEquals(11100L, itemService.getTotalSum(Flux.empty()).block());
     }
 
     @Test
-    void uploadFile() throws IOException {
-        item.setImgPath(imgPath);
+    void plusForMono() {
+        when(itemService.plusForMono(item, 1L)).thenReturn(Mono.just(item));
+        assertNotEquals(Flux.just(item).collectList().blockOptional().get(),
+                itemService.plusForMono(item, 1L).blockOptional().get());
+    }
+
+    @Test
+    void minusForMono() {
+        when(itemService.minusForMono(item)).thenReturn(Mono.just(item));
+        assertNotEquals(Flux.just(item).collectList().blockOptional().get(),
+                itemService.minusForMono(item).blockOptional().get());
+    }
+
+    @Test
+    void uploadFileTest() throws IOException {
         when(itemService.uploadFile(file, id)).thenReturn(item);
-        assertNotEquals(null, itemService.uploadFile(file, id).getImgPath());
+        assertNotEquals("", itemService.uploadFile(file, id).getImgPath());
     }
 
- */
+    @Test
+    void createImagePathest() {
+        when(itemService.createImagePath()).thenReturn(fileNameTarget);
+        assertNotEquals("fileNameTarget", itemService.createImagePath());
+    }
+
+    @Test
+    void addToCartTest() {
+        when(itemService.addToCart(item, 1L, "a")).thenReturn(Mono.just(item));
+        assertNotEquals(Flux.just(item).collectList().blockOptional().get(),
+                itemService.addToCart(item, 1L, "a").blockOptional().get());
+    }
+
+    @Test
+    void saveTest() {
+        when(itemRepo.save(item)).thenReturn(Mono.empty());
+        when(itemService.save(item)).thenReturn(Mono.empty());
+        assertNotEquals(Flux.empty(), itemService.save(item));
+    }
+
+    @Test
+    void getItemsByCartIdToFluxTest() {
+        when(itemRepo.findByCartId(1L)).thenReturn(Flux.empty());
+        when(itemService.getItemsByCartIdToFlux(1L)).thenReturn(Flux.empty());
+        assertNotEquals(Mono.empty(), itemService.getItemsByCartIdToFlux(1L));
+
+    }
 }
