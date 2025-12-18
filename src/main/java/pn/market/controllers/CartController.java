@@ -23,7 +23,7 @@ public class CartController {
     @Autowired
     private ItemServiceImpl itemService;
 
-    @GetMapping("/is-add")
+    @GetMapping("/items")
     public Mono<Rendering> addItem1(
             @RequestParam("itemId") Long itemId,
             @RequestParam("action") String action
