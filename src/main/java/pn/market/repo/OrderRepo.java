@@ -12,6 +12,4 @@ import pn.market.entities.Order;
 @Transactional
 public interface OrderRepo extends ReactiveCrudRepository<Order, Long> {
 
-//    @Query("SELECT MAX(od.id) FROM Order od ")
-//    Long findMaxId();
 }
