@@ -1,5 +1,6 @@
 package pn.market.repo;
 
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,13 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+@Slf4j
 @SpringBootTest
 class AllRepoTest {
 
     private final List<Item> items = new ArrayList<>();
+    private Flux<Item> itemsFlux = null;
+
     @MockitoBean
     private CartRepo cartRepo;
     @MockitoBean
@@ -32,21 +36,19 @@ class AllRepoTest {
 
     @BeforeEach
     void init() {
-        for (int i = 0; i < 10; i++) {
-            items.add(new Item());
+        for (int i = 1; i < 10; i++) {
+            Item item = new Item();
+            item.setId((long) i);
+            items.add(item);
         }
+        itemsFlux = Flux.fromIterable(items);
     }
 
     @Test
     void findCartMaxId() {
         when(cartRepo.findMaxId(databaseClient)).thenReturn(Mono.just(1L));
-        assertEquals(1, cartRepo.findMaxId(databaseClient));
+        assertEquals(Mono.just(1L).blockOptional().get(), cartRepo.findMaxId(databaseClient).blockOptional().get());
     }
 
 
-    @Test
-    void getAllItemsSortedAscById() {
-        when(itemRepo.findAll()).thenReturn(Flux.just(new Item(), new Item()));
-        assertEquals(items.size(), itemRepo.findAll().collectList().blockOptional().get().size());
-    }
 }

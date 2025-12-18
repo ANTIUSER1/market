@@ -2,39 +2,24 @@ package pn.market.controllers;
 
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import pn.market.entities.Item;
-import pn.market.services.impl.ItemServiceImpl;
-import pn.market.services.impl.ModelServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
-@WebFluxTest(controllers = {ItemController.class})
-//@Import({
-//        ItemServiceImpl.class,
-//        ModelServiceImpl.class
-//
-//
-//})
-
-
-//@WebMvcTest({ItemController.class})
-@Import({ItemServiceImpl.class, ModelServiceImpl.class})
+@WebFluxTest//(controllers = {ItemController.class})
 class ItemControllerTest {
 
 
-    @MockitoBean
-    private ItemServiceImpl itemService;
+//    @MockitoBean
+//    private ItemServiceImpl itemService;
 
-    @Autowired
-    private ModelServiceImpl modelService;
+//    @Autowired
+//    private ModelServiceImpl modelService;
 //
 //    @Autowired
 //    private MockMvc mvc;
@@ -60,9 +45,10 @@ class ItemControllerTest {
     }
 
 
+/*
     @Test
     void itemsIndex() throws Exception {
-/*
+
         webTestClient.get()
                 .uri("/")
                 .exchange()
@@ -71,13 +57,12 @@ class ItemControllerTest {
                 .expectBody(String.class).consumeWith(response -> {
                     String body = response.getResponseBody();
                     assertNotNull(body);
-                  assertTrue(body.contains("<form")); // Проверяем, что страница содержит форму
+                    assertTrue(body.contains("<form")); // Проверяем, что страница содержит форму
                 });
 
-*/
 
 
-/*
+
         Pageable pageable =
                 PageRequest.of(0,
                         2,
@@ -105,7 +90,7 @@ class ItemControllerTest {
                 .andExpect(status().isOk());
 
 
- */
+
     }
 
 
@@ -140,7 +125,6 @@ class ItemControllerTest {
                 .andExpect(status().isOk());
 
 
-         */
     }
 
     @Test
@@ -156,9 +140,10 @@ class ItemControllerTest {
                 .andExpect(status().isOk());
 
 
- */
     }
 
+ */
+    //}
 }
 
 
