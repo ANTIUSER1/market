@@ -70,8 +70,8 @@ public class ItemController {
     }
 
 
-    @GetMapping("/i-all/{id}")
-    public Mono<Rendering> iById(
+    @GetMapping("/items/{id}")
+    public Mono<Rendering> itemById(
             @PathVariable("id") Long id,
             @RequestParam(value = "action", required = false) String action
     ) {
@@ -83,10 +83,8 @@ public class ItemController {
         return r;
     }
 
-
-    //test possibility
     @GetMapping("/all/{id}")
-    public Mono<Rendering> getAllItems(@PathVariable Long id) {
+    public Mono<Rendering> allItems(@PathVariable Long id) {
         Mono<Item> itemFlux = itemService.findById(id);
 
         Rendering r = Rendering.view("all")
@@ -97,60 +95,4 @@ public class ItemController {
 
     }
 
-    /*
-    @GetMapping
-    public String itemsIndex(
-            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
-            @RequestParam(value = "pageSize", required = false, defaultValue = "2") int pageSize,
-            @RequestParam(value = "search", required = false, defaultValue = " ") String search,
-            @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted,
-            Model model
-    ) {
-        model = modelService.createModel(page, pageSize, search, sorted, model).block();
-        return "items";
-    }
-
-    @GetMapping("/items")
-    public String items(
-            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
-            @RequestParam(value = "pageSize", required = false, defaultValue = "3") int pageSize,
-            @RequestParam(value = "search", required = false, defaultValue = " ") String search,
-            @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted,
-            Model model
-    ) {
-        model = modelService.createModel(page, pageSize, search, sorted, model).block();
-        return "items";
-    }
-
-    @GetMapping("/items/{id}")
-    public String item(
-            @PathVariable("id") Long id,
-            @RequestParam(value = "action", required = false) String action,
-            Model model) {
-
-        Item item = null;
-        Optional<Item> itemOptional = itemService.getById(id);
-        if (action != null && itemOptional.isPresent()) {
-            if (ActionType.MINUS.name().equalsIgnoreCase(action.trim()))
-                item = itemService.minus(itemOptional.get());
-
-            if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
-                if (itemOptional.get().getCartId() != null) {
-                    item = itemService.plus(itemOptional.get(), itemOptional.get().getCartId());
-                }
-            }
-            if (item != null) model.addAttribute("item", item);
-            else {
-                model.addAttribute("errorMSG", "INCORRECT ITEM REQUEST : ITEM  " + id + " IS NOT IN CART");
-                return "items";
-            }
-            model.addAttribute("action", action);
-            model.addAttribute("item", item);
-
-            return "item";
-        }
-        return "items";
-    }
-
-     */
 }
