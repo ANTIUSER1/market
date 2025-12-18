@@ -1,62 +1,55 @@
 package pn.market.services.impl;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.mockito.Mock;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import pn.market.entities.Item;
 import pn.market.entities.Order;
-import pn.market.repo.ItemRepo;
 import pn.market.repo.OrderRepo;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static reactor.core.publisher.Mono.when;
 
 @SpringBootTest
 class OrderServiceImplTest {
 
 
-    @Mock
+    @Autowired
     private OrderRepo orderRepo;
-    @Mock
-    private ItemRepo itemRepo;
-    @Mock
+    @Autowired
     private OrderServiceImpl orderService;
 
     private Order order;
-    private Item item;
 
 
     @BeforeEach
     void init() {
         order = new Order();
-        item = new Item();
         order.setId(1L);
     }
 
-/*
     @Test
-    void getById() {
-        when(orderRepo.findById(1L)).thenReturn(Optional.of(order));
-        when(orderService.getById(1L)).thenReturn(Optional.of(order));
-        assertTrue(orderService.getById(1L).isPresent());
-        assertNotEquals(order.getId(), orderService.getById(1L).get().getId() + 1L);
+    void findAllTest() {
+        when(orderRepo.findAll()).thenReturn(Flux.empty());
+        when(orderService.findAll()).thenReturn(Flux.empty());
+        assertEquals(Flux.empty(), orderService.findAll());
+
     }
 
     @Test
-    void findAllAndPaging() {
-        when(itemRepo.findAll()).thenReturn(new ArrayList<>());
-        Pageable pageable = PageRequest.of(0, 5);
-        Page<Order> page = Page.empty(pageable);
-        when(orderService.findAllAndPaging(pageable)).thenReturn(page);
-        assertEquals(0, orderService.findAllAndPaging(pageable).getTotalPages());
+    void findAllAndPagingTest() {
+        when(orderService.findAllAndPaging(Mono.empty())
+                .thenReturn(Mono.empty()));
+        assertEquals(Mono.empty(), orderService.findAllAndPaging(Mono.empty()));
     }
 
     @Test
-    void findAllOrders() {
-        when(orderRepo.findAll()).thenReturn(new ArrayList<>());
-        when(orderService.findAllOrders()).thenReturn(new ArrayList<>());
-        assertTrue(orderService.findAllOrders().isEmpty());
-        assertEquals(0, orderService.findAllOrders().size());
+    void saveTest() {
+        when(orderRepo.save(order)).thenReturn(Mono.empty());
+        when(orderService.save(order)).thenReturn(Mono.empty());
+        assertEquals(Mono.empty(), orderService.save(order));
     }
-
- */
-
 
 }
