@@ -1,12 +1,17 @@
 package pn.market.services.impl;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import pn.market.entities.Cart;
 import pn.market.entities.Item;
 import pn.market.repo.CartRepo;
 import pn.market.repo.ItemRepo;
+import reactor.core.publisher.Mono;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class CartServiceImplTest {
@@ -27,6 +32,15 @@ class CartServiceImplTest {
         item = new Item();
         cart.setId(1L);
     }
+
+
+    @Test
+    void getByIdTest() {
+        when(cartService.getById(1L)).thenReturn(Mono.empty());
+        assertEquals(Mono.empty(), cartService.getById(1L));
+    }
+
+
 /*
     @Test
     void getById() {
