@@ -3,6 +3,7 @@ package pn.market.services.impl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import pn.market.entities.Cart;
 import pn.market.entities.Item;
@@ -20,6 +21,8 @@ class CartServiceImplTest {
     private CartRepo cartRepo;
     @Mock
     private ItemRepo itemRepo;
+    @Autowired
+    private ItemServiceImpl itemService;
     @Mock
     private CartServiceImpl cartService;
 
@@ -40,45 +43,29 @@ class CartServiceImplTest {
         assertEquals(Mono.empty(), cartService.getById(1L));
     }
 
-
-/*
     @Test
-    void getById() {
-        when(cartRepo.findById(1L)).thenReturn(Optional.of(cart));
-        when(cartService.getById(1L)).thenReturn(Optional.of(cart));
-        assertTrue(cartService.getById(1L).isPresent());
-        assertEquals(cart.getId(), cartService.getById(1L).get().getId());
+    void findAllAndPagingTest() {
+        when(cartService.findAllAndPaging(Mono.empty())).thenReturn(Mono.empty());
+        assertEquals(Mono.empty(), cartService.findAllAndPaging(Mono.empty()));
     }
 
     @Test
-    void findAllAndPaging() {
-        when(itemRepo.findAll()).thenReturn(new ArrayList<>());
-        Pageable pageable = PageRequest.of(0, 5);
-        Page<Cart> page = Page.empty(pageable);
-        when(cartService.findAllAndPaging(pageable)).thenReturn(page);
-        assertEquals(0, cartService.findAllAndPaging(pageable).getTotalPages());
+    void createNewCartTest() {
+        when(cartRepo.save(cart)).thenReturn(Mono.empty());
+        when(cartService.createNewCart()).thenReturn(Mono.empty());
+        assertEquals(Mono.empty(), cartService.createNewCart());
     }
 
     @Test
-    void getLast() {
-        when(cartRepo.findMaxId()).thenReturn(100L);
-        when(cartService.getLast()).thenReturn(Optional.ofNullable(cart));
-        assertTrue(cartService.getLast().isPresent());
+    void createCartForItemIfNotExistsTest() {
+        when(cartService.createCartForItemIfNotExists(1L)).thenReturn(Mono.empty());
+        assertEquals(Mono.empty(), cartService.createCartForItemIfNotExists(1L));
     }
 
     @Test
-    void plusItem() {
-        when(itemRepo.findById(1L)).thenReturn(Optional.of(item));
-        when(cartService.plusItem(1L)).thenReturn(cart);
-        assertNotNull(cartService.plusItem(1L));
+    void placeItemToCartTest() {
+        when(cartService.placeItemToCart(1L, "1L")).thenReturn(Mono.empty());
+        assertEquals(Mono.empty(), cartService.placeItemToCart(1L, "1L"));
     }
 
-    @Test
-    void minusItem() {
-        when(itemRepo.findById(1L)).thenReturn(Optional.of(item));
-        when(cartService.minusItem(1L)).thenReturn(cart);
-        assertNotNull(cartService.minusItem(1L));
-    }
-
- */
 }
