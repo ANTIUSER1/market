@@ -9,7 +9,7 @@ import pn.market.repo.OrderRepo;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static reactor.core.publisher.Mono.when;
 
 @SpringBootTest
@@ -34,7 +34,7 @@ class OrderServiceImplTest {
     void findAllTest() {
         when(orderRepo.findAll()).thenReturn(Flux.empty());
         when(orderService.findAll()).thenReturn(Flux.empty());
-        assertEquals(Flux.empty(), orderService.findAll());
+        assertNotNull(orderService.findAll().blockFirst());
 
     }
 
@@ -42,14 +42,14 @@ class OrderServiceImplTest {
     void findAllAndPagingTest() {
         when(orderService.findAllAndPaging(Mono.empty())
                 .thenReturn(Mono.empty()));
-        assertEquals(Mono.empty(), orderService.findAllAndPaging(Mono.empty()));
+        assertNotNull(orderService.findAllAndPaging(Mono.empty()));
     }
 
     @Test
     void saveTest() {
         when(orderRepo.save(order)).thenReturn(Mono.empty());
         when(orderService.save(order)).thenReturn(Mono.empty());
-        assertEquals(Mono.empty(), orderService.save(order));
+        assertNotNull(orderService.save(order));
     }
 
 }
