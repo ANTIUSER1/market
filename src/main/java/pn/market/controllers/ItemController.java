@@ -33,8 +33,8 @@ public class ItemController {
     @Autowired
     private DatabaseClient databaseClient;
 
-    @GetMapping("/i-all")
-    public Mono<Rendering> iAllI(
+    @GetMapping //("/i-all")
+    public Mono<Rendering> itemsIndex(
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
             @RequestParam(value = "pageSize", required = false, defaultValue = "2") int pageSize,
             @RequestParam(value = "search", required = false, defaultValue = " ") String search,
@@ -43,7 +43,24 @@ public class ItemController {
         Flux<Item> itemFlux = itemService.findAll();
         Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
         Mono<Paging> pageMono = itemService.findAllAndPaging(pageableMono);
+        Mono<Rendering> r = Mono.just(Rendering.view("items")
+                .modelAttribute("items", itemFlux)
+                .modelAttribute("paging", pageMono)
+                .modelAttribute("page", pageableMono)
+                .build());
+        return r;
+    }
 
+    @GetMapping("/items")
+    public Mono<Rendering> items(
+            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "2") int pageSize,
+            @RequestParam(value = "search", required = false, defaultValue = " ") String search,
+            @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted
+    ) {
+        Flux<Item> itemFlux = itemService.findAll();
+        Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
+        Mono<Paging> pageMono = itemService.findAllAndPaging(pageableMono);
         Mono<Rendering> r = Mono.just(Rendering.view("items")
                 .modelAttribute("items", itemFlux)
                 .modelAttribute("paging", pageMono)
