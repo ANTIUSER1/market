@@ -178,19 +178,19 @@ public class CartServiceImpl implements TService<Cart> {
 
                 )
                 .map(t -> {
-               
+
                     Item i = t.getT1();
                     Long cartId = t.getT2();
 
-                    Mono<Item> mi = null;
-                    if (action != null) {
-                        mi = itemService.addToCart(i, cartId, action);
-                    }
-                    if (mi != null) return mi;
-                    else return Mono.just(i);
 
+                    if (action != null) {
+                        return itemService.addToCart(i, cartId, action);
+                    }
+                    return Mono.just(i);
                 })
                 .flatMap(i -> i);
         return itemMono;
     }
+
+
 }
