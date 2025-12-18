@@ -36,7 +36,6 @@ public class CartServiceImpl implements TService<Cart> {
     @Override
     public Mono<Cart> getById(Long id) {
         return Mono.empty();
-        //cartRepo.findById(id);
     }
 
     @Override
@@ -45,118 +44,6 @@ public class CartServiceImpl implements TService<Cart> {
     }
 
 
-    public Mono<Long> getLastCartId() {
-        return cartRepo.findMaxId(databaseClient);
-    }
-
-    /*
-        public Optional<Cart> getLast() {
-            long cId = cartRepo.findMaxId(databaseClient).block();
-            System.out.println("getLast   : cId = " + cId + "\n");
-            Optional<Cart> cartOptional = cartRepo.findById(cId).blockOptional();
-            if (cartOptional.isPresent()) {
-                return cartOptional;
-            }
-            return Optional.empty();
-        }
-      */
-/*
-    public Mono<Cart> addItem(Long itemId) {
-        Mono<Cart> cartMono = itemRepo.findById(itemId)
-                .map(i -> {
-                    Mono<Cart> result = Mono.just(new Cart(-1L));
-                    if (i.getCartId() == null) {
-                        result = cartRepo.save(new Cart());
-                    } else {
-                        result = getLastCartId();
-                    }
-                    return result;
-                }).flatMap(c -> c);
-        Mono<Cart> result = Mono.zip(
-                itemRepo.findById(itemId), cartMono
-        ).map(t -> {
-
-            Item i = t.getT1();
-            Cart c = t.getT2();
-            i.setCartId(c.getId());
-            i.plusCount(c.getId());
-            itemRepo.save(i);
-            return Mono.just(c);
-        }).flatMap(c -> c);
-        return result;
-    }
-
- */
-/*
-    public Mono<Cart> removeItem(Long itemId) {
-        Mono<Cart> cartMono = itemRepo.findById(itemId)
-                .map(i -> {
-                    Mono<Cart> result = Mono.just(new Cart(-1L));
-                    result = getLastCartId();
-
-                    return result;
-                }).flatMap(c -> c);
-        Mono<Cart> result = Mono.zip(
-                itemRepo.findById(itemId), cartMono
-        ).map(t -> {
-
-            Item i = t.getT1();
-            Cart c = t.getT2();
-            i.setCartId(null);
-            i.minusCount();
-            itemRepo.save(i);
-            return Mono.just(c);
-        }).flatMap(c -> c);
-        return result;
-    }
-*/
-/*
-    public Cart plusItem(Long itemId) {
-        System.out.println("plusItem   : itemId = " + itemId + "\n");
-        Optional<Item> itemOptional = itemRepo.findById(itemId).blockOptional();
-        System.out.println("plusItem   : itemOptional = " + itemOptional.get() + "\n");
-        Optional<Cart> cartOptional = getLast();
-        System.out.println("plusItem   : cartOptional present = " + cartOptional.isPresent() + "\n");
-        System.out.println("plusItem   : cartOptional present = " + cartOptional.get() + "\n");
-        Cart cart = null;
-        if (itemOptional.isPresent() && cartOptional.isPresent()) {
-            Item item = itemOptional.get();
-            cart = cartOptional.get();
-            itemService.plus(item, cart.getId());
-            return cart;
-        } else {
-        }
-        return cart;
-    }
-*/
-/*
-    public Cart minusItem(Long itemId) {
-        System.out.println("minusItem    : itemId = " + itemId + "\n");
-        Optional<Item> itemOptional = itemRepo.findById(itemId).blockOptional();
-
-        Optional<Cart> cartOptional = getLast();
-        System.out.println("minusItem    : cartOptional = " + cartOptional + "\n");
-        System.out.println("minusItem    : (itemOptional.isPresent() && cartOptional.isPresent()) = "
-                + (itemOptional.isPresent() && cartOptional.isPresent()) + "\n");
-        Cart cart = null;
-        if (itemOptional.isPresent() && cartOptional.isPresent()) {
-            Item item = itemOptional.get();
-            System.out.println("minusItem    : item = " + item + "\n");
-            System.out.println("minusItem    : item.getCartId() = " + item.getCartId() + "\n");
-            if (item.getCartId() != null) {
-                cart = cartOptional.get();
-                System.out.println("minusItem     : item = " + item + "\n");
-                //    item.setCartId(null);
-                itemService.minus(item);
-                itemRepo.save(item).block();
-//                cartRepo.save(cart).block();
-                System.out.println("minusItem  UPDATE   : item = " + item + "\n");
-                return cart;
-            }
-        }
-        return cart;
-    }
-*/
     public Mono<Long> createNewCart() {
         return cartRepo.save(new Cart()).map(cart -> cart.getId());
     }
