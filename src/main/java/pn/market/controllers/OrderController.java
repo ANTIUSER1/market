@@ -31,7 +31,6 @@ public class OrderController {
                 .map(od -> {
                     itemService.getItemsByOrderId(od.getId())
                             .subscribe(u -> od.addItem(u));
-                    System.out.println("      RESULT ::: ORDER PRESENT ::: " + od);
                     return od;
                 });
         Mono<Rendering> r =
