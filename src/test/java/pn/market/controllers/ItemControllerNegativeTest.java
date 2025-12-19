@@ -1,35 +1,52 @@
 package pn.market.controllers;
 
 
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebFlux;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.Pageable;
+import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import pn.market.entities.Item;
+import pn.market.services.ModelService;
+import pn.market.services.impl.CartServiceImpl;
 import pn.market.services.impl.ItemServiceImpl;
 import pn.market.services.impl.ModelServiceImpl;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
-@WebMvcTest({ItemController.class})
+@WebFluxTest(ItemController.class)
+@AutoConfigureWebFlux
 @Import({ItemServiceImpl.class, ModelServiceImpl.class})
 class ItemControllerNegativeTest {
 
+
     @MockitoBean
     private ItemServiceImpl itemService;
+    @MockitoBean
+    private ModelService modelService;
+    @MockitoBean
+    private CartServiceImpl cartService;
+    @MockitoBean
+    private DatabaseClient databaseClient;
+
 
     @Autowired
-    private ModelServiceImpl modelService;
-
-    @Autowired
-    private MockMvc mvc;
+    private WebTestClient webTestClient;
 
     private List<Item> items;
 
     private Item item;
-/*
+
     @BeforeEach
     void setUp() {
         items = new ArrayList<>();
@@ -43,78 +60,43 @@ class ItemControllerNegativeTest {
         items.add(item);
     }
 
-
     @Test
     void itemsIndex() throws Exception {
+        Mockito.when(itemService.findAll()).thenReturn(Flux.empty());
+        Mockito.when(modelService.createPageble(0, 2, "sorted"))
+                .thenReturn(Mono.empty());
+        Mono<Pageable> pageableMono = modelService.createPageble(0, 2, "sorted");
+        Mockito.when(itemService.findAllAndPaging(pageableMono))
+                .thenReturn(Mono.empty());
 
-        Pageable pageable =
-                PageRequest.of(0,
-                        2,
-                        Sort.Direction.ASC,
-                        "title");
-
-        when(itemService.findAllAndPaging(any())).thenReturn(new PageImpl<>(items, pageable, 2));
-
-        var expected = new Paging(2, 0, true, false);
-        Matcher<Paging> pagingMatcher = new AssertionMatcher<>() {
-            @Override
-            public void assertion(Paging actual) throws AssertionError {
-                Assertions.assertEquals(expected.getPageSize(), actual.getPageSize());
-            }
-        };
-        mvc.perform(MockMvcRequestBuilders.get("/negative")
-                        .param("page", "0")
-                        .param("pageSize", "2")
-                        .param("search", "")
-                        .param("sorted", "ALPHA"))
-                .andExpect(status().isNotFound());
-
-
+        webTestClient.get()
+                .uri("/a")
+                .exchange()
+                .expectStatus().is4xxClientError();
     }
 
 
     @Test
     void items() throws Exception {
-
-        Pageable pageable =
-                PageRequest.of(0,
-                        2,
-                        Sort.Direction.ASC,
-                        "title");
-
-        when(itemService.findAllAndPaging(any())).thenReturn(new PageImpl<>(items, pageable, 2));
-
-        var expected = new Paging(2, 0, true, false);
-        Matcher<Paging> pagingMatcher = new AssertionMatcher<>() {
-            @Override
-            public void assertion(Paging actual) throws AssertionError {
-                Assertions.assertEquals(expected.getPageSize(), actual.getPageSize());
-            }
-        };
-        mvc.perform(MockMvcRequestBuilders.get("/items-negative")
-                        .param("page", "0")
-                        .param("pageSize", "2")
-                        .param("search", "")
-                        .param("sorted", "ALPHA"))
-                .andExpect(status().isNotFound());
+        Mockito.when(itemService.findAll()).thenReturn(Flux.empty());
+        Mockito.when(modelService.createPageble(0, 2, "sorted"))
+                .thenReturn(Mono.empty());
+        Mono<Pageable> pageableMono = modelService.createPageble(0, 2, "sorted");
+        Mockito.when(itemService.findAllAndPaging(pageableMono))
+                .thenReturn(Mono.empty());
+        webTestClient.get()
+                .uri("/items/json")
+                .exchange()
+                .expectStatus().is4xxClientError();
     }
 
     @Test
-    void item() throws Exception {
-
-        Pageable pageable = Pageable.ofSize(2);
-        when(itemService.getById(1L)).thenReturn(Optional.ofNullable(item));
-        assertTrue(itemService.getById(1L).isPresent());
-        mvc.perform(MockMvcRequestBuilders.get("/items-negative/{id}", 1111)
-                        .param("id", "1111")
-                        .param("action", "false")
-                )
-                .andExpect(status().isNotFound());
+    void itemById() throws Exception {
+        Mockito.when(cartService.placeItemToCart(2, "2")).thenReturn(Mono.empty());
+        webTestClient.get()
+                .uri("/items/h", 1000)
+                .exchange()
+                .expectStatus().is4xxClientError();
 
     }
-
- */
 }
-
-
-
