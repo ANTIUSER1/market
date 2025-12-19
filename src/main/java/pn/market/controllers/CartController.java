@@ -19,21 +19,18 @@ public class CartController {
 
     @Autowired
     private CartServiceImpl cartService;
-
     @Autowired
     private ItemServiceImpl itemService;
 
+
     @GetMapping("/items")
-    public Mono<Rendering> addItem1(
+    public Mono<Rendering> addItem(
             @RequestParam("itemId") Long itemId,
             @RequestParam("action") String action
 
     ) {
         Mono<Item> itemMono = cartService.placeItemToCart(itemId, action);
-
-        Flux<Item> itemsFlux = itemMono.map(i -> {
-            return itemService.getItemsByCartIdToFlux(i.getCartId());
-        }).flatMapMany(f -> f);
+        Flux<Item> itemsFlux = itemService.getItemsByCartDataFromMonoToFlux(itemMono);
         Mono<Long> total = itemService.getTotalSum(itemsFlux);
         Mono<Rendering> r =
                 Mono.just(Rendering.view("cart")

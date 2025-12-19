@@ -176,18 +176,11 @@ public class ItemServiceImpl implements TService<Item> {
     }
 
 
-//    public Mono<Item> removeItemFromCart(long itemId) {
-//        return this.findById(itemId)
-//                .map(i -> {
-//                    this.minusForMono(i);
-//                    return this.save(i);
-//                }).flatMap(i -> i);
-//    }
-
-//    public void saveAll(List<Item> items) {
-//        System.out.println("         saveAll  " + items);
-//        itemRepo.saveAll(items).subscribe();
-//    }
+    public Flux<Item> getItemsByCartDataFromMonoToFlux(Mono<Item> itemMono) {
+        return itemMono.map(i -> {
+            return this.getItemsByCartIdToFlux(i.getCartId());
+        }).flatMapMany(f -> f);
+    }
 
     public void removeFromOrder(long orderId) {
         itemRepo.findByOrderId(orderId).collectList()

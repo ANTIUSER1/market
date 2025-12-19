@@ -17,7 +17,6 @@ import pn.market.entities.Item;
 import pn.market.services.ModelService;
 import pn.market.services.impl.CartServiceImpl;
 import pn.market.services.impl.ItemServiceImpl;
-import pn.market.services.impl.ModelServiceImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -30,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @WebFluxTest(ItemController.class)
 @AutoConfigureWebFlux
-@Import({ItemServiceImpl.class, ModelServiceImpl.class})
+@Import({ItemServiceImpl.class, ModelService.class, CartServiceImpl.class, DatabaseClient.class})
 class ItemControllerTest {
 
 
