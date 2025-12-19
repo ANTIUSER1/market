@@ -1,60 +1,44 @@
 package pn.market.controllers;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.web.servlet.MockMvc;
-import pn.market.additional.ActionType;
-import pn.market.entities.Cart;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import pn.market.entities.Item;
 import pn.market.services.impl.CartServiceImpl;
+import pn.market.services.impl.ItemServiceImpl;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.List;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-@WebMvcTest({CartController.class})
-@Import({CartServiceImpl.class})
+@WebFluxTest({CartController.class})
+@Import({CartServiceImpl.class, ItemServiceImpl.class})
 class CartControllerNegativeTest {
-
-    @Autowired
-    private MockMvc mvc;
 
     @MockitoBean
     private CartServiceImpl cartService;
+    @MockitoBean
+    private ItemServiceImpl itemService;
 
-    private Cart cart;
-
-    private List<Item> items;
-
-    @BeforeEach
-    void init() {
-        items = new ArrayList<>();
-        Item item = new Item();
-        item.setPrice(100L);
-        item.setId(100L);
-        item.setTitle("test");
-        item.setDescription("test-d");
-        item.setImgPath("p");
-        item.setCount(100);
-        items.add(item);
-
-        cart = new Cart(1L);
-
-    }
-
+    @Autowired
+    private WebTestClient webTestClient;
 
     @Test
-    void addItem() throws Exception {
-        mvc.perform(post("/cart/items-negative")
-                        .param("itemId", "1")
-                        .param("action", ActionType.MINUS.name()))
-                .andExpect(status().isNotFound());
+    void addItem() {
+        Mockito.when(cartService.placeItemToCart(2, "action"))
+                .thenReturn(Mono.empty());
+        Mono<Item> itemMono = cartService.placeItemToCart(2, "action");
+        Mockito.when(itemService.getItemsByCartDataFromMonoToFlux(itemMono))
+                .thenReturn(Flux.empty());
+        Flux<Item> itemsFlux = itemService.getItemsByCartDataFromMonoToFlux(itemMono);
+        Mockito.when(itemService.getTotalSum(itemsFlux)).thenReturn(Mono.just(100L));
+        webTestClient.get().uri("/cart/items-?itemId=100&action=act")
+                .exchange()
+                .expectStatus().is4xxClientError();
     }
+
 
 }
