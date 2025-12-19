@@ -5,7 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pn.market.additional.Paging;
 import pn.market.entities.Order;
-import pn.market.repo.ItemRepo;
 import pn.market.repo.OrderRepo;
 import pn.market.services.TService;
 import reactor.core.publisher.Flux;
@@ -17,9 +16,6 @@ public class OrderServiceImpl implements TService<Order> {
 
     @Autowired
     private OrderRepo orderRepo;
-
-    @Autowired
-    private ItemRepo itemRepo;
 
     @Autowired
     private ItemServiceImpl itemService;

@@ -7,9 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import pn.market.entities.Item;
-import pn.market.repo.ItemRepo;
-import pn.market.services.autocreate.ItemsCreateService;
-import pn.market.services.autocreate.OrdersCreateService;
 import pn.market.services.impl.ItemServiceImpl;
 
 import java.io.IOException;
@@ -22,19 +19,7 @@ import java.util.List;
 public class ItemRest {
 
     @Autowired
-    private ItemRepo itemRepo;
-
-    @Autowired
-    private ItemsCreateService itemsCreateService;
-
-    @Autowired
     private ItemServiceImpl itemService;
-
-    @Autowired
-    private OrdersCreateService ordersCreateService;
-
-//    @Autowired
-//    private ServletContext servletContext;
 
     @GetMapping("/setof/{count}")
     public List<Item> createSet(@PathVariable("count") int count) {
