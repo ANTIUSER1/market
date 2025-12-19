@@ -43,7 +43,7 @@ public class OrderController {
     @GetMapping("/{id}")
     public Mono<Rendering> getOrderById(
             @PathVariable("id") Long id,
-            @RequestParam(value = "newOrder") boolean newOrder
+            @RequestParam(value = "newOrder", defaultValue = "true") boolean newOrder
     ) {
         Mono<Order> order = orderService.getById(id)
                 .map(od -> {
