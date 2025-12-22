@@ -10,6 +10,7 @@ import pn.market.entities.Item;
 import pn.market.repo.CartRepo;
 import pn.market.repo.ItemRepo;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
@@ -33,7 +34,9 @@ class CartServiceImplTest {
     void init() {
         cart = new Cart();
         item = new Item();
+        item.setId(1L);
         cart.setId(1L);
+
     }
 
 
@@ -50,22 +53,59 @@ class CartServiceImplTest {
     }
 
     @Test
-    void createNewCartTest() {
+    void createEmptyNewCartTest() {
         when(cartRepo.save(cart)).thenReturn(Mono.empty());
         when(cartService.createNewCart()).thenReturn(Mono.empty());
         assertEquals(Mono.empty(), cartService.createNewCart());
     }
 
     @Test
+    void createNewCartTest() {
+        when(cartRepo.save(cart)).thenReturn(Mono.just(cart));
+        when(cartService.createNewCart()).thenReturn(Mono.just(1L));
+        assertEquals(Mono.just(1L).blockOptional().get(),
+                cartService.createNewCart().blockOptional().get());
+        Mono<Long> longMono = cartService.createNewCart();
+        StepVerifier.create(longMono)
+                .expectNext(1L)
+                .verifyComplete();
+    }
+
+
+    @Test
     void createCartForItemIfNotExistsTest() {
-        when(cartService.createCartForItemIfNotExists(1L)).thenReturn(Mono.empty());
-        assertEquals(Mono.empty(), cartService.createCartForItemIfNotExists(1L));
+        when(cartService.createCartForItemIfNotExists(1L)).thenReturn(Mono.just(1L));
+        assertEquals(Mono.just(1L).blockOptional().get(),
+                cartService.createCartForItemIfNotExists(1L).blockOptional().get());
+        Mono<Long> longMono = cartService.createCartForItemIfNotExists(1L);
+        StepVerifier.create(longMono)
+                .expectNext(1L)
+                .verifyComplete();
+    }
+
+    @Test
+    void placeEmptyItemToCartTest() {
+        when(cartService.placeItemToCart(1L, "1L"))
+                .thenReturn(Mono.empty());
+        assertEquals(Mono.empty(), cartService.placeItemToCart(1L, "1L"));
+        Mono<Item> itemMono = cartService.placeItemToCart(1L, "1L");
+        StepVerifier.create(itemMono)
+                .verifyComplete();
+
     }
 
     @Test
     void placeItemToCartTest() {
-        when(cartService.placeItemToCart(1L, "1L")).thenReturn(Mono.empty());
-        assertEquals(Mono.empty(), cartService.placeItemToCart(1L, "1L"));
+        when(cartService.placeItemToCart(1L, "1L"))
+                .thenReturn(Mono.just(item));
+        assertEquals(Mono.just(item).blockOptional().get(),
+                cartService.placeItemToCart(1L, "1L").blockOptional().get());
+        Mono<Item> itemMono = cartService.placeItemToCart(1L, "1L");
+        System.out.println(itemMono.block());
+        StepVerifier.create(itemMono)
+                .expectNext(item)
+                .verifyComplete();
+
     }
 
 }
