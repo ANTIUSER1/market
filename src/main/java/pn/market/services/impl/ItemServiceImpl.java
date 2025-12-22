@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import pn.market.additional.ActionType;
 import pn.market.additional.Paging;
 import pn.market.entities.Item;
+import pn.market.error.FileException;
 import pn.market.repo.ItemRepo;
 import pn.market.services.TService;
 import reactor.core.publisher.Flux;
@@ -16,7 +17,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 
@@ -97,18 +98,29 @@ public class ItemServiceImpl implements TService<Item> {
         return itemRepo.save(item);//.flatMap(i -> itemRepo.findById(i.getId())).log();
     }
 
-    public Item uploadFile(MultipartFile file, long id) throws IOException {
-        Optional<Item> itemOptional = itemRepo.findById(id).blockOptional();
-        Item item = null;
-        if (itemOptional.isPresent()) {
-            item = itemOptional.get();
-            String dirToUpload = createImagePath();
-            String fileName = fileService.storeFile(file, dirToUpload, id).block();
-            if (fileName != null) {
-                item.setImgPath(fileName);
-            }
+    public Mono<Item> uploadFileMono(MultipartFile file, Long id) {
+        if (id == null) {
+            throw new RuntimeException();
         }
-        return item;
+        Mono<Item> itemMono = itemRepo.findById(id);
+        itemMono = itemMono.map(i -> {
+                    String dirToUpload = createImagePath();
+                    AtomicReference<String> fileName = new AtomicReference<>();
+                    if (fileName.get() != null) {
+                        try {
+                            fileService.storeFile(file, dirToUpload, id)
+                                    .subscribe(s -> fileName.set(s));
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        } catch (FileException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    i.setImgPath(String.valueOf(fileName));
+                    return i;
+                }
+        );
+        return itemMono;
     }
 
     public String createImagePath() {

@@ -2,55 +2,65 @@ package pn.market.services.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import pn.market.error.FileException;
 import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.util.concurrent.atomic.AtomicReference;
 
 
 @Service
 public class FileServiceImpl {
 
-    public Mono<String> storeFile(MultipartFile file, String uploadDir, long id) throws IOException {
-        if (file.isEmpty()) {
-            return null;
-        } else {
-            Mono<Boolean> dirCreated = Mono.just(false);
-            Mono<Path> monoPath = Mono.just(null);
-            String imgFolderName = "images/";
-            String imgPreffix = "im-";
-            String fullFileName = file.getOriginalFilename();
-            byte[] fbytes = Mono.just(file.getBytes()).block();
-
-            String[] fileNameSplit = fullFileName.split("\\.");
-            if (fileNameSplit.length > 0) {
-                String fileExt = fileNameSplit[fileNameSplit.length - 1];
-                if (isImage(fileExt)) {
-                    if (id > 0) {
-                        uploadDir = uploadDir + imgFolderName;
-                        File fid = Mono.just(new File(uploadDir)).block();
-                        if (!fid.exists()) {
-                            dirCreated = Mono.just(fid.mkdirs());
-                        }
-                        if (dirCreated.block()) {
-                            File copied =
-                                    Mono.just(new File(uploadDir + imgPreffix + id + "." + fileExt))
-                                            .block();
-                            monoPath = Mono.just(Files.write(copied.toPath(), fbytes));
-                        }
-                        if (monoPath.block() != null) {
-                            return
-                                    Mono.just(imgFolderName + imgPreffix + id + "." + fileExt);
-                        } else {
-                            return null;
-                        }
-                    }
-                }
-            }
-            return null;
+    public Mono<String> storeFile(
+            MultipartFile file, String uploadDir, long id) throws IOException, FileException {
+        if (file.isEmpty() || id <= 0) {
+            throw new IOException("Failed to store empty file " + file.getOriginalFilename());
         }
+        String fullFileName = file.getOriginalFilename();
+        String[] fileNameSplit = fullFileName.split("\\.");
+        if (fileNameSplit.length > 0) {
+            String fileExt = fileNameSplit[fileNameSplit.length - 1];
+            if (isImage(fileExt)) {
+                return uploadMechanizm(file, uploadDir, fileExt, id);
+            } else {
+                throw new FileException("Invalid file type");
+            }
+        } else {
+            throw new FileException("Invalid file type");
+        }
+
+    }
+
+    private Mono<String> uploadMechanizm(
+            MultipartFile file, String uploadDir, String fileExt, long id) {
+        String imgFolderName = "images/";
+        AtomicReference<String> result = new AtomicReference<>("");// imgFolderName + imgPreffix + id + "." + fileExt;
+        String uplDir = uploadDir + imgFolderName;
+        return Mono.just(new File(uploadDir)).map(
+                        f -> {//creating folder if necessary
+                            if (!f.exists()) {
+                                f.mkdirs();
+
+                            }
+                            return f;
+                        })
+                .map(f -> {// createing file to copy
+                    String imgPreffix = "im-";
+                    result.set(imgFolderName + imgPreffix + id + "." + fileExt);
+                    return Mono.just(new File(uploadDir + imgPreffix + id
+                            + "." + fileExt));
+                }).flatMap(f -> f)
+                .map(f -> {// writing file
+                    try {
+                        Files.write(f.toPath(), file.getBytes());
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                    return result.get();
+                });
     }
 
     public boolean isImage(String ext) {
