@@ -8,6 +8,9 @@ import pn.market.entities.Order;
 import pn.market.repo.OrderRepo;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static reactor.core.publisher.Mono.when;
@@ -22,19 +25,33 @@ class OrderServiceImplTest {
     private OrderServiceImpl orderService;
 
     private Order order;
-
+    private List<Order> orders;
 
     @BeforeEach
     void init() {
         order = new Order();
-        order.setId(1L);
+        order.setId(200L);
+        orders = List.of(order);
+    }
+
+    @Test
+    void findAllEmptyTest() {
+        when(orderRepo.findAll()).thenReturn(Flux.empty());
+        when(orderService.findAll()).thenReturn(Flux.empty());
+        assertNotNull(orderService.findAll().blockFirst());
+
     }
 
     @Test
     void findAllTest() {
-        when(orderRepo.findAll()).thenReturn(Flux.empty());
-        when(orderService.findAll()).thenReturn(Flux.empty());
+        when(orderRepo.findAll()).thenReturn(Flux.fromIterable(orders));
+        when(orderService.findAll()).thenReturn(Flux.fromIterable(orders));
         assertNotNull(orderService.findAll().blockFirst());
+        Flux<Order> orderFlux = orderService.findAll();
+        StepVerifier.create(orderFlux)
+                .expectNext(order)
+                .verifyComplete();
+
 
     }
 

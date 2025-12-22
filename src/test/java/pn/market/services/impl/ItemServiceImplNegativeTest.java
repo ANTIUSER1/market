@@ -90,8 +90,8 @@ class ItemServiceImplNegativeTest {
 
     @Test
     void uploadFileTest() throws IOException {
-        when(itemService.uploadFile(file, id)).thenReturn(item);
-        assertNotEquals("", itemService.uploadFile(file, id).getImgPath());
+        when(itemService.uploadFileMono(file, id)).thenReturn(Mono.just(item));
+        assertNotEquals("", itemService.uploadFileMono(file, id).blockOptional());
     }
 
     @Test
