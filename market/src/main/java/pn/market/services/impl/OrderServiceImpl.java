@@ -36,6 +36,7 @@ public class OrderServiceImpl implements TService<Order> {
         return Mono.zip(order, items.collectList()).map(t -> {
             Order o = t.getT1();
             List<Item> i = t.getT2();
+
             o.setItems(i);
             return o;
         });

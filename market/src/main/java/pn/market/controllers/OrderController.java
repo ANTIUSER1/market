@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.result.view.Rendering;
 import pn.market.entities.Order;
+import pn.market.services.PaymentSupplierImpl;
 import pn.market.services.impl.ItemServiceImpl;
 import pn.market.services.impl.OrderServiceImpl;
+import pn.market.services.impl.PaymentsServiceImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -25,6 +27,10 @@ public class OrderController {
     @Autowired
     private ItemServiceImpl itemService;
 
+    @Autowired
+    private PaymentsServiceImpl paymentService;
+    @Autowired
+    private PaymentSupplierImpl paymentSupplier;
 
     @GetMapping
     public Mono<Rendering> allOrders() {
@@ -59,6 +65,10 @@ public class OrderController {
                         .modelAttribute("newOrder", newOrder)
                         .build());
 
+        paymentService.sendPaymentInfo(
+                PaymentsServiceImpl.PAYMENT_KEY_NAME,
+                () -> paymentSupplier.get()
+        );
         return r;
     }
 

@@ -20,7 +20,7 @@ spring:
       host: 192.168.2.100
   cache:
     redis:
-      time-to-live: PT10M
+      time-to-live: PT50M
 
 
 

@@ -21,9 +21,10 @@ public class PaymentsServiceImpl {
             key = "#keyName"   // Вторая часть ключа (берётся по имени из аргумента)
     )
     public Mono<String> sendPaymentInfo(String keyName, Supplier<Mono<String>> paymentInfo) {
+
         Mono<String> result= paymentInfo.get()
                 .map(s -> {
-                    System.out.println("\n\t------Payment info: " + s);
+                    System.out.println("Payment info: " + s);
                     return s;
                 });
         return result;
