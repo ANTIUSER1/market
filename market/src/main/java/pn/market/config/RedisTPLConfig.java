@@ -17,15 +17,15 @@ public class RedisTPLConfig {
         template.setConnectionFactory(redisConnectionFactory);
         template.setValueSerializer(
                 new JdkSerializationRedisSerializer());
-      //  new GenericJacksonJsonRedisSerializer(new ObjectMapper()))
-      //  ;
+        //  new GenericJacksonJsonRedisSerializer(new ObjectMapper()))
+        //  ;
         template.setKeySerializer(new StringRedisSerializer());
         return template;
     }
 
-@Bean
-    String info(){
+    @Bean
+    String info() {
         return " INFO ";
-}
+    }
 
 }

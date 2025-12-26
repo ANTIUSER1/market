@@ -32,11 +32,11 @@ public class OrderServiceImpl implements TService<Order> {
     @Override
     public Mono<Order> getById(Long id) {
         Mono<Order> order = orderRepo.findById(id);
-        Flux<Item> items=itemService.getItemsByOrderId(id);
-        return Mono.zip(order,items.collectList()).map(t->{
-            Order o=t.getT1();
-            List<Item> i=t.getT2();
-           o.setItems(i);
+        Flux<Item> items = itemService.getItemsByOrderId(id);
+        return Mono.zip(order, items.collectList()).map(t -> {
+            Order o = t.getT1();
+            List<Item> i = t.getT2();
+            o.setItems(i);
             return o;
         });
     }
