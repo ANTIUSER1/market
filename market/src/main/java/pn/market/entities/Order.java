@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-@ToString
+
 @Table(name = "orders", schema = "market")
 public class Order {
 
@@ -56,4 +56,14 @@ public class Order {
         ).sum();
     }
 
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer(
+                "Order{ ");
+        sb.append("id=").append(id);
+        sb.append(", items=").append(items);
+        sb.append(", totalSum=").append( totalSumm());
+        sb.append( " } ");
+        return sb.toString();
+    }
 }
