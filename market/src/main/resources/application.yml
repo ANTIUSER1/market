@@ -44,3 +44,18 @@ spring:
         org.springframework.r2dbc.core.DefaultDatabaseClient: DEBUG # заодно включим логирование SQL-запросов
         io.r2dbc: DEBUG # и добавим больше деталей (не включать в настоящем приложении)
 
+
+management:
+  endpoints:
+    health.probes.enabled: true
+    health.show-details: always
+    health:
+      group:
+        readiness:
+          include=readinessState,indicator: true
+          show-details: always
+
+    web:
+      exposure:
+        include: mappings
+
