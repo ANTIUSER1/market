@@ -68,7 +68,7 @@ public class OrderController {
         paymentService.sendPaymentInfo(
                 PaymentsServiceImpl.PAYMENT_KEY_NAME,
                 () -> paymentSupplier.get()
-        );
+        ).subscribe();
         return r;
     }
 
