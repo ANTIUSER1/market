@@ -22,11 +22,11 @@ public class PaymentController {
 
     @GetMapping
     public Mono<String> getPayment() {
-        System.out.println("get-mapping at " + (System.currentTimeMillis() / 1000));
 
-        return paymentService.sendPaymentInfo(
-                "PAYMENT_",
+        Mono<String> result = paymentService.sendPaymentInfo(
+                PaymentsServiceImpl.PAYMENT_KEY_NAME,
                 () -> paymentSupplier.get()
         );
+        return result;
     }
 }
