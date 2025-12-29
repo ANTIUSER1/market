@@ -53,4 +53,11 @@ public class UserRest {
     ) {
         return userService.removeMoney(1, money);
     }
+
+    @GetMapping("/remove-money-from-first-success/{money}")
+    public Mono<Boolean> removeMoneyFromFirstSuccsess(
+            @PathVariable("money") long money
+    ) {
+        return userService.removeMoneySuccess(1, money);
+    }
 }
