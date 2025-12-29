@@ -16,18 +16,27 @@ public class UserRest {
     public Mono<User> getUsers() {
         return userService.create();
     }
+
     @GetMapping("/find/{id}")
     public Mono<User> findUserById(
-           @PathVariable("id") long id
+            @PathVariable("id") long id
     ) {
         return userService.findById(id);
     }
+
     @GetMapping("/add-money/{id}/{money}")
     public Mono<User> addMoney(
             @PathVariable("id") long id,
-           @PathVariable("money") long money
-        ) {
+            @PathVariable("money") long money
+    ) {
         return userService.addMoney(id, money);
+    }
+
+    @GetMapping("/add-money-to-first/{money}")
+    public Mono<User> addMoneyToFirst(
+            @PathVariable("money") long money
+    ) {
+        return userService.addMoney(1L, money);
     }
 
     @GetMapping("/remove-money/{id}/{money}")
@@ -36,5 +45,12 @@ public class UserRest {
             @PathVariable("money") long money
     ) {
         return userService.removeMoney(id, money);
+    }
+
+    @GetMapping("/remove-money-from-first/{money}")
+    public Mono<User> removeMoneyFromFirst(
+            @PathVariable("money") long money
+    ) {
+        return userService.removeMoney(1, money);
     }
 }

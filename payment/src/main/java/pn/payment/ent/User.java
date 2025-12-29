@@ -39,21 +39,21 @@ public class User {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("User{");
-        sb.append("id=").append(id);
-        sb.append(", login='").append(login).append('\'');
-        sb.append(", password='").append(password).append('\'');
-        sb.append(", moneySupply=").append(moneySupply);
-        sb.append('}');
-        return sb.toString();
+        String sb = "User{" + "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", moneySupply=" + moneySupply +
+                '}';
+        return sb;
     }
 
-    public User addMoney(Long money){
+    public User addMoney(Long money) {
         this.moneySupply += money;
         return this;
-         }
-    public User removeMoney(Long money){
-       if(this.moneySupply>money) this.moneySupply -= money;
+    }
+
+    public User removeMoney(Long money) {
+        if (this.moneySupply > money) this.moneySupply -= money;
         return this;
     }
 }
