@@ -16,7 +16,7 @@ spring:
 
 
   r2dbc:
-    url: r2dbc:postgresql://192.168.2.100:5432/pract?currentSchema=market   # URL подключения к базе данных
+    url: r2dbc:postgresql://192.168.0.200:5432/pract?currentSchema=market   # URL подключения к базе данных
     username: postgres                              # Имя пользователя базы данных
     password: 123                          # Пароль пользователя
     #    pool:
