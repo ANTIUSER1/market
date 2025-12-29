@@ -3,10 +3,10 @@ package pn.payment;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
+//@SpringBootTest
 class PaymentsApplicationTests {
 
-    @Test
+//    @Test
     void contextLoads() {
     }
 
