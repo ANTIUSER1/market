@@ -1,9 +1,7 @@
 package pn.payment.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pn.payment.ent.User;
 import pn.payment.services.UserService;
 import reactor.core.publisher.Mono;
@@ -14,8 +12,29 @@ public class UserRest {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/create")
+    @PostMapping("/create")
     public Mono<User> getUsers() {
         return userService.create();
+    }
+    @GetMapping("/find/{id}")
+    public Mono<User> findUserById(
+           @PathVariable("id") long id
+    ) {
+        return userService.findById(id);
+    }
+    @GetMapping("/add-money/{id}/{money}")
+    public Mono<User> addMoney(
+            @PathVariable("id") long id,
+           @PathVariable("money") long money
+        ) {
+        return userService.addMoney(id, money);
+    }
+
+    @GetMapping("/remove-money/{id}/{money}")
+    public Mono<User> removeMoney(
+            @PathVariable("id") long id,
+            @PathVariable("money") long money
+    ) {
+        return userService.removeMoney(id, money);
     }
 }

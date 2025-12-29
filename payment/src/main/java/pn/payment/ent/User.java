@@ -53,7 +53,7 @@ public class User {
         return this;
          }
     public User removeMoney(Long money){
-        this.moneySupply -= money;
+       if(this.moneySupply>money) this.moneySupply -= money;
         return this;
     }
 }
