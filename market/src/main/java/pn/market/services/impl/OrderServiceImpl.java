@@ -55,17 +55,19 @@ private WebClient webClient;
     }
 
     public void buyOrder(long orderId) {
-//        Mono<String> paymentInfo = getPaymentInfoFromRemote(orderId)
-//                .map(s -> "OK");
+      getPaymentInfoFromRemote(orderId)
+              .map(s->{
+                      System.out.println("    ----SSSSSSS--- " +s);
+              return s;})
+                .map(s -> "OK").subscribe();
 
 
        System.out.println("     BUY ORDER " + orderId);
-        itemService.removeFromOrder(orderId)
-                ;
-        //orderRepo.deleteById(orderId).subscribe();
+        itemService.removeFromOrder(orderId) ;
     }
 
     private Mono<String> getPaymentInfoFromRemote(long orderId) {
+        System.out.println("     BUY ORDER " + orderId);
       return  webClient.get().uri("/remove-money/1/100")
                 .exchangeToMono(clientResponse -> clientResponse.bodyToMono(String.class));
   }
