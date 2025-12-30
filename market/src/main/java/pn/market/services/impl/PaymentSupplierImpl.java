@@ -18,22 +18,24 @@ public class PaymentSupplierImpl implements Supplier<Mono<String>> {
     private OrderServiceImpl orderService;
 
 
-
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-@Getter
-private Long orderId;
+    @Getter
+    private Long orderId;
+
 
     @Override
     public Mono<String> get() {
-        if (orderId == null) {orderId=1L;}
+        if (orderId == null) {
+            orderId = 1L;
+        }
         Mono<String> result =
                 orderService.getById(200L)
                         .map(order -> {
                                     redisTemplate.opsForValue()
                                             .set(orderKey,
-                                                    orderId+";"+   order.totalSumm()
+                                                    orderId + ";" + order.totalSumm()
                                             );
                                     return order.toString();
                                 }
