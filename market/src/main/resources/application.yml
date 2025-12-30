@@ -22,9 +22,6 @@ spring:
     redis:
       time-to-live: PT30M
 
-
-
-
   r2dbc:
     url: r2dbc:postgresql://192.168.0.200:5432/pract?currentSchema=market   # URL подключения к базе данных
     username: postgres                              # Имя пользователя базы данных
@@ -58,3 +55,4 @@ management:
         include: mappings
 
 order-key: 'order:payment'
+remote-server: 'http://localhost:8502'

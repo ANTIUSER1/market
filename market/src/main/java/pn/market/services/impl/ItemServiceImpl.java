@@ -11,6 +11,7 @@ import pn.market.additional.Paging;
 import pn.market.entities.Item;
 import pn.market.error.FileException;
 import pn.market.repo.ItemRepo;
+import pn.market.repo.OrderRepo;
 import pn.market.services.TService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -31,6 +32,9 @@ public class ItemServiceImpl implements TService<Item> {
     private FileServiceImpl fileService;
     @Autowired
     private ItemRepo itemRepo;
+    @Autowired
+    private OrderRepo orderRepo;
+
     @Autowired
     private DatabaseClient databaseClient;
 
@@ -165,13 +169,34 @@ public class ItemServiceImpl implements TService<Item> {
         itemRepo.findByOrderId(orderId).collectList()
                 .map(items -> {
                     for (Item item : items) {
+                        System.out.println("    remove order links in item: " + item);
                         item.setOrderId(null);
                         item.setCount(0);
-                        itemRepo.save(item).subscribe();
+                        itemRepo.save(item)
+                                .map(
+                                        i -> {
+                                            System.out.println("    remove order links in item: "
+                                                    + i + "\n        DONE! ");
+                                            return i;
+                                        }
+                                )
+                                .map(i -> {
+                                    System.out.println("    remove order: " + orderId);
+                                    orderRepo.deleteById(orderId)
+                                            .map(o -> {
+                                                System.out.println("    remove order: " + o + "\n        DONE! ");
+                                                return null;
+                                            }).subscribe();
+
+                                    return i;
+                                })
+                                .subscribe();
+
                     }
                     return items;
                 })
                 .subscribe();
+        System.out.println("removed from order id: " + orderId + "");
     }
 }
 

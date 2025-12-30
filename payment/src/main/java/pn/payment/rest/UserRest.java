@@ -44,6 +44,7 @@ public class UserRest {
             @PathVariable("id") long id,
             @PathVariable("money") long money
     ) {
+        System.out.println("removeMoney \n   from user id: " + id + "\n   money: " + money);
         return userService.removeMoney(id, money);
     }
 

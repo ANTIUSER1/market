@@ -3,6 +3,7 @@ package pn.market.services.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 import pn.market.additional.Paging;
 import pn.market.entities.Item;
 import pn.market.entities.Order;
@@ -23,6 +24,8 @@ public class OrderServiceImpl implements TService<Order> {
     @Autowired
     private ItemServiceImpl itemService;
 
+@Autowired
+private WebClient webClient;
 
     @Override
     public Flux<Order> findAll() {
@@ -52,8 +55,19 @@ public class OrderServiceImpl implements TService<Order> {
     }
 
     public void buyOrder(long orderId) {
-     //   System.out.println("     BUY ORDER " + orderId);
-        itemService.removeFromOrder(orderId);
-        orderRepo.deleteById(orderId).subscribe();
+//        Mono<String> paymentInfo = getPaymentInfoFromRemote(orderId)
+//                .map(s -> "OK");
+
+
+       System.out.println("     BUY ORDER " + orderId);
+        itemService.removeFromOrder(orderId)
+                ;
+        //orderRepo.deleteById(orderId).subscribe();
     }
+
+    private Mono<String> getPaymentInfoFromRemote(long orderId) {
+      return  webClient.get().uri("/remove-money/1/100")
+                .exchangeToMono(clientResponse -> clientResponse.bodyToMono(String.class));
+  }
+
 }
