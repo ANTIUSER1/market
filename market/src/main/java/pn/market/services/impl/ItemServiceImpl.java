@@ -170,6 +170,7 @@ public class ItemServiceImpl implements TService<Item> {
                 .map(items -> {
                     for (Item item : items) {
                         System.out.println("    remove order links in item: " + item);
+                        item.setCartId(null);
                         item.setOrderId(null);
                         item.setCount(0);
                         itemRepo.save(item)
