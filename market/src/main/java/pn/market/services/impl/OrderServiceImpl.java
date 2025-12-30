@@ -71,7 +71,8 @@ private WebClient webClient;
 
     private Mono<String> getPaymentInfoFromRemote(long orderId) {
         System.out.println("     BUY ORDER " + orderId);
-      return  webClient.get().uri("http://127.0.0.1:8502/remove-money/1/100")
+      return  webClient.get().uri("/users/remove-money/1/100")
+//      return  webClient.get().uri("http://127.0.0.1:8502/users/remove-money/1/100")
                 .exchangeToMono(clientResponse -> clientResponse.bodyToMono(String.class));
   }
 

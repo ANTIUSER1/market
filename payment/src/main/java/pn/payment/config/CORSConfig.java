@@ -19,7 +19,7 @@ public class CORSConfig implements WebFluxConfigurer {
         System.out.println("CORSConfig.addCorsMappings()::: " + remoteServer + "   ---  ");
 
         registry.addMapping("/**")
-                .allowedOrigins("*")
+                .allowedOrigins(remoteServer)
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);
