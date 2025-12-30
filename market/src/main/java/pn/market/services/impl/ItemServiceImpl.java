@@ -173,27 +173,30 @@ public class ItemServiceImpl implements TService<Item> {
                         item.setCartId(null);
                         item.setOrderId(null);
                         item.setCount(0);
-                        itemRepo.save(item)
-                                .map(
-                                        i -> {
-                                            System.out.println("    remove order links in item: "
-                                                    + i + "\n        DONE! ");
-                                            return i;
-                                        }
-                                )
-                                .map(i -> {
-                                    System.out.println("    remove order: " + orderId);
-                                    orderRepo.deleteById(orderId)
-                                            .map(o -> {
-                                                System.out.println("    remove order: " + o + "\n        DONE! ");
-                                                return null;
-                                            }).subscribe();
+                     try {
+                         itemRepo.save(item)
+                                 .map(
+                                         i -> {
+                                             System.out.println("    remove order links in item: "
+                                                     + i + "\n        DONE! ");
+                                             return i;
+                                         }
+                                 )
+                                 .map(i -> {
+                                     System.out.println("    remove order: " + orderId);
+                                  try {
+                                      orderRepo.deleteById(orderId)
+                                              .map(o -> {
+                                                  System.out.println("    remove order: " + o + "\n        DONE! ");
+                                                  return null;
+                                              }).subscribe();
+                                  } catch (Exception e) {}
+                                     return i;
+                                 })
+                                 .subscribe();
 
-                                    return i;
-                                })
-                                .subscribe();
-
-                    }
+                     } catch (Exception e) {}
+                     }
                     return items;
                 })
                 .subscribe();
