@@ -22,7 +22,6 @@ public class PaymentsServiceImpl {
     public Mono<String> sendPaymentInfo(String keyName, Supplier<Mono<String>> paymentInfo) {
         Mono<String> result= paymentInfo.get()
                 .map(s -> {
-                    System.out.println("Payment info: " + s);
                     return s;
                 });
         return result;
