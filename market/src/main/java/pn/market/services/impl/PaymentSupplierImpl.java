@@ -1,6 +1,7 @@
 package pn.market.services.impl;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -21,15 +22,16 @@ public class PaymentSupplierImpl implements Supplier<Mono<String>> {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-    @Getter
+    @Setter
     private Long orderId;
 
 
     @Override
     public Mono<String> get() {
         if (orderId == null) {
-            orderId = 1L;
+          return Mono.empty();
         }
+
         Mono<String> result =
                 orderService.getById(200L)
                         .map(order -> {

@@ -52,13 +52,13 @@ public class OrderController {
             @PathVariable("id") Long id,
             @RequestParam(value = "newOrder", defaultValue = "true") boolean newOrder
     ) {
+        paymentSupplier.setOrderId(id);
         Mono<Order> order = orderService.getById(id)
                 .map(od -> {
                     itemService.getItemsByOrderId(od.getId())
                             .subscribe(u -> od.addItem(u));
                     return od;
                 });
-
         Mono<Rendering> r =
                 Mono.just(Rendering.view("order")
                         .modelAttribute("orderData", order)
