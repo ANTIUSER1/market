@@ -173,7 +173,7 @@ public class ItemServiceImpl implements TService<Item> {
                         item.setCartId(null);
                         item.setOrderId(null);
                         item.setCount(0);
-                     try {
+
                          itemRepo.save(item)
                                  .map(
                                          i -> {
@@ -183,19 +183,10 @@ public class ItemServiceImpl implements TService<Item> {
                                          }
                                  )
                                  .map(i -> {
-                                     System.out.println("    remove order: " + orderId);
-                                  try {
-                                      orderRepo.deleteById(orderId)
-                                              .map(o -> {
-                                                  System.out.println("    remove order: " + o + "\n        DONE! ");
-                                                  return null;
-                                              }).subscribe();
-                                  } catch (Exception e) {}
+                                       orderRepo.deleteById(orderId).log().subscribe();
                                      return i;
-                                 })
+                                 }).log()
                                  .subscribe();
-
-                     } catch (Exception e) {}
                      }
                     return items;
                 })
