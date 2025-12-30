@@ -12,7 +12,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.util.logging.LogRecord;
 
 @Configuration
-public class WebClientConfig   implements  WebFluxConfigurer {
+public class WebClientConfig  {//} implements  WebFluxConfigurer {
     @Value("${remote-server}")
     private String remoteServer;
 
@@ -21,9 +21,9 @@ public class WebClientConfig   implements  WebFluxConfigurer {
         return WebClient.builder().baseUrl(remoteServer).build();
     }
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**")
-                .allowedOrigins( "*" );
-    }
+//    @Override
+//    public void addCorsMappings(CorsRegistry registry) {
+//        registry.addMapping("/**")
+//                .allowedOrigins( "*" );
+//    }
 }
