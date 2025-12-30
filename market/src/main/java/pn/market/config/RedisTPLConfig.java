@@ -23,9 +23,6 @@ public class RedisTPLConfig {
         return template;
     }
 
-    @Bean
-    String info() {
-        return " INFO ";
-    }
+
 
 }
