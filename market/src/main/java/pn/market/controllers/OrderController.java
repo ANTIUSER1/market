@@ -52,6 +52,7 @@ public class OrderController {
             @PathVariable("id") Long id,
             @RequestParam(value = "newOrder", defaultValue = "true") boolean newOrder
     ) {
+        paymentSupplier.setUserId(1L);
         paymentSupplier.setOrderId(id);
         Mono<Order> order = orderService.getById(id)
                 .map(od -> {

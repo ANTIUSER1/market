@@ -52,7 +52,7 @@ public class OrderServiceImpl implements TService<Order> {
     }
 
     public void buyOrder(long orderId) {
-        System.out.println("     BUY ORDER " + orderId);
+     //   System.out.println("     BUY ORDER " + orderId);
         itemService.removeFromOrder(orderId);
         orderRepo.deleteById(orderId).subscribe();
     }

@@ -24,11 +24,13 @@ public class PaymentSupplierImpl implements Supplier<Mono<String>> {
 
     @Setter
     private Long orderId;
+    @Setter
+    private Long userId;
 
 
     @Override
     public Mono<String> get() {
-        if (orderId == null) {
+        if (orderId == null || userId == null) {
           return Mono.empty();
         }
 
@@ -37,7 +39,7 @@ public class PaymentSupplierImpl implements Supplier<Mono<String>> {
                         .map(order -> {
                                     redisTemplate.opsForValue()
                                             .set(orderKey,
-                                                    orderId + ";" + order.totalSumm()
+                                                  userId+";"+  orderId + ";" + order.totalSumm()
                                             );
                                     return order.toString();
                                 }
