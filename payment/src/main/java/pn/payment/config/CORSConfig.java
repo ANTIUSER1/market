@@ -7,6 +7,8 @@ import org.springframework.web.reactive.config.WebFluxConfigurer;
 
 @Configuration
 public class CORSConfig implements WebFluxConfigurer {
+
+
     @Value("${remote-server}")
     private String remoteServer;
 

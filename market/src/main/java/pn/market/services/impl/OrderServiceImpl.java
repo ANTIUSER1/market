@@ -24,8 +24,8 @@ public class OrderServiceImpl implements TService<Order> {
     @Autowired
     private ItemServiceImpl itemService;
 
-@Autowired
-private WebClient webClient;
+    @Autowired
+    private WebClient webClient;
 
     @Override
     public Flux<Order> findAll() {
@@ -55,25 +55,25 @@ private WebClient webClient;
     }
 
     public void buyOrder(long orderId) {
-      getPaymentInfoFromRemote(orderId)
-              .map(s->{
-                      System.out.println("    ----SSSSSSS--- " +s);
-                      System.out.println("    ----SSSSSSS--- " +s);
-                      System.out.println("    ----SSSSSSS--- " +s);
-                      System.out.println("    ----SSSSSSS--- " +s);
-              return s;})
+        getPaymentInfoFromRemote(orderId)
+                .map(s -> {
+                    System.out.println("    ----SSSSSSS--- " + s);
+                    System.out.println("    ----SSSSSSS--- " + s);
+                    System.out.println("    ----SSSSSSS--- " + s);
+                    System.out.println("    ----SSSSSSS--- " + s);
+                    return s;
+                })
                 .map(s -> "OK").subscribe();
 
 
-       System.out.println("     BUY ORDER " + orderId);
-        itemService.removeFromOrder(orderId) ;
+        System.out.println("     BUY ORDER " + orderId);
+        itemService.removeFromOrder(orderId);
     }
 
     private Mono<String> getPaymentInfoFromRemote(long orderId) {
         System.out.println("     BUY ORDER " + orderId);
-      return  webClient.get().uri("/users/remove-money/1/100")
-//      return  webClient.get().uri("http://127.0.0.1:8502/users/remove-money/1/100")
+        return webClient.get().uri("/users/remove-money-for-order")
                 .exchangeToMono(clientResponse -> clientResponse.bodyToMono(String.class));
-  }
+    }
 
 }

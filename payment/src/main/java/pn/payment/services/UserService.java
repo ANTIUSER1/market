@@ -1,6 +1,8 @@
 package pn.payment.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import pn.payment.ent.User;
 import pn.payment.repo.UserRepo;
@@ -10,8 +12,15 @@ import reactor.core.publisher.Mono;
 public class UserService {
 
 
+    @Value("${order-key}")
+    private String orderKey;
+
     @Autowired
     private UserRepo repo;
+
+    @Autowired
+    private RedisTemplate<String, String> redisTemplate;
+
 
     public Mono<User> create() {
         User result = new User("U", "p", 100_000L);
@@ -37,11 +46,34 @@ public class UserService {
     }
 
     public Mono<Boolean> removeMoneySuccess(long id, long money) {
+        System.out.println();
+        System.out.println();
+        System.out.println("removeMoneySuccess " + id + " " + money);
+        System.out.println("removeMoneySuccess " + id + " " + money);
+        System.out.println("removeMoneySuccess " + id + " " + money);
         return removeMoney(id, money).map(u -> {
             if (u.getMoneySupply() < money) {
                 return false;
             }
             return u.removeMoney(money).getMoneySupply() >= 0;
         });
+    }
+
+    public void removeMoneyForOrder() {
+        System.out.println("removeMoneyForOrder " + orderKey);
+        System.out.println("removeMoneyForOrder " + orderKey);
+        System.out.println("removeMoneyForOrder " + orderKey);
+        System.out.println("removeMoneyForOrder " + orderKey);
+        System.out.println("removeMoneyForOrder ");
+        String s = redisTemplate.opsForValue().get(orderKey);
+        System.out.println("           DATA FROM REDIS    " + s);
+        System.out.println("           DATA FROM REDIS    " + s);
+        System.out.println("           DATA FROM REDIS    " + s);
+        String[] split = s.split(";");
+        System.out.println("           DATA FROM REDIS---SPLIT     "
+                + split[0] + " " + split[1] + " " + split[2]);
+        long id = Long.parseLong(split[0]);
+        long money = Long.parseLong(split[2]);
+        removeMoneySuccess(id, money).subscribe();
     }
 }

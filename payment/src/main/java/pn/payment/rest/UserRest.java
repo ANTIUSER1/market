@@ -47,6 +47,15 @@ public class UserRest {
         return userService.removeMoney(id, money);
     }
 
+
+    @GetMapping("/remove-money-for-order")
+    public Mono<User> removeMoneyForOrder() {
+        userService.removeMoneyForOrder();
+        return Mono.empty();
+
+        // return userService.removeMoney(id, money);
+    }
+
     @GetMapping("/remove-money-from-first/{money}")
     public Mono<User> removeMoneyFromFirst(
             @PathVariable("money") long money
