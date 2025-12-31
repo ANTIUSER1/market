@@ -3,14 +3,14 @@ package pn.payment.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pn.payment.ent.PersonData;
-import pn.payment.services.UserService;
+import pn.payment.services.PersonService;
 import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/users")
-public class UserRest {
+public class PersonRest {
     @Autowired
-    private UserService userService;
+    private PersonService userService;
 
     @PostMapping("/create")
     public Mono<PersonData> getUsers() {

@@ -9,7 +9,7 @@ import pn.payment.repo.PersonDataRepo;
 import reactor.core.publisher.Mono;
 
 @Service
-public class UserService {
+public class PersonService {
 
 
     @Value("${order-key}")
