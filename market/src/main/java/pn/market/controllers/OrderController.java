@@ -2,10 +2,7 @@ package pn.market.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.result.view.Rendering;
 import pn.market.entities.Order;
 import pn.market.services.impl.ItemServiceImpl;
@@ -51,10 +48,7 @@ public class OrderController {
     public Mono<Rendering> getOrderById(
             @PathVariable("id") Long id,
             @RequestParam(value = "newOrder", defaultValue = "true") boolean newOrder
-    ) {
-        paymentSupplier.setUserId(1L);
-        paymentSupplier.setOrderId(id);
-        Mono<Order> order = orderService.getById(id)
+    ) { Mono<Order> order = orderService.getById(id)
                 .map(od -> {
                     itemService.getItemsByOrderId(od.getId())
                             .subscribe(u -> od.addItem(u));
@@ -65,6 +59,9 @@ public class OrderController {
                         .modelAttribute("orderData", order)
                         .modelAttribute("newOrder", newOrder)
                         .build());
+
+        paymentSupplier.setUserId(1L);
+        paymentSupplier.setOrderId(id);
         paymentService.sendPaymentInfo(
                 PaymentsServiceImpl.PAYMENT_KEY_NAME,
                 () -> paymentSupplier.get()
@@ -72,9 +69,9 @@ public class OrderController {
         return r;
     }
 
-    @GetMapping("/buy/{id}")
-    public String buyOrder(@PathVariable("id") Long id) {
-        orderService.buyOrder(id);
+    @PostMapping("/buy/{orderId}")
+    public String buyOrder(@PathVariable("orderId") Long orderId) {
+        orderService.buyOrder(orderId);
         return "redirect:/orders";
     }
 }
