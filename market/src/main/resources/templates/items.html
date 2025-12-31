@@ -83,7 +83,7 @@
                             <p class="card-text" th:text="${item.description}"></p>
                             <form method="post" th:action="@{/items}">
                                 <div class="hstack gap-3">
-                                    <input name="id" th:value="${item.id}" type="hidden">
+                                    <input name="itemId" th:value="${item.id}" type="hidden">
                                     <input name="search" th:value="${search}" type="hidden">
                                     <input name="sort" th:value="${sort}" type="hidden">
                                     <input name="paging.pageSize" th:value="${paging.pageSize}" type="hidden">
@@ -94,10 +94,12 @@
                                     <span th:text="${item.count}"></span>
                                     <button class="btn btn-outline-secondary" name="action" type="submit" value="PLUS">+
                                     </button>
+                                    <!--
                                     <button class="btn btn-warning ms-auto bi bi-cart4"
                                             name="action" th:if="${item.count==0}"
                                             type="submit"
                                             value="PLUS"></button>
+                                            -->
                                 </div>
                             </form>
                         </div>

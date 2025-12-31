@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.result.view.Rendering;
 import pn.market.additional.Paging;
 import pn.market.entities.Item;
@@ -56,8 +53,12 @@ public class ItemController {
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
             @RequestParam(value = "pageSize", required = false, defaultValue = "2") int pageSize,
             @RequestParam(value = "search", required = false, defaultValue = " ") String search,
-            @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted
+            @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted,
+            @RequestParam(value = "itemId", required = false, defaultValue = "0") long itemId,
+            @RequestParam(value = "action", required = false, defaultValue = "NONE") String action
     ) {
+        System.out.println(" GGGGG PM  "+ action+ "  "+itemId);
+
         Flux<Item> itemFlux = itemService.findAll();
         Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
         Mono<Paging> pageMono = itemService.findAllAndPaging(pageableMono);
@@ -82,6 +83,7 @@ public class ItemController {
                 .build());
         return r;
     }
+
 
 
 }
