@@ -29,10 +29,7 @@ public class PaymentSupplierImpl implements Supplier<Mono<String>> {
 
     @Override
     public Mono<String> get() {
-        System.out.println("PaymentSupplierImpl.get");
-        System.out.println("PaymentSupplierImpl orderId  "+orderId);
-        System.out.println("PaymentSupplierImpl userId  "+userId);
-        if (orderId == null || userId == null) {
+         if (orderId == null || userId == null) {
           return Mono.empty();
         }
 

@@ -22,7 +22,6 @@ public class PaymentsServiceImpl {
     public   void sendPaymentInfo(String keyName, Supplier<Mono<String>> paymentInfo) {
         paymentInfo.get()
                 .map(s -> {
-                    System.out.println("Payment info: " + s);
                     return s;
                 }).subscribe();
 
