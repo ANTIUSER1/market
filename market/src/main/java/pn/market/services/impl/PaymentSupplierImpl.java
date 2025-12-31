@@ -35,11 +35,10 @@ public class PaymentSupplierImpl implements Supplier<Mono<String>> {
         if (orderId == null || userId == null) {
           return Mono.empty();
         }
-System.out.println("orderId = " + orderId);
+
         Mono<String> result =
                 orderService.getById(orderId)
                         .map(order -> {
-                            System.out.println("order = " + order);
                                     redisTemplate.opsForValue()
                                             .set(orderKey,
                                                   userId+";"+  orderId + ";" + order.totalSumm()
