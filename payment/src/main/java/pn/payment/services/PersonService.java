@@ -59,11 +59,13 @@ public class PersonService {
         });
     }
 
-    public void removeMoneyForOrder() {
+    public Mono<Boolean> removeMoneyForOrder() {
         String s = redisTemplate.opsForValue().get(orderKey);
         String[] split = s.split(";");
         long id = Long.parseLong(split[0]);
         long money = Long.parseLong(split[2]);
-        removeMoneySuccess(id, money).subscribe();
+        Mono<Boolean> r = removeMoneySuccess(id, money);
+        r.subscribe();
+        return r;
     }
 }

@@ -34,13 +34,6 @@ public class PersonRest {
         return personService.addMoney(id, money);
     }
 
-    @GetMapping("/add-money-to-first/{money}")
-    public Mono<PersonData> addMoneyToFirst(
-            @PathVariable("money") long money
-    ) {
-        return personService.addMoney(1L, money);
-    }
-
     @GetMapping("/remove-money/{id}/{money}")
     public Mono<PersonData> removeMoney(
             @PathVariable("id") long id,
@@ -49,20 +42,10 @@ public class PersonRest {
         return personService.removeMoney(id, money);
     }
 
-
     @GetMapping("/remove-money-for-order")
-    public Mono<PersonData> removeMoneyForOrder() {
-        personService.removeMoneyForOrder();
-        return Mono.empty();
+    public Mono<Boolean> removeMoneyForOrder() {
+        return personService.removeMoneyForOrder();
 
-        // return userService.removeMoney(id, money);
-    }
-
-    @GetMapping("/remove-money-from-first/{money}")
-    public Mono<PersonData> removeMoneyFromFirst(
-            @PathVariable("money") long money
-    ) {
-        return personService.removeMoney(1, money);
     }
 
     @GetMapping("/remove-money-from-first-success/{money}")
