@@ -64,6 +64,7 @@
                     </div>
                 </div>
             </div>
+            <hr/>
             <div class="row p-2" th:each="itemsRow : ${items}">
                 <div class="col" th:each="item : ${itemsRow}">
                     <div class="card" th:if="${item.id != -1}">
@@ -72,7 +73,9 @@
                             <img alt="Нет изображения" class="card-img-top" th:src="${'/'+item.imgPath}">
                         </a>
                         <div class="card-body">
-                            <h5 class="card-title" th:text="${item.title}"></h5>
+                            <a th:href="${'/items/'+item.id}">
+                                <h4 class="card-title" th:text="${item.title}"></h4>
+                            </a>
                             <h5>
                         <span class="badge text-bg-success justify-content-end"
                               th:text="${item.price}+' руб.'"></span>
@@ -105,7 +108,8 @@
             <div class="row p-2">
                 <div class="col">
                     <div class="hstack gap-3 justify-content-center">
-                        <button class="btn btn-light" form="main" name="pageNumber" th:if="${paging.hasPrevious}"
+                        <button class="btn btn-light" form="main" name="pageNumber"
+                                th:if="${paging.hasPrevious}"
                                 th:value="${paging.pageNumber-1}" type="submit">&larr;
                         </button>
                         <span th:text="${'Страница: '+paging.pageNumber}"></span>
