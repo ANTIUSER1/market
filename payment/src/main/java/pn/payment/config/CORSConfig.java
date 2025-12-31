@@ -5,20 +5,20 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.reactive.config.CorsRegistry;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 
+import java.util.logging.Logger;
+
 @Configuration
 public class CORSConfig implements WebFluxConfigurer {
 
 
+    Logger log = Logger.getLogger(CORSConfig.class.getName());
     @Value("${remote-server}")
     private String remoteServer;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
 
-        System.out.println("CORSConfig.addCorsMappings()::: " + remoteServer + "   ---  ");
-        System.out.println("CORSConfig.addCorsMappings()::: " + remoteServer + "   ---  ");
-        System.out.println("CORSConfig.addCorsMappings()::: " + remoteServer + "   ---  ");
-        System.out.println("CORSConfig.addCorsMappings()::: " + remoteServer + "   ---  ");
+        log.info(" \n\t Remote Access from  " + remoteServer + "   ---  ");
 
         registry.addMapping("/**")
                 .allowedOrigins(remoteServer)
