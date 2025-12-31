@@ -1,7 +1,5 @@
 package pn.market.services.impl;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -22,15 +20,25 @@ public class PaymentSupplierImpl implements Supplier<Mono<String>> {
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
-    @Setter
+
     private Long orderId;
-    @Setter
+
     private Long userId;
+
+    public PaymentSupplierImpl setOrderId(Long orderId) {
+        this.orderId = orderId;
+        return this;
+    }
+
+    public PaymentSupplierImpl setUserId(Long userId) {
+        this.userId = userId;
+        return this;
+    }
 
     @Override
     public Mono<String> get() {
-         if (orderId == null || userId == null) {
-          return Mono.empty();
+        if (orderId == null || userId == null) {
+            return Mono.empty();
         }
 
         Mono<String> result =
@@ -38,11 +46,11 @@ public class PaymentSupplierImpl implements Supplier<Mono<String>> {
                         .map(order -> {
                                     redisTemplate.opsForValue()
                                             .set(orderKey,
-                                                  userId+";"+  orderId + ";" + order.totalSumm()
+                                                    userId + ";" + orderId + ";" + order.totalSumm()
                                             );
                                     return order.toString();
                                 }
-                        ) ;
+                        );
         return result;
     }
 }

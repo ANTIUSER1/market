@@ -16,15 +16,16 @@ public class PaymentsServiceImpl {
     public PaymentSupplierImpl paymentSupplier;
 
     @Cacheable(
-            value =PAYMENT_KEY_NAME,               // Имя кеша и первая часть ключа
+            value = PAYMENT_KEY_NAME,               // Имя кеша и первая часть ключа
             key = "#keyName"   // Вторая часть ключа (берётся по имени из аргумента)
     )
-    public   void sendPaymentInfo(String keyName, Supplier<Mono<String>> paymentInfo) {
-        paymentInfo.get()
+    public Mono<String> sendPaymentInfo(String keyName, Supplier<Mono<String>> paymentInfo) {
+        Mono<String> res = paymentInfo.get()
                 .map(s -> {
                     return s;
-                }).subscribe();
-
+                });
+        res.subscribe();
+        return res;
     }
 
 }

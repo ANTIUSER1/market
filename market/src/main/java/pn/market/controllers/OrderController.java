@@ -50,7 +50,15 @@ public class OrderController {
     public Mono<Rendering> getOrderById(
             @PathVariable("orderId") Long orderId,
             @RequestParam(value = "newOrder", defaultValue = "true") boolean newOrder
-    ) { Mono<Order> order = orderService.getById(orderId)
+    ) {
+        paymentSupplier = paymentSupplier.setUserId(1L);
+        paymentSupplier = paymentSupplier.setOrderId(orderId);
+        paymentService.sendPaymentInfo(
+                PaymentsServiceImpl.PAYMENT_KEY_NAME,
+                () -> paymentSupplier.get()
+        );
+
+        Mono<Order> order = orderService.getById(orderId)
                 .map(od -> {
                     itemService.getItemsByOrderId(od.getId())
                             .subscribe(u -> {
@@ -65,12 +73,6 @@ public class OrderController {
                         .modelAttribute("newOrder", newOrder)
                         .build());
 
-        paymentSupplier.setUserId(1L);
-        paymentSupplier.setOrderId(orderId);
-        paymentService.sendPaymentInfo(
-                PaymentsServiceImpl.PAYMENT_KEY_NAME,
-                () -> paymentSupplier.get()
-        );
         return r;
     }
 
