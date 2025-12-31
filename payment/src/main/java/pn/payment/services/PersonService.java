@@ -48,9 +48,6 @@ public class PersonService {
     public Mono<Boolean> removeMoneySuccess(long id, long money) {
         System.out.println();
         System.out.println();
-//        System.out.println("\t removeMoneySuccess " + id + " " + money);
-//        System.out.println("removeMoneySuccess " + id + " " + money);
-//        System.out.println("removeMoneySuccess " + id + " " + money);
         return removeMoney(id, money).map(u -> {
             if (u.getMoneySupply() < money) {
                 return false;
