@@ -40,28 +40,4 @@ public class CartController {
         return r;
     }
 
-
-    /*
-    @GetMapping("/items")
-    public String addItem(
-            @RequestParam("itemId") Long itemId,
-            @RequestParam("action") String action,
-            Model model) {
-        Cart cart = null;
-
-        if (action != null && itemId != null) {
-            if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) cart = cartService.plusItem(itemId);
-            if (ActionType.MINUS.name().equals(action.trim())) cart = cartService.minusItem(itemId);
-
-            if (cart != null) {
-                List<Item> items = itemService.getItemsByCartId(cart.getId());
-                long total = itemService.getTotalSum(items);
-                model.addAttribute("total", total);
-                model.addAttribute("items", items);
-                return "cart";
-            }
-        }    return "items";
-    }
-
-     */
 }
