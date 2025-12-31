@@ -26,7 +26,6 @@
     </properties>
     <dependencies>
 
-
         <!--   WEB BLOCK  -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -38,7 +37,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
-
         <!--   WEB BLOCK  -->
 
 
@@ -65,6 +63,8 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-cache</artifactId>
         </dependency>
+        <!--   REDIS BLOCK  -->
+
         <!--   DB BLOCK  -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -76,7 +76,6 @@
             <artifactId>r2dbc-postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
-
         <!--   DB BLOCK  -->
 
 
