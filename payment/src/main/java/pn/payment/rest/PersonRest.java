@@ -9,19 +9,21 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/users")
 public class PersonRest {
+
+
     @Autowired
-    private PersonService userService;
+    private PersonService personService;
 
     @PostMapping("/create")
     public Mono<PersonData> getUsers() {
-        return userService.create();
+        return personService.create();
     }
 
     @GetMapping("/find/{id}")
     public Mono<PersonData> findUserById(
             @PathVariable("id") long id
     ) {
-        return userService.findById(id);
+        return personService.findById(id);
     }
 
     @GetMapping("/add-money/{id}/{money}")
@@ -29,14 +31,14 @@ public class PersonRest {
             @PathVariable("id") long id,
             @PathVariable("money") long money
     ) {
-        return userService.addMoney(id, money);
+        return personService.addMoney(id, money);
     }
 
     @GetMapping("/add-money-to-first/{money}")
     public Mono<PersonData> addMoneyToFirst(
             @PathVariable("money") long money
     ) {
-        return userService.addMoney(1L, money);
+        return personService.addMoney(1L, money);
     }
 
     @GetMapping("/remove-money/{id}/{money}")
@@ -44,13 +46,13 @@ public class PersonRest {
             @PathVariable("id") long id,
             @PathVariable("money") long money
     ) {
-        return userService.removeMoney(id, money);
+        return personService.removeMoney(id, money);
     }
 
 
     @GetMapping("/remove-money-for-order")
     public Mono<PersonData> removeMoneyForOrder() {
-        userService.removeMoneyForOrder();
+        personService.removeMoneyForOrder();
         return Mono.empty();
 
         // return userService.removeMoney(id, money);
@@ -60,13 +62,13 @@ public class PersonRest {
     public Mono<PersonData> removeMoneyFromFirst(
             @PathVariable("money") long money
     ) {
-        return userService.removeMoney(1, money);
+        return personService.removeMoney(1, money);
     }
 
     @GetMapping("/remove-money-from-first-success/{money}")
     public Mono<Boolean> removeMoneyFromFirstSuccsess(
             @PathVariable("money") long money
     ) {
-        return userService.removeMoneySuccess(1, money);
+        return personService.removeMoneySuccess(1, money);
     }
 }
