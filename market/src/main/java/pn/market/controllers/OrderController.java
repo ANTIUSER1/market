@@ -34,7 +34,9 @@ public class OrderController {
         Flux<Order> orders = orderService.findAll()
                 .map(od -> {
                     itemService.getItemsByOrderId(od.getId())
-                            .subscribe(u -> od.addItem(u));
+                            .subscribe(u -> {
+                                od.addItem(u);
+                            });
                     return od;
                 });
         Mono<Rendering> r =
@@ -51,7 +53,10 @@ public class OrderController {
     ) { Mono<Order> order = orderService.getById(orderId)
                 .map(od -> {
                     itemService.getItemsByOrderId(od.getId())
-                            .subscribe(u -> od.addItem(u));
+                            .subscribe(u -> {
+                                od.addItem(u);
+                                u.setCartId(null);
+                            });
                     return od;
                 });
         Mono<Rendering> r =
@@ -61,7 +66,7 @@ public class OrderController {
                         .build());
 
         paymentSupplier.setUserId(1L);
-        paymentSupplier.setOrderId(id);
+        paymentSupplier.setOrderId(orderId);
         paymentService.sendPaymentInfo(
                 PaymentsServiceImpl.PAYMENT_KEY_NAME,
                 () -> paymentSupplier.get()

@@ -24,7 +24,7 @@ public class CartServiceImpl implements TService<Cart> {
 
     @Override
     public Flux<Cart> findAll() {
-        return null;
+        return cartRepo.findAll();
     }
 
     @Override

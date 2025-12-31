@@ -57,12 +57,10 @@
         </div>
         <div class="row p-2">
             <div class="col">
-                <form action="/cart/buy" method="post" th:if="${!items.isEmpty}">
-                    <div class="hstack gap-3">
-                        <h2 th:text="'Итого: '+${total}+' руб.'"/>
-                        <button class="btn btn-warning ms-auto">Купить</button>
-                    </div>
+                <form action="/orders" method="get">
+                    <button class="btn btn-secondary ms-auto bi bi-cart-check"> Заказы</button>
                 </form>
+
             </div>
         </div>
     </div>

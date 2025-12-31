@@ -25,13 +25,13 @@
                         <span class="badge text-bg-success">Витрина магазина</span>
                     </h2>
                     <a class="btn btn-secondary ms-auto bi bi-file-earmark-text" href="/orders"> Заказы</a>
-                    <a class="btn btn-secondary bi bi-cart4" href="/cart/items"> Корзина</a>
+                    <a class="btn btn-secondary bi bi-cart4" href="/cart"> Корзина</a>
                     <a class="btn btn-secondary bi bi-arrow-left-square" href="/items"> Главная</a>
                 </div>
             </div>
         </div>
         <div class="row p-2">
-                <h2 th:text="${'Заказ № :: '+orderData.id}"></h2>
+                <h2 th:text="${'ОФОРМИТЬ Заказ № :: '+orderData.id}"></h2>
         </div>
         <div class="row p-2" th:each="item : ${orderData.items}">
             <div class="col">
