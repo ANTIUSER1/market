@@ -65,7 +65,6 @@ public class OrderController {
                         .modelAttribute("orderData", order)
                         .modelAttribute("newOrder", newOrder)
                         .build());
-        System.out.println(id + "   NO  " + newOrder);
         paymentService.sendPaymentInfo(
                 PaymentsServiceImpl.PAYMENT_KEY_NAME,
                 () -> paymentSupplier.get()
