@@ -44,11 +44,11 @@ public class OrderController {
         return r;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{orderId}")
     public Mono<Rendering> getOrderById(
-            @PathVariable("id") Long id,
+            @PathVariable("orderId") Long orderId,
             @RequestParam(value = "newOrder", defaultValue = "true") boolean newOrder
-    ) { Mono<Order> order = orderService.getById(id)
+    ) { Mono<Order> order = orderService.getById(orderId)
                 .map(od -> {
                     itemService.getItemsByOrderId(od.getId())
                             .subscribe(u -> od.addItem(u));

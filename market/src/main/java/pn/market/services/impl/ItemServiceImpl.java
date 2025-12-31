@@ -164,6 +164,9 @@ public class ItemServiceImpl implements TService<Item> {
             return this.getItemsByCartIdToFlux(i.getCartId());
         }).flatMapMany(f -> f);
     }
+    public Flux<Item> getItemsByCartDataFromMonoToFlux(  long cartId) {
+        return itemRepo.findByCartId(cartId);
+    }
 
     public void removeFromOrder(long orderId) {
         itemRepo.findByOrderId(orderId).collectList()

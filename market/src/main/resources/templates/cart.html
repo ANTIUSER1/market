@@ -28,21 +28,26 @@
                 <div class="card">
                     <img alt="Нет изображения" class="p-2" height="300" th:src="${'/'+item.imgPath}" width="300">
                     <div class="card-body">
-                        <h5 class="card-title" th:text="${item.title}"></h5>
+                        <h5 class="card-title" th:id="${'item-'+item.id}" th:text="${item.title}"></h5>
                         <h5>
                         <span class="badge text-bg-success justify-content-end"
                               th:text="${item.price}+' руб.'"></span>
                         </h5>
                         <p class="card-text" th:text="${item.description}"></p>
-                        <form method="post" th:action="@{/cart/items}">
+                        <form method="get" th:action="${'/cart/items#item-'+item.id}">
                             <div class="hstack gap-3">
-                                <input name="id" th:value="${item.id}" type="hidden">
-                                <button class="btn btn-outline-secondary" name="action" type="submit" value="MINUS">-
+                                <input name="itemId" th:value="${item.id}" type="hidden">
+                                <input name="src" th:value="${cartId}" type="hidden">
+                                <button class="btn btn-outline-secondary" name="action" type="submit"
+                                        value="MINUS">
+                                    -
                                 </button>
                                 <span th:text="${item.count}"></span>
                                 <button class="btn btn-outline-secondary" name="action" type="submit" value="PLUS">+
                                 </button>
-                                <button class="btn btn-danger ms-auto bi bi-trash" name="action" type="submit"
+                                <button class="btn btn-danger ms-auto bi bi-trash"
+                                        name="action"
+                                        title="Delete" type="submit"
                                         value="DELETE"></button>
                             </div>
                         </form>
