@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import pn.payment.ent.User;
-import pn.payment.repo.UserRepo;
+import pn.payment.ent.PersonData;
+import pn.payment.repo.PersonDataRepo;
 import reactor.core.publisher.Mono;
 
 @Service
@@ -16,29 +16,29 @@ public class UserService {
     private String orderKey;
 
     @Autowired
-    private UserRepo repo;
+    private PersonDataRepo repo;
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
 
 
-    public Mono<User> create() {
-        User result = new User("U", "p", 100_000L);
+    public Mono<PersonData> create() {
+        PersonData result = new PersonData("U", "p", 100_000L);
         return repo.save(result);
     }
 
-    public Mono<User> findById(long id) {
+    public Mono<PersonData> findById(long id) {
         return repo.findById(id);
     }
 
-    public Mono<User> addMoney(long id, long money) {
+    public Mono<PersonData> addMoney(long id, long money) {
         return repo.findById(id).map(u -> {
             u.addMoney(money);
             return u;
         }).flatMap(repo::save);
     }
 
-    public Mono<User> removeMoney(long id, long money) {
+    public Mono<PersonData> removeMoney(long id, long money) {
         return repo.findById(id).map(u -> {
             u.removeMoney(money);
             return u;

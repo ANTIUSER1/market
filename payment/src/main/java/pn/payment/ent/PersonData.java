@@ -3,8 +3,8 @@ package pn.payment.ent;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Table("users")
-public class User {
+@Table("persons")
+public class PersonData {
 
     @Id
     private long id;
@@ -12,10 +12,10 @@ public class User {
     private String password;
     private Long moneySupply;
 
-    public User() {
+    public PersonData() {
     }
 
-    public User(String login, String password, Long moneySupply) {
+    public PersonData(String login, String password, Long moneySupply) {
         this.login = login;
         this.password = password;
         this.moneySupply = moneySupply;
@@ -39,7 +39,7 @@ public class User {
 
     @Override
     public String toString() {
-        String sb = "User{" + "id=" + id +
+        String sb = "PersonData{" + "id=" + id +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 ", moneySupply=" + moneySupply +
@@ -47,12 +47,12 @@ public class User {
         return sb;
     }
 
-    public User addMoney(Long money) {
+    public PersonData addMoney(Long money) {
         this.moneySupply += money;
         return this;
     }
 
-    public User removeMoney(Long money) {
+    public PersonData removeMoney(Long money) {
         if (this.moneySupply > money) this.moneySupply -= money;
         return this;
     }

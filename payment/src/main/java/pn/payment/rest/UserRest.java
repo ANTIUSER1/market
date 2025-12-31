@@ -2,7 +2,7 @@ package pn.payment.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import pn.payment.ent.User;
+import pn.payment.ent.PersonData;
 import pn.payment.services.UserService;
 import reactor.core.publisher.Mono;
 
@@ -13,19 +13,19 @@ public class UserRest {
     private UserService userService;
 
     @PostMapping("/create")
-    public Mono<User> getUsers() {
+    public Mono<PersonData> getUsers() {
         return userService.create();
     }
 
     @GetMapping("/find/{id}")
-    public Mono<User> findUserById(
+    public Mono<PersonData> findUserById(
             @PathVariable("id") long id
     ) {
         return userService.findById(id);
     }
 
     @GetMapping("/add-money/{id}/{money}")
-    public Mono<User> addMoney(
+    public Mono<PersonData> addMoney(
             @PathVariable("id") long id,
             @PathVariable("money") long money
     ) {
@@ -33,14 +33,14 @@ public class UserRest {
     }
 
     @GetMapping("/add-money-to-first/{money}")
-    public Mono<User> addMoneyToFirst(
+    public Mono<PersonData> addMoneyToFirst(
             @PathVariable("money") long money
     ) {
         return userService.addMoney(1L, money);
     }
 
     @GetMapping("/remove-money/{id}/{money}")
-    public Mono<User> removeMoney(
+    public Mono<PersonData> removeMoney(
             @PathVariable("id") long id,
             @PathVariable("money") long money
     ) {
@@ -49,7 +49,7 @@ public class UserRest {
 
 
     @GetMapping("/remove-money-for-order")
-    public Mono<User> removeMoneyForOrder() {
+    public Mono<PersonData> removeMoneyForOrder() {
         userService.removeMoneyForOrder();
         return Mono.empty();
 
@@ -57,7 +57,7 @@ public class UserRest {
     }
 
     @GetMapping("/remove-money-from-first/{money}")
-    public Mono<User> removeMoneyFromFirst(
+    public Mono<PersonData> removeMoneyFromFirst(
             @PathVariable("money") long money
     ) {
         return userService.removeMoney(1, money);

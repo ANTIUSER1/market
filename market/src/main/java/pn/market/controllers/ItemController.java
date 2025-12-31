@@ -33,7 +33,7 @@ public class ItemController {
     @Autowired
     private DatabaseClient databaseClient;
 
-    @GetMapping //("/i-all")
+    @GetMapping
     public Mono<Rendering> itemsIndex(
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
             @RequestParam(value = "pageSize", required = false, defaultValue = "2") int pageSize,
