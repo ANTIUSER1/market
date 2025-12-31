@@ -10,6 +10,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -29,9 +30,9 @@ class OrderServiceImplTest {
 
     @BeforeEach
     void init() {
-        order = new Order();
-        order.setId(200L);
-        orders = List.of(order);
+        order = new Order(100L);
+        orders = new ArrayList<>();
+        orders.add(order);
     }
 
     @Test
@@ -44,8 +45,9 @@ class OrderServiceImplTest {
 
     @Test
     void findAllTest() {
-        when(orderRepo.findAll()).thenReturn(Flux.fromIterable(orders));
-        when(orderService.findAll()).thenReturn(Flux.fromIterable(orders));
+        when(orderRepo.findAll()).thenReturn(Flux.empty());
+        when(orderService.findAll())
+                .thenReturn(Flux.fromIterable(orders));
         assertNotNull(orderService.findAll().blockFirst());
         Flux<Order> orderFlux = orderService.findAll();
         StepVerifier.create(orderFlux)

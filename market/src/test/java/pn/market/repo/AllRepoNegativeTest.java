@@ -16,6 +16,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.when;
 
@@ -24,7 +25,7 @@ import static org.mockito.Mockito.when;
 class AllRepoNegativeTest {
 
     private final List<Item> items = new ArrayList<>();
-    private Flux<Item> itemsFlux = null;
+    private Flux<Item> itemsFlux = Flux.fromIterable(items);
     private Pageable pageable;
     @MockitoBean
     private CartRepo cartRepo;
@@ -101,7 +102,7 @@ class AllRepoNegativeTest {
     @Test
     void findByCartIdTest() {
         when(itemRepo.findByCartId(1L)).thenReturn(itemsFlux);
-        assertNotEquals(itemsFlux, itemRepo.findByCartId(1L));
+        assertEquals(itemsFlux, itemRepo.findByCartId(1L));
     }
 
     @Test
