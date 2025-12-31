@@ -35,19 +35,40 @@
                               th:text="${item.price }+' руб.'"></span>
                         </h5>
                         <p class="card-text" th:text="${item.description }"></p>
-                        <form method="post" th:action="@{${'/items/'+item.id }}">
+                        <form method="get" th:action="${'/cart/items#item-'+item.id}">
                             <div class="hstack gap-3">
-                                <button class="btn btn-outline-secondary" name="action" type="submit" value="MINUS">-
+                                <input name="itemId" th:value="${item.id}" type="hidden">
+                                <input name="src" th:value="${cartId}" type="hidden">
+                                <button class="btn btn-outline-secondary" name="action" type="submit"
+                                        value="MINUS">
+                                    -
                                 </button>
-                                <span th:text="${item.count }"></span>
+                                <span th:text="${item.count}"></span>
                                 <button class="btn btn-outline-secondary" name="action" type="submit" value="PLUS">+
                                 </button>
-                                <button class="btn btn-warning ms-auto bi bi-cart4" name="action"
-                                        th:if="${item.count ==0}"
-                                        type="submit"
-                                        value="PLUS"></button>
+                                <button class="btn btn-danger ms-auto bi bi-trash"
+                                        name="action"
+                                        title="Delete" type="submit"
+                                        value="DELETE"></button>
                             </div>
                         </form>
+
+
+                        <!--
+                          <form method="post" th:action="@{${'/items/'+item.id }}">
+                              <div class="hstack gap-3">
+                                  <button class="btn btn-outline-secondary" name="action" type="submit" value="MINUS">-
+                                  </button>
+                                  <span th:text="${item.count }"></span>
+                                  <button class="btn btn-outline-secondary" name="action" type="submit" value="PLUS">+
+                                  </button>
+                                  <button class="btn btn-warning ms-auto bi bi-cart4" name="action"
+                                          th:if="${item.count ==0}"
+                                          type="submit"
+                                          value="PLUS"></button>
+                              </div>
+                          </form>
+                          -->
                     </div>
                 </div>
             </div>
