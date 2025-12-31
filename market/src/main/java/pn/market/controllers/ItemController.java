@@ -83,16 +83,5 @@ public class ItemController {
         return r;
     }
 
-    @GetMapping("/all/{id}")
-    public Mono<Rendering> allItems(@PathVariable Long id) {
-        Mono<Item> itemFlux = itemService.findById(id);
-
-        Rendering r = Rendering.view("all")
-                .modelAttribute("items", itemFlux)
-                .build();
-        return Mono.just(r);
-
-
-    }
 
 }
