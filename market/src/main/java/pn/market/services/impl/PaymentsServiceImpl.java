@@ -19,12 +19,13 @@ public class PaymentsServiceImpl {
             value =PAYMENT_KEY_NAME,               // Имя кеша и первая часть ключа
             key = "#keyName"   // Вторая часть ключа (берётся по имени из аргумента)
     )
-    public Mono<String> sendPaymentInfo(String keyName, Supplier<Mono<String>> paymentInfo) {
-        Mono<String> result= paymentInfo.get()
+    public   void sendPaymentInfo(String keyName, Supplier<Mono<String>> paymentInfo) {
+        paymentInfo.get()
                 .map(s -> {
+                    System.out.println("Payment info: " + s);
                     return s;
-                });
-        return result;
+                }).subscribe();
+
     }
 
 }

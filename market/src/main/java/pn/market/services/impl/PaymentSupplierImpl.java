@@ -27,23 +27,26 @@ public class PaymentSupplierImpl implements Supplier<Mono<String>> {
     @Setter
     private Long userId;
 
-
     @Override
     public Mono<String> get() {
+        System.out.println("PaymentSupplierImpl.get");
+        System.out.println("PaymentSupplierImpl orderId  "+orderId);
+        System.out.println("PaymentSupplierImpl userId  "+userId);
         if (orderId == null || userId == null) {
           return Mono.empty();
         }
-
+System.out.println("orderId = " + orderId);
         Mono<String> result =
-                orderService.getById(200L)
+                orderService.getById(orderId)
                         .map(order -> {
+                            System.out.println("order = " + order);
                                     redisTemplate.opsForValue()
                                             .set(orderKey,
                                                   userId+";"+  orderId + ";" + order.totalSumm()
                                             );
                                     return order.toString();
                                 }
-                        );
+                        ) ;
         return result;
     }
 }
