@@ -26,6 +26,7 @@
         </div>
         <div class="row p-2">
             <div class="col">
+                <p th:text="${item.id }"></p>
                 <div class="card">
                     <img alt="Нет изображения" class="p-2" height="300" th:src="${'/'+item.imgPath}" width="300">
                     <div class="card-body">
@@ -36,15 +37,17 @@
                         </h5>
                         <p class="card-text" th:text="${item.description }"></p>
                         <form method="get" th:action="${'/cart/items#item-'+item.id}">
+                            <h6 th:text="${'/cart/items#item-'+item.id}"></h6>
                             <div class="hstack gap-3">
                                 <input name="itemId" th:value="${item.id}" type="hidden">
-                                <input name="src" th:value="${cartId}" type="hidden">
+                                <input name="src" th:value="${src}" type="hidden">
                                 <button class="btn btn-outline-secondary" name="action" type="submit"
                                         value="MINUS">
                                     -
                                 </button>
                                 <span th:text="${item.count}"></span>
-                                <button class="btn btn-outline-secondary" name="action" type="submit" value="PLUS">+
+                                <button class="btn btn-outline-secondary" name="action" type="submit" value="PLUS">
+                                    +
                                 </button>
                                 <button class="btn btn-danger ms-auto bi bi-trash"
                                         name="action"

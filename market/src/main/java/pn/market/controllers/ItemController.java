@@ -34,14 +34,19 @@ public class ItemController {
     public Mono<Rendering> itemsIndex(
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
             @RequestParam(value = "pageSize", required = false, defaultValue = "2") int pageSize,
-            @RequestParam(value = "search", required = false, defaultValue = " ") String search,
+            @RequestParam(value = "search", required = false, defaultValue = "") String search,
             @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted
     ) {
+        search=search.trim();
         Flux<Item> itemFlux = itemService.findAll();
         Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
         Mono<Paging> pageMono = itemService.findAllAndPaging(pageableMono);
+          String additionalParams="&search="+search+"&sorted="+sorted+"&page="
+                  +page+"&pageSize="+pageSize+"&src=0";
+     Mono<String> additional=Mono.just(additionalParams);
         Mono<Rendering> r = Mono.just(Rendering.view("items")
                 .modelAttribute("items", itemFlux)
+                .modelAttribute("additional", additional)
                 .modelAttribute("paging", pageMono)
                 .modelAttribute("page", pageableMono)
                 .build());
@@ -57,14 +62,17 @@ public class ItemController {
             @RequestParam(value = "itemId", required = false, defaultValue = "0") long itemId,
             @RequestParam(value = "action", required = false, defaultValue = "NONE") String action
     ) {
-        System.out.println(" GGGGG PM  "+ action+ "  "+itemId);
-
+        search=search.trim();
         Flux<Item> itemFlux = itemService.findAll();
         Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
         Mono<Paging> pageMono = itemService.findAllAndPaging(pageableMono);
+        String additionalParams="&search="+search+"&sorted="+sorted+"&page="
+                +page+"&pageSize="+pageSize+"&src=-1";
+        Mono<String> additional=Mono.just(additionalParams);
         Mono<Rendering> r = Mono.just(Rendering.view("items")
                 .modelAttribute("items", itemFlux)
                 .modelAttribute("paging", pageMono)
+                .modelAttribute("additional", additional)
                 .modelAttribute("page", pageableMono)
                 .build());
         return r;
@@ -77,9 +85,11 @@ public class ItemController {
             @RequestParam(value = "action", required = false) String action
     ) {
         Mono<Item> itemMono = cartService.placeItemToCart(id, action);
+        Mono<Long> src =Mono.just(-2L);
         Mono<Rendering> r = Mono.just(Rendering.view("item")
                 .modelAttribute("item", itemMono)
                 .modelAttribute("action", action)
+                .modelAttribute("src", src)
                 .build());
         return r;
     }
