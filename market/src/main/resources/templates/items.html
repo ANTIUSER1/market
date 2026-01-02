@@ -81,24 +81,41 @@
                               th:text="${item.price}+' руб.'"></span>
                             </h5>
                             <p class="card-text" th:text="${item.description}"></p>
-                            <form method="post" th:action="@{/items}">
+
+                            <a class="btn btn-outline-secondary"
+                               th:href="${'/cart/items?action=MINUS' + additional +'&itemId='+item.id}"> + </a>
+                            <span th:text="${item.count}"></span>
+
+                            <a class="btn btn-outline-secondary"
+                               th:href="${'/cart/items?action=PLUS' + additional +'&itemId='+item.id}"> + </a>
+
+                            <h6 th:text="${'/cart/items?action=PLUS' + additional +'&itemId='+item.id}"></h6>
+
+                            <form method="get" th:action="${'/cart/items#item-'+item.id}">
                                 <div class="hstack gap-3">
-                                    <input name="itemId" th:value="${item.id}" type="hidden">
-                                    <input name="search" th:value="${search}" type="hidden">
-                                    <input name="sort" th:value="${sort}" type="hidden">
-                                    <input name="paging.pageSize" th:value="${paging.pageSize}" type="hidden">
-                                    <input name="paging.pageNumber" th:value="${paging.pageNumber}" type="hidden">
+                                    <!--                                    <input name="itemId" th:value="${item.id}">-->
+                                    <!--                                    <input name="src" th:value="${src}">-->
                                     <button class="btn btn-outline-secondary" name="action" type="submit" value="MINUS">
+
                                         -
+
                                     </button>
                                     <span th:text="${item.count}"></span>
-                                    <button class="btn btn-outline-secondary" name="action" type="submit" value="PLUS">+
+                                    <button class="btn btn-outline-secondary" name="action" type="submit" value="PLUS">
+
+                                        +
+
                                     </button>
                                     <!--
                                     <button class="btn btn-warning ms-auto bi bi-cart4"
                                             name="action" th:if="${item.count==0}"
                                             type="submit"
                                             value="PLUS"></button>
+                                    <input name="search" th:value="${search}" type="hidden">
+                                    <input name="sort" th:value="${sort}" type="hidden">
+                                    <input name="paging.pageSize" th:value="${paging.pageSize}" type="hidden">
+                                    <input name="paging.pageNumber" th:value="${paging.pageNumber}" type="hidden">
+
                                             -->
                                 </div>
                             </form>
