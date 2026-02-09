@@ -31,36 +31,6 @@
     </properties>
     <dependencies>
 
-        <!--  MY-LIBS  -->
-        <dependency>
-            <groupId>pn.market</groupId>
-            <artifactId>market-entities</artifactId>
-            <version>0.0.1-E</version>
-        </dependency>
-        <!--  MY-LIBS  -->
-
-        <!-- SECURITY BLOCK  -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security-oauth2-client</artifactId>
-        </dependency>
-        <!-- SECURITY BLOCK  -->
-
-
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security-oauth2-client-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security-test</artifactId>
-            <scope>test</scope>
-        </dependency>
 
     </dependencies>
 
