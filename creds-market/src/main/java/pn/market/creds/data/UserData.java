@@ -1,4 +1,4 @@
-package pn.market.creds.data;
+package pn.ent.data;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,6 +6,8 @@ import lombok.ToString;
 import org.jspecify.annotations.NullMarked;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -39,7 +41,7 @@ public class UserData implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if (authority == null) return new HashSet<>();
         return Arrays.stream(authority.trim().split(","))
-                .map(s -> new GrantedAuthorityImpl(s))
+                .map(s -> new pn.ent.data.GrantedAuthorityImpl(s))
                 .collect(Collectors.toSet());
     }
 }

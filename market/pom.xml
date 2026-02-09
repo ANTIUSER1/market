@@ -10,9 +10,9 @@
         <!-- Ниже пропишите зависимости на spring-boot-starter-parent для вашего проекта -->
     </parent>
     <!-- Ниже можете изменить настройки артефакта вашего проекта -->
-    <groupId>ru.yandex.practicum</groupId>
+    <groupId>pn.market</groupId>
     <artifactId>market-vitro</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1-V</version>
     <name>market-vitro</name>
     <description>My Market Application</description>
     <url/>

@@ -1,3 +1,11 @@
 spring:
   application:
-    name: market-entities
+    name: user-entity
+
+
+
+
+#  r2dbc:
+#    url: r2dbc:postgresql://192.168.2.200:5432/pract   # URL подключения к базе данных
+#    username: postgres                              # Имя пользователя базы данных
+#    password: 123  # Пароль пользователя

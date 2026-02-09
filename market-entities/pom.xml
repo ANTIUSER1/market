@@ -10,7 +10,7 @@
     </parent>
     <groupId>pn.market</groupId>
     <artifactId>market-entities</artifactId>
-    <version>0.0.1T</version>
+    <version>0.0.1-E</version>
     <name>market-entities</name>
     <description>Demo project for Spring Boot</description>
     <url/>
