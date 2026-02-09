@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.result.view.Rendering;
-import pn.market.entities.Item;
+import pn.market.market_entities.forWEB.Item;
 import pn.market.services.impl.CartServiceImpl;
 import pn.market.services.impl.ItemServiceImpl;
 import reactor.core.publisher.Flux;
@@ -36,10 +36,10 @@ public class CartController {
             @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted
 
     ) {
-        search=search.trim();
+        search = search.trim();
         String additionalParams = "search=" + search +
-                "&sorted="  + sorted + "&page=" + page + "&pageSize=" + pageSize + "&src=" + src;
-         Mono<Item> itemMono = cartService.placeItemToCart(itemId, action);
+                "&sorted=" + sorted + "&page=" + page + "&pageSize=" + pageSize + "&src=" + src;
+        Mono<Item> itemMono = cartService.placeItemToCart(itemId, action);
         Flux<Item> itemsFlux = itemService.getItemsByCartDataFromMonoToFlux(itemMono);
         Mono<Long> total = itemService.getTotalSum(itemsFlux);
         Mono<Long> cartId = itemMono.map(Item::getCartId);
@@ -47,9 +47,9 @@ public class CartController {
         total.subscribe();
         cartId.subscribe();
         if (src > 0) return "redirect:/cart/" + src;
-        else if(src==0) return "redirect:/?" + additionalParams;
-        else if(src==-1)  return "redirect:/items?" + additionalParams;
-        else   return "redirect:/items/"+itemId ;
+        else if (src == 0) return "redirect:/?" + additionalParams;
+        else if (src == -1) return "redirect:/items?" + additionalParams;
+        else return "redirect:/items/" + itemId;
     }
 
 

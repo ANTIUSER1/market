@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pn.market.additional.ActionType;
 import pn.market.additional.Paging;
-import pn.market.entities.Item;
 import pn.market.error.FileException;
+import pn.market.market_entities.forWEB.Item;
 import pn.market.repo.ItemRepo;
 import pn.market.repo.OrderRepo;
 import pn.market.services.TService;
@@ -164,7 +164,8 @@ public class ItemServiceImpl implements TService<Item> {
             return this.getItemsByCartIdToFlux(i.getCartId());
         }).flatMapMany(f -> f);
     }
-    public Flux<Item> getItemsByCartDataFromMonoToFlux(  long cartId) {
+
+    public Flux<Item> getItemsByCartDataFromMonoToFlux(long cartId) {
         return itemRepo.findByCartId(cartId);
     }
 
@@ -177,24 +178,24 @@ public class ItemServiceImpl implements TService<Item> {
                         item.setOrderId(null);
                         item.setCount(0);
 
-                         itemRepo.save(item)
-                                 .map(
-                                         i -> {
-                                             System.out.println("    remove order links in item: "
-                                                     + i + "\n        DONE! ");
-                                             return i;
-                                         }
-                                 )
-                                 .map(i -> {
-                                       orderRepo.deleteById(orderId).log().subscribe();
-                                     return i;
-                                 }).log()
-                                 .subscribe();
-                     }
+                        itemRepo.save(item)
+                                .map(
+                                        i -> {
+                                            System.out.println("    remove order links in item: "
+                                                    + i + "\n        DONE! ");
+                                            return i;
+                                        }
+                                )
+                                .map(i -> {
+                                    orderRepo.deleteById(orderId).log().subscribe();
+                                    return i;
+                                }).log()
+                                .subscribe();
+                    }
                     return items;
                 })
                 .subscribe();
-        System.out.println("removed from order id: " + orderId + "");
+        System.out.println("removed from order id: " + orderId);
     }
 }
 

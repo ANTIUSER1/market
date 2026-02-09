@@ -2,7 +2,7 @@ package pn.market.services.autocreate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pn.market.entities.Item;
+import pn.market.market_entities.forWEB.Item;
 import pn.market.repo.ItemRepo;
 
 import java.util.List;

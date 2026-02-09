@@ -4,8 +4,8 @@ package pn.market.services.autocreate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pn.market.entities.Cart;
-import pn.market.entities.Order;
+import pn.market.market_entities.forWEB.Cart;
+import pn.market.market_entities.forWEB.Order;
 import pn.market.repo.CartRepo;
 import pn.market.repo.OrderRepo;
 

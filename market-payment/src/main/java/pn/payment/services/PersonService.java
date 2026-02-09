@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import pn.payment.ent.PersonData;
+import pn.market.market_entities.forPAYMENTS.PersonData;
 import pn.payment.repo.PersonDataRepo;
 import reactor.core.publisher.Mono;
 

@@ -26,6 +26,11 @@
     </properties>
     <dependencies>
 
+        <dependency>
+            <groupId>pn.market</groupId>
+            <artifactId>market-entities</artifactId>
+            <version>0.0.1-E</version>
+        </dependency>
 
         <!--   WEB BLOCK  -->
         <dependency>

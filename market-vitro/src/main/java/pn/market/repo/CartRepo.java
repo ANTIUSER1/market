@@ -7,7 +7,7 @@ import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import pn.market.entities.Cart;
+import pn.market.market_entities.forWEB.Cart;
 import reactor.core.publisher.Mono;
 
 @Repository

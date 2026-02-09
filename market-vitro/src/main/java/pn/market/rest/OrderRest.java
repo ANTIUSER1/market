@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pn.market.entities.Order;
+import pn.market.market_entities.forWEB.Order;
 import pn.market.repo.OrderRepo;
 import pn.market.services.autocreate.OrdersCreateService;
 

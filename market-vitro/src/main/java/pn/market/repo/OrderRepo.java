@@ -6,7 +6,7 @@ package pn.market.repo;
 import org.springframework.data.repository.reactive.ReactiveCrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-import pn.market.entities.Order;
+import pn.market.market_entities.forWEB.Order;
 
 @Repository
 @Transactional
