@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import pn.market.market_entities.forWEB.Item;
 import pn.market.vitroBack.repo.ItemRepo;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.time.LocalDateTime;
 
 @Service
 public class ItemService {
@@ -14,5 +17,9 @@ public class ItemService {
 
     public Flux<Item> allItems() {
         return itemRepo.findAll();
+    }
+
+    public Mono<LocalDateTime> test() {
+        return Mono.just(LocalDateTime.now());
     }
 }

@@ -7,6 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 import pn.market.market_entities.forWEB.Item;
 import pn.market.vitroBack.servicies.ItemService;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/vitro")
@@ -18,5 +21,10 @@ public class ItemRest {
     @GetMapping
     public Flux<Item> allItems() {
         return itemService.allItems();
+    }
+
+    @GetMapping("/test")
+    public Mono<LocalDateTime> test() {
+        return itemService.test();
     }
 }
