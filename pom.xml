@@ -10,6 +10,8 @@
     </parent>
     <packaging>pom</packaging>
     <dependencies>
+
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -23,10 +25,36 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.projectreactor</groupId>
+            <artifactId>reactor-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webflux</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-client</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+        </dependency>
+
+
     </dependencies>
     <groupId>pn.mmulti1</groupId>
     <artifactId>market-root</artifactId>
-    <version>0.1-SNAPSHOT</version>
+    <version>0.1</version>
     <name>market-root</name>
     <description>Demo project for Spring Boot</description>
     <url/>
@@ -48,10 +76,10 @@
 
 
     <modules>
+        <module>market-creds</module>
+        <module>market-entities</module>
         <module>market-vitro</module>
         <module>market-vitro-back</module>
-        <module>market-entities</module>
-        <module>market-creds</module>
         <module>market-payment</module>
     </modules>
 
