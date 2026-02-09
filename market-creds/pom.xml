@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>pn.market</groupId>
-    <artifactId>creds-market</artifactId>
+    <artifactId>market-creds</artifactId>
     <version>0.0.1-C</version>
-    <name>creds-market</name>
+    <name>market-creds</name>
     <description>Demo project for Spring Boot</description>
     <url/>
     <licenses>
@@ -59,7 +59,7 @@
     </dependencies>
 
     <build>
-        <finalName>creds-market</finalName>
+        <finalName>market-creds</finalName>
         <plugins>
 
             <plugin>
