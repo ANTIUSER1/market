@@ -1,3 +1,39 @@
+server:
+  port: 8511
+
+
 spring:
   application:
     name: market-vitro-front
+
+
+  r2dbc:
+    url: r2dbc:postgresql://192.168.2.200:5432  # URL подключения к базе данных
+    username: postgres                              # Имя пользователя базы данных
+    password: 123
+
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            # Указываем провайдера, должно совпадать с тем, что указано в
+            # oauth2Client.setDefaultClientRegistrationId
+            provider: keycloak
+            client-id: frontend-service
+            # Тут указываем токен из Client credentials из Keycloak
+            client-secret: Gy4ghrLnSYrBABXzT1lmEypmAziIDtM7
+            authorization-grant-type: _a-front-vitro
+            scope: openid
+        provider:
+          keycloak:
+            # Указываем полный путь до нашего Realm в Keycloak
+            issuer-uri: http://192.168.2.200:8282/realms/absolute
+  thymeleaf:
+    # Включаем поддержку Thymeleaf
+    enabled: true
+    mode: HTML
+    # Указываем кодировку для наших html-файлов
+    encoding: UTF-8
+    servlet:
+      content-type: text/html;charset=UTF-8

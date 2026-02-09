@@ -10,7 +10,7 @@
     </parent>
     <groupId>pn.market</groupId>
     <artifactId>market-vitro-front</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1-MVF</version>
     <name>market-vitro-front</name>
     <description>Demo project for Spring Boot</description>
     <url/>
@@ -61,9 +61,11 @@
             <artifactId>spring-boot-starter-security-test</artifactId>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <build>
+        <finalName>market-vitro-front</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
