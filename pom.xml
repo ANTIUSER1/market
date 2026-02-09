@@ -49,6 +49,7 @@
 
     <modules>
         <module>market-vitro</module>
+        <module>market-vitro-back</module>
         <module>market-entities</module>
         <module>market-creds</module>
         <module>market-payment</module>

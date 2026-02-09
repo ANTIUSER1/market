@@ -1,3 +1,59 @@
+server:
+  port: 8521
+
+
 spring:
   application:
     name: market-vitro-back
+
+  data:
+    redis:
+      port: 6379
+      host: 192.168.2.200
+  cache:
+    redis:
+      time-to-live: PT30M
+
+  r2dbc:
+    url: r2dbc:postgresql://192.168.2.200:5432/pract?currentSchema=market   # URL подключения к базе данных
+    username: postgres                              # Имя пользователя базы данных
+    password: 123                          # Пароль пользователя
+    #    pool:
+    #      enabled: true                               # Включение пула соединений
+    #      initial-size: 10                            # Начальное количество соединений в пуле
+    #      max-size: 50                                # Максимальное количество соединений
+    #      max-idle-time: 50s                          # Время бездействия соединения перед закрытием
+    #      max-life-time: 10m                          # Максимальное время жизни соединения
+    #      validation-query: SELECT 1                  # SQL-запрос для проверки
+
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Указываем полный путь до нашего Realm в Keycloak
+          issuer-uri: http://192.168.2.200:8282/realms/absolute
+
+
+    logging:
+      level:
+        org.springframework.r2dbc.core.DefaultDatabaseClient: DEBUG # заодно включим логирование SQL-запросов
+        io.r2dbc: DEBUG # и добавим больше деталей (не включать в настоящем приложении)
+
+
+management:
+  endpoints:
+    health.probes.enabled: true
+    health.show-details: always
+    health:
+      group:
+        readiness:
+          include=readinessState,indicator: true
+          show-details: always
+
+    web:
+      exposure:
+        include: mappings
+
+order-key: 'order:payment'
+remote-server: 'http://localhost:8502'
