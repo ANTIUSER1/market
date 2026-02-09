@@ -3,6 +3,8 @@ package pn.market.services.autocreate;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import pn.market.market_entities.forWEB.Cart;
+import pn.market.market_entities.forWEB.Order;
 import pn.market.repo.CartRepo;
 
 @SpringBootTest

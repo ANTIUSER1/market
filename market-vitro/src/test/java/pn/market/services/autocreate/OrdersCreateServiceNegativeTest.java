@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import pn.market.market_entities.forWEB.Cart;
+import pn.market.market_entities.forWEB.Order;
 import pn.market.repo.CartRepo;
 
 

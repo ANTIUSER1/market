@@ -1,6 +1,6 @@
 package pn.market.repo;
 
-import lombok.extern.slf4j.Slf4j;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import pn.market.market_entities.forWEB.Item;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -19,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.when;
 
-@Slf4j
 @SpringBootTest
 class AllRepoNegativeTest {
 

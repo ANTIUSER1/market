@@ -1,8 +1,6 @@
 package pn.market.additional;
 
-import lombok.ToString;
 
-@ToString
 public class Paging {
     private final int pageSize;
     private final int pageNumber;
@@ -40,4 +38,14 @@ public class Paging {
         return totalPages;
     }
 
+    @Override
+    public String toString() {
+        String sb = "Paging{" + "pageSize=" + pageSize +
+                ", pageNumber=" + pageNumber +
+                ", totalPages=" + totalPages +
+                ", hasNext=" + hasNext +
+                ", hasPrevious=" + hasPrevious +
+                '}';
+        return sb;
+    }
 }

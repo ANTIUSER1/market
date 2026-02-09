@@ -4,6 +4,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import pn.market.market_entities.forWEB.Cart;
+import pn.market.market_entities.forWEB.Item;
 
 import java.util.ArrayList;
 import java.util.List;
