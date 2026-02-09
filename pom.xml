@@ -48,10 +48,10 @@
 
 
     <modules>
-        <module>market</module>
+        <module>market-vitro</module>
         <module>market-entities</module>
-        <module>creds-market</module>
-        <module>payment</module>
+        <module>market-creds</module>
+        <module>market-payment</module>
     </modules>
 
 
