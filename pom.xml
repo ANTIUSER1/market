@@ -46,6 +46,7 @@
     <modules>
         <module>market</module>
         <module>market-entities</module>
+        <module>creds-market</module>
         <module>payment</module>
     </modules>
 
