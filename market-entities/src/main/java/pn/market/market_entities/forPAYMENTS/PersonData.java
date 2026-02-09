@@ -1,8 +1,11 @@
 package pn.market.market_entities.forPAYMENTS;
 
+import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
+
+@ToString
 @Table("persons")
 public class PersonData {
 
