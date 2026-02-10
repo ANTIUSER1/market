@@ -80,6 +80,7 @@
         <module>market-entities</module>
         <module>market-vitro</module>
         <module>market-vitro-back</module>
+        <module>market-vitro-front</module>
         <module>market-payment</module>
     </modules>
 

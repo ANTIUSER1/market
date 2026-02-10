@@ -23,7 +23,7 @@ public class ItemRest {
         return itemService.allItems();
     }
 
-    @GetMapping("/test")
+    @GetMapping("/test-time")
     public Mono<LocalDateTime> test() {
         return itemService.test();
     }

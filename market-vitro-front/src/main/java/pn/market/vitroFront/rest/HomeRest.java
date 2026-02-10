@@ -12,7 +12,8 @@ import java.util.Date;
 @RequestMapping("/test-api")
 public class HomeRest {
 
-    @GetMapping
+
+    @GetMapping("/time")
     public Mono<Date> testRest() {
         return Mono.just(new Date());
     }

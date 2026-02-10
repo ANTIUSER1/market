@@ -54,4 +54,9 @@ public class PersonRest {
     ) {
         return personService.removeMoneySuccess(1, money);
     }
+
+    @GetMapping("/ooooo")
+    public String hoo() {
+        return "ooo";
+    }
 }
