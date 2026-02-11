@@ -3,6 +3,7 @@ package pn.market.vitroFront.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
@@ -11,7 +12,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
-import org.springframework.security.web.server.authentication.RedirectServerAuthenticationSuccessHandler;
 import org.springframework.security.web.server.authentication.logout.RedirectServerLogoutSuccessHandler;
 import org.springframework.security.web.server.csrf.CookieServerCsrfTokenRepository;
 import org.springframework.security.web.server.csrf.WebSessionServerCsrfTokenRepository;
@@ -56,6 +56,35 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http,
                                                             RedirectServerLogoutSuccessHandler redirectServerLogoutSuccessHandler) {
+
+
+        http.csrf(csrf -> csrf
+                .csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
+        );
+        http.authorizeExchange(exchanges -> exchanges
+                .pathMatchers("/", "/login").permitAll()
+                .anyExchange().authenticated()
+        );
+        http.formLogin(f -> f.loginPage("/login"));
+        http.logout(logout -> logout
+                // URL страницы выхода
+                .logoutUrl("/logout")
+                .logoutSuccessHandler(redirectServerLogoutSuccessHandler)
+        );
+        http.oauth2Client(withDefaults());
+        http.logout(logout -> logout
+                        .logoutUrl("/"))
+                // Настройка security-заголовков
+                .headers(headers -> headers
+                                .frameOptions(Customizer.withDefaults())
+                        //   .frameOptions().disable()
+                        //  )
+
+                        // Регистрируем OidcClientInitiatedServerLogoutSuccessHandler
+                        // .logoutSuccessHandler(oidcLogoutSuccessHandler())
+                );
+        return http.build();
+       /*
         http
                 .csrf(csrf -> csrf
                         .csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
@@ -63,7 +92,7 @@ public class SecurityConfig {
                 // Явно разрешаем доступ к /login и / для всех
                 .authorizeExchange(exchanges -> exchanges
                         //  .pathMatchers("/", "/login").permitAll()
-                        .anyExchange().permitAll()
+                        .anyExchange().authenticated()
                 )
                 // Настраиваем форму логина
                 .formLogin(form -> form
@@ -83,5 +112,7 @@ public class SecurityConfig {
                 // OAuth2 Client для WebClient
                 .oauth2Client(withDefaults());
         return http.build();
+
+         */
     }
 }
