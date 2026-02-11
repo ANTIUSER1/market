@@ -1,33 +1,26 @@
 package pn.market.vitroFront.rest;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-
-import java.util.Date;
+import pn.market.market_entities.forWEB.Item;
+import reactor.core.publisher.Flux;
 
 @RestController
-@RequestMapping("/test-api")
-public class HomeRest {
+@RequestMapping("/api")
+public class ItemsRest {
+
     @Autowired
     WebClient webClient;
 
 
-    @GetMapping("/time")
-    public Mono<Date> testRest() {
-        return Mono.just(new Date());
-    }
-
-
-    @GetMapping("/time-1")
-    public Mono<Date> testRest11() {
+    @GetMapping("/items")
+    public Flux<Item> allItems() {
         return webClient.get()
-                .uri("http://localhost:8521/api/vitro/test-time")
-                .retrieve().bodyToMono(Date.class);
+                .uri("http://localhost:8521/api/vitro/items")
+                .retrieve()
+                .bodyToFlux(Item.class);
     }
-
 }
