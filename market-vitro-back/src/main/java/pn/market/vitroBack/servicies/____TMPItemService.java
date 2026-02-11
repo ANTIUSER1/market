@@ -7,7 +7,7 @@ import pn.market.vitroBack.repo.ItemRepo;
 import reactor.core.publisher.Flux;
 
 @Service
-public class ItemService {
+public class ____TMPItemService {
 
     @Autowired
     private ItemRepo itemRepo;

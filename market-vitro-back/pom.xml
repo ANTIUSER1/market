@@ -69,6 +69,15 @@
         <!-- SECURITY BLOCK  -->
 
 
+        <!--   REDIS BLOCK  -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
+        <!--   REDIS BLOCK  -->
+
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security-oauth2-resource-server-test</artifactId>
