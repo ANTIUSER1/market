@@ -1,12 +1,11 @@
-package pn.market.vitroBack.servicies.impl;
+package pn.market.vitroFront.servicies;
 
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import pn.market.vitroBack.additional.SortType;
-import pn.market.vitroBack.servicies.ModelService;
+import pn.market.vitroFront.additional.SortType;
 import reactor.core.publisher.Mono;
 
 @Service

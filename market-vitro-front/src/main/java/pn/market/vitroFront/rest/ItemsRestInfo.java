@@ -10,7 +10,7 @@ import reactor.core.publisher.Flux;
 
 @RestController
 @RequestMapping("/api")
-public class ItemsRest {
+public class ItemsRestInfo {
 
     @Autowired
     WebClient webClient;

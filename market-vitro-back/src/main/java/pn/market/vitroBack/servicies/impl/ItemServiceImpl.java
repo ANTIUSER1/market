@@ -17,7 +17,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -53,6 +52,8 @@ public class ItemServiceImpl implements TService<Item> {
 
     @Override
     public Mono<Paging> findAllAndPaging(Mono<Pageable> pageable) {
+
+    /*
         Mono<Pageable> pageableMono = pageable.map(p -> {
                     pageSize = p.getPageSize();
                     offset = p.getPageNumber() * pageSize;
@@ -78,6 +79,9 @@ public class ItemServiceImpl implements TService<Item> {
                             hasNext, hasPrevious);
                     return paging;
                 });
+
+     */
+        return null;
     }
 
     public Flux<Item> getItemsByCart(Long id) {
