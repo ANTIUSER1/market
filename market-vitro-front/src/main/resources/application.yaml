@@ -5,6 +5,16 @@ server:
 spring:
   application:
     name: market-vitro-front
+  servlet:
+    multipart:
+      max-file-size: 20480 KB
+
+  web:
+    resources:
+      static-locations: classpath:./static,file:C:/opt/market/,file:C:/opt/market/images/
+  mvc:
+    static-path-pattern: /**
+
 
 
   r2dbc:

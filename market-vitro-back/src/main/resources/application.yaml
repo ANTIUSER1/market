@@ -5,6 +5,16 @@ server:
 spring:
   application:
     name: market-vitro-back
+  servlet:
+    multipart:
+      max-file-size: 20480 KB
+
+  web:
+    resources:
+      static-locations: classpath:./static,file:C:/opt/market/,file:C:/opt/market/images/
+  mvc:
+    static-path-pattern: /**
+
 
     data:
       redis:
@@ -56,4 +66,4 @@ management:
         include: mappings
 
 order-key: 'order:payment'
-remote-server: 'http://localhost:8502'
+remote-server: 'http://localhost:8502'  # payment-server
