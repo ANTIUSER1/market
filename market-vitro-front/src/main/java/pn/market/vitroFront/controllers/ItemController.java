@@ -4,12 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.result.view.Rendering;
 import pn.market.market_entities.forWEB.Item;
 import pn.market.vitroFront.additional.Paging;
+import pn.market.vitroFront.servicies.CartServiceLightImpl;
 import pn.market.vitroFront.servicies.ItemServiceLightImpl;
 import pn.market.vitroFront.servicies.ModelService;
 import reactor.core.publisher.Flux;
@@ -24,44 +26,48 @@ public class ItemController {
     private ItemServiceLightImpl itemService;
 
     @Autowired
+    private CartServiceLightImpl cartService;
+
+    @Autowired
     private ModelService modelService;
 
     @Autowired
     private WebClient webClient;
 
+
     @GetMapping
-    public String index() {
-        return "tst";
-    }
-
-
-    @GetMapping("/tt")
     public Mono<Rendering> itemsIndex(
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
             @RequestParam(value = "pageSize", required = false, defaultValue = "2") int pageSize,
             @RequestParam(value = "search", required = false, defaultValue = "") String search,
             @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted
     ) {
-        Flux<Item> itemFlux = webClient.get()
-                .uri("http://localhost:8521/api/vitro/items")
-                .retrieve()
-                .bodyToFlux(Item.class);
-        Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
+        try {
+            Flux<Item> itemFlux = webClient.get()
+                    .uri("http://localhost:8521/api/vitro/items")
+                    .retrieve()
+                    .bodyToFlux(Item.class);
+            Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
 
-        Mono<Paging> pageMono = itemService.findAllAndPaging(pageableMono, itemFlux);
+            Mono<Paging> pageMono = itemService.findAllAndPaging(pageableMono, itemFlux);
 
-        String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
-                + page + "&pageSize=" + pageSize + "&src=0";
+            String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
+                    + page + "&pageSize=" + pageSize + "&src=0";
 
-        Mono<String> additional = Mono.just(additionalParams);
+            Mono<String> additional = Mono.just(additionalParams);
 
-        Mono<Rendering> r = Mono.just(Rendering.view("items")
-                .modelAttribute("items", itemFlux)
-                .modelAttribute("additional", additional)
-                .modelAttribute("paging", pageMono)
-                .modelAttribute("page", pageableMono)
-                .build());
-        return r;
+            Mono<Rendering> r = Mono.just(Rendering.view("items")
+                    .modelAttribute("items", itemFlux)
+                    .modelAttribute("additional", additional)
+                    .modelAttribute("paging", pageMono)
+                    .modelAttribute("page", pageableMono)
+                    .build());
+            return r;
+        } catch (Exception e) {
+            return Mono.just(Rendering.view("error")
+                    .modelAttribute("errorInfo", e.getCause())
+                    .build());
+        }
     }
 
     @GetMapping("/items")
@@ -73,62 +79,49 @@ public class ItemController {
             @RequestParam(value = "itemId", required = false, defaultValue = "0") long itemId,
             @RequestParam(value = "action", required = false, defaultValue = "NONE") String action
     ) {
-        Flux<Item> itemFlux = webClient.get()
-                .uri("http://localhost:8521/api/vitro/items")
-                .retrieve()
-                .bodyToFlux(Item.class);
-        Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
+        try {
+            Flux<Item> itemFlux = webClient.get()
+                    .uri("http://localhost:8521/api/vitro/items")
+                    .retrieve()
+                    .bodyToFlux(Item.class);
+            Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
 
-        Mono<Paging> pageMono = itemService.findAllAndPaging(pageableMono, itemFlux);
+            Mono<Paging> pageMono = itemService.findAllAndPaging(pageableMono, itemFlux);
 
-        String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
-                + page + "&pageSize=" + pageSize + "&src=0";
+            String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
+                    + page + "&pageSize=" + pageSize + "&src=0";
 
-        Mono<String> additional = Mono.just(additionalParams);
+            Mono<String> additional = Mono.just(additionalParams);
 
-        Mono<Rendering> r = Mono.just(Rendering.view("items")
-                .modelAttribute("items", itemFlux)
-                .modelAttribute("additional", additional)
-                .modelAttribute("paging", pageMono)
-                .modelAttribute("page", pageableMono)
-                .build());
-        return r;
+            Mono<Rendering> r = Mono.just(Rendering.view("items")
+                    .modelAttribute("items", itemFlux)
+                    .modelAttribute("additional", additional)
+                    .modelAttribute("paging", pageMono)
+                    .modelAttribute("page", pageableMono)
+                    .build());
+            return r;
+        } catch (Exception e) {
+            return Mono.just(Rendering.view("error")
+                    .modelAttribute("errorInfo", e.getCause())
+                    .build());
+        }
     }
-
-/*
-    @GetMapping("/items")
-    public Mono<Rendering> items(
-            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
-            @RequestParam(value = "pageSize", required = false, defaultValue = "2") int pageSize,
-            @RequestParam(value = "search", required = false, defaultValue = " ") String search,
-            @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted,
-            @RequestParam(value = "itemId", required = false, defaultValue = "0") long itemId,
-            @RequestParam(value = "action", required = false, defaultValue = "NONE") String action
-    ) {
-        search = search.trim();
-        Flux<Item> itemFlux = itemService.findAll();
-        Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
-        Mono<Paging> pageMono = itemService.findAllAndPaging(pageableMono);
-        String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
-                + page + "&pageSize=" + pageSize + "&src=-1";
-        Mono<String> additional = Mono.just(additionalParams);
-        Mono<Rendering> r = Mono.just(Rendering.view("items")
-                .modelAttribute("items", itemFlux)
-                .modelAttribute("paging", pageMono)
-                .modelAttribute("additional", additional)
-                .modelAttribute("page", pageableMono)
-                .build());
-        return r;
-    }
-
 
     @GetMapping("/items/{id}")
     public Mono<Rendering> itemById(
             @PathVariable("id") Long id,
             @RequestParam(value = "action", required = false) String action
     ) {
+        System.out.println(
+                "ITEM BY ID " + id
+                        + "   ACTION: " + action
+        );
         Mono<Item> itemMono = cartService.placeItemToCart(id, action);
+
+        System.out.println("--------------- ITEM-MONO CREATED ");
+
         Mono<Long> src = Mono.just(-2L);
+        System.out.println("       NOW DOING      Mono<Rendering> result................ ");
         Mono<Rendering> r = Mono.just(Rendering.view("item")
                 .modelAttribute("item", itemMono)
                 .modelAttribute("action", action)
@@ -136,8 +129,6 @@ public class ItemController {
                 .build());
         return r;
     }
-
- */
 
 
 }

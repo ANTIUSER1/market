@@ -32,6 +32,7 @@ spring:
             provider: keycloak
             client-id: frontend-service
             # Тут указываем токен из Client credentials из Keycloak
+            #            client-secret: C8jkp1YG85eIZ5z9bKSrmNRSaCrCAQHy
             client-secret: Gy4ghrLnSYrBABXzT1lmEypmAziIDtM7
             authorization-grant-type: _a-front-vitro
             scope: openid
