@@ -20,13 +20,6 @@ import reactor.core.publisher.Mono;
 @RequestMapping("/")
 public class ItemController {
 
-//    @Autowired
-//    private CartServiceImpl cartService;
-//
-//    @Autowired
-//    private DatabaseClient databaseClient;
-
-
     @Autowired
     private ItemServiceLightImpl itemService;
 
@@ -56,9 +49,12 @@ public class ItemController {
         Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
 
         Mono<Paging> pageMono = itemService.findAllAndPaging(pageableMono, itemFlux);
+
         String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
                 + page + "&pageSize=" + pageSize + "&src=0";
+
         Mono<String> additional = Mono.just(additionalParams);
+
         Mono<Rendering> r = Mono.just(Rendering.view("items")
                 .modelAttribute("items", itemFlux)
                 .modelAttribute("additional", additional)
@@ -66,33 +62,39 @@ public class ItemController {
                 .modelAttribute("page", pageableMono)
                 .build());
         return r;
+    }
 
-
-
-/*
-        search = search.trim();
+    @GetMapping("/items")
+    public Mono<Rendering> items(
+            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "2") int pageSize,
+            @RequestParam(value = "search", required = false, defaultValue = " ") String search,
+            @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted,
+            @RequestParam(value = "itemId", required = false, defaultValue = "0") long itemId,
+            @RequestParam(value = "action", required = false, defaultValue = "NONE") String action
+    ) {
         Flux<Item> itemFlux = webClient.get()
                 .uri("http://localhost:8521/api/vitro/items")
-                .exchangeToFlux(e -> e.bodyToFlux(Item.class));
-        // .collectList();
+                .retrieve()
+                .bodyToFlux(Item.class);
+        Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
 
+        Mono<Paging> pageMono = itemService.findAllAndPaging(pageableMono, itemFlux);
 
-        // itemService.findAll();
-        // Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
-        //  Mono<Paging> pageMono = 0;// itemService.findAllAndPaging(pageableMono);
         String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
                 + page + "&pageSize=" + pageSize + "&src=0";
+
         Mono<String> additional = Mono.just(additionalParams);
+
         Mono<Rendering> r = Mono.just(Rendering.view("items")
-                //  .modelAttribute("items", itemFlux)
+                .modelAttribute("items", itemFlux)
                 .modelAttribute("additional", additional)
-//                .modelAttribute("paging", pageMono)
-//                .modelAttribute("page", pageableMono)
+                .modelAttribute("paging", pageMono)
+                .modelAttribute("page", pageableMono)
                 .build());
         return r;
-*/
-
     }
+
 /*
     @GetMapping("/items")
     public Mono<Rendering> items(
