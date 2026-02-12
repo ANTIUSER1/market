@@ -19,11 +19,11 @@ public class CartServiceLightImpl implements CartServiceLight {
             String action) {
         System.out.println(
                 "PLACE ITEM TO CART " + itemId
-                        + "ACTION  " + action
+                        + "   ACTION  " + action
 
         );
         Mono<Item> itemMono = webClient.get()
-                .uri("http://localhost:8521/api/vitro/items/" + itemId)
+                .uri("http://localhost:8521/api/vitro/items/i/" + itemId)
                 .retrieve()
                 .bodyToMono(Item.class);
         System.out.println("MONO-ACTION CREATED ");
