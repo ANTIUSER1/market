@@ -21,18 +21,19 @@ public class ItemRest {
     private CartServiceImpl cartService;
 
     @GetMapping
-    @PreAuthorize("hasAuthority('SERVICE')")
     Flux<Item> allItems() {
         return itemService.findAll();
     }
 
-    @PutMapping("/{id}")
-//    @PreAuthorize("hasAuthority('SERVICE')")
+    @GetMapping("/i/{id}")
+    @PreAuthorize("hasAuthority('SERVICE')")
     Mono<Item> itemById(@PathVariable("id") long id) {
+        System.out.println("     GET ITEM BY ID == " + id);
         return itemService.findById(id);
     }
 
-    @GetMapping("/add-cart/{cartID}/{action}")
+    @PutMapping("/add-cart/{cartID}/{action}")
+    @PreAuthorize("hasAuthority('SERVICE')")
     public Mono<Item> addToCart(
             @RequestBody Item i,
             @PathVariable("cartID") long cartId,
