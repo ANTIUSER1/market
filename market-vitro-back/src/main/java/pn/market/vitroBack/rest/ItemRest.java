@@ -32,8 +32,9 @@ public class ItemRest {
         return itemService.findById(id);
     }
 
+    //   /api/vitro/items/add-cart/{cartID}/{action}
     @PutMapping("/add-cart/{cartID}/{action}")
-    @PreAuthorize("hasAuthority('SERVICE')")
+    //   @PreAuthorize("hasAuthority('SERVICE')")
     public Mono<Item> addToCart(
             @RequestBody Item i,
             @PathVariable("cartID") long cartId,
