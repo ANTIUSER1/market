@@ -20,13 +20,13 @@ public class ItemRest {
     private CartServiceImpl cartService;
 
     @GetMapping
-    Flux<Item> allItems() {
+    public Flux<Item> allItems() {
         return itemService.findAll();
     }
 
     @GetMapping("/i/{id}")
-        //  @PreAuthorize("hasAuthority('SERVICE')")
-    Mono<Item> itemById(@PathVariable("id") long id) {
+    public Mono<Item> itemById(@PathVariable("id") long id) {
+        System.out.println("   ITEM BY ID " + id);
         return itemService.findById(id);
     }
 
@@ -40,7 +40,22 @@ public class ItemRest {
         return itemService.addToCart(i, cartId, action);
     }
 
-    public Mono<Long> createNewCart() {
-        return cartService.createNewCart();
+    @PutMapping("/get-items-by-cart")
+    public Flux<Item> getItemsByCartDataFromMonoToFlux(
+            @RequestBody Item item) {
+        System.out.println("   GET ITEMS BY CART ");
+        return itemService.getItemsByCartDataFromMonoToFlux(
+                Mono.just(item));
     }
+
+    @PutMapping("/get-total-sum")
+    public Mono<Long> getTotalSum(
+            @RequestBody Flux<Item> itemsFlux) {
+        System.out.println("   NNN --- TOTAL SUM ");
+        return itemService.getTotalSum(itemsFlux);
+    }
+
+//    public Mono<Long> createNewCart() {
+//        return cartService.createNewCart();
+//    }
 }

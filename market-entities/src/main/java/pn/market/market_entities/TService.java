@@ -1,7 +1,6 @@
-package pn.market.vitroBack.servicies;
+package pn.market.market_entities;
 
 import org.springframework.data.domain.Pageable;
-import pn.market.vitroBack.additional.Paging;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
