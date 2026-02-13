@@ -26,7 +26,6 @@ public class CartServiceLightImpl implements CartServiceLight {
                 .uri(authHost + "/api/vitro/items/i/" + itemId)
                 .retrieve()
                 .bodyToMono(Item.class);
-        System.out.println("MONO-ACTION CREATED ");
         itemMono = Mono.zip(itemMono,
                         this.createCartForItemIfNotExists(itemMono, itemId)
                 )

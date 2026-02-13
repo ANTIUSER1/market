@@ -114,14 +114,9 @@ public class ItemController {
             @PathVariable("id") Long id,
             @RequestParam(value = "action", required = false) String action
     ) {
-        System.out.println(
-                "ITEM BY ID " + id
-                        + "   ACTION: " + action
-        );
         Mono<Item> itemMono = cartService.placeItemToCart(id, action);
 
         Mono<Long> src = Mono.just(-2L);
-        System.out.println("       NOW DOING      Mono<Rendering> result................ ");
         Mono<Rendering> r = Mono.just(Rendering.view("item")
                 .modelAttribute("item", itemMono)
                 .modelAttribute("action", action)
