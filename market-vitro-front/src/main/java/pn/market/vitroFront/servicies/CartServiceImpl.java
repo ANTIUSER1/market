@@ -44,7 +44,7 @@ public class CartServiceImpl implements TService<Cart> {
         System.out.println(".........PLACE!!!  " + itemId + "    " + action);
         System.out.println(".........ITEM GET FROM    " + authHost + "/api/vitro/items/i/" + itemId);
         Mono<Item> itemMono = webClient.get()
-                .uri(authHost + "/api/vitro/items/mmmi/" + itemId)
+                .uri(authHost + "/api/vitro/items/i/" + itemId)
                 .retrieve()
 
                 .bodyToMono(Item.class);
