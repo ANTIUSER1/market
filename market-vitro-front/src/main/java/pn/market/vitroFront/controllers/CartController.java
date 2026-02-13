@@ -2,9 +2,13 @@ package pn.market.vitroFront.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import pn.market.market_entities.forWEB.Item;
 import pn.market.vitroFront.servicies.CartServiceImpl;
 import pn.market.vitroFront.servicies.ItemServiceImpl;
+import reactor.core.publisher.Mono;
 
 @Controller
 @RequestMapping("/cart")
@@ -15,6 +19,40 @@ public class CartController {
     private CartServiceImpl cartService;
     @Autowired
     private ItemServiceImpl itemService;
+
+
+    @GetMapping("/items")
+    public String addItem(
+//    public Mono<Rendering> addItem(
+            @RequestParam(value = "itemId", required = true) Long itemId,
+            @RequestParam(value = "action", required = true) String action,
+            @RequestParam(value = "src", required = true) long src,
+            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(value = "pageSize", required = false, defaultValue = "2") int pageSize,
+            @RequestParam(value = "search", required = false, defaultValue = "") String search,
+            @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted
+
+    ) {
+        search = search.trim();
+        String additionalParams = "search=" + search +
+                "&sorted=" + sorted + "&page=" + page + "&pageSize=" + pageSize + "&src=" + src;
+        Mono<Item> itemMono = cartService.placeItemToCart(itemId, action);
+
+        /*
+        Flux<Item> itemsFlux = itemService.getItemsByCartDataFromMonoToFlux(itemMono);
+        Mono<Long> total = itemService.getTotalSum(itemsFlux);
+        Mono<Long> cartId = itemMono.map(Item::getCartId);
+        itemsFlux.subscribe();
+        total.subscribe();
+        cartId.subscribe();
+        if (src > 0) return "redirect:/cart/" + src;
+        else if (src == 0) return "redirect:/?" + additionalParams;
+        else if (src == -1) return "redirect:/items?" + additionalParams;
+        else return "redirect:/items/" + itemId;
+        */
+        return "tmp";
+    }
+
 /*
     @GetMapping("/items")
     public String addItem(
@@ -59,12 +97,7 @@ public class CartController {
         else return "redirect:/items/" + itemId;
     }
 
- */
 
-
-
-
-    /*
     @Autowired
     private CartServiceImpl cartService;
     @Autowired
