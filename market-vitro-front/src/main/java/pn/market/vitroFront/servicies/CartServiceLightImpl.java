@@ -13,18 +13,17 @@ public class CartServiceLightImpl implements CartServiceLight {
     @Autowired
     private WebClient webClient;
 
+    @Autowired
+    private String authHost;
+
     //    /api/vitro/items/add-cart/{cartID}/{action}
     @Override
     public Mono<Item> placeItemToCart(
             long itemId,
             String action) {
-        System.out.println(
-                "PLACE ITEM TO CART " + itemId
-                        + "   ACTION  " + action
 
-        );
         Mono<Item> itemMono = webClient.get()
-                .uri("http://localhost:8521/api/vitro/items/i/" + itemId)
+                .uri(authHost + "/api/vitro/items/i/" + itemId)
                 .retrieve()
                 .bodyToMono(Item.class);
         System.out.println("MONO-ACTION CREATED ");
@@ -32,21 +31,14 @@ public class CartServiceLightImpl implements CartServiceLight {
                         this.createCartForItemIfNotExists(itemMono, itemId)
                 )
                 .map(t -> {
-
                     Item i = t.getT1();
                     Long cartId = t.getT2();
-                    System.out.println(" --------  MONO-ACTION MAP CART_ID " + cartId);
-                    System.out.println(" +++++++++++++  MONO-ACTION MAP LOAD ITEM \n+++ " + i);
-///  /api/vitro/items/add-cart/{cartID}/{action}
                     if (action != null) {
-                        Mono<Item> min = webClient.put()
-                                .uri("http://localhost:8521/api/vitro/items/add-cart/"
+                        return webClient.put()
+                                .uri(authHost + "/api/vitro/items/add-cart/"
                                         + cartId + "/" + action)
                                 .bodyValue(i)
                                 .retrieve().bodyToMono(Item.class);
-                        System.out.println("NOT=NULL=ACTION "
-                                + action + "   RETURN VALUE " + min);
-                        return min;
                     }
                     return Mono.just(i);
                 })
@@ -54,30 +46,7 @@ public class CartServiceLightImpl implements CartServiceLight {
         return itemMono;
     }
 
-    /*
-      метод обрабатывающий запрос
 
-      @PutMapping("/add-cart/{cartID}/{action}")
-    @PreAuthorize("hasAuthority('SERVICE')") public Mono<Item> addToCart(
-       @RequestBody Item i,
-       @PathVariable("cartID") long cartId,
-       @PathVariable("action") String action) {
-       return itemService.addToCart(i, cartId, action);
-      }
-
-      вот так спрашиваю
-
-     Mono<Item> min = webClient.put()
-      .uri("http://localhost:8521/api/vitro/items/"
-       + cartId + "/" + action)
-       .bodyValue(i)
-       .retrieve().bodyToMono(Item.class);
-       <p>
-     <p>
-      и получаю форбидден
-
-
-     */
     public Mono<Long> createCartForItemIfNotExists(
             Mono<Item> itemMono,
             long itemId) {
@@ -89,31 +58,6 @@ public class CartServiceLightImpl implements CartServiceLight {
                 }).flatMap(ci -> ci);
         return cartIdMono;
     }
-/*
-    public Mono<Item> placeItemToCart(
-            Mono<Item> itemMono,
-            long itemId,
-            String action) {
-       itemMono = Mono.zip(
-                        itemMono,
-                        this.createCartForItemIfNotExists(itemId)
 
-                )
-                .map(t -> {
-
-                    Item i = t.getT1();
-                    Long cartId = t.getT2();
-
-
-                    if (action != null) {
-                        return itemService.addToCart(i, cartId, action);
-                    }
-                    return Mono.just(i);
-                })
-                .flatMap(i -> i);
-        return itemMono;
-    }
-
- */
 
 }

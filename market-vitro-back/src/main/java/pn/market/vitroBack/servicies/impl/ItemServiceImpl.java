@@ -143,9 +143,6 @@ public class ItemServiceImpl implements TService<Item> {
 
     public Mono<Item> addToCart(Item i, long cartId, String action) {
         if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
-            System.out.println("---PLUS--- ACTION-TIPE TEST : ITEM: \n " + i);
-            System.out.println("---PLUS--- ACTION-TIPE TEST : CART: \n " + cartId);
-            System.out.println("---PLUS--- ACTION-TIPE TEST : ACTION: \n " + action);
             return this.plusForMono(i, cartId);
         }
         if (ActionType.MINUS.name().equalsIgnoreCase(action.trim())) {

@@ -27,7 +27,6 @@ public class ItemRest {
     @GetMapping("/i/{id}")
         //  @PreAuthorize("hasAuthority('SERVICE')")
     Mono<Item> itemById(@PathVariable("id") long id) {
-        System.out.println("     GET ITEM BY ID == " + id);
         return itemService.findById(id);
     }
 
@@ -38,8 +37,6 @@ public class ItemRest {
             @RequestBody Item i,
             @PathVariable("cartID") long cartId,
             @PathVariable("action") String action) {
-        System.out.println("    PUT CART TO ITEM ");
-        System.out.println("                 ITEM " + i);
         return itemService.addToCart(i, cartId, action);
     }
 

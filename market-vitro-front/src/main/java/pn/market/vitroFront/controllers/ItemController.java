@@ -120,8 +120,6 @@ public class ItemController {
         );
         Mono<Item> itemMono = cartService.placeItemToCart(id, action);
 
-        System.out.println("--------------- ITEM-MONO CREATED ");
-
         Mono<Long> src = Mono.just(-2L);
         System.out.println("       NOW DOING      Mono<Rendering> result................ ");
         Mono<Rendering> r = Mono.just(Rendering.view("item")
