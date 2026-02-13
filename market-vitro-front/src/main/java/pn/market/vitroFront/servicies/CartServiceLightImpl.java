@@ -38,7 +38,7 @@ public class CartServiceLightImpl implements CartServiceLight {
 
                     if (action != null) {
                         Mono<Item> min = webClient.put()
-                                .uri("http://localhost:8521/api/vitro/items/"
+                                .uri("http://localhost:8521/api/vitro/items/add-cart/"
                                         + cartId + "/" + action)
                                 .bodyValue(i)
                                 .retrieve().bodyToMono(Item.class);
@@ -52,6 +52,30 @@ public class CartServiceLightImpl implements CartServiceLight {
         return itemMono;
     }
 
+    /*
+      метод обрабатывающий запрос
+
+      @PutMapping("/add-cart/{cartID}/{action}")
+    @PreAuthorize("hasAuthority('SERVICE')") public Mono<Item> addToCart(
+       @RequestBody Item i,
+       @PathVariable("cartID") long cartId,
+       @PathVariable("action") String action) {
+       return itemService.addToCart(i, cartId, action);
+      }
+
+      вот так спрашиваю
+
+     Mono<Item> min = webClient.put()
+      .uri("http://localhost:8521/api/vitro/items/"
+       + cartId + "/" + action)
+       .bodyValue(i)
+       .retrieve().bodyToMono(Item.class);
+       <p>
+     <p>
+      и получаю форбидден
+
+
+     */
     public Mono<Long> createCartForItemIfNotExists(
             Mono<Item> itemMono,
             long itemId) {
