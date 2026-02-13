@@ -1,5 +1,6 @@
 package pn.market.vitroFront.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.client.ReactiveOAuth2AuthorizedClientManager;
@@ -12,6 +13,14 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class WebClientConfig {
+
+    @Value("${oauth.data.host}")
+    private String auth2Host;
+
+    @Bean
+    String authHost() {
+        return auth2Host;
+    }
 
     @Bean
     public ReactiveOAuth2AuthorizedClientManager authorizedClientManager(

@@ -50,3 +50,10 @@ spring:
     encoding: UTF-8
     servlet:
       content-type: text/html;charset=UTF-8
+
+
+
+oauth:
+  data:
+    host: http://localhost:8521
+
