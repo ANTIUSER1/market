@@ -101,6 +101,9 @@ public class ItemServiceImpl implements TService<Item> {
     }
 
     public Mono<Item> plusForMono(Item item, long cartId) {
+        System.out.println("   PLUS_C_T_I  " + item);
+        System.out.println("   PLUS_C_  " + cartId);
+
         item.plusCount(cartId);
         return itemRepo.save(item);//.flatMap(i -> itemRepo.findById(i.getId())).log();
     }
@@ -140,6 +143,9 @@ public class ItemServiceImpl implements TService<Item> {
 
     public Mono<Item> addToCart(Item i, long cartId, String action) {
         if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
+            System.out.println("---PLUS--- ACTION-TIPE TEST : ITEM: \n " + i);
+            System.out.println("---PLUS--- ACTION-TIPE TEST : CART: \n " + cartId);
+            System.out.println("---PLUS--- ACTION-TIPE TEST : ACTION: \n " + action);
             return this.plusForMono(i, cartId);
         }
         if (ActionType.MINUS.name().equalsIgnoreCase(action.trim())) {
@@ -180,7 +186,6 @@ public class ItemServiceImpl implements TService<Item> {
                         item.setCartId(null);
                         item.setOrderId(null);
                         item.setCount(0);
-
                         itemRepo.save(item)
                                 .map(
                                         i -> {

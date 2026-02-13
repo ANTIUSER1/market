@@ -56,15 +56,19 @@ public class SecurityConfig {
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http,
                                                             RedirectServerLogoutSuccessHandler redirectServerLogoutSuccessHandler) {
 
+        http.authorizeExchange(exchanges -> exchanges
+                .pathMatchers("/", "/login").permitAll()
+                .anyExchange().authenticated()
+        );
 
 //        http.csrf(csrf -> csrf
 //                .csrfTokenRepository(CookieServerCsrfTokenRepository.withHttpOnlyFalse())
 //        );
-        http.authorizeExchange(exchanges -> exchanges
-                .pathMatchers(
-                        "/login").permitAll()
-                .anyExchange().authenticated()
-        );
+//        http.authorizeExchange(exchanges -> exchanges
+////                .pathMatchers(
+////                        "/login").permitAll()
+//                        .anyExchange().authenticated()
+//        );
         http.formLogin(f -> f.loginPage("/login"));
         http.logout(logout -> logout
                 // URL страницы выхода

@@ -22,6 +22,9 @@ spring:
     username: postgres                              # Имя пользователя базы данных
     password: 123
 
+
+
+
   security:
     oauth2:
       client:
@@ -30,11 +33,10 @@ spring:
             # Указываем провайдера, должно совпадать с тем, что указано в
             # oauth2Client.setDefaultClientRegistrationId
             provider: keycloak
-            client-id: frontend-service
+            client-id: _a-front-vitro
             # Тут указываем токен из Client credentials из Keycloak
-            #            client-secret: C8jkp1YG85eIZ5z9bKSrmNRSaCrCAQHy
-            client-secret: Gy4ghrLnSYrBABXzT1lmEypmAziIDtM7
-            authorization-grant-type: _a-front-vitro
+            client-secret: Aq8t01DeUxjTo4HfI6XbxIDvThu32jXK
+            authorization-grant-type: client_credentials
             scope: openid
         provider:
           keycloak:

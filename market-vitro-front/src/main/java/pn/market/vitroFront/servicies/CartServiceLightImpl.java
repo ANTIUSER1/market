@@ -13,6 +13,7 @@ public class CartServiceLightImpl implements CartServiceLight {
     @Autowired
     private WebClient webClient;
 
+    //    /api/vitro/items/add-cart/{cartID}/{action}
     @Override
     public Mono<Item> placeItemToCart(
             long itemId,
@@ -34,8 +35,9 @@ public class CartServiceLightImpl implements CartServiceLight {
 
                     Item i = t.getT1();
                     Long cartId = t.getT2();
-                    System.out.println("MONO-ACTION MAP CART_ID " + cartId);
-
+                    System.out.println(" --------  MONO-ACTION MAP CART_ID " + cartId);
+                    System.out.println(" +++++++++++++  MONO-ACTION MAP LOAD ITEM \n+++ " + i);
+///  /api/vitro/items/add-cart/{cartID}/{action}
                     if (action != null) {
                         Mono<Item> min = webClient.put()
                                 .uri("http://localhost:8521/api/vitro/items/add-cart/"

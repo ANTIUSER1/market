@@ -2,7 +2,6 @@ package pn.market.vitroBack.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -18,20 +17,13 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
 
-        /*
-         .pathMatchers(
-                        HttpMethod.POST, HttpMethod.GET,
-                        HttpMethod.PUT "/**"
-                )
-         */
-        //http.authorizeExchange()
         http.authorizeExchange(exchanges -> exchanges
 
-                .pathMatchers(HttpMethod.GET, "/**").permitAll()
-                .pathMatchers(HttpMethod.POST, "/**").permitAll()
-                .pathMatchers(HttpMethod.PUT, "/**").permitAll()
-                // Защищаем любое взаимодействие
-                .anyExchange().authenticated()
+//                .pathMatchers(HttpMethod.GET, "/**").permitAll()
+//                .pathMatchers(HttpMethod.POST, "/**").permitAll()
+//                .pathMatchers(HttpMethod.PUT, "/**").permitAll()
+                        // Защищаем любое взаимодействие
+                        .anyExchange().permitAll()
         );
 
         http.oauth2ResourceServer(oauth2 -> oauth2

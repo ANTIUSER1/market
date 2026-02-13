@@ -74,6 +74,7 @@ public class Item {
     }
 
     public void plusCount(long cartId) {
+        if (count == null) count = 0;
         count++;
         this.cartId = cartId;
     }
