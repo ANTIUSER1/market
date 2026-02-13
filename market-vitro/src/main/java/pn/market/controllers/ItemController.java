@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.result.view.Rendering;
-import pn.market.additional.Paging;
+import pn.market.market_entities.Paging;
 import pn.market.market_entities.forWEB.Item;
 import pn.market.services.ModelService;
 import pn.market.services.impl.CartServiceImpl;

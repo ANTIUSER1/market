@@ -1,7 +1,7 @@
 package pn.market.services;
 
 import org.springframework.data.domain.Pageable;
-import pn.market.additional.Paging;
+import pn.market.market_entities.Paging;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 

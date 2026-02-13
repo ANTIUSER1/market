@@ -3,7 +3,7 @@ package pn.market.services.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import pn.market.additional.Paging;
+import pn.market.market_entities.Paging;
 import pn.market.market_entities.forWEB.Cart;
 import pn.market.market_entities.forWEB.Item;
 import pn.market.repo.CartRepo;

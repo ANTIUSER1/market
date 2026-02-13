@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.result.view.Rendering;
+import pn.market.market_entities.Paging;
 import pn.market.market_entities.forWEB.Item;
-import pn.market.vitroFront.additional.Paging;
-import pn.market.vitroFront.servicies.CartServiceLightImpl;
-import pn.market.vitroFront.servicies.ItemServiceLightImpl;
+import pn.market.vitroFront.servicies.CartServiceImpl;
+import pn.market.vitroFront.servicies.ItemServiceImpl;
 import pn.market.vitroFront.servicies.ModelService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -23,10 +23,10 @@ import reactor.core.publisher.Mono;
 public class ItemController {
 
     @Autowired
-    private ItemServiceLightImpl itemService;
+    private ItemServiceImpl itemService;
 
     @Autowired
-    private CartServiceLightImpl cartService;
+    private CartServiceImpl cartService;
 
     @Autowired
     private ModelService modelService;
@@ -51,7 +51,7 @@ public class ItemController {
                     .bodyToFlux(Item.class);
             Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
 
-            Mono<Paging> pageMono = itemService.findAllAndPaging(pageableMono, itemFlux);
+            Mono<Paging> pageMono = itemService.findAllAndPagingWithFluxItem(pageableMono, itemFlux);
 
             String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
                     + page + "&pageSize=" + pageSize + "&src=0";
@@ -88,7 +88,8 @@ public class ItemController {
                     .bodyToFlux(Item.class);
             Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
 
-            Mono<Paging> pageMono = itemService.findAllAndPaging(pageableMono, itemFlux);
+            Mono<Paging> pageMono = itemService
+                    .findAllAndPagingWithFluxItem(pageableMono, itemFlux);
 
             String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
                     + page + "&pageSize=" + pageSize + "&src=0";
