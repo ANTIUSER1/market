@@ -31,13 +31,19 @@ public class ItemRest {
     }
 
     //   /api/vitro/items/add-cart/{cartID}/{action}
-    @PutMapping("/add-cart/{cartID}/{action}")
+    @GetMapping("/add-cart/{itemID}/{cartID}/{action}")
     //   @PreAuthorize("hasAuthority('SERVICE')")
     public Mono<Item> addToCart(
-            @RequestBody Item i,
-            @PathVariable("cartID") long cartId,
+            @PathVariable("itemID") Long itemId,
+            @PathVariable("cartID") Long cartId,
             @PathVariable("action") String action) {
-        return itemService.addToCart(i, cartId, action);
+        System.out.println("            DDD itemId " + itemId);
+        System.out.println("            DDD cartId " + cartId);
+        System.out.println("            DDD action " + action);
+        Mono<Item> itemMono = itemService.findById(itemId)
+                .map(i -> itemService.addToCart(i, cartId, action))
+                .flatMap(i -> i);
+        return itemMono;
     }
 
     @PutMapping("/get-items-by-cart")
@@ -63,7 +69,5 @@ public class ItemRest {
         return itemService.getTotalSum(itemsFlux);
     }
 
-//    public Mono<Long> createNewCart() {
-//        return cartService.createNewCart();
-//    }
+
 }

@@ -32,46 +32,22 @@ public class CartServiceImpl implements TService<Cart> {
         return null;
     }
 
+    public Mono<Item> itemById(long itemId) {
+        return webClient.get()
+                .uri("/api/vitro/items/i/" + itemId)
+                .retrieve().bodyToMono(Item.class);
+    }
+
     public Mono<Item> placeItemToCart(
-            long itemId,
+            Long itemId,
             String action) {
         System.out.println(".........PLACE!!!  " + itemId + "    " + action);
         System.out.println(".........ITEM GET FROM    " + "/api/vitro/items/i/" + itemId);
-        Mono<Item> itemMono = webClient.get()
-                .uri("/api/vitro/items/i/" + itemId)
-                .retrieve()
+        Mono<Item> itemMono = itemById(itemId);
 
-                .bodyToMono(Item.class);
-
-        System.out.println(".........MONO_ITEM CREATED " + itemId + "    " + action + "    ITEMMONO " + (itemMono == null));
-        itemMono = itemMono.map(im -> {
-            System.out.println(im);
-            return im;
-        });
-
-        itemMono = Mono.zip(itemMono,
-                        this.createCartForItemIfNotExists(itemMono, itemId)
-                )
-                .map(t -> {
-                    System.out.println("     ACTION :: " + action);
-                    Item i = t.getT1();
-                    Long cartId = t.getT2();
-                    System.out.println("    ITEM_VALUE: " + i);
-                    if (action != null) {
-                        return webClient.put()
-                                .uri("/api/vitro/items/add-cart/"
-                                        + cartId + "/" + action)
-                                .bodyValue(i)
-                                .retrieve().bodyToMono(Item.class);
-                    }
-
-                    System.out.println("******   III " + i);
-                    return Mono.just(i);
-                })
-                .flatMap(i -> i);
+        itemMono = addItemToCart(itemMono, itemId, action);
         return itemMono;
     }
-
 
     public Mono<Long> createCartForItemIfNotExists(
             Mono<Item> itemMono,
@@ -85,5 +61,22 @@ public class CartServiceImpl implements TService<Cart> {
         return cartIdMono;
     }
 
+    private Mono<Item> addItemToCart(Mono<Item> itemMono, Long itemId, String action) {
+        return Mono.zip(itemMono,
+                        this.createCartForItemIfNotExists(itemMono, itemId)
+                )
+                .map(t -> {
+                    Item i = t.getT1();
+                    Long cartId = t.getT2();
+                    if (action != null && cartId != null) {
+                        return webClient.get()
+                                .uri("/api/vitro/items/add-cart/"
+                                        + i.getId() + "/" + cartId + "/" + action)
+                                .retrieve().bodyToMono(Item.class);
+                    }
+                    return Mono.just(i);
+                })
+                .flatMap(i -> i);
+    }
 
 }
