@@ -10,4 +10,8 @@ import reactor.core.publisher.Mono;
 public interface ItemService extends TService<Item> {
 
     Mono<Paging> findAllAndPagingWithFluxItem(Mono<Pageable> pageableMono, Flux<Item> itemFlux);
+
+    Flux<Item> getItemsByCartDataFromMonoToFlux(Long cartId);
+
+    Mono<Long> getTotalSum(Long cartId);
 }

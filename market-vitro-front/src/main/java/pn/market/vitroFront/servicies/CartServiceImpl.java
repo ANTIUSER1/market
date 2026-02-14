@@ -49,17 +49,20 @@ public class CartServiceImpl implements TService<Cart> {
 
                 .bodyToMono(Item.class);
 
-        System.out.println(".........MONO_ITEM CREATED " + itemId + "    " + action);
-        // itemMono.subscribe(i -> System.out.println("    :::: " + i));
-
+        System.out.println(".........MONO_ITEM CREATED " + itemId + "    " + action + "    ITEMMONO " + (itemMono == null));
+        itemMono = itemMono.map(im -> {
+            System.out.println(im);
+            return im;
+        });
 
         itemMono = Mono.zip(itemMono,
                         this.createCartForItemIfNotExists(itemMono, itemId)
                 )
                 .map(t -> {
+                    System.out.println("     ACTION :: " + action);
                     Item i = t.getT1();
                     Long cartId = t.getT2();
-                    System.out.println("    ITEM_VALUE " + i);
+                    System.out.println("    ITEM_VALUE: " + i);
                     if (action != null) {
                         return webClient.put()
                                 .uri(authHost + "/api/vitro/items/add-cart/"

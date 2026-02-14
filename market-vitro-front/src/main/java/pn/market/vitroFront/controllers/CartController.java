@@ -3,11 +3,14 @@ package pn.market.vitroFront.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.result.view.Rendering;
 import pn.market.market_entities.forWEB.Item;
 import pn.market.vitroFront.servicies.CartServiceImpl;
 import pn.market.vitroFront.servicies.ItemServiceImpl;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Controller
@@ -20,38 +23,61 @@ public class CartController {
     @Autowired
     private ItemServiceImpl itemService;
 
+    @Autowired
+    private WebClient webClient;
 
-    @GetMapping("/items")
-    public String addItem(
-//    public Mono<Rendering> addItem(
-            @RequestParam(value = "itemId", required = true) Long itemId,
-            @RequestParam(value = "action", required = true) String action,
-            @RequestParam(value = "src", required = true) long src,
-            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
-            @RequestParam(value = "pageSize", required = false, defaultValue = "2") int pageSize,
-            @RequestParam(value = "search", required = false, defaultValue = "") String search,
-            @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted
+    @Autowired
+    private String authHost;
 
-    ) {
-        search = search.trim();
-        String additionalParams = "search=" + search +
-                "&sorted=" + sorted + "&page=" + page + "&pageSize=" + pageSize + "&src=" + src;
-        Mono<Item> itemMono = cartService.placeItemToCart(itemId, action);
 
-        /*
-        Flux<Item> itemsFlux = itemService.getItemsByCartDataFromMonoToFlux(itemMono);
-        Mono<Long> total = itemService.getTotalSum(itemsFlux);
-        Mono<Long> cartId = itemMono.map(Item::getCartId);
-        itemsFlux.subscribe();
-        total.subscribe();
-        cartId.subscribe();
-        if (src > 0) return "redirect:/cart/" + src;
-        else if (src == 0) return "redirect:/?" + additionalParams;
-        else if (src == -1) return "redirect:/items?" + additionalParams;
-        else return "redirect:/items/" + itemId;
-        */
-        return "tmp";
+    @GetMapping("/{cartId}")
+    public Mono<Rendering> itemsList(
+            @PathVariable("cartId") long cartId) {
+        //itemService.getItemsByCartDataFromMonoToFlux(cartId);
+        Flux<Item> itemsFlux = itemService.getItemsByCartDataFromMonoToFlux(cartId);
+        Mono<Long> total = itemService.getTotalSum(cartId);
+        //  itemsFlux.subscribe(ii -> System.out.println("       III ID " + ii.getId()));
+        total.subscribe(t -> System.out.println("    TOTAL " + t));
+        Mono<Rendering> r =
+                Mono.just(Rendering.view("cart")
+                        .modelAttribute("items", itemsFlux)
+                        .modelAttribute("total", total)
+                        .build());
+        return r;
     }
+
+
+//    @GetMapping("/items")
+//    public Mono<String> addItem(
+////    public Mono<Rendering> addItem(
+//            @RequestParam(value = "itemId", required = true) Long itemId,
+//            @RequestParam(value = "action", required = true) String action,
+//            @RequestParam(value = "src", required = true) long src,
+//            @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+//            @RequestParam(value = "pageSize", required = false, defaultValue = "2") int pageSize,
+//            @RequestParam(value = "search", required = false, defaultValue = "") String search,
+//            @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted
+//
+//    ) {
+//        search = search.trim();
+//        String additionalParams = "search=" + search +
+//                "&sorted=" + sorted + "&page=" + page + "&pageSize=" + pageSize + "&src=" + src;
+//        Mono<Item> itemMono = cartService.placeItemToCart(itemId, action);
+//
+//        /*
+//        Flux<Item> itemsFlux = itemService.getItemsByCartDataFromMonoToFlux(itemMono);
+//        Mono<Long> total = itemService.getTotalSum(itemsFlux);
+//        Mono<Long> cartId = itemMono.map(Item::getCartId);
+//        itemsFlux.subscribe();
+//        total.subscribe();
+//        cartId.subscribe();
+//        if (src > 0) return "redirect:/cart/" + src;
+//        else if (src == 0) return "redirect:/?" + additionalParams;
+//        else if (src == -1) return "redirect:/items?" + additionalParams;
+//        else return "redirect:/items/" + itemId;
+//        */
+//        return Mono.just("tmp");
+//    }
 
 /*
     @GetMapping("/items")

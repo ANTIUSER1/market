@@ -96,8 +96,12 @@ public class ItemServiceImpl implements TService<Item> {
 
     public Mono<Long> getTotalSum(Flux<Item> items) {
         return items.collectList()
-                .map(i -> i.stream()
-                        .mapToLong(it -> it.getPrice() * it.getCount()).sum());
+                .map(i -> {
+                    System.out.println("   IIII   " + i);
+                    return i.stream()
+
+                            .mapToLong(it -> it.getPrice() * it.getCount()).sum();
+                });
     }
 
     public Mono<Item> plusForMono(Item item, long cartId) {

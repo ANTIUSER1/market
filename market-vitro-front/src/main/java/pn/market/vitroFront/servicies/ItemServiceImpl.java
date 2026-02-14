@@ -98,6 +98,36 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public Mono<Long> getTotalSum(Long cartId) {
+        return webClient.get()
+                .uri(authHost + "/api/vitro/items/get-total-sum/" + cartId)
+                .retrieve().bodyToMono(Long.class);
+    }
+
+
+    @Override
+    public Flux<Item> getItemsByCartDataFromMonoToFlux(Long cartId) {
+        return webClient.get()
+                .uri(authHost + "/api/vitro/items/get-by-cart/" + cartId)
+                .retrieve()
+                .bodyToFlux(Item.class);
+    }
+
+    public Flux<Item> getItemsByCartDataFromMonoToFlux1(long cartId) {
+        return webClient.get()
+                .uri(authHost + "/api/vitro/items/i/" + cartId)
+                .retrieve()
+                .bodyToFlux(Item.class)
+                .map(i -> {
+                    return webClient.put()
+                            .uri(authHost + "/api/vitro/items/get-items-by-cart")
+                            .bodyValue(i)
+                            .retrieve().bodyToFlux(Item.class);
+                })
+                .flatMap(f -> f);
+    }
+
+    @Override
     public Mono<Paging> findAllAndPaging(Mono<Pageable> pageable) {
         return null;
     }

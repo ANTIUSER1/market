@@ -48,9 +48,17 @@ public class ItemRest {
                 Mono.just(item));
     }
 
-    @PutMapping("/get-total-sum")
+    @GetMapping("/get-by-cart/{cartId}")
+    public Flux<Item> getItemsByCartIdToFlux(
+            @PathVariable("cartId") Long cartId
+    ) {
+        return itemService.getItemsByCartIdToFlux(cartId);
+    }
+
+    @GetMapping("/get-total-sum/{cartId}")
     public Mono<Long> getTotalSum(
-            @RequestBody Flux<Item> itemsFlux) {
+            @PathVariable("cartId") Long cartId) {
+        Flux<Item> itemsFlux = this.getItemsByCartIdToFlux(cartId);
         System.out.println("   NNN --- TOTAL SUM ");
         return itemService.getTotalSum(itemsFlux);
     }
