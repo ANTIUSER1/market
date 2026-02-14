@@ -62,6 +62,8 @@ public class CartServiceImpl implements TService<Cart> {
     }
 
     private Mono<Item> addItemToCart(Mono<Item> itemMono, Long itemId, String action) {
+        System.out.println("     _____00000-itemId- " + itemId);
+        System.out.println("     _____00000-action- " + action);
         return Mono.zip(itemMono,
                         this.createCartForItemIfNotExists(itemMono, itemId)
                 )
