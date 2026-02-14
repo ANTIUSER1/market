@@ -16,11 +16,7 @@ public class WebClientConfig {
 
     @Value("${oauth.data.host}")
     private String auth2Host;
-
-    @Bean
-    String authHost() {
-        return auth2Host;
-    }
+ 
 
     @Bean
     public ReactiveOAuth2AuthorizedClientManager authorizedClientManager(
@@ -42,11 +38,13 @@ public class WebClientConfig {
         var oauth2Client = new ServerOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager);
         // Указываем ID регистрации OAuth2-клиента по умолчанию (должен совпадать с именем в application.yml)
         oauth2Client.setDefaultClientRegistrationId("keycloak");
-        return WebClient.builder()
-                // Добавляем OAuth2-авторизацию ко всем запросам
-                .filter(oauth2Client)
-                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(1024 * 1024))
-                .build();
+
+        return WebClient.create(auth2Host);
+//        return WebClient.builder()
+//                // Добавляем OAuth2-авторизацию ко всем запросам
+//                .filter(oauth2Client)
+//                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(1024 * 1024))
+//                .build();
     }
 
 }

@@ -14,14 +14,8 @@ import reactor.core.publisher.Mono;
 @Service
 public class CartServiceImpl implements TService<Cart> {
 
-
     @Autowired
     private WebClient webClient;
-
-    @Autowired
-    private String authHost;
-
-    //    /api/vitro/items/add-cart/{cartID}/{action}
 
     @Override
     public Flux<Cart> findAll() {
@@ -42,9 +36,9 @@ public class CartServiceImpl implements TService<Cart> {
             long itemId,
             String action) {
         System.out.println(".........PLACE!!!  " + itemId + "    " + action);
-        System.out.println(".........ITEM GET FROM    " + authHost + "/api/vitro/items/i/" + itemId);
+        System.out.println(".........ITEM GET FROM    " + "/api/vitro/items/i/" + itemId);
         Mono<Item> itemMono = webClient.get()
-                .uri(authHost + "/api/vitro/items/i/" + itemId)
+                .uri("/api/vitro/items/i/" + itemId)
                 .retrieve()
 
                 .bodyToMono(Item.class);
@@ -65,7 +59,7 @@ public class CartServiceImpl implements TService<Cart> {
                     System.out.println("    ITEM_VALUE: " + i);
                     if (action != null) {
                         return webClient.put()
-                                .uri(authHost + "/api/vitro/items/add-cart/"
+                                .uri("/api/vitro/items/add-cart/"
                                         + cartId + "/" + action)
                                 .bodyValue(i)
                                 .retrieve().bodyToMono(Item.class);

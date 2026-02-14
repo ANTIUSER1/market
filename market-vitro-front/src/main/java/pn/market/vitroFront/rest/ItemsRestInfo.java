@@ -15,14 +15,10 @@ public class ItemsRestInfo {
     @Autowired
     private WebClient webClient;
 
-    @Autowired
-    private String authHost;
-
-
     @GetMapping("/items")
     public Flux<Item> allItems() {
         return webClient.get()
-                .uri(authHost + "/api/vitro/items")
+                .uri("/api/vitro/items")
                 .retrieve()
                 .bodyToFlux(Item.class);
     }

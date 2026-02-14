@@ -34,9 +34,6 @@ public class ItemController {
     @Autowired
     private WebClient webClient;
 
-    @Autowired
-    private String authHost;
-
     @GetMapping
     public Mono<Rendering> itemsIndex(
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
@@ -46,7 +43,7 @@ public class ItemController {
     ) {
         try {
             Flux<Item> itemFlux = webClient.get()
-                    .uri(authHost + "/api/vitro/items")
+                    .uri("/api/vitro/items")
                     .retrieve()
                     .bodyToFlux(Item.class);
             Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
@@ -83,7 +80,7 @@ public class ItemController {
     ) {
         try {
             Flux<Item> itemFlux = webClient.get()
-                    .uri(authHost + "/api/vitro/items")
+                    .uri("/api/vitro/items")
                     .retrieve()
                     .bodyToFlux(Item.class);
             Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);

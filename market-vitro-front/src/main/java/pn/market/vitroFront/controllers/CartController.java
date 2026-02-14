@@ -26,8 +26,8 @@ public class CartController {
     @Autowired
     private WebClient webClient;
 
-    @Autowired
-    private String authHost;
+//    @Autowired
+//    private String authHost;
 
 
     @GetMapping("/{cartId}")
