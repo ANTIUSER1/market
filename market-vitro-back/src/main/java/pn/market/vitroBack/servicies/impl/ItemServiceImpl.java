@@ -97,9 +97,8 @@ public class ItemServiceImpl implements TService<Item> {
     public Mono<Long> getTotalSum(Flux<Item> items) {
         return items.collectList()
                 .map(i -> {
-                    System.out.println("   IIII   " + i);
+                    System.out.println("   SUM COUNT!!!   " + i);
                     return i.stream()
-
                             .mapToLong(it -> it.getPrice() * it.getCount()).sum();
                 });
     }

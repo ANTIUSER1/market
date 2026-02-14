@@ -24,22 +24,20 @@ public class ItemRest {
         return itemService.findAll();
     }
 
-    @GetMapping("/i/{id}")
+    @GetMapping("/{id}")
     public Mono<Item> itemById(@PathVariable("id") long id) {
+        System.out.println("   ITEM BY ID " + id);
+        System.out.println("   ITEM BY ID " + id);
         System.out.println("   ITEM BY ID " + id);
         return itemService.findById(id);
     }
 
     //   /api/vitro/items/add-cart/{cartID}/{action}
     @GetMapping("/add-cart/{itemID}/{cartID}/{action}")
-    //   @PreAuthorize("hasAuthority('SERVICE')")
     public Mono<Item> addToCart(
             @PathVariable("itemID") Long itemId,
             @PathVariable("cartID") Long cartId,
             @PathVariable("action") String action) {
-        System.out.println("            DDD itemId " + itemId);
-        System.out.println("            DDD cartId " + cartId);
-        System.out.println("            DDD action " + action);
         Mono<Item> itemMono = itemService.findById(itemId)
                 .map(i -> itemService.addToCart(i, cartId, action))
                 .flatMap(i -> i);

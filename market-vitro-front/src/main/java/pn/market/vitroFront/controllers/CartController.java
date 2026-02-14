@@ -27,9 +27,6 @@ public class CartController {
     @Autowired
     private WebClient webClient;
 
-//    @Autowired
-//    private String authHost;
-
 
     @GetMapping("/{cartId}")
     public Mono<Rendering> itemsList(
@@ -48,7 +45,8 @@ public class CartController {
     }
 
     @GetMapping("/items")
-    public String addItem(
+    public Mono<String> addItem(
+//    public String addItem(
 //    public Mono<Rendering> addItem(
             @RequestParam(value = "itemId", required = true) Long itemId,
             @RequestParam(value = "action", required = true) String action,
@@ -59,9 +57,23 @@ public class CartController {
             @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted
 
     ) {
+        String res = "";
         search = search.trim();
         String additionalParams = "search=" + search +
                 "&sorted=" + sorted + "&page=" + page + "&pageSize=" + pageSize + "&src=" + src;
+
+
+        System.out.println("-------RETRIEVE ITEM BY ID--------------- " + itemId);
+//        Mono<LocalDateTime> imm = webClient.get()
+//                .uri("/api/test/time")
+////                .uri(VITRO_ITEM_API)
+//                .retrieve()
+//                .bodyToMono(LocalDateTime.class);
+//        imm.subscribe(ii -> System.out.println(ii));
+////                .map(i -> {
+////                    System.out.println("   **********   GOT ITEM    " + i);
+////                    return i;
+////                });
         Mono<Item> itemMono = cartService.placeItemToCart(itemId, action);
 
 
@@ -74,10 +86,11 @@ public class CartController {
         total.subscribe();
         cartId.subscribe();
         */
-        if (src > 0) return "redirect:/cart/" + src;
-        else if (src == 0) return "redirect:/?" + additionalParams;
-        else if (src == -1) return "redirect:/items?" + additionalParams;
-        else return "redirect:/items/" + itemId;
+        if (src > 0) res = "redirect:/cart/" + src;
+        else if (src == 0) res = "redirect:/?" + additionalParams;
+        else if (src == -1) res = "redirect:/items?" + additionalParams;
+        else res = "redirect:/items/" + itemId;
+        return Mono.just(res);
     }
 
 

@@ -17,6 +17,8 @@ import pn.market.vitroFront.servicies.ModelService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static pn.market.vitroFront.config.AuthPaths.VITRO_ITEM_API;
+
 
 @Controller
 @RequestMapping("/")
@@ -43,7 +45,7 @@ public class ItemController {
     ) {
         try {
             Flux<Item> itemFlux = webClient.get()
-                    .uri("/api/vitro/items")
+                    .uri(VITRO_ITEM_API)
                     .retrieve()
                     .bodyToFlux(Item.class);
             Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
@@ -80,7 +82,7 @@ public class ItemController {
     ) {
         try {
             Flux<Item> itemFlux = webClient.get()
-                    .uri("/api/vitro/items")
+                    .uri(VITRO_ITEM_API)
                     .retrieve()
                     .bodyToFlux(Item.class);
             Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);

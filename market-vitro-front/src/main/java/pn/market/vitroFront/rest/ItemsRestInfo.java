@@ -8,6 +8,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import pn.market.market_entities.forWEB.Item;
 import reactor.core.publisher.Flux;
 
+import static pn.market.vitroFront.config.AuthPaths.VITRO_ITEM_API;
+
 @RestController
 @RequestMapping("/api")
 public class ItemsRestInfo {
@@ -18,7 +20,7 @@ public class ItemsRestInfo {
     @GetMapping("/items")
     public Flux<Item> allItems() {
         return webClient.get()
-                .uri("/api/vitro/items")
+                .uri(VITRO_ITEM_API)
                 .retrieve()
                 .bodyToFlux(Item.class);
     }
