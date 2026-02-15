@@ -14,4 +14,8 @@ public interface ItemService extends TService<Item> {
     Flux<Item> getItemsByCartDataFromMonoToFlux(Long cartId);
 
     Mono<Long> getTotalSum(Long cartId);
+
+    Long getCartFromMonoItem(Mono<Item> itemMono);
+
+    void updateCartInfo(Long itemId, String action);
 }

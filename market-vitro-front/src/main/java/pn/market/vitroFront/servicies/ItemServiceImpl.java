@@ -11,10 +11,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class ItemServiceImpl implements ItemService {
 
+    @Autowired
+    private CartServiceImpl cartService;
 
 //    @Autowired
 //    private FileServiceImpl fileService;
@@ -101,6 +104,13 @@ public class ItemServiceImpl implements ItemService {
                 .retrieve().bodyToMono(Long.class);
     }
 
+    @Override
+    public Long getCartFromMonoItem(Mono<Item> itemMono) {
+        AtomicReference<Long> cartId = new AtomicReference<>(0L);
+        itemMono.subscribe(i -> cartId.set(i.getCartId()));
+        return cartId.get();
+    }
+
 
     @Override
     public Flux<Item> getItemsByCartDataFromMonoToFlux(Long cartId) {
@@ -160,5 +170,16 @@ public class ItemServiceImpl implements ItemService {
                 });
 
 
+    }
+
+    public void updateCartInfo(Long itemId, String action) {
+        Mono<Item> itemMono = cartService.placeItemToCart(itemId, action);
+        Long cartId = this.getCartFromMonoItem(itemMono);
+        Flux<Item> itemsFlux = this.getItemsByCartDataFromMonoToFlux(cartId);
+        Mono<Long> total = this.getTotalSum(cartId);
+        Mono<Long> cartIdMono = itemMono.map(Item::getCartId);
+        itemsFlux.subscribe();
+        total.subscribe();
+        cartIdMono.subscribe();
     }
 }

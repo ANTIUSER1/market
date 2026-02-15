@@ -52,10 +52,6 @@ public class CartServiceImpl implements TService<Cart> {
         itemMono.subscribe(imm -> System.out.println("----IMM CART " + imm.getCartId()));
         itemMono.subscribe(imm -> System.out.println("----IMM ID " + imm.getId()));
         System.out.println("000000000000000000000000");
-//        Mono<Item> itemMono1 = itemMono.map(i -> {
-//            System.out.println("   GOT ITEM    " + i);
-//            return i;
-//        });
         itemMono = addItemToCart(itemMono, itemId, action);
         return itemMono;
     }

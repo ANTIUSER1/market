@@ -57,13 +57,6 @@ public class CartController {
             @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted
 
     ) {
-        String res = "";
-        search = search.trim();
-        String additionalParams = "search=" + search +
-                "&sorted=" + sorted + "&page=" + page + "&pageSize=" + pageSize + "&src=" + src;
-
-
-        System.out.println("-------RETRIEVE ITEM BY ID--------------- " + itemId);
 //        Mono<LocalDateTime> imm = webClient.get()
 //                .uri("/api/test/time")
 ////                .uri(VITRO_ITEM_API)
@@ -74,18 +67,17 @@ public class CartController {
 ////                    System.out.println("   **********   GOT ITEM    " + i);
 ////                    return i;
 ////                });
-        Mono<Item> itemMono = cartService.placeItemToCart(itemId, action);
+
+        String res = "";
+        search = search.trim();
+        String additionalParams = "search=" + search +
+                "&sorted=" + sorted + "&page=" + page + "&pageSize=" + pageSize + "&src=" + src;
 
 
+        System.out.println("-------RETRIEVE ITEM BY ID--------------- " + itemId);
+        itemService.updateCartInfo(itemId, action);
 
-        /* Mono<Item> itemMono = cartService.placeItemToCart(itemId, action);
-        Flux<Item> itemsFlux = itemService.getItemsByCartDataFromMonoToFlux(itemMono);
-        Mono<Long> total = itemService.getTotalSum(itemsFlux);
-        Mono<Long> cartId = itemMono.map(Item::getCartId);
-        itemsFlux.subscribe();
-        total.subscribe();
-        cartId.subscribe();
-        */
+
         if (src > 0) res = "redirect:/cart/" + src;
         else if (src == 0) res = "redirect:/?" + additionalParams;
         else if (src == -1) res = "redirect:/items?" + additionalParams;
