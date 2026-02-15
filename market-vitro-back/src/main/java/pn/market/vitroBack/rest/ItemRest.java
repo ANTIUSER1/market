@@ -25,14 +25,19 @@ public class ItemRest {
     }
 
     @GetMapping("/{id}")
-    public Mono<Item> itemById(@PathVariable("id") long id) {
+    public Mono<Item> itemById(@PathVariable("id") Long id) {
         System.out.println("   ITEM BY ID " + id);
         System.out.println("   ITEM BY ID " + id);
         System.out.println("   ITEM BY ID " + id);
         return itemService.findById(id);
     }
 
-    //   /api/vitro/items/add-cart/{cartID}/{action}
+
+    @GetMapping("by-order/{orderId}")
+    public Flux<Item> getItemsByOrderId(@PathVariable("orderId") Long orderId) {
+        return itemService.getItemsByOrderId(orderId);
+    }
+
     @GetMapping("/add-cart/{itemID}/{cartID}/{action}")
     public Mono<Item> addToCart(
             @PathVariable("itemID") Long itemId,
