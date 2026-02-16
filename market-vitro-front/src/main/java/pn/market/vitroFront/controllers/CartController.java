@@ -15,6 +15,8 @@ import pn.market.vitroFront.servicies.ItemServiceImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static pn.market.vitroFront.config.AuthPaths.VITRO_CART_API;
+
 @Controller
 @RequestMapping("/cart")
 
@@ -45,13 +47,14 @@ public class CartController {
     }
 
 
-    @GetMapping("/add-item-tocart{itemId}")
-    public Mono<Rendering> additemsList(
-            @PathVariable("itemId") long itemId){
-        Cart c = new Cart();
-        webClient.put()
-                .uri()
+    @GetMapping("/add-item-tocart/{itemId}")
+    public Mono<String> additemsList(
+            @PathVariable("itemId") long itemId) {
 
+        webClient.get()
+                .uri(VITRO_CART_API + "/create/" + itemId)
+                .retrieve().bodyToMono(Cart.class).subscribe();
+        return Mono.just("redirect:/cart");
     }
 
     @GetMapping("/items")
