@@ -71,13 +71,12 @@ public class OrderController {
 
         return r;
     }
-/*
 
-    @PostMapping("/buy/{orderId}")
+    @GetMapping("/buy/{orderId}")
     public String buyOrder(@PathVariable("orderId") Long orderId) {
         orderService.buyOrder(orderId);
         return "redirect:/orders";
     }
 
- */
+
 }
