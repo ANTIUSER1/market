@@ -24,8 +24,8 @@ public class OrderController {
     @Autowired
     private ItemServiceImpl itemService;
 
-    @Autowired
-    private PaymentsServiceImpl paymentService;
+//    @Autowired
+//    private PaymentsServiceImpl paymentService;
 
     /*   @Autowired
         private PaymentSupplierImpl paymentSupplier;
@@ -47,12 +47,12 @@ public class OrderController {
             @PathVariable("orderId") Long orderId,
             @RequestParam(value = "newOrder", defaultValue = "true") boolean newOrder
     ) {
-        paymentSupplier = paymentSupplier.setUserId(1L);
-        paymentSupplier = paymentSupplier.setOrderId(orderId);
-        paymentService.sendPaymentInfo(
-                PaymentsServiceImpl.PAYMENT_KEY_NAME,
-                () -> paymentSupplier.get()
-        );
+//        paymentSupplier = paymentSupplier.setUserId(1L);
+//        paymentSupplier = paymentSupplier.setOrderId(orderId);
+//        paymentService.sendPaymentInfo(
+//                PaymentsServiceImpl.PAYMENT_KEY_NAME,
+//                () -> paymentSupplier.get()
+//        );
 
         Mono<Order> order = orderService.getById(orderId)
                 .map(od -> {
