@@ -33,7 +33,7 @@ public class ItemRest {
     }
 
 
-    @GetMapping("by-order/{orderId}")
+    @GetMapping("/by-order/{orderId}")
     public Flux<Item> getItemsByOrderId(@PathVariable("orderId") Long orderId) {
         return itemService.getItemsByOrderId(orderId);
     }

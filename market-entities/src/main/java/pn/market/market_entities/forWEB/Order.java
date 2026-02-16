@@ -2,6 +2,7 @@ package pn.market.market_entities.forWEB;
 
 //import jakarta.persistence.*;
 
+import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
@@ -16,7 +17,7 @@ public class Order {
 
     @Id
     private Long id;
-
+    @Setter
     private List<Item> items;
 
 

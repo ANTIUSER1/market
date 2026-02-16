@@ -1,42 +1,45 @@
 package pn.market.vitroFront.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.reactive.result.view.Rendering;
+import pn.market.market_entities.forWEB.Order;
+import pn.market.vitroFront.servicies.ItemServiceImpl;
+import pn.market.vitroFront.servicies.OrderServiceImpl;
+import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/orders")
-
-
 public class OrderController {
-/*
+
     @Autowired
     private OrderServiceImpl orderService;
 
     @Autowired
     private ItemServiceImpl itemService;
 
-    @Autowired
-    private PaymentsServiceImpl paymentService;
-    @Autowired
-    private PaymentSupplierImpl paymentSupplier;
-
+    /*
+        @Autowired
+        private PaymentsServiceImpl paymentService;
+        @Autowired
+        private PaymentSupplierImpl paymentSupplier;
+    */
     @GetMapping
     public Mono<Rendering> allOrders() {
-        Flux<Order> orders = orderService.findAll()
-                .map(od -> {
-                    itemService.getItemsByOrderId(od.getId())
-                            .subscribe(u -> {
-                                od.addItem(u);
-                            });
-                    return od;
-                });
+        Mono<List<Order>> orders = orderService.addItemsToAll();
+        //orderService.findAll();
+        orders.subscribe(oo -> System.out.println("    OO  OO  OO  " + oo));
         Mono<Rendering> r =
                 Mono.just(Rendering.view("orders")
                         .modelAttribute("orderData", orders)
                         .build());
         return r;
     }
-
+/*
     @GetMapping("/{orderId}")
     public Mono<Rendering> getOrderById(
             @PathVariable("orderId") Long orderId,

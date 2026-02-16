@@ -17,5 +17,10 @@ public interface ItemService extends TService<Item> {
 
     Long getCartFromMonoItem(Mono<Item> itemMono);
 
+    Flux<Item> getItemsByOrderId(Long id);
+
+
     void updateCartInfo(Long itemId, String action);
+
+    void removeFromOrder(long orderId);
 }

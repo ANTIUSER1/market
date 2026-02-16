@@ -13,6 +13,8 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static pn.market.vitroFront.config.AuthPaths.VITRO_ITEM_API;
+
 @Service
 public class ItemServiceImpl implements ItemService {
 
@@ -111,29 +113,36 @@ public class ItemServiceImpl implements ItemService {
         return cartId.get();
     }
 
+    @Override
+    public Flux<Item> getItemsByOrderId(Long id) {
+        return webClient.get()
+                .uri(VITRO_ITEM_API + "/by-order/" + id)
+                .retrieve().bodyToFlux(Item.class);
+    }
+
 
     @Override
     public Flux<Item> getItemsByCartDataFromMonoToFlux(Long cartId) {
         return webClient.get()
-                .uri("/api/vitro/items/get-by-cart/" + cartId)
-                .retrieve()
-                .bodyToFlux(Item.class);
+                .uri(VITRO_ITEM_API + "/get-by-cart/" + cartId)
+                .retrieve().bodyToFlux(Item.class);
     }
 
-    public Flux<Item> getItemsByCartDataFromMonoToFlux1(long cartId) {
-        return webClient.get()
-                .uri("/api/vitro/items/i/" + cartId)
-                .retrieve()
-                .bodyToFlux(Item.class)
-                .map(i -> {
-                    return webClient.put()
-                            .uri("/api/vitro/items/get-items-by-cart")
-                            .bodyValue(i)
-                            .retrieve().bodyToFlux(Item.class);
-                })
-                .flatMap(f -> f);
-    }
-
+    /*
+        public Flux<Item> getItemsByCartDataFromMonoToFlux1(long cartId) {
+            return webClient.get()
+                    .uri(VITRO_ITEM_API+"/i/" + cartId)
+                    .retrieve()
+                    .bodyToFlux(Item.class)
+                    .map(i -> {
+                        return webClient.put()
+                                .uri(VITRO_ITEM_API+"/get-items-by-cart")
+                                .bodyValue(i)
+                                .retrieve().bodyToFlux(Item.class);
+                    })
+                    .flatMap(f -> f);
+        }
+    */
     @Override
     public Mono<Paging> findAllAndPaging(Mono<Pageable> pageable) {
         return null;
@@ -172,6 +181,7 @@ public class ItemServiceImpl implements ItemService {
 
     }
 
+    @Override
     public void updateCartInfo(Long itemId, String action) {
         Mono<Item> itemMono = cartService.placeItemToCart(itemId, action);
         Long cartId = this.getCartFromMonoItem(itemMono);
@@ -181,5 +191,10 @@ public class ItemServiceImpl implements ItemService {
         itemsFlux.subscribe();
         total.subscribe();
         cartIdMono.subscribe();
+    }
+
+
+    @Override
+    public void removeFromOrder(long orderId) {
     }
 }
