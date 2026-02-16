@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.result.view.Rendering;
+import pn.market.market_entities.forWEB.Cart;
 import pn.market.market_entities.forWEB.Item;
 import pn.market.vitroFront.servicies.CartServiceImpl;
 import pn.market.vitroFront.servicies.ItemServiceImpl;
@@ -31,7 +32,6 @@ public class CartController {
     @GetMapping("/{cartId}")
     public Mono<Rendering> itemsList(
             @PathVariable("cartId") long cartId) {
-        //itemService.getItemsByCartDataFromMonoToFlux(cartId);
         Flux<Item> itemsFlux = itemService.getItemsByCartDataFromMonoToFlux(cartId);
         Mono<Long> total = itemService.getTotalSum(cartId);
         //  itemsFlux.subscribe(ii -> System.out.println("       III ID " + ii.getId()));
@@ -42,6 +42,16 @@ public class CartController {
                         .modelAttribute("total", total)
                         .build());
         return r;
+    }
+
+
+    @GetMapping("/add-item-tocart{itemId}")
+    public Mono<Rendering> additemsList(
+            @PathVariable("itemId") long itemId){
+        Cart c = new Cart();
+        webClient.put()
+                .uri()
+
     }
 
     @GetMapping("/items")
@@ -57,16 +67,6 @@ public class CartController {
             @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted
 
     ) {
-//        Mono<LocalDateTime> imm = webClient.get()
-//                .uri("/api/test/time")
-////                .uri(VITRO_ITEM_API)
-//                .retrieve()
-//                .bodyToMono(LocalDateTime.class);
-//        imm.subscribe(ii -> System.out.println(ii));
-////                .map(i -> {
-////                    System.out.println("   **********   GOT ITEM    " + i);
-////                    return i;
-////                });
 
         String res = "";
         search = search.trim();
