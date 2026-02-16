@@ -92,6 +92,10 @@ public class Item {
     }
 
     public void setCartId(Long cartId) {
+        if (cartId == null) {
+            this.cartId = null;
+            return;
+        }
         this.cartId = cartId;
     }
 
@@ -100,6 +104,10 @@ public class Item {
     }
 
     public void setOrderId(Long orderId) {
+        if (orderId == null) {
+            this.orderId = null;
+            return;
+        }
         this.orderId = orderId;
     }
 }

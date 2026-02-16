@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.List;
 
+import static pn.market.vitroFront.config.AuthPaths.VITRO_ITEM_API;
 import static pn.market.vitroFront.config.AuthPaths.VITRO_ORDER_API;
 
 @Service
@@ -79,12 +80,12 @@ public class OrderServiceImpl implements TService<Order> {
 
     private Mono<String> getPaymentInfoFromRemote(long orderId) {
         System.out.println("     BUY ORDER " + orderId);
-        return webClient.get().uri("/users/remove-money-for-order")
+        return webClient.get().uri(VITRO_ITEM_API + "//remove-order/" + orderId)
                 .exchangeToMono(clientResponse -> clientResponse.bodyToMono(String.class));
     }
 
     public Mono<List<Order>> addItemsToAll() {
-        Flux<Order> orderFlux = findAll();
+        Flux<Order> orderFlux = findAll();//.filter(oo -> !oo.getItems().isEmpty());
         Mono<List<Order>> orderMonList = orderFlux.collectList();
 
         Flux<Item> itemFlux = orderFlux.map(o -> {

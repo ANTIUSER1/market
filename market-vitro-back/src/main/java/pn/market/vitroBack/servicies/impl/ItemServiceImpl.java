@@ -206,5 +206,14 @@ public class ItemServiceImpl implements TService<Item> {
                 .subscribe();
         System.out.println("removed from order id: " + orderId);
     }
+
+    public Flux<Item> removeItemsFromOrderId(Long orderId) {
+        Flux<Item> itemFlux = itemRepo.findByOrderId(orderId)
+                .map(ii -> {
+                    ii.setOrderId(null);
+                    return Mono.just(ii);
+                }).flatMap(i -> i);
+        return itemRepo.saveAll(itemFlux);
+    }
 }
 

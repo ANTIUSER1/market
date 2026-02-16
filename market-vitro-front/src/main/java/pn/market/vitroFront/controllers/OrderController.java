@@ -33,8 +33,7 @@ public class OrderController {
     @GetMapping
     public Mono<Rendering> allOrders() {
         Mono<List<Order>> orders = orderService.addItemsToAll();
-        //orderService.findAll();
-        orders.subscribe(oo -> System.out.println("    OO  OO  OO  " + oo));
+        //orders.subscribe(oo -> System.out.println("    OO  OO  OO  " + oo));
         Mono<Rendering> r =
                 Mono.just(Rendering.view("orders")
                         .modelAttribute("orderData", orders)
