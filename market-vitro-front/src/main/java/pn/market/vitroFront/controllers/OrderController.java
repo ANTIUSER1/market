@@ -5,7 +5,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.result.view.Rendering;
 import pn.market.market_entities.forWEB.Order;
 import pn.market.vitroFront.servicies.ItemServiceImpl;
@@ -43,33 +42,36 @@ public class OrderController {
         return r;
     }
 
-    @GetMapping("/{orderId}")
+    @GetMapping("/{orderId}/{itemId}")
     public Mono<Rendering> getOrderById(
             @PathVariable("orderId") Long orderId,
-            @RequestParam(value = "newOrder", defaultValue = "true") boolean newOrder
-    ) {
-        paymentSupplier = paymentSupplier.setUserId(1L);
-        paymentSupplier = paymentSupplier.setOrderId(orderId);
-        paymentService.sendPaymentInfo(
-                PaymentsServiceImpl.PAYMENT_KEY_NAME,
-                () -> paymentSupplier.get()
-        );
+            @PathVariable("itemId") Long itemId) {
+        Mono<Order> order = orderService.showCompleteOrderById(orderId, itemId);
 
-        Mono<Order> order = orderService.getById(orderId)
-                .map(od -> {
-                    itemService.getItemsByOrderId(od.getId())
-                            .subscribe(u -> {
-                                od.addItem(u);
-                                u.setCartId(null);
-                            });
-                    return od;
-                });
         Mono<Rendering> r =
                 Mono.just(Rendering.view("order")
                         .modelAttribute("orderData", order)
-                        .modelAttribute("newOrder", newOrder)
+                        .modelAttribute("newOrder", false)
                         .build());
+        return r;
 
+    }
+
+
+    @GetMapping("/{orderId}")
+    public Mono<Rendering> getOrderById(
+            @PathVariable("orderId") Long orderId
+    ) {
+//        long userId = 1L;
+//        paymentService.configurePayments(userId, orderId);
+
+        Mono<Order> order = orderService.showCompleteOrderById(orderId);
+        Mono<Rendering> r =
+                Mono.just(Rendering.view("order")
+
+                        .modelAttribute("orderData", order)
+                        .modelAttribute("newOrder", false)
+                        .build());
         return r;
     }
 

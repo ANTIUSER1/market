@@ -12,7 +12,9 @@ import pn.market.vitroBack.repo.OrderRepo;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 @Service
 
@@ -38,9 +40,9 @@ public class OrderServiceImpl implements TService<Order> {
         Flux<Item> items = itemService.getItemsByOrderId(id);
         return Mono.zip(order, items.collectList()).map(t -> {
             Order o = t.getT1();
-            List<Item> i = t.getT2();
+            List<Item> i = new ArrayList<>(t.getT2());
 
-            o.setItems(i);
+            o.setItems(new TreeSet<>(i));
             return o;
         });
     }

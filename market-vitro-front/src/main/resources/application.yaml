@@ -1,3 +1,11 @@
+order-key: 'order:payment'
+
+oauth:
+  data:
+    host: http://localhost:8521
+
+
+
 server:
   port: 8511
 
@@ -59,9 +67,4 @@ spring:
     servlet:
       content-type: text/html;charset=UTF-8
 
-
-
-oauth:
-  data:
-    host: http://localhost:8521
 

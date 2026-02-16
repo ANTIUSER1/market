@@ -96,7 +96,10 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Mono<Item> getById(Long id) {
-        return null;
+        return webClient.get()
+                .uri(VITRO_ITEM_API + "/" + id)
+                .retrieve().bodyToMono(Item.class);
+
     }
 
     @Override
@@ -196,5 +199,18 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void removeFromOrder(long orderId) {
+    }
+
+    public void addOrder(Item item, Long orderId) {
+        long id = item.getId();
+        System.out.println("    SAVING --- " + id);
+        System.out.println("    SAVING --- " + item);
+        webClient.get()
+                .uri(VITRO_ITEM_API + "/addOrder/" + orderId + "/" + id)
+                .retrieve().bodyToMono(Item.class)
+                .subscribe(
+                        i -> System.out.println("----SSII " + i.getOrderId())
+
+                );
     }
 }

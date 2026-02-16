@@ -27,9 +27,19 @@ public class ItemRest {
     @GetMapping("/{id}")
     public Mono<Item> itemById(@PathVariable("id") Long id) {
         System.out.println("   ITEM BY ID " + id);
-        System.out.println("   ITEM BY ID " + id);
-        System.out.println("   ITEM BY ID " + id);
         return itemService.findById(id);
+    }
+
+    @GetMapping("/addOrder/{orderId}/{itemId}")
+    public Mono<Item> itemSaveId(
+            @PathVariable("orderId") Long orderId,
+            @PathVariable("itemId") Long itemId) {
+        return itemService.findById(itemId)
+                .map(i -> {
+                    i.setOrderId(orderId);
+                    i.setCartId(null);
+                    return itemService.save(i);
+                }).flatMap(i -> i);
     }
 
 

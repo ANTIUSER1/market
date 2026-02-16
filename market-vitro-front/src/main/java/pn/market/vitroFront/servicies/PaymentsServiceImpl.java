@@ -28,4 +28,13 @@ public class PaymentsServiceImpl {
         return res;
     }
 
+    public void configurePayments(Long userId, Long orderId) {
+
+        paymentSupplier = paymentSupplier.setUserId(userId);
+        paymentSupplier = paymentSupplier.setOrderId(orderId);
+        this.sendPaymentInfo(
+                PaymentsServiceImpl.PAYMENT_KEY_NAME,
+                () -> paymentSupplier.get()
+        );
+    }
 }

@@ -10,7 +10,7 @@ import org.springframework.data.relational.core.mapping.Table;
 
 @ToString
 @Table(name = "items", schema = "market")
-public class Item {
+public class Item implements Comparable<Item> {
 
     @Id
     private Long id;
@@ -87,6 +87,7 @@ public class Item {
         }
     }
 
+
     public Long getCartId() {
         return cartId;
     }
@@ -109,5 +110,11 @@ public class Item {
             return;
         }
         this.orderId = orderId;
+    }
+
+
+    @Override
+    public int compareTo(Item o) {
+        return (int) (this.id - o.getId());
     }
 }

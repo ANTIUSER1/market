@@ -7,8 +7,8 @@ import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 
 @ToString
@@ -18,11 +18,11 @@ public class Order {
     @Id
     private Long id;
     @Setter
-    private List<Item> items;
+    private Set<Item> items;
 
 
     public Order() {
-        items = new ArrayList<>();
+        items = new TreeSet<>();
     }
 
     public Order(Long id) {
@@ -38,11 +38,11 @@ public class Order {
         this.id = id;
     }
 
-    public List<Item> getItems() {
+    public Set<Item> getItems() {
         return items;
     }
 
-    public void setItems(List<Item> items) {
+    public void setItems(Set<Item> items) {
         this.items = items;
     }
 
@@ -50,6 +50,7 @@ public class Order {
     public void addItem(Item item) {
         items.add(item);
     }
+
 
     public long totalSumm() {
         return items.stream().mapToLong(
