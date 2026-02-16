@@ -103,13 +103,8 @@ public class OrderServiceImpl implements TService<Order> {
                                 o.addItem(i);
                             }
                     }
-
-                    System.out.println("        OOOOO!  " + ol);
-
                     return Mono.just(ol);
-
                 }).flatMap(oo -> oo);
-
         return orderMonList;
     }
 }
