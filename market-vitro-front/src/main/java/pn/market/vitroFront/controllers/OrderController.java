@@ -3,7 +3,9 @@ package pn.market.vitroFront.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.result.view.Rendering;
 import pn.market.market_entities.forWEB.Order;
 import pn.market.vitroFront.servicies.ItemServiceImpl;
@@ -22,10 +24,10 @@ public class OrderController {
     @Autowired
     private ItemServiceImpl itemService;
 
-    /*
-        @Autowired
-        private PaymentsServiceImpl paymentService;
-        @Autowired
+    @Autowired
+    private PaymentsServiceImpl paymentService;
+
+    /*   @Autowired
         private PaymentSupplierImpl paymentSupplier;
     */
     @GetMapping
@@ -39,7 +41,7 @@ public class OrderController {
                         .build());
         return r;
     }
-/*
+
     @GetMapping("/{orderId}")
     public Mono<Rendering> getOrderById(
             @PathVariable("orderId") Long orderId,
@@ -69,6 +71,7 @@ public class OrderController {
 
         return r;
     }
+/*
 
     @PostMapping("/buy/{orderId}")
     public String buyOrder(@PathVariable("orderId") Long orderId) {
