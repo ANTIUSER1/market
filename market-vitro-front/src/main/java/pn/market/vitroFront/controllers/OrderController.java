@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.reactive.result.view.Rendering;
 import pn.market.market_entities.forWEB.Order;
-import pn.market.vitroFront.servicies.ItemServiceImpl;
 import pn.market.vitroFront.servicies.OrderServiceImpl;
 import pn.market.vitroFront.servicies.PaymentSupplierImpl;
 import pn.market.vitroFront.servicies.PaymentsServiceImpl;
@@ -22,8 +21,8 @@ public class OrderController {
     @Autowired
     private OrderServiceImpl orderService;
 
-    @Autowired
-    private ItemServiceImpl itemService;
+//    @Autowired
+//    private ItemServiceImpl itemService;
 
     @Autowired
     private PaymentsServiceImpl paymentService;
@@ -62,8 +61,6 @@ public class OrderController {
     public Mono<Rendering> getOrderById(
             @PathVariable("orderId") Long orderId
     ) {
-//        long userId = 1L;
-//        paymentService.configurePayments(userId, orderId);
 
         Mono<Order> order = orderService.showCompleteOrderById(orderId);
         Mono<Rendering> r =
@@ -72,6 +69,8 @@ public class OrderController {
                         .modelAttribute("orderData", order)
                         .modelAttribute("newOrder", false)
                         .build());
+        long userId = 1L;
+        paymentService.configurePayments(userId, orderId);
         return r;
     }
 

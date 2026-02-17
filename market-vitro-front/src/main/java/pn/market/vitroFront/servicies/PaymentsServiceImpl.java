@@ -5,13 +5,14 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.time.LocalDateTime;
 import java.util.function.Supplier;
 
 @Service
 public class PaymentsServiceImpl {
 
-
     public static final String PAYMENT_KEY_NAME = "paymentInfo";//= paymentKey;
+
     @Autowired
     public PaymentSupplierImpl paymentSupplier;
 
@@ -32,6 +33,7 @@ public class PaymentsServiceImpl {
 
         paymentSupplier = paymentSupplier.setUserId(userId);
         paymentSupplier = paymentSupplier.setOrderId(orderId);
+        paymentSupplier = paymentSupplier.setLocalTime(LocalDateTime.now());
         this.sendPaymentInfo(
                 PaymentsServiceImpl.PAYMENT_KEY_NAME,
                 () -> paymentSupplier.get()
