@@ -11,6 +11,7 @@ import pn.market.market_entities.forWEB.Item;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import static pn.market.vitroFront.config.AuthPaths.VITRO_CART_API;
 import static pn.market.vitroFront.config.AuthPaths.VITRO_ITEM_API;
 
 @Service
@@ -48,7 +49,25 @@ public class CartServiceImpl implements TService<Cart> {
             String action) {
         System.out.println(".........PLACE!!!  " + itemId + "    " + action);
         System.out.println(".........ITEM GET FROM    " + "/api/vitro/items/i/" + itemId);
-        Mono<Item> itemMono = itemById(itemId);
+        Mono<Item> itemMono = itemById(itemId)
+                .map(i -> {
+                            if (i.getCartId() == null) {
+                                webClient.get()
+                                        .uri(VITRO_CART_API + "/create/" + itemId)
+                                        .retrieve().bodyToMono(Cart.class)
+                                        .map(cc -> {
+                                                    System.out.println("    ^^^^^   CCC " + cc.getId());
+                                                    i.setCartId(cc.getId());
+                                                    return cc;
+                                                }
+                                        )
+                                        .subscribe();
+                            }
+                            System.out.println("   ::::IIIIIII--CID:: " + i.getCartId());
+                            return i;
+                        }
+                );
+        itemMono.subscribe(i -> System.out.println("  RE-REQUEST III \n" + i));
         itemMono.subscribe(imm -> System.out.println("----IMM CART " + imm.getCartId()));
         itemMono.subscribe(imm -> System.out.println("----IMM ID " + imm.getId()));
         System.out.println("000000000000000000000000");
@@ -56,35 +75,38 @@ public class CartServiceImpl implements TService<Cart> {
         return itemMono;
     }
 
-    public Mono<Long> createCartForItemIfNotExists(
-            Mono<Item> itemMono,
-            long itemId) {
-        System.out.println("   /////CREATECART");
-        Mono<Long> cartIdMono = itemMono
-                .map(i -> {
-                    System.out.println("          OOO----IIII " + i);
-                    System.out.println("          OOO----CREATE BEGIN---cart-id " + i.getCartId());
-                    if (i.getCartId() == null) {
-                        return null;//this.createNewCart();
-                    } else return Mono.just(i.getCartId());
-                }).flatMap(ci -> ci);
-        return cartIdMono;
-    }
-
+    /*
+        public Mono<Long> createCartForItemIfNotExists(
+                Mono<Item> itemMono,
+                long itemId) {
+            System.out.println("   /////CREATECART");
+            Mono<Long> cartIdMono = itemMono
+                    .map(i -> {
+                        System.out.println("          OOO----IIII " + i);
+                        System.out.println("          OOO----CREATE BEGIN---cart-id " + i.getCartId());
+                        if (i.getCartId() == null) {
+                            return null;//this.createNewCart();
+                        } else return Mono.just(i.getCartId());
+                    }).flatMap(ci -> ci);
+            return cartIdMono;
+        }
+    */
     private Mono<Item> addItemToCart(Mono<Item> itemMono, Long itemId, String action) {
+
         System.out.println("     _____00000-itemId- " + itemId);
         System.out.println("     _____00000-action- " + action);
-
-        return Mono.zip(itemMono,
-                        this.createCartForItemIfNotExists(itemMono, itemId)
+        Mono<Long> longMono = itemMono.map(i -> i.getCartId());
+        return Mono.zip(itemMono, longMono
+                        // this.createCartForItemIfNotExists(itemMono, itemId)
                 )
                 .map(t -> {
                     System.out.println("   IN MAP RUN@");
                     Item i = t.getT1();
                     Long cartId = t.getT2();
+                    System.out.println("    ---CART-ID::::: " + cartId);
                     if (action != null && cartId != null) {
                         return webClient.get()
-                                .uri("/api/vitro/items/add-cart/"
+                                .uri(VITRO_ITEM_API + "/add-cart/"
                                         + i.getId() + "/" + cartId + "/" + action)
                                 .retrieve().bodyToMono(Item.class);
                     }
