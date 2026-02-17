@@ -59,8 +59,6 @@ public class CartController {
 
     @GetMapping("/items")
     public Mono<String> addItem(
-//    public String addItem(
-//    public Mono<Rendering> addItem(
             @RequestParam(value = "itemId", required = true) Long itemId,
             @RequestParam(value = "action", required = true) String action,
             @RequestParam(value = "src", required = true) long src,
