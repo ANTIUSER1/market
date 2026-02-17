@@ -45,11 +45,9 @@ public class CartServiceImpl implements TService<Cart> {
     public Mono<Cart> createNewCart(Long itemId) {
         return cartRepo.save(new Cart()).map(
                 ccc -> {
-                    System.out.println("  :::: CCC CCC : " + ccc.getId());
                     itemRepo.findById(itemId)
                             .map(i -> {
                                 i.setCartId(ccc.getId());
-                                System.out.println("    II----II " + i);
                                 return itemRepo.save(i);
                             }).flatMap(i -> i).subscribe();
                     return ccc;
