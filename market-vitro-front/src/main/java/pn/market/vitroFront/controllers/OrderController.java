@@ -62,8 +62,8 @@ public class OrderController {
     public Mono<Rendering> getOrderById(
             @PathVariable("orderId") Long orderId
     ) {
-//        long userId = 1L;
-//        paymentService.configurePayments(userId, orderId);
+        long userId = 1L;
+        paymentService.configurePayments(userId, orderId);
 
         Mono<Order> order = orderService.showCompleteOrderById(orderId);
         Mono<Rendering> r =
