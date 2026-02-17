@@ -115,13 +115,6 @@ public class OrderServiceImpl implements TService<Order> {
                             .subscribe(u -> {
                                 od.addItem(u);
                             });
-                    /*
-                    return webClient.put()
-                            .uri(VITRO_ORDER_API)
-                            .bodyValue(od).retrieve().bodyToMono(Order.class);
-
-                     */
-
                     return od;
                 });
 
@@ -138,15 +131,6 @@ public class OrderServiceImpl implements TService<Order> {
                                 od.addItem(u);
                                 System.out.println(u.getId() + "--   OOO  " + od.getItems().size());
                             });
-
-
-                    /*
-                    return webClient.put()
-                            .uri(VITRO_ORDER_API)
-                            .bodyValue(od).retrieve().bodyToMono(Order.class);
-
-                     */
-
                     return od;
                 })
                 .map(od -> {
@@ -160,8 +144,6 @@ public class OrderServiceImpl implements TService<Order> {
                             });
                     return od;
                 });
-
-
         return orderMono;
     }
 
