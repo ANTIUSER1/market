@@ -47,14 +47,14 @@ public class CartController {
     }
 
 
-    @GetMapping("/add-item-tocart/{itemId}")
+    @GetMapping("/add-item-to-cart/{itemId}")
     public Mono<String> additemsList(
             @PathVariable("itemId") long itemId) {
 
         webClient.get()
                 .uri(VITRO_CART_API + "/create/" + itemId)
                 .retrieve().bodyToMono(Cart.class).subscribe();
-        return Mono.just("redirect:/cart");
+        return Mono.just("redirect:/cart/3");
     }
 
     @GetMapping("/items")

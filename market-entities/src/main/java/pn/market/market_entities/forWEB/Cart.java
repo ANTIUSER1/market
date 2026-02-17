@@ -5,6 +5,7 @@ package pn.market.market_entities.forWEB;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.Set;
@@ -16,6 +17,7 @@ import java.util.TreeSet;
 public class Cart implements Comparable<Cart> {
 
     @Getter
+    @Transient
     private final Set<Item> items;
     @Id
     private Long id;

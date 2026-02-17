@@ -5,6 +5,7 @@ package pn.market.market_entities.forWEB;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.util.Set;
@@ -18,6 +19,7 @@ public class Order {
     @Id
     private Long id;
     @Setter
+    @Transient
     private Set<Item> items;
 
 

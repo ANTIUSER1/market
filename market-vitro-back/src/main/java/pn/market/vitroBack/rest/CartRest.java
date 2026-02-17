@@ -25,27 +25,21 @@ public class CartRest {
             @PathVariable("itemId") Long itemId
 
     ) {
-        Mono<Cart> c = Mono.just(new Cart());
-
-        Mono<Long> maxCartId = cartRepo.findMaxId();
-
-        Mono<Cart> res = Mono.zip(c, maxCartId)
-                .map(t -> {
-                    Cart cc = t.getT1();
-                    Long N = t.getT2();
-                    System.out.println("     NNNNNNNNN  " + N);
-                    // if (N == null) N = 1L;
+        Cart cn = new Cart();
+        Mono<Cart> cartMono = cartRepo.save(cn);
+        return cartMono.map(
+                ccc -> {
+                    System.out.println("  :::: CCC CCC : " + ccc.getId());
                     itemRepo.findById(itemId)
                             .map(i -> {
-                                        i.setCartId(N);
-                                        return i;
-                                    }
-                            ).subscribe(i -> itemRepo.save(i));
-                    cc.setId(N);
+                                i.setCartId(ccc.getId());
+                                System.out.println("    II----II " + i);
+                                return itemRepo.save(i);
+                            }).flatMap(i -> i).subscribe();
+                    return ccc;
+                }
+        );
 
-                    return cartRepo.save(cc);
-                }).flatMap(cc -> cc);
-        return res;
     }
 
 
