@@ -132,6 +132,7 @@ public class OrderServiceImpl implements TService<Order> {
         System.out.println("      ITEM_ID " + itemId);
         Mono<Order> orderMono = this.getById(orderId)
                 .map(od -> {
+
                     itemService.getItemsByOrderId(od.getId())
                             .subscribe(u -> {
                                 od.addItem(u);
