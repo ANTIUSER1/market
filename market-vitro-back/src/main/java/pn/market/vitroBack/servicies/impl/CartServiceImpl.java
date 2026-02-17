@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import pn.market.market_entities.Paging;
 import pn.market.market_entities.TService;
 import pn.market.market_entities.forWEB.Cart;
-import pn.market.market_entities.forWEB.Item;
 import pn.market.vitroBack.repo.CartRepo;
+import pn.market.vitroBack.repo.ItemRepo;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -17,6 +17,10 @@ public class CartServiceImpl implements TService<Cart> {
 
     @Autowired
     private CartRepo cartRepo;
+
+
+    @Autowired
+    private ItemRepo itemRepo;
 
 
     @Autowired
@@ -38,20 +42,31 @@ public class CartServiceImpl implements TService<Cart> {
     }
 
 
-    public Mono<Long> createNewCart() {
-        return cartRepo.save(new Cart()).map(cart -> cart.getId());
+    public Mono<Cart> createNewCart(Long itemId) {
+        return cartRepo.save(new Cart()).map(
+                ccc -> {
+                    System.out.println("  :::: CCC CCC : " + ccc.getId());
+                    itemRepo.findById(itemId)
+                            .map(i -> {
+                                i.setCartId(ccc.getId());
+                                System.out.println("    II----II " + i);
+                                return itemRepo.save(i);
+                            }).flatMap(i -> i).subscribe();
+                    return ccc;
+                }
+        );
     }
 
-    public Mono<Long> createCartForItemIfNotExists(long itemId) {
-        Mono<Long> cartIdMono = itemService.findById(itemId)
-                .map(i -> {
-                    if (i.getCartId() == null) {
-                        return this.createNewCart();
-                    } else return Mono.just(i.getCartId());
-                }).flatMap(ci -> ci);
-        return cartIdMono;
-    }
-
+//    public Mono<Long> createCartForItemIfNotExists(long itemId) {
+//        Mono<Long> cartIdMono = itemService.findById(itemId)
+//                .map(i -> {
+//                    if (i.getCartId() == null) {
+//                        return this.createNewCart();
+//                    } else return Mono.just(i.getCartId());
+//                }).flatMap(ci -> ci);
+//        return cartIdMono;
+//    }
+/*
     public Mono<Item> placeItemToCart(long itemId, String action) {
         Mono<Item> itemMono = Mono.zip(
                         itemService.findById(itemId),
@@ -72,4 +87,7 @@ public class CartServiceImpl implements TService<Cart> {
                 .flatMap(i -> i);
         return itemMono;
     }
+
+
+ */
 }
