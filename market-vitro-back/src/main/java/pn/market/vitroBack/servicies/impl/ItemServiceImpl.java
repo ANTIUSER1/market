@@ -219,18 +219,11 @@ public class ItemServiceImpl implements TService<Item> {
     }
 
     public Flux<Item> getCartOfUser(Long userId) {
-        //Flux<Cart> cartsOfUser = cartService.getByUser(userId);
         return itemRepo.findByUserId(userId)
                 .map(i -> {
                     System.out.println("-----I III " + i);
                     return i;
                 });
-//                cartsOfUser.map(c -> {
-//            System.out.println("U-ID :::: --  " + userId);
-//            System.out.println("c-   :::: --  " + c);
-//            Flux<Item> itemFlux = itemRepo.findByCartId(c.getId());
-//            return itemFlux;
-//        }).flatMap(i -> i);
     }
 }
 
