@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 public class LoginService extends MapReactiveUserDetailsService {
 
     @Autowired
-    private UserDataService userDataService;
+    private UserDataServiceImpl userDataService;
 
     public LoginService() {
         super(User.withUsername(" ").build());
@@ -29,6 +29,7 @@ public class LoginService extends MapReactiveUserDetailsService {
             userData.setAuthority("EMPTY");
 
         System.out.println("*******\n  "
+                + "\n   ID          " + userData.getId()
                 + "\n   USERNAME    " + userData.getUsername()
                 + "\n   PASSWORD    " + userData.getPassword()
                 + "\n   AUTHORITIES " + userData.getAuthorities()

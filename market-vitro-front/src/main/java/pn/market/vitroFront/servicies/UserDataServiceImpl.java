@@ -10,11 +10,10 @@ import reactor.core.publisher.Mono;
 import static pn.market.vitroFront.config.AuthPaths.VITRO_USERS_API;
 
 @Service
-public class UserDataService {
+public class UserDataServiceImpl {
 
     @Autowired
     private WebClient webClient;
-
 
     public Mono<UserData> findUser(String name) {
         return webClient
