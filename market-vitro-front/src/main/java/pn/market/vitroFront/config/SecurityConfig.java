@@ -6,11 +6,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.core.userdetails.MapReactiveUserDetailsService;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.authentication.logout.RedirectServerLogoutSuccessHandler;
 import org.springframework.security.web.server.csrf.WebSessionServerCsrfTokenRepository;
@@ -23,14 +18,10 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebFluxSecurity
 public class SecurityConfig {
     // Защищаем пароли шифрованием
+  /*
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public WebSessionServerCsrfTokenRepository csrfTokenRepository() {
-        return new WebSessionServerCsrfTokenRepository();
     }
 
     // Создаём in-memory пользователя
@@ -42,6 +33,13 @@ public class SecurityConfig {
                 .build();
         return new MapReactiveUserDetailsService(user);
     }
+    */
+
+    @Bean
+    public WebSessionServerCsrfTokenRepository csrfTokenRepository() {
+        return new WebSessionServerCsrfTokenRepository();
+    }
+
 
     // Настраиваем поведение при выходе
     @Bean
