@@ -8,6 +8,7 @@ import pn.market.market_entities.Paging;
 import pn.market.market_entities.TService;
 import pn.market.market_entities.forWEB.Cart;
 import pn.market.market_entities.forWEB.Item;
+import pn.market.vitroFront.additional.ActionType;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -79,11 +80,18 @@ public class CartServiceImpl implements TService<Cart> {
     public Mono<Item> placeItemToCartOfUser(
             Long userId, Long itemId,
             String action) {
-
-        Mono<Cart> cartMono = webClient.get()
-                .uri(VITRO_CART_API + "/create/" + userId + "/" + itemId)
-                .retrieve().bodyToMono(Cart.class);
-        return cartMono.map(c -> itemById(itemId)).flatMap(i -> i);
+        if (ActionType.PLUS.name().equalsIgnoreCase(action)) {
+            Mono<Cart> cartMono = webClient.get()
+                    .uri(VITRO_CART_API + "/create/" + userId + "/" + itemId)
+                    .retrieve().bodyToMono(Cart.class);
+            return cartMono.map(c -> itemById(itemId)).flatMap(i -> i);
+        } else if (ActionType.MINUS.name().equalsIgnoreCase(action)) {
+            Mono<Item> cartMono = webClient.get()
+                    .uri(VITRO_CART_API + "/remove/" + userId + "/" + itemId)
+                    .retrieve().bodyToMono(Item.class);
+            return cartMono.map(c -> itemById(itemId)).flatMap(i -> i);
+        }
+        return Mono.just(new Item());
     }
 
     private Mono<Item> addItemToCart(Mono<Item> itemMono, Long itemId, String action) {

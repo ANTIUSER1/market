@@ -59,13 +59,34 @@ public class CartServiceImpl implements TService<Cart> {
 
     public Mono<Cart> createNewCartOfUser(Long itemId, Long userId) {
         Cart c = new Cart();
-        c.setUserId(userId);
 
         return cartRepo.save(c).map(
                 ccc -> {
                     return updateItem(ccc, itemId);
                 }
         ).flatMap(cc -> cc);
+    }
+
+    public Mono<Item> removeFromCartOfUser(Long itemId, Long userId) {
+        System.out.println("     REMOVE ITEM " + itemId);
+        Mono<Cart> cartMono = itemRepo.findById(itemId).map(
+                i -> {
+                    return cartRepo.findById(i.getCartId());
+                }).flatMap(c -> c);
+        Mono<Item> itemMono = itemRepo.findById(itemId)
+                .map(i -> {
+                    Integer count = i.getCount();
+                    i.setCount(count - 1);
+                    i.setCartId(null);
+                    i.setOrderId(null);
+                    return itemRepo.save(i);
+                }).flatMap(ii -> ii);
+        return Mono.zip(cartMono, itemMono)
+                .map(t -> {
+                    Item cc = t.getT2();
+                    cartRepo.delete(t.getT1()).subscribe(u -> System.out.println("    CART  DELETED "));
+                    return cc;
+                });
     }
 
     private Mono<Cart> updateItem(Cart ccc, Long itemId) {
@@ -85,27 +106,4 @@ public class CartServiceImpl implements TService<Cart> {
         return cartRepo.findByUserId(user);
     }
 
-    public Mono<Item> removeFromCartOfUser(Long itemId, Long userId) {
-        System.out.println("     REMOVE ITEM " + itemId);
-        itemRepo.findById(itemId)
-                .map(i -> {
-                    Integer count = i.getCount();
-                    i.setCount(count - 1);
-                    i.setCartId(null);
-                    i.setOrderId(null);
-                    return itemRepo.save(i).subscribe();
-                });
-//
-//
-//        Mono<Cart> cartMono1 = itemRepo.findById(itemId)
-//                .map(i -> {
-//                    Integer count = i.getCount();
-//                    i.setCount(count - 1);
-//                    i.setCartId(null);
-//                    i.setOrderId(null);
-//                    itemRepo.save(i).subscribe();
-//                    return new Cart();
-//                });
-        return Mono.just(new Item());
-    }
 }
