@@ -45,6 +45,7 @@ public class CartServiceImpl implements TService<Cart> {
                     itemRepo.findById(itemId)
                             .map(i -> {
                                 i.setCartId(ccc.getId());
+                                i.setOrderId(null);
                                 return itemRepo.save(i);
                             }).flatMap(i -> i).subscribe();
                     return ccc;
@@ -52,6 +53,23 @@ public class CartServiceImpl implements TService<Cart> {
         );
     }
 
+
+    public Mono<Cart> createNewCartOfUser(Long itemId, Long userId) {
+        Cart c = new Cart();
+        c.setUserId(userId);
+
+        return cartRepo.save(c).map(
+                ccc -> {
+                    itemRepo.findById(itemId)
+                            .map(i -> {
+                                i.setCartId(ccc.getId());
+                                i.setOrderId(null);
+                                return itemRepo.save(i);
+                            }).flatMap(i -> i).subscribe();
+                    return ccc;
+                }
+        );
+    }
 
     public Flux<Cart> getByUser(Long user) {
         return cartRepo.findByUserId(user);
