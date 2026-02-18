@@ -132,7 +132,7 @@ public class ItemController {
 */
 
     @GetMapping("/items/{itemId}")
-    public Mono<Rendering> additemOfById(
+    public Mono<Rendering> additemToCartOfUserById(
             @PathVariable("itemId") Long itemId,
             @RequestParam(value = "action", required = false) String action
     ) {

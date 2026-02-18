@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import pn.market.market_entities.Paging;
 import pn.market.market_entities.TService;
 import pn.market.market_entities.forWEB.Cart;
+import pn.market.market_entities.forWEB.Item;
 import pn.market.vitroBack.repo.CartRepo;
 import pn.market.vitroBack.repo.ItemRepo;
 import reactor.core.publisher.Flux;
@@ -60,24 +61,51 @@ public class CartServiceImpl implements TService<Cart> {
         Cart c = new Cart();
         c.setUserId(userId);
 
-        Mono<Cart> result = cartRepo.save(c).map(
+        return cartRepo.save(c).map(
                 ccc -> {
-                    itemRepo.findById(itemId)
-                            .map(i -> {
-                                Integer count = i.getCount();
-                                i.setCount(count + 1);
-                                i.setCartId(ccc.getId());
-                                i.setOrderId(null);
-                                return itemRepo.save(i);
-                            }).flatMap(i -> i).subscribe();
-                    return ccc;
+                    return updateItem(ccc, itemId);
                 }
-        );
-        result.subscribe(cn -> System.out.println("     *****   CCC-  " + cn));
-        return result;
+        ).flatMap(cc -> cc);
+    }
+
+    private Mono<Cart> updateItem(Cart ccc, Long itemId) {
+        return itemRepo.findById(itemId)
+                .map(i -> {
+                    Integer count = i.getCount();
+                    i.setCount(count + 1);
+                    i.setCartId(ccc.getId());
+                    i.setOrderId(null);
+                    System.out.println("     :::: SAVE ITEM....... ");
+                    itemRepo.save(i).subscribe();
+                    return ccc;
+                });
     }
 
     public Flux<Cart> getByUser(Long user) {
         return cartRepo.findByUserId(user);
+    }
+
+    public Mono<Item> removeFromCartOfUser(Long itemId, Long userId) {
+        System.out.println("     REMOVE ITEM " + itemId);
+        itemRepo.findById(itemId)
+                .map(i -> {
+                    Integer count = i.getCount();
+                    i.setCount(count - 1);
+                    i.setCartId(null);
+                    i.setOrderId(null);
+                    return itemRepo.save(i).subscribe();
+                });
+//
+//
+//        Mono<Cart> cartMono1 = itemRepo.findById(itemId)
+//                .map(i -> {
+//                    Integer count = i.getCount();
+//                    i.setCount(count - 1);
+//                    i.setCartId(null);
+//                    i.setOrderId(null);
+//                    itemRepo.save(i).subscribe();
+//                    return new Cart();
+//                });
+        return Mono.just(new Item());
     }
 }
