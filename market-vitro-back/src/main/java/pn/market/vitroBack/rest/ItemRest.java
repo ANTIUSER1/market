@@ -48,6 +48,11 @@ public class ItemRest {
         return itemService.getCartOfUser(userId);
     }
 
+    @GetMapping("/get-total-sum-cart-of-user/{userId}")
+    public Mono<Long> getTotalCartOfUser(@PathVariable("userId") Long userId) {
+        return itemService.getTotalSumCartOfUser(userId);
+    }
+
     @GetMapping("/remove-order/{orderId}")
     public Flux<Item> removeItemsFromOrderId(@PathVariable("orderId") Long orderId) {
         return itemService.removeItemsFromOrderId(orderId);

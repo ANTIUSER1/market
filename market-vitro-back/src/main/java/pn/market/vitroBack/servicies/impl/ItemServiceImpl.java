@@ -225,5 +225,10 @@ public class ItemServiceImpl implements TService<Item> {
                     return i;
                 });
     }
+
+    public Mono<Long> getTotalSumCartOfUser(Long userId) {
+        Flux<Item> itemFlux = getCartOfUser(userId);
+        return getTotalSum(itemFlux);
+    }
 }
 
