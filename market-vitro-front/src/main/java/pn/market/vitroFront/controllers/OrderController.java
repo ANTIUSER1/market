@@ -65,7 +65,6 @@ public class OrderController {
         Mono<Order> order = orderService.showCompleteOrderById(orderId);
         Mono<Rendering> r =
                 Mono.just(Rendering.view("order")
-
                         .modelAttribute("orderData", order)
                         .modelAttribute("newOrder", false)
                         .build());
