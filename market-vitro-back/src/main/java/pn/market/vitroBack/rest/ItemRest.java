@@ -30,6 +30,7 @@ public class ItemRest {
         return itemService.findById(id);
     }
 
+
     @GetMapping("/addOrder/{orderId}/{itemId}")
     public Mono<Item> itemSaveId(
             @PathVariable("orderId") Long orderId,
@@ -42,6 +43,10 @@ public class ItemRest {
                 }).flatMap(i -> i);
     }
 
+    @GetMapping("/get-cart-of-user/{userId}")
+    public Flux<Item> getCartOfUser(@PathVariable("userId") Long userId) {
+        return itemService.getCartOfUser(userId);
+    }
 
     @GetMapping("/remove-order/{orderId}")
     public Flux<Item> removeItemsFromOrderId(@PathVariable("orderId") Long orderId) {

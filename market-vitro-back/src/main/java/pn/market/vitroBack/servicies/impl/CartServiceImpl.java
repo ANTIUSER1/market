@@ -23,9 +23,6 @@ public class CartServiceImpl implements TService<Cart> {
     private ItemRepo itemRepo;
 
 
-    @Autowired
-    private ItemServiceImpl itemService;
-
     @Override
     public Flux<Cart> findAll() {
         return cartRepo.findAll();
@@ -55,37 +52,8 @@ public class CartServiceImpl implements TService<Cart> {
         );
     }
 
-//    public Mono<Long> createCartForItemIfNotExists(long itemId) {
-//        Mono<Long> cartIdMono = itemService.findById(itemId)
-//                .map(i -> {
-//                    if (i.getCartId() == null) {
-//                        return this.createNewCart();
-//                    } else return Mono.just(i.getCartId());
-//                }).flatMap(ci -> ci);
-//        return cartIdMono;
-//    }
-/*
-    public Mono<Item> placeItemToCart(long itemId, String action) {
-        Mono<Item> itemMono = Mono.zip(
-                        itemService.findById(itemId),
-                        this.createCartForItemIfNotExists(itemId)
 
-                )
-                .map(t -> {
-
-                    Item i = t.getT1();
-                    Long cartId = t.getT2();
-
-
-                    if (action != null) {
-                        return itemService.addToCart(i, cartId, action);
-                    }
-                    return Mono.just(i);
-                })
-                .flatMap(i -> i);
-        return itemMono;
+    public Flux<Cart> getByUser(Long user) {
+        return cartRepo.findByUserId(user);
     }
-
-
- */
 }

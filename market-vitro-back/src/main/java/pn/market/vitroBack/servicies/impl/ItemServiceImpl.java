@@ -32,7 +32,8 @@ public class ItemServiceImpl implements TService<Item> {
     private ItemRepo itemRepo;
     @Autowired
     private OrderRepo orderRepo;
-
+    @Autowired
+    private CartServiceImpl cartService;
     @Autowired
     private DatabaseClient databaseClient;
 
@@ -215,6 +216,21 @@ public class ItemServiceImpl implements TService<Item> {
                     return Mono.just(ii);
                 }).flatMap(i -> i);
         return itemRepo.saveAll(itemFlux);
+    }
+
+    public Flux<Item> getCartOfUser(Long userId) {
+        //Flux<Cart> cartsOfUser = cartService.getByUser(userId);
+        return itemRepo.findByUserId(userId)
+                .map(i -> {
+                    System.out.println("-----I III " + i);
+                    return i;
+                });
+//                cartsOfUser.map(c -> {
+//            System.out.println("U-ID :::: --  " + userId);
+//            System.out.println("c-   :::: --  " + c);
+//            Flux<Item> itemFlux = itemRepo.findByCartId(c.getId());
+//            return itemFlux;
+//        }).flatMap(i -> i);
     }
 }
 
