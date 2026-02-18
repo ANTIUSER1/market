@@ -12,6 +12,7 @@ import pn.market.market_entities.forWEB.Cart;
 import pn.market.market_entities.forWEB.Item;
 import pn.market.vitroFront.servicies.CartServiceImpl;
 import pn.market.vitroFront.servicies.ItemServiceImpl;
+import pn.market.vitroFront.servicies.LoginService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -19,7 +20,6 @@ import static pn.market.vitroFront.config.AuthPaths.VITRO_CART_API;
 
 @Controller
 @RequestMapping("/cart")
-
 public class CartController {
 
     @Autowired
@@ -30,10 +30,15 @@ public class CartController {
     @Autowired
     private WebClient webClient;
 
+    @Autowired
+    private LoginService loginService;
 
     @GetMapping("/{cartId}")
-    public Mono<Rendering> itemsList(
-            @PathVariable("cartId") long cartId) {
+    public Mono<Rendering> itemsList(@PathVariable("cartId") long cartId) {
+        Long userId = loginService.getUserData().getId();
+        System.out.println("  CCC  CART " + cartId + "   USER_DATA ID " + userId);
+
+
         Flux<Item> itemsFlux = itemService.getItemsByCartDataFromMonoToFlux(cartId);
         Mono<Long> total = itemService.getTotalSum(cartId);
         //  itemsFlux.subscribe(ii -> System.out.println("       III ID " + ii.getId()));
@@ -46,11 +51,24 @@ public class CartController {
         return r;
     }
 
+    //****** add roles ***
+    @GetMapping("/item-of-user")
+    public Mono<Rendering> itemsOfUser() {
+        Long userId = loginService.getUserData().getId();
+        System.out.println("   USER_DATA ID " + userId);
+        Flux<Item> itemsFlux = itemService.itemOfUser(userId);
+        Mono<Long> total = itemService.getTotalOfSum(userId);
+        total.subscribe(t -> System.out.println("    USER-TOTAL-SUM " + t));
+        Mono<Rendering> r =
+                Mono.just(Rendering.view("cart")
+                        .modelAttribute("items", itemsFlux)
+                        .modelAttribute("total", total)
+                        .build());
+        return r;
+    }
 
     @GetMapping("/add-item-to-cart/{itemId}")
-    public Mono<String> additemsList(
-            @PathVariable("itemId") long itemId) {
-
+    public Mono<String> additemsList(@PathVariable("itemId") long itemId) {
         webClient.get()
                 .uri(VITRO_CART_API + "/create/" + itemId)
                 .retrieve().bodyToMono(Cart.class).subscribe();

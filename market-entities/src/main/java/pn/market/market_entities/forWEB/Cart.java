@@ -27,7 +27,7 @@ public class Cart implements Comparable<Cart> {
 
     @Getter
     @Setter
-    private long iserId;
+    private long userId;
 
     public Cart() {
         items = new TreeSet<>();

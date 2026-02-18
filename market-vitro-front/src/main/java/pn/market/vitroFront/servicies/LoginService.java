@@ -14,6 +14,8 @@ public class LoginService extends MapReactiveUserDetailsService {
     @Autowired
     private UserDataServiceImpl userDataService;
 
+    private UserData userData;
+
     public LoginService() {
         super(User.withUsername(" ").build());
     }
@@ -35,6 +37,7 @@ public class LoginService extends MapReactiveUserDetailsService {
                 + "\n   AUTHORITIES " + userData.getAuthorities()
                 + "\n   AUTHORITY   " + userData.getAuthority()
         );
+        this.userData = userData;
         return User.withUsername(userData.getUsername())
                 .password(userData.getPassword())
                 // .authorities( userData.getAuthority())
@@ -46,5 +49,9 @@ public class LoginService extends MapReactiveUserDetailsService {
                 .credentialsExpired(false)
                 .disabled(false)
                 .build();
+    }
+
+    public UserData getUserData() {
+        return userData;
     }
 }

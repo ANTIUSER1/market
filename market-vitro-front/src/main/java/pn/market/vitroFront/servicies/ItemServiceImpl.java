@@ -213,4 +213,18 @@ public class ItemServiceImpl implements ItemService {
 
                 );
     }
+
+    public Flux<Item> itemOfUser(Long userId) {
+        return webClient.get()
+                .uri(VITRO_ITEM_API + "/get-cart-of-user/" + userId)
+                .retrieve().bodyToFlux(Item.class);
+    }
+
+    //   get-total-sum-cart-of-user
+
+    public Mono<Long> getTotalOfSum(Long userId) {
+        return webClient.get()
+                .uri(VITRO_ITEM_API + "/get-total-sum-cart-of-user/" + userId)
+                .retrieve().bodyToMono(Long.class);
+    }
 }
