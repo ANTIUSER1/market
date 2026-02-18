@@ -53,7 +53,7 @@ public class CartController {
         return r;
     }
 
-    //****** add roles ***
+    //************* add roles ***
     @GetMapping("/item-of-user")
     public Mono<Rendering> itemsOfUser() {
         Long userId = loginService.getUserData().getId();
@@ -69,7 +69,7 @@ public class CartController {
         return r;
     }
 
-    //*******   ADD ROLES *************
+    //**********  ADD ROLES *************
     @GetMapping("/add-item-to-cart-of-user/{itemId}")
     public Mono<String> additemsList(
             @PathVariable("itemId") long itemId
