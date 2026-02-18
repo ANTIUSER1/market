@@ -38,9 +38,9 @@ public class CartServiceImpl implements TService<Cart> {
         return null;
     }
 
-
+    //"     *****   CCC-  "+c
     public Mono<Cart> createNewCart(Long itemId) {
-        return cartRepo.save(new Cart()).map(
+        Mono<Cart> result = cartRepo.save(new Cart()).map(
                 ccc -> {
                     itemRepo.findById(itemId)
                             .map(i -> {
@@ -48,9 +48,11 @@ public class CartServiceImpl implements TService<Cart> {
                                 i.setOrderId(null);
                                 return itemRepo.save(i);
                             }).flatMap(i -> i).subscribe();
+
                     return ccc;
                 }
         );
+        return result;
     }
 
 
@@ -58,7 +60,7 @@ public class CartServiceImpl implements TService<Cart> {
         Cart c = new Cart();
         c.setUserId(userId);
 
-        return cartRepo.save(c).map(
+        Mono<Cart> result = cartRepo.save(c).map(
                 ccc -> {
                     itemRepo.findById(itemId)
                             .map(i -> {
@@ -69,6 +71,8 @@ public class CartServiceImpl implements TService<Cart> {
                     return ccc;
                 }
         );
+        result.subscribe(cn -> System.out.println("     *****   CCC-  " + cn));
+        return result;
     }
 
     public Flux<Cart> getByUser(Long user) {

@@ -16,8 +16,6 @@ import pn.market.vitroFront.servicies.LoginService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 import static pn.market.vitroFront.config.AuthPaths.VITRO_CART_API;
 
 @Controller
@@ -34,6 +32,7 @@ public class CartController {
 
     @Autowired
     private LoginService loginService;
+
 
     @GetMapping("/{cartId}")
     public Mono<Rendering> itemsList(@PathVariable("cartId") long cartId) {
@@ -69,17 +68,18 @@ public class CartController {
         return r;
     }
 
+
     //**********  ADD ROLES *************
     @GetMapping("/add-item-to-cart-of-user/{itemId}")
     public Mono<String> additemsList(
             @PathVariable("itemId") long itemId
     ) {
         Long userId = loginService.getUserData().getId();
-        AtomicReference<Long> cartId = new AtomicReference<>(0L);
-        webClient.get()
+        Mono<Cart> cartMono = webClient.get()
                 .uri(VITRO_CART_API + "/create/" + userId + "/" + itemId)
-                .retrieve().bodyToMono(Cart.class).subscribe(c -> cartId.set(c.getId()));
-        return Mono.just("redirect:/cart/" + cartId.get());
+                .retrieve().bodyToMono(Cart.class);
+//        return Mono.just("redirect:/cart/" + cid);
+        return cartMono.map(cm -> "redirect:/cart/" + cm.getId());
     }
 
     @GetMapping("/items")
