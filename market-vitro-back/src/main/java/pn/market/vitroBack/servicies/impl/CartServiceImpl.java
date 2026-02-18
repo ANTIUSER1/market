@@ -64,6 +64,8 @@ public class CartServiceImpl implements TService<Cart> {
                 ccc -> {
                     itemRepo.findById(itemId)
                             .map(i -> {
+                                Integer count = i.getCount();
+                                i.setCount(count + 1);
                                 i.setCartId(ccc.getId());
                                 i.setOrderId(null);
                                 return itemRepo.save(i);

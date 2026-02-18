@@ -183,7 +183,7 @@ public class ItemServiceImpl implements ItemService {
 
 
     }
-
+/*
     @Override
     public void updateCartInfo(Long itemId, String action) {
         Mono<Item> itemMono = cartService.placeItemToCart(itemId, action);
@@ -195,7 +195,7 @@ public class ItemServiceImpl implements ItemService {
         total.subscribe();
         cartIdMono.subscribe();
     }
-
+*/
 
     @Override
     public void removeFromOrder(long orderId) {

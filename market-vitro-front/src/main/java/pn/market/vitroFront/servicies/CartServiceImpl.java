@@ -43,7 +43,7 @@ public class CartServiceImpl implements TService<Cart> {
                 .bodyToMono(Item.class);
 
     }
-
+/*
     public Mono<Item> placeItemToCart(
             Long itemId,
             String action) {
@@ -74,23 +74,18 @@ public class CartServiceImpl implements TService<Cart> {
         itemMono = addItemToCart(itemMono, itemId, action);
         return itemMono;
     }
-
-    /*
-        public Mono<Long> createCartForItemIfNotExists(
-                Mono<Item> itemMono,
-                long itemId) {
-            System.out.println("   /////CREATECART");
-            Mono<Long> cartIdMono = itemMono
-                    .map(i -> {
-                        System.out.println("          OOO----IIII " + i);
-                        System.out.println("          OOO----CREATE BEGIN---cart-id " + i.getCartId());
-                        if (i.getCartId() == null) {
-                            return null;//this.createNewCart();
-                        } else return Mono.just(i.getCartId());
-                    }).flatMap(ci -> ci);
-            return cartIdMono;
-        }
     */
+
+    public Mono<Item> placeItemToCartOfUser(
+            Long userId, Long itemId,
+            String action) {
+
+        Mono<Cart> cartMono = webClient.get()
+                .uri(VITRO_CART_API + "/create/" + userId + "/" + itemId)
+                .retrieve().bodyToMono(Cart.class);
+        return cartMono.map(c -> itemById(itemId)).flatMap(i -> i);
+    }
+
     private Mono<Item> addItemToCart(Mono<Item> itemMono, Long itemId, String action) {
 
         System.out.println("     _____00000-itemId- " + itemId);

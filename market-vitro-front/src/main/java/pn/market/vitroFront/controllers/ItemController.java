@@ -13,6 +13,7 @@ import pn.market.market_entities.Paging;
 import pn.market.market_entities.forWEB.Item;
 import pn.market.vitroFront.servicies.CartServiceImpl;
 import pn.market.vitroFront.servicies.ItemServiceImpl;
+import pn.market.vitroFront.servicies.LoginService;
 import pn.market.vitroFront.servicies.ModelService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -35,6 +36,10 @@ public class ItemController {
 
     @Autowired
     private WebClient webClient;
+
+    @Autowired
+    private LoginService loginService;
+
 
     @GetMapping
     public Mono<Rendering> itemsIndex(
@@ -108,13 +113,31 @@ public class ItemController {
                     .build());
         }
     }
-
+/*
     @GetMapping("/items/{id}")
     public Mono<Rendering> itemById(
             @PathVariable("id") Long id,
             @RequestParam(value = "action", required = false) String action
     ) {
         Mono<Item> itemMono = cartService.placeItemToCart(id, action);
+
+        Mono<Long> src = Mono.just(-2L);
+        Mono<Rendering> r = Mono.just(Rendering.view("item")
+                .modelAttribute("item", itemMono)
+                .modelAttribute("action", action)
+                .modelAttribute("src", src)
+                .build());
+        return r;
+    }
+*/
+
+    @GetMapping("/items/{itemId}")
+    public Mono<Rendering> additemOfById(
+            @PathVariable("itemId") Long itemId,
+            @RequestParam(value = "action", required = false) String action
+    ) {
+        Long userId = loginService.getUserData().getId();
+        Mono<Item> itemMono = cartService.placeItemToCartOfUser(userId, itemId, action);
 
         Mono<Long> src = Mono.just(-2L);
         Mono<Rendering> r = Mono.just(Rendering.view("item")

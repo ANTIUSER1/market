@@ -20,7 +20,7 @@ public interface ItemService extends TService<Item> {
     Flux<Item> getItemsByOrderId(Long id);
 
 
-    void updateCartInfo(Long itemId, String action);
+    //void updateCartInfo(Long itemId, String action);
 
     void removeFromOrder(long orderId);
 }
