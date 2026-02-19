@@ -54,8 +54,8 @@ public class OrderRest {
     public Mono<Order> updateWithUser(
             @PathVariable("itemId") Long itemId,
             @PathVariable("userId") Long userId) {
-
-        Mono<Order> orderMono = orderService.creare(userId, itemId);
+        System.out.println("---UPDATE: IteM:" + itemId + "   ::::  UserM:: " + userId);
+        Mono<Order> orderMono = orderService.updateExisting(userId, itemId);
 
         return orderMono;
     }

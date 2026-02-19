@@ -96,7 +96,8 @@ public class OrderServiceImpl implements TService<Order> {
         return orderMono;
     }
 
-    public Mono<Order> saveExisting(Long userId, Long itemId) {
+    public Mono<Order> updateExisting(Long userId, Long itemId) {
+        System.out.println("----------updateExisting: IteM:" + itemId + "   ::::  UserM:: " + userId);
         Mono<List<Order>> udmonoList = orderRepo.findByUserId(userId).collectList();
         Mono<Order> orderMono = udmonoList.map(
                 ud -> {
@@ -106,6 +107,8 @@ public class OrderServiceImpl implements TService<Order> {
                     } else {
                         o = new Order();
                     }
+                    System.out.println("--------*****ORDER:::" + o);
+
                     return o;
                 }
         );
@@ -113,13 +116,17 @@ public class OrderServiceImpl implements TService<Order> {
 
         orderMono = Mono.zip(orderMono, itemMono)
                 .map(t -> {
+                    System.out.println("  EXISTING--OOOO  UUU");
                     Order o = t.getT1();
                     Item i = t.getT2();
+                    System.out.println("  EXISTING--OOOO " + o);
 
+                    System.out.println("  START ITEM-UPDATE:  " + i);
                     i.setCartId(null);
                     i.setCount(0);
                     i.setOrderId(o.getId());
-                    System.out.println("  EXISTING--OOOO " + o);
+                    System.out.println("   FINISH ITEM-UPDATE:  " + i);
+                    System.out.println("   SAVE   ITEM-UPDATE:  " + i);
                     itemService.save(i).subscribe();
                     return o;
                 });
