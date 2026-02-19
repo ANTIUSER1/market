@@ -147,21 +147,32 @@ public class OrderServiceImpl implements TService<Order> {
     }
 
     public void buyOrderOfUser(Long userId, Long orderId) {
-        System.out.println("   --   BUY ORDER OF USER: --: ORDER: " + orderId + "  USER:  " + userId);
-        Mono<Order> orderMono = orderRepo.findById(orderId);
+        System.out.println("   -----PROCESS    BUY ORDER OF USER: --: ORDER: " + orderId + "  USER:  " + userId);
         itemService.getItemsByOrderId(orderId)
                 .map(i -> {
                     i.setOrderId(null);
                     i.setCartId(null);
                     i.setCount(0);
-                    itemService.save(i).subscribe();
+                    itemService.save(i)
+                            .subscribe();
                     return i;
-                }).subscribe();
-        orderMono.map(o -> {
-            if (o.getUserId() == userId)
-                orderRepo.delete(o);
-            return null;
-        }).subscribe();
+                }).subscribe(
+                        ii -> {
+                            orderRepo.findById(orderId)
+                                    .map(o -> {
+                                        System.out.println("    EQUALS TEST " + (o.getUserId() == userId));
+                                        if (o.getUserId() == userId) {
+                                            try {
+                                                orderRepo.delete(o).subscribe();
+                                            } catch (Error e) {
+
+                                            }
+                                        }
+                                        return new Order();
+                                    }).subscribe();
+
+                        }
+                );
     }
 
 }

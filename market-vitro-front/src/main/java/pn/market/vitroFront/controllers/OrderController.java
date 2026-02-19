@@ -102,6 +102,7 @@ public class OrderController {
     @GetMapping("/buy/{orderId}")
     public String buyOrder(@PathVariable("orderId") Long orderId) {
         Long userId = loginService.getUserData().getId();
+        System.out.println("............BUY ORDER " + orderId + "  OF  USER :  " + userId);
         orderService.buyOrderOfUser(userId, orderId);
         return "redirect:/orders";
     }

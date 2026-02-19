@@ -72,6 +72,7 @@ public class OrderRest {
     public void buyOrderOfUser(
             @PathVariable("orderId") Long orderId,
             @PathVariable("userId") Long userId) {
+        System.out.println(".....RUN....BUY ORDER " + orderId + "  OF  USER :  " + userId);
         orderService.buyOrderOfUser(userId, orderId);
     }
 
