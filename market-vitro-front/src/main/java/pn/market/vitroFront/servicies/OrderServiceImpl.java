@@ -180,4 +180,11 @@ public class OrderServiceImpl implements TService<Order> {
  */
         return orderMono;
     }
+
+    public Mono<Order> showOrderOfUserById(Long userId, Long orderId) {
+        return webClient.get()
+                .uri(VITRO_ORDER_API + "/show/" + userId + "/" + orderId)
+                .retrieve().bodyToMono(Order.class);
+
+    }
 }

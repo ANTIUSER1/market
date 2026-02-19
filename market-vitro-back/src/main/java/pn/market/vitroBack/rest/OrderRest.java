@@ -52,11 +52,20 @@ public class OrderRest {
 
     @GetMapping("/update/{userId}/{itemId}")
     public Mono<Order> updateWithUser(
-            @PathVariable("itemId") Long itemId,
+            @PathVariable("orderId") Long itemId,
             @PathVariable("userId") Long userId) {
         System.out.println("---UPDATE: IteM:" + itemId + "   ::::  UserM:: " + userId);
         Mono<Order> orderMono = orderService.updateExisting(userId, itemId);
 
         return orderMono;
     }
+
+    @GetMapping("/show/{userId}/{orderId}")
+    public Mono<Order> showOderOfUser(
+            @PathVariable("itemId") Long orderId,
+            @PathVariable("userId") Long userId) {
+        return orderService.showOderOfUser(userId, orderId);
+    }
+
+
 }

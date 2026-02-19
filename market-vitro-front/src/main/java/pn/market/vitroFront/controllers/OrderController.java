@@ -87,7 +87,7 @@ public class OrderController {
             @PathVariable("orderId") Long orderId
     ) {
         Long userId = loginService.getUserData().getId();
-        Mono<Order> order = orderService.showCompleteOrderById(userId, orderId);
+        Mono<Order> order = orderService.showOrderOfUserById(userId, orderId);
         Mono<Rendering> r =
                 Mono.just(Rendering.view("order")
                         .modelAttribute("orderData", order)

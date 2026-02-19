@@ -132,4 +132,18 @@ public class OrderServiceImpl implements TService<Order> {
                 });
         return orderMono;
     }
+
+    public Mono<Order> showOderOfUser(Long userId, Long orderId) {
+        System.out.println("   --   SHOW ORDER OF USER: --: ORDER: " + orderId + "  USER:  " + userId);
+        Mono<Order> orderMono = orderRepo.findById(orderId);
+        Mono<List<Item>> iListMono = itemService.getItemsByOrderId(orderId).collectList();
+        orderMono = Mono.zip(orderMono, iListMono)
+                .map(t -> {
+                    Order o = t.getT1();
+                    List<Item> itemList = t.getT2();
+                    o.getItems().addAll(itemList);
+                    return o;
+                });
+        return orderMono;
+    }
 }
