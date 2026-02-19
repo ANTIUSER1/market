@@ -37,7 +37,6 @@ public class OrderController {
     @GetMapping
     public Mono<Rendering> allOrders() {
         Mono<List<Order>> orders = orderService.addItemsToAll();
-        //orders.subscribe(oo -> System.out.println("    OO  OO  OO  " + oo));
         Mono<Rendering> r =
                 Mono.just(Rendering.view("orders")
                         .modelAttribute("orderData", orders)
@@ -45,13 +44,13 @@ public class OrderController {
         return r;
     }
 
-    @GetMapping("/save/{orderId}/{itemId}")
-    public Mono<Rendering> getOrderById(
-            @PathVariable("orderId") Long orderId,
+    @GetMapping("/save/{itemId}")
+    public Mono<Rendering> saveNewOrderOfUser(
             @PathVariable("itemId") Long itemId) {
 
         Long userId = loginService.getUserData().getId();
-        Mono<Order> order = orderService.saveCompleteOrderOfUserById(userId, orderId, itemId);
+        System.out.println("   saveNewOrderOfUser   NEW ORDER: ITEM  " + itemId + "   USER " + userId);
+        Mono<Order> order = orderService.saveNewCompleteOrderOfUserById(userId, itemId);
 
         Mono<Rendering> r =
                 Mono.just(Rendering.view("order")

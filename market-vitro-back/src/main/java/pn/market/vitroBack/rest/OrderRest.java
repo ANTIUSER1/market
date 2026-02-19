@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import pn.market.market_entities.forWEB.Order;
+import pn.market.vitroBack.servicies.impl.ItemServiceImpl;
 import pn.market.vitroBack.servicies.impl.OrderServiceImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -16,6 +17,9 @@ public class OrderRest {
 
     @Autowired
     private OrderServiceImpl orderService;
+
+    @Autowired
+    private ItemServiceImpl itemService;
 
     @GetMapping
     public Flux<Order> findAll() {
@@ -36,15 +40,40 @@ public class OrderRest {
 
     }
 
-    @GetMapping("/save/{userId}/{orderId}")
+    @GetMapping("/save/{userId}/{itemId}")
     public Mono<Order> saveWithUser(
-            @PathVariable("orderId") Long orderId,
+            @PathVariable("itemId") Long itemId,
             @PathVariable("userId") Long userId) {
         Order order = new Order();
+        order.setUserId(userId);
+        System.out.println("   saveWithUser   NEW ORDER: ITEM  " + itemId + "   USER " + userId);
+
+        Mono<Order> orderMono = orderService.save(order)
+                .map(o -> {
+                    System.out.println("----++OOO +++ " + o);
+                    itemService.findById(itemId)
+                            .map(i -> {
+                                System.out.println(" ++++++++ ITEM  " + itemId + "   UPDATE ");
+
+                                i.setCartId(null);
+                                i.setCount(0);
+                                i.setOrderId(o.getId());
+                                System.out.println("  OOOO " + o);
+                                itemService.save(i).subscribe();
+                                return o;
+                            }).subscribe();
+                    return o;
+                });
+
+
+        return orderMono;
+        /*
         return orderService.getById(orderId)
                 .map(oo -> {
                     oo.setUserId(userId);
                     return orderService.save(oo);
                 }).flatMap(o -> o);
+
+         */
     }
 }
