@@ -61,6 +61,23 @@ public class OrderController {
 
     }
 
+    @GetMapping("/update/{itemId}")
+    public Mono<Rendering> updateOrderOfUser(
+            @PathVariable("itemId") Long itemId) {
+
+        Long userId = loginService.getUserData().getId();
+        System.out.println("   updateOrderOfUser   NEW ORDER: ITEM  " + itemId + "   USER " + userId);
+        Mono<Order> order = orderService.updateOrder(userId, itemId);
+
+        Mono<Rendering> r =
+                Mono.just(Rendering.view("order")
+                        .modelAttribute("orderData", order)
+                        .modelAttribute("newOrder", false)
+                        .build());
+        return r;
+
+    }
+
 
     @GetMapping("/{orderId}")
     public Mono<Rendering> getOrderById(

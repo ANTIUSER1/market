@@ -63,7 +63,14 @@ public class OrderServiceImpl implements TService<Order> {
 
     public Mono<Order> saveNewOrder(Long userId, Long itemId) {
         return webClient.get()
-                .uri(VITRO_ORDER_API + "/save/" + userId + "/" + itemId)
+                .uri(VITRO_ORDER_API + "/create/" + userId + "/" + itemId)
+                .retrieve().bodyToMono(Order.class);
+
+    }
+
+    public Mono<Order> updateOrder(Long userId, Long itemId) {
+        return webClient.get()
+                .uri(VITRO_ORDER_API + "/update/" + userId + "/" + itemId)
                 .retrieve().bodyToMono(Order.class);
 
     }
