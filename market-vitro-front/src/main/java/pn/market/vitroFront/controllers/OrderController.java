@@ -101,6 +101,7 @@ public class OrderController {
     //---------detect not done---
     @GetMapping("/buy/{orderId}")
     public String buyOrder(@PathVariable("orderId") Long orderId) {
+        Long userId = loginService.getUserData().getId();
         orderService.buyOrder(orderId);
         return "redirect:/orders";
     }
