@@ -44,27 +44,8 @@ public class OrderRest {
     public Mono<Order> saveWithUser(
             @PathVariable("itemId") Long itemId,
             @PathVariable("userId") Long userId) {
-        Order order = new Order();
-        order.setUserId(userId);
-        System.out.println("   saveWithUser   NEW ORDER: ITEM  " + itemId + "   USER " + userId);
 
-        Mono<Order> orderMono = orderService.save(order)
-                .map(o -> {
-                    System.out.println("----++OOO +++ " + o);
-                    itemService.findById(itemId)
-                            .map(i -> {
-                                System.out.println(" ++++++++ ITEM  " + itemId + "   UPDATE ");
-
-                                i.setCartId(null);
-                                i.setCount(0);
-                                i.setOrderId(o.getId());
-                                System.out.println("  OOOO " + o);
-                                itemService.save(i).subscribe();
-                                return o;
-                            }).subscribe();
-                    return o;
-                });
-
+        Mono<Order> orderMono = orderService.creare(userId, itemId);
 
         return orderMono;
         /*

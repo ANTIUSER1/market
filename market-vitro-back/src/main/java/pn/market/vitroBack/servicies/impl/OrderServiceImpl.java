@@ -69,4 +69,27 @@ public class OrderServiceImpl implements TService<Order> {
                 .exchangeToMono(clientResponse -> clientResponse.bodyToMono(String.class));
     }
 
+    public Mono<Order> creare(Long userId, Long itemId) {
+        Order order = new Order();
+        order.setUserId(userId);
+        System.out.println("   saveWithUser   NEW ORDER: ITEM  " + itemId + "   USER " + userId);
+
+        Mono<Order> orderMono = save(order)
+                .map(o -> {
+                    System.out.println("----++OOO +++ " + o);
+                    itemService.findById(itemId)
+                            .map(i -> {
+                                System.out.println(" ++++++++ ITEM  " + itemId + "   UPDATE ");
+
+                                i.setCartId(null);
+                                i.setCount(0);
+                                i.setOrderId(o.getId());
+                                System.out.println("  OOOO " + o);
+                                itemService.save(i).subscribe();
+                                return o;
+                            }).subscribe();
+                    return o;
+                });
+        return orderMono;
+    }
 }
