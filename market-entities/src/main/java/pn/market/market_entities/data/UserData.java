@@ -25,9 +25,6 @@ public class UserData implements UserDetails {
     private String password;
     @Setter
     private String authority;
-    @Getter
-    @Setter
-    private Long userId;
 
     public UserData() {
     }

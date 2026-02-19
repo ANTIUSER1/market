@@ -2,6 +2,7 @@ package pn.market.market_entities.forWEB;
 
 //import jakarta.persistence.*;
 
+import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
@@ -18,6 +19,9 @@ public class Order {
 
     @Id
     private Long id;
+    @Getter
+    @Setter
+    private Long userId;
     @Setter
     @Transient
     private Set<Item> items;

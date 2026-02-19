@@ -56,6 +56,7 @@ public class OrderServiceImpl implements TService<Order> {
         return orderRepo.save(order);
     }
 
+
     public void buyOrder(long orderId) {
         getPaymentInfoFromRemote(orderId)
                 .map(s -> "OK").subscribe();

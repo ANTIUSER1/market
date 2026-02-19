@@ -35,4 +35,16 @@ public class OrderRest {
                 .map(o -> orderService.save(o)).flatMap(o -> o);
 
     }
+
+    @GetMapping("/save/{userId}/{orderId}")
+    public Mono<Order> saveWithUser(
+            @PathVariable("orderId") Long orderId,
+            @PathVariable("userId") Long userId) {
+        Order order = new Order();
+        return orderService.getById(orderId)
+                .map(oo -> {
+                    oo.setUserId(userId);
+                    return orderService.save(oo);
+                }).flatMap(o -> o);
+    }
 }

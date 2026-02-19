@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.reactive.result.view.Rendering;
 import pn.market.market_entities.forWEB.Order;
+import pn.market.vitroFront.servicies.LoginService;
 import pn.market.vitroFront.servicies.OrderServiceImpl;
 import pn.market.vitroFront.servicies.PaymentSupplierImpl;
 import pn.market.vitroFront.servicies.PaymentsServiceImpl;
@@ -30,6 +31,9 @@ public class OrderController {
     @Autowired
     private PaymentSupplierImpl paymentSupplier;
 
+    @Autowired
+    private LoginService loginService;
+
     @GetMapping
     public Mono<Rendering> allOrders() {
         Mono<List<Order>> orders = orderService.addItemsToAll();
@@ -45,7 +49,9 @@ public class OrderController {
     public Mono<Rendering> getOrderById(
             @PathVariable("orderId") Long orderId,
             @PathVariable("itemId") Long itemId) {
-        Mono<Order> order = orderService.showCompleteOrderById(orderId, itemId);
+
+        Long userId = loginService.getUserData().getId();
+        Mono<Order> order = orderService.showCompleteOrderOfUserById(userId, orderId, itemId);
 
         Mono<Rendering> r =
                 Mono.just(Rendering.view("order")
@@ -61,14 +67,13 @@ public class OrderController {
     public Mono<Rendering> getOrderById(
             @PathVariable("orderId") Long orderId
     ) {
-
-        Mono<Order> order = orderService.showCompleteOrderById(orderId);
+        Long userId = loginService.getUserData().getId();
+        Mono<Order> order = orderService.showCompleteOrderById(userId, orderId);
         Mono<Rendering> r =
                 Mono.just(Rendering.view("order")
                         .modelAttribute("orderData", order)
                         .modelAttribute("newOrder", false)
                         .build());
-        long userId = 1L;
         paymentService.configurePayments(userId, orderId);
         return r;
     }

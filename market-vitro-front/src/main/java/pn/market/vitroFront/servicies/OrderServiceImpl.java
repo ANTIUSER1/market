@@ -147,4 +147,7 @@ public class OrderServiceImpl implements TService<Order> {
         return orderMono;
     }
 
+    public Mono<Order> showCompleteOrderOfUserById(Long userId, Long orderId, Long itemId) {
+        return Mono.empty();
+    }
 }
