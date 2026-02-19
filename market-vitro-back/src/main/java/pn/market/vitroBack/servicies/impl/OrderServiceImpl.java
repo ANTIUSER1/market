@@ -85,7 +85,6 @@ public class OrderServiceImpl implements TService<Order> {
                                 System.out.println(" ++++++++ ITEM  " + itemId + "   UPDATE ");
 
                                 i.setCartId(null);
-                                i.setCount(0);
                                 i.setOrderId(o.getId());
                                 System.out.println("  OOOO " + o);
                                 itemService.save(i).subscribe();

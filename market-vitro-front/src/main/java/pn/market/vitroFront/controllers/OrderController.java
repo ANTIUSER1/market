@@ -97,6 +97,8 @@ public class OrderController {
         return r;
     }
 
+    //************* add roles ***
+    //---------detect not done---
     @GetMapping("/buy/{orderId}")
     public String buyOrder(@PathVariable("orderId") Long orderId) {
         orderService.buyOrder(orderId);
