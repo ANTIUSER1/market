@@ -40,21 +40,23 @@ public class OrderRest {
 
     }
 
-    @GetMapping("/save/{userId}/{itemId}")
-    public Mono<Order> saveWithUser(
+    @GetMapping("/create/{userId}/{itemId}")
+    public Mono<Order> createWithUser(
             @PathVariable("itemId") Long itemId,
             @PathVariable("userId") Long userId) {
 
         Mono<Order> orderMono = orderService.creare(userId, itemId);
 
         return orderMono;
-        /*
-        return orderService.getById(orderId)
-                .map(oo -> {
-                    oo.setUserId(userId);
-                    return orderService.save(oo);
-                }).flatMap(o -> o);
+    }
 
-         */
+    @GetMapping("/update/{userId}/{itemId}")
+    public Mono<Order> updateWithUser(
+            @PathVariable("itemId") Long itemId,
+            @PathVariable("userId") Long userId) {
+
+        Mono<Order> orderMono = orderService.creare(userId, itemId);
+
+        return orderMono;
     }
 }

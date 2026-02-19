@@ -9,6 +9,7 @@ import pn.market.market_entities.TService;
 import pn.market.market_entities.forWEB.Item;
 import pn.market.market_entities.forWEB.Order;
 import pn.market.vitroBack.repo.OrderRepo;
+import pn.market.vitroBack.repo.UserDataRepo;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -22,6 +23,9 @@ public class OrderServiceImpl implements TService<Order> {
 
     @Autowired
     private OrderRepo orderRepo;
+
+    @Autowired
+    private UserDataRepo userDataRepo;
 
     @Autowired
     private ItemServiceImpl itemService;
@@ -73,7 +77,6 @@ public class OrderServiceImpl implements TService<Order> {
         Order order = new Order();
         order.setUserId(userId);
         System.out.println("   saveWithUser   NEW ORDER: ITEM  " + itemId + "   USER " + userId);
-
         Mono<Order> orderMono = save(order)
                 .map(o -> {
                     System.out.println("----++OOO +++ " + o);
@@ -88,6 +91,36 @@ public class OrderServiceImpl implements TService<Order> {
                                 itemService.save(i).subscribe();
                                 return o;
                             }).subscribe();
+                    return o;
+                });
+        return orderMono;
+    }
+
+    public Mono<Order> saveExisting(Long userId, Long itemId) {
+        Mono<List<Order>> udmonoList = orderRepo.findByUserId(userId).collectList();
+        Mono<Order> orderMono = udmonoList.map(
+                ud -> {
+                    Order o = null;
+                    if (ud.size() > 0) {
+                        o = ud.get(0);
+                    } else {
+                        o = new Order();
+                    }
+                    return o;
+                }
+        );
+        Mono<Item> itemMono = itemService.findById(itemId);
+
+        orderMono = Mono.zip(orderMono, itemMono)
+                .map(t -> {
+                    Order o = t.getT1();
+                    Item i = t.getT2();
+
+                    i.setCartId(null);
+                    i.setCount(0);
+                    i.setOrderId(o.getId());
+                    System.out.println("  EXISTING--OOOO " + o);
+                    itemService.save(i).subscribe();
                     return o;
                 });
         return orderMono;
