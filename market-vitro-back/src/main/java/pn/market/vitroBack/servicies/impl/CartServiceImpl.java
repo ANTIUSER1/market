@@ -58,16 +58,52 @@ public class CartServiceImpl implements TService<Cart> {
 
 
     public Mono<Cart> createNewCartOfUser(Long itemId, Long userId) {
+        Mono<Cart> cartMono = itemRepo.findById(itemId)
+                .map(i -> {
+                    if (i.getCartId() == null) {
+                        Cart c = new Cart();
+                        c.setUserId(userId);
+                        System.out.println("++*** NEW C " + c);
+                        return Mono.just(c);
+                    }
+                    Mono<Cart> c = cartRepo.findById(i.getCartId())
+                            .map(cc0 -> {
+                                cc0.setUserId(userId);
+                                System.out.println(":::::::+++++:: CC0 " + cc0);
+                                return cc0;
+                            });
+                    return c;
+                }).flatMap(c0 -> c0);
 
-
-        Cart c = new Cart();
-        c.setUserId(userId);
         System.out.println("  add-item-to-cart-of-useradd-item-to-cart-of-user-  " + userId);
-        return cartRepo.save(c).map(
-                ccc -> {
-                    return updateItem(ccc, itemId);
-                }
-        ).flatMap(cc -> cc);
+
+        Mono<Item> itemMono = itemRepo.findById(itemId);
+
+        cartMono = updateItem1(cartMono, itemMono);
+        /*
+        cartMono = cartMono
+                .map(c -> {
+                    cartRepo.save(c)
+                            .map(cx -> {
+                                System.out.println("   ----CXCX-----CX-  :: C CART WILL UPDATE " + cx);
+                                return cx;
+                            }).subscribe();
+                    System.out.println("   ----------  :: C CART WILL UPDATE " + c);
+                    return updateItem(c, itemId);
+                }).flatMap(cc -> cc);
+
+
+   */
+
+
+        return cartMono;
+
+
+//        return cartRepo.save(c).map(
+//                ccc -> {
+//                    return updateItem(ccc, itemId);
+//                }
+//        ).flatMap(cc -> cc);
     }
 
     public Mono<Item> removeFromCartOfUser(Long itemId, Long userId) {
@@ -90,6 +126,36 @@ public class CartServiceImpl implements TService<Cart> {
                     cartRepo.delete(t.getT1()).subscribe(u -> System.out.println("    CART  DELETED "));
                     return cc;
                 });
+    }
+
+    private Mono<Cart> updateItem1(Mono<Cart> ccc, Mono<Item> iii) {
+        return Mono.zip(ccc, iii)
+                .map(t -> {
+                    Cart c0 = t.getT1();
+                    Item i0 = t.getT2();
+                    System.out.println("     :::: SAVE   CART....... ");
+                    Mono<Cart> cs = cartRepo.save(c0)
+                            .map(cx -> {
+                                System.out.println("   ----CXCX-----CX-  :: C CART WILL UPDATE " + cx);
+
+                                System.out.println("     :::: MODIFY ITEM....... ");
+                                Integer count = i0.getCount();
+                                i0.setCount(count + 1);
+                                i0.setCartId(cx.getId());
+                                i0.setOrderId(null);
+                                System.out.println("     :::: SAVE   ITEM....... ");
+                                itemRepo.save(i0)
+                                        .map(i -> {
+                                            System.out.println("   --- ITEM SAVED:  " + i);
+                                            return i;
+                                        })
+                                        .subscribe();
+
+
+                                return cx;
+                            });
+                    return cs;
+                }).flatMap(cx -> cx);
     }
 
     private Mono<Cart> updateItem(Cart ccc, Long itemId) {
