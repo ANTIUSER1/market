@@ -190,7 +190,7 @@ public class OrderServiceImpl implements TService<Order> {
 
     public void buyOrderOfUser(Long userId, Long orderId) {
         webClient.get()
-                .uri(VITRO_ORDER_API + "/buystart /" + userId + "/" + orderId)
+                .uri(VITRO_ORDER_API + "/buy/" + userId + "/" + orderId)
                 .retrieve().bodyToMono(Order.class);
 
 

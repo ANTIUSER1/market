@@ -68,4 +68,12 @@ public class OrderRest {
     }
 
 
+    @GetMapping("/buy/{userId}/{orderId}")
+    public void buyOrderOfUser(
+            @PathVariable("orderId") Long orderId,
+            @PathVariable("userId") Long userId) {
+        orderService.buyOrderOfUser(userId, orderId);
+    }
+
+
 }
