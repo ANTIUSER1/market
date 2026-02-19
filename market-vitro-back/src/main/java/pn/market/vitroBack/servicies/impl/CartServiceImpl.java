@@ -12,6 +12,8 @@ import pn.market.vitroBack.repo.ItemRepo;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @Service
 public class CartServiceImpl implements TService<Cart> {
 
@@ -57,6 +59,17 @@ public class CartServiceImpl implements TService<Cart> {
     }
 
     public Mono<Cart> createNewCartOfUser(Long itemId, Long userId) {
+        Mono<Cart> cartMono = searchCorrectCart(itemId, userId);
+
+        System.out.println("  add-item-to-cart-of-useradd-item-to-cart-of-user-  " + userId);
+
+        Mono<Item> itemMono = itemRepo.findById(itemId);
+        cartMono = updateItem(cartMono, itemMono);
+        return cartMono;
+    }
+
+    private Mono<Cart> searchCorrectCart(Long itemId, Long userId) {
+        Mono<List<Cart>> cartListMono = cartRepo.findByUserId(userId).collectList();
         Mono<Cart> cartMono = itemRepo.findById(itemId)
                 .map(i -> {
 
@@ -74,11 +87,15 @@ public class CartServiceImpl implements TService<Cart> {
                             });
                     return c;
                 }).flatMap(c0 -> c0);
-        System.out.println("  add-item-to-cart-of-useradd-item-to-cart-of-user-  " + userId);
 
-        Mono<Item> itemMono = itemRepo.findById(itemId);
-        cartMono = updateItem(cartMono, itemMono);
-        return cartMono;
+        Mono<Cart> cartMonoResult = Mono.zip(cartMono, cartListMono)
+                .map(t -> {
+                    Cart c1 = t.getT1();
+                    List<Cart> cartList = t.getT2();
+                    if (cartList.isEmpty()) return c1;
+                    return cartList.get(0);
+                });
+        return cartMonoResult;
     }
 
     public Mono<Item> removeFromCartOfUser(Long itemId, Long userId) {
@@ -92,7 +109,7 @@ public class CartServiceImpl implements TService<Cart> {
                     Integer count = i.getCount();
                     i.setCount(count - 1);
                     i.setCartId(null);
-                    i.setOrderId(null);
+                    if (i.getCount() == 0) i.setOrderId(null);
                     return itemRepo.save(i);
                 }).flatMap(ii -> ii);
         return Mono.zip(cartMono, itemMono)
