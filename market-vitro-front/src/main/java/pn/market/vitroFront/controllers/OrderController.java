@@ -45,13 +45,13 @@ public class OrderController {
         return r;
     }
 
-    @GetMapping("/{orderId}/{itemId}")
+    @GetMapping("/save/{orderId}/{itemId}")
     public Mono<Rendering> getOrderById(
             @PathVariable("orderId") Long orderId,
             @PathVariable("itemId") Long itemId) {
 
         Long userId = loginService.getUserData().getId();
-        Mono<Order> order = orderService.showCompleteOrderOfUserById(userId, orderId, itemId);
+        Mono<Order> order = orderService.saveCompleteOrderOfUserById(userId, orderId, itemId);
 
         Mono<Rendering> r =
                 Mono.just(Rendering.view("order")

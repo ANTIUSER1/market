@@ -147,7 +147,19 @@ public class OrderServiceImpl implements TService<Order> {
         return orderMono;
     }
 
-    public Mono<Order> showCompleteOrderOfUserById(Long userId, Long orderId, Long itemId) {
-        return Mono.empty();
+    public Mono<Order> saveCompleteOrderOfUserById(Long userId, Long orderId, Long itemId) {
+        Order order = new Order();
+        order.setUserId(userId);
+        Mono<Order> orderMono = save(order)
+                .map(od -> {
+                    itemService.getById(itemId)
+                            .map(i -> {
+                                i.setOrderId(od.getId());
+                                i.setCartId(null);
+                                return i;
+                            }).subscribe();
+                    return od;
+                });
+        return orderMono;
     }
 }
