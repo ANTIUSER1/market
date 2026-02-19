@@ -62,7 +62,7 @@ public class OrderRest {
 
     @GetMapping("/show/{userId}/{orderId}")
     public Mono<Order> showOderOfUser(
-            @PathVariable("itemId") Long orderId,
+            @PathVariable("orderId") Long orderId,
             @PathVariable("userId") Long userId) {
         return orderService.showOderOfUser(userId, orderId);
     }
