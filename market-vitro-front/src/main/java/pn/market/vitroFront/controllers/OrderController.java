@@ -78,6 +78,4 @@ public class OrderController {
         orderService.buyOrder(orderId);
         return "redirect:/orders";
     }
-
-
 }

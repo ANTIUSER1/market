@@ -25,6 +25,9 @@ public class UserData implements UserDetails {
     private String password;
     @Setter
     private String authority;
+    @Getter
+    @Setter
+    private Long userId;
 
     public UserData() {
     }
@@ -34,7 +37,6 @@ public class UserData implements UserDetails {
         this.password = password;
         this.authority = authority;
     }
-
 
     @NullMarked
     @Override

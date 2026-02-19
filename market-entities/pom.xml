@@ -46,7 +46,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
-        
+
         <!--   DB BLOCK  -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -75,6 +75,8 @@
                             <artifactId>lombok</artifactId>
                         </path>
                     </annotationProcessorPaths>
+                    <source>21</source>
+                    <target>21</target>
                     market-entities
                 </configuration>
             </plugin>
