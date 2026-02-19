@@ -56,7 +56,6 @@ public class CartServiceImpl implements TService<Cart> {
         return result;
     }
 
-
     public Mono<Cart> createNewCartOfUser(Long itemId, Long userId) {
         Mono<Cart> cartMono = itemRepo.findById(itemId)
                 .map(i -> {
@@ -74,36 +73,11 @@ public class CartServiceImpl implements TService<Cart> {
                             });
                     return c;
                 }).flatMap(c0 -> c0);
-
         System.out.println("  add-item-to-cart-of-useradd-item-to-cart-of-user-  " + userId);
 
         Mono<Item> itemMono = itemRepo.findById(itemId);
-
-        cartMono = updateItem1(cartMono, itemMono);
-        /*
-        cartMono = cartMono
-                .map(c -> {
-                    cartRepo.save(c)
-                            .map(cx -> {
-                                System.out.println("   ----CXCX-----CX-  :: C CART WILL UPDATE " + cx);
-                                return cx;
-                            }).subscribe();
-                    System.out.println("   ----------  :: C CART WILL UPDATE " + c);
-                    return updateItem(c, itemId);
-                }).flatMap(cc -> cc);
-
-
-   */
-
-
+        cartMono = updateItem(cartMono, itemMono);
         return cartMono;
-
-
-//        return cartRepo.save(c).map(
-//                ccc -> {
-//                    return updateItem(ccc, itemId);
-//                }
-//        ).flatMap(cc -> cc);
     }
 
     public Mono<Item> removeFromCartOfUser(Long itemId, Long userId) {
@@ -128,7 +102,7 @@ public class CartServiceImpl implements TService<Cart> {
                 });
     }
 
-    private Mono<Cart> updateItem1(Mono<Cart> ccc, Mono<Item> iii) {
+    private Mono<Cart> updateItem(Mono<Cart> ccc, Mono<Item> iii) {
         return Mono.zip(ccc, iii)
                 .map(t -> {
                     Cart c0 = t.getT1();
@@ -157,7 +131,7 @@ public class CartServiceImpl implements TService<Cart> {
                     return cs;
                 }).flatMap(cx -> cx);
     }
-
+/*
     private Mono<Cart> updateItem(Cart ccc, Long itemId) {
         return itemRepo.findById(itemId)
                 .map(i -> {
@@ -170,6 +144,8 @@ public class CartServiceImpl implements TService<Cart> {
                     return ccc;
                 });
     }
+
+ */
 
     public Flux<Cart> getByUser(Long user) {
         return cartRepo.findByUserId(user);
