@@ -26,6 +26,8 @@ public class UserData implements UserDetails {
     @Setter
     private String authority;
 
+    private Long money;
+
     public UserData() {
     }
 
