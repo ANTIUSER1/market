@@ -3,7 +3,6 @@ package pn.market.market_entities.forWEB;
 //import jakarta.persistence.*;
 
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -25,9 +24,6 @@ public class Cart implements Comparable<Cart> {
     @Getter
     private Long id;
 
-    @Getter
-    @Setter
-    private long userId;
 
     public Cart() {
         items = new TreeSet<>();

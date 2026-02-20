@@ -19,13 +19,17 @@ import java.util.stream.Collectors;
 @Table("user_data")
 public class UserData implements UserDetails {
 
-    private final Long money;
     @Id
     private Long id;
     private String username;
     private String password;
     @Setter
     private String authority;
+
+    private final Long money;
+
+    private long cartId;
+    private long userId;
 
     public UserData() {
         this.money = 10_000_000L;
