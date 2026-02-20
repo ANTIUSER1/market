@@ -100,14 +100,13 @@ public class ItemServiceImpl implements TService<Item> {
                 .map(i -> {
                     System.out.println("   SUM COUNT!!!   " + i);
                     return i.stream()
-                            .mapToLong(it -> it.getPrice() * it.getCount()).sum();
+                            .mapToLong(it -> it.getPrice() * 100000).sum();
                 });
     }
 
     public Mono<Item> plusForMono(Item item, long cartId) {
-        System.out.println("BEFORE " + item.getCount());
-        item.plusCount(cartId);
-        System.out.println("AFTER_PLUS " + item.getCount());
+        System.out.println("-----BEFORE -----");
+
         return itemRepo.save(item);//.flatMap(i -> itemRepo.findById(i.getId())).log();
     }
 
@@ -166,15 +165,15 @@ public class ItemServiceImpl implements TService<Item> {
     }
 
     public Mono<Item> minusForMono(Item item) {
-        item.minusCount();
         return itemRepo.save(item);
     }
 
 
     public Flux<Item> getItemsByCartDataFromMonoToFlux(Mono<Item> itemMono) {
-        return itemMono.map(i -> {
-            return this.getItemsByCartIdToFlux(i.getCartId());
-        }).flatMapMany(f -> f);
+        return Flux.empty();
+//        return itemMono.map(i -> {
+//            return this.getItemsByCartIdToFlux(i.getCartId());
+//        }).flatMapMany(f -> f);
     }
 
     public Flux<Item> getItemsByCartDataFromMonoToFlux(long cartId) {
@@ -186,9 +185,6 @@ public class ItemServiceImpl implements TService<Item> {
                 .map(items -> {
                     for (Item item : items) {
                         System.out.println("    remove order links in item: " + item);
-                        item.setCartId(null);
-                        item.setOrderId(null);
-                        item.setCount(0);
                         itemRepo.save(item)
                                 .map(
                                         i -> {
@@ -212,7 +208,6 @@ public class ItemServiceImpl implements TService<Item> {
     public Flux<Item> removeItemsFromOrderId(Long orderId) {
         Flux<Item> itemFlux = itemRepo.findByOrderId(orderId)
                 .map(ii -> {
-                    ii.setOrderId(null);
                     return Mono.just(ii);
                 }).flatMap(i -> i);
         return itemRepo.saveAll(itemFlux);

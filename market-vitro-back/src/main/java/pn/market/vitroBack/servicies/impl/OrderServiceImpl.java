@@ -84,8 +84,6 @@ public class OrderServiceImpl implements TService<Order> {
                             .map(i -> {
                                 System.out.println(" ++++++++ ITEM  " + itemId + "   UPDATE ");
 
-                                i.setCartId(null);
-                                i.setOrderId(o.getId());
                                 System.out.println("  OOOO " + o);
                                 itemService.save(i).subscribe();
                                 return o;
@@ -121,9 +119,6 @@ public class OrderServiceImpl implements TService<Order> {
                     System.out.println("  EXISTING--OOOO " + o);
 
                     System.out.println("  START ITEM-UPDATE:  " + i);
-                    i.setCartId(null);
-                    i.setCount(0);
-                    i.setOrderId(o.getId());
                     System.out.println("   FINISH ITEM-UPDATE:  " + i);
                     System.out.println("   SAVE   ITEM-UPDATE:  " + i);
                     itemService.save(i).subscribe();
@@ -150,9 +145,6 @@ public class OrderServiceImpl implements TService<Order> {
         System.out.println("   -----PROCESS    BUY ORDER OF USER: --: ORDER: " + orderId + "  USER:  " + userId);
         itemService.getItemsByOrderId(orderId)
                 .map(i -> {
-                    i.setOrderId(null);
-                    i.setCartId(null);
-                    i.setCount(0);
                     itemService.save(i)
                             .subscribe();
                     return i;

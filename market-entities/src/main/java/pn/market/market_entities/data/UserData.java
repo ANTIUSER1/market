@@ -23,6 +23,7 @@ public class UserData implements UserDetails {
     private Long id;
     private String username;
     private String password;
+
     @Setter
     private String authority;
 
@@ -33,7 +34,7 @@ public class UserData implements UserDetails {
     private Long cartId;
 
     @Setter
-    private Long userId;
+    private Long orderId;
 
     public UserData() {
         this.money = 10_000_000L;

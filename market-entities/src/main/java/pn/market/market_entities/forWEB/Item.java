@@ -18,11 +18,6 @@ public class Item implements Comparable<Item> {
     private String description;
     private String imgPath;
     private Long price;
-    private Integer count;
-
-
-    private Long cartId;
-    private Long orderId;
 
 
     public Long getId() {
@@ -65,54 +60,7 @@ public class Item implements Comparable<Item> {
         this.price = price;
     }
 
-    public Integer getCount() {
-        if (count == null) count = 0;
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count = count;
-    }
-
-    public void plusCount(long cartId) {
-        if (count == null) count = 0;
-        count++;
-        this.cartId = cartId;
-    }
-
-    public void minusCount() {
-        if (count > 0) count--;
-        if (count == 0) {
-            this.cartId = null;
-        }
-    }
-
-
-    public Long getCartId() {
-        return cartId;
-    }
-
-    public void setCartId(Long cartId) {
-        if (cartId == null) {
-            this.cartId = null;
-            return;
-        }
-        this.cartId = cartId;
-    }
-
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        if (orderId == null) {
-            this.orderId = null;
-            return;
-        }
-        this.orderId = orderId;
-    }
-
-
+ 
     @Override
     public int compareTo(Item o) {
         return (int) (this.id - o.getId());

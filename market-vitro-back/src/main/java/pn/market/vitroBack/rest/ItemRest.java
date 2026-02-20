@@ -37,8 +37,6 @@ public class ItemRest {
             @PathVariable("itemId") Long itemId) {
         return itemService.findById(itemId)
                 .map(i -> {
-                    i.setOrderId(orderId);
-                    i.setCartId(null);
                     return itemService.save(i);
                 }).flatMap(i -> i);
     }

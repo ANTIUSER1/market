@@ -60,7 +60,7 @@ public class Order {
 
     public long totalSumm() {
         return items.stream().mapToLong(
-                i -> i.getPrice() * i.getCount()
+                i -> i.getPrice()
         ).sum();
     }
 

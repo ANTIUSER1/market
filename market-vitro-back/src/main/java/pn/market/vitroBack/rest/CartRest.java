@@ -23,7 +23,7 @@ public class CartRest {
             @PathVariable("itemId") Long itemId,
             @PathVariable("userId") Long userId
     ) {
-        return cartService.createNewCartOfUser(itemId, userId);
+        return cartService.createOrUseCartOfUser(itemId, userId);
     }
 
     @GetMapping("/remove/{userId}/{itemId}")

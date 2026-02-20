@@ -32,20 +32,6 @@ public class CartController {
     @Autowired
     private LoginService loginService;
 
-    @GetMapping("/{cartId}")
-    public Mono<Rendering> itemsInCart(
-            @PathVariable("cartId") long cartId) {
-        itemService.getItemsByCartDataFromMonoToFlux(cartId);
-        Flux<Item> itemsFlux = itemService.getItemsByCartDataFromMonoToFlux(cartId);
-        Mono<Long> total = itemService.getTotalSum(itemsFlux);
-        Mono<Rendering> r =
-                Mono.just(Rendering.view("cart")
-                        .modelAttribute("items", itemsFlux)
-                        .modelAttribute("total", total)
-                        .build());
-        return r;
-    }
-
     //************* add roles ***
     @GetMapping("/{cartId}")
     public Mono<Rendering> itemsList(@PathVariable("cartId") long cartId) {
@@ -92,8 +78,11 @@ public class CartController {
         Mono<Cart> cartMono = webClient.get()
                 .uri(VITRO_CART_API + "/create/" + userId + "/" + itemId)
                 .retrieve().bodyToMono(Cart.class);
+//        System.out.println("   CM ID " + cm.getId());
 //        return Mono.just("redirect:/cart/" + cid);
-        return cartMono.map(cm -> "redirect:/cart/" + cm.getId());
+//        return cartMono.map(cm -> "redirect:/cart/" + cm.getId());
+        cartMono.subscribe(cm -> System.out.println("redirect:/cart/" + cm.getId()));
+        return Mono.just("/items");
     }
 /*
     @GetMapping("/items")
