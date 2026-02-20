@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @Table("user_data")
 public class UserData implements UserDetails {
 
+    private final Long money;
     @Id
     private Long id;
     private String username;
@@ -26,12 +27,12 @@ public class UserData implements UserDetails {
     @Setter
     private String authority;
 
-    private Long money;
-
     public UserData() {
+        this.money = 10_000_000L;
     }
 
     public UserData(String username, String password, String authority) {
+        this();
         this.username = username;
         this.password = password;
         this.authority = authority;
