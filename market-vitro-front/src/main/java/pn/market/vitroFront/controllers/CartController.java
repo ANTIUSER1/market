@@ -32,6 +32,20 @@ public class CartController {
     @Autowired
     private LoginService loginService;
 
+    @GetMapping("/{cartId}")
+    public Mono<Rendering> itemsInCart(
+            @PathVariable("cartId") long cartId) {
+        itemService.getItemsByCartDataFromMonoToFlux(cartId);
+        Flux<Item> itemsFlux = itemService.getItemsByCartDataFromMonoToFlux(cartId);
+        Mono<Long> total = itemService.getTotalSum(itemsFlux);
+        Mono<Rendering> r =
+                Mono.just(Rendering.view("cart")
+                        .modelAttribute("items", itemsFlux)
+                        .modelAttribute("total", total)
+                        .build());
+        return r;
+    }
+
     //************* add roles ***
     @GetMapping("/{cartId}")
     public Mono<Rendering> itemsList(@PathVariable("cartId") long cartId) {

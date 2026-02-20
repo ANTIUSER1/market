@@ -5,14 +5,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pn.market.market_entities.Paging;
 import pn.market.market_entities.TService;
+import pn.market.market_entities.data.UserData;
 import pn.market.market_entities.forWEB.Cart;
 import pn.market.market_entities.forWEB.Item;
 import pn.market.vitroBack.repo.CartRepo;
 import pn.market.vitroBack.repo.ItemRepo;
+import pn.market.vitroBack.repo.UserDataRepo;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
 
 @Service
 public class CartServiceImpl implements TService<Cart> {
@@ -25,6 +25,8 @@ public class CartServiceImpl implements TService<Cart> {
     @Autowired
     private ItemRepo itemRepo;
 
+    @Autowired
+    private UserDataRepo userDataRepo;
 
     @Override
     public Flux<Cart> findAll() {
@@ -59,29 +61,55 @@ public class CartServiceImpl implements TService<Cart> {
     }
 
     public Mono<Cart> createNewCartOfUser(Long itemId, Long userId) {
-        Mono<Cart> cartMono = searchCorrectCart(itemId, userId);
+        Mono<Cart> cartMono =
+                searchCorrectCart(itemId, userId)
+                        .map(c -> {
+                            return cartRepo.save(c);
+                        }).flatMap(c -> c);
+        return cartMono.map(c -> {
+            itemRepo.findById(itemId).subscribe(i -> i.setCartId(c.getId()));
+            //  .map(i -> i.setCartId(c.getId())).subscribe();
+            return c;
+        });
+        /*
+
 
         System.out.println("  add-item-to-cart-of-useradd-item-to-cart-of-user-  " + userId);
 
         Mono<Item> itemMono = itemRepo.findById(itemId);
         cartMono = updateItem(cartMono, itemMono);
         return cartMono;
+
+         */
+        // return Mono.empty();
     }
 
     private Mono<Cart> searchCorrectCart(Long itemId, Long userId) {
+        Mono<UserData> userDataMono = userDataRepo.findById(userId);
+        Mono<Cart> cartMono = userDataMono.map(u -> {
+            Mono<Cart> c;
+            if (u.getCartId() == null) {
+                c = Mono.just(new Cart());
+            } else {
+                c = cartRepo.findById(u.getCartId());
+            }
+            return c;
+        }).flatMap(cs -> cs);
+
+        /*
         Mono<List<Cart>> cartListMono = cartRepo.findByUserId(userId).collectList();
         Mono<Cart> cartMono = itemRepo.findById(itemId)
                 .map(i -> {
 
                     if (i.getCartId() == null) {
                         Cart c = new Cart();
-                        c.setUserId(userId);
+                        //    c.setUserId(userId);
                         System.out.println("++*** NEW C " + c);
                         return Mono.just(c);
                     }
                     Mono<Cart> c = cartRepo.findById(i.getCartId())
                             .map(cc0 -> {
-                                cc0.setUserId(userId);
+                                //    cc0.setUserId(userId);
                                 System.out.println(":::::::+++++:: CC0 " + cc0);
                                 return cc0;
                             });
@@ -96,6 +124,9 @@ public class CartServiceImpl implements TService<Cart> {
                     return cartList.get(0);
                 });
         return cartMonoResult;
+
+         */
+        return Mono.empty();
     }
 
     public Mono<Item> removeFromCartOfUser(Long itemId, Long userId) {
@@ -166,7 +197,8 @@ public class CartServiceImpl implements TService<Cart> {
  */
 
     public Flux<Cart> getByUser(Long user) {
-        return cartRepo.findByUserId(user);
+        return Flux.empty();
+        //cartRepo.findByUserId(user);
     }
 
 }

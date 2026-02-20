@@ -26,10 +26,14 @@ public class UserData implements UserDetails {
     @Setter
     private String authority;
 
-    private final Long money;
+    @Setter
+    private Long money;
 
-    private long cartId;
-    private long userId;
+    @Setter
+    private Long cartId;
+
+    @Setter
+    private Long userId;
 
     public UserData() {
         this.money = 10_000_000L;

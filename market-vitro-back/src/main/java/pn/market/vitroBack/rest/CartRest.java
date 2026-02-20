@@ -17,13 +17,6 @@ public class CartRest {
     @Autowired
     private CartServiceImpl cartService;
 
-    @GetMapping("/create/{itemId}")
-    public Mono<Cart> createCart(
-            @PathVariable("itemId") Long itemId
-
-    ) {
-        return cartService.createNewCart(itemId);
-    }
 
     @GetMapping("/create/{userId}/{itemId}")
     public Mono<Cart> createCartOfUser(
