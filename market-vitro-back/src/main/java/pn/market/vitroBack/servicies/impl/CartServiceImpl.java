@@ -69,32 +69,6 @@ public class CartServiceImpl implements TService<Cart> {
         Mono<UserData> userDataMono = userDataRepo.findById(userId);
         cartMono = updateByUserData(cartMono, userDataMono);
         cartMono = createAndSaveCartsItemsData(cartMono, itemId);
-        Mono<List<CartItems>> cartItemsList = getCartItems(cartMono);
-        cartMono = Mono.zip(cartMono, cartItemsList)
-                .map(t -> {
-                    Cart cc = t.getT1();
-                    List<CartItems> cml = t.getT2();
-                    System.out.println("===+++++ cc-size " + cc.getItems().size());
-                    //     System.out.println("      :::::::::::CCML  " + cml);
-                    for (CartItems cm : cml) {
-                        //   System.out.println("@@@ CM " + cm);
-                        itemRepo.findById(cm.getItemId())
-                                .subscribe(
-                                        i -> {
-                                            //      System.out.println(" II " + i);
-                                            if (i.getId() == itemId) {
-                                                i.increaseCount();
-
-                                                cc.getItems().add(i);
-                                                itemRepo.save(i).subscribe();
-                                            }
-                                        });
-                    }
-                    cartRepo.save(cc).subscribe(c0 -> {
-                        System.out.println("SIZE::: " + c0.getItems().size());
-                    });
-                    return cc;
-                });
 
         return cartMono;
     }
