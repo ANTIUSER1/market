@@ -18,7 +18,7 @@ public class Item implements Comparable<Item> {
     private String description;
     private String imgPath;
     private Long price;
-
+    private Long count;
 
     public Long getId() {
         return id;
@@ -60,7 +60,18 @@ public class Item implements Comparable<Item> {
         this.price = price;
     }
 
- 
+    public Long getCount() {
+        return count;
+    }
+
+    public void increaseCount() {
+        count++;
+    }
+
+    public void decreaseCount() {
+        count--;
+    }
+
     @Override
     public int compareTo(Item o) {
         return (int) (this.id - o.getId());
