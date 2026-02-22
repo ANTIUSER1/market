@@ -51,6 +51,8 @@ public class CartServiceImpl implements TService<Cart> {
                     Mono<Cart> cartM = Mono.just(t.getT1());
                     Flux<CartItems> cartItemsFlux = t.getT2();
                     Flux<Item> itemFlux = cartUtilityService.cartItemsFluxToItemFlux(cartItemsFlux);
+
+
                     cartM = Mono.zip(cartM, itemFlux.collectList())
                             .map(t1 -> {
                                 Cart c1 = t1.getT1();

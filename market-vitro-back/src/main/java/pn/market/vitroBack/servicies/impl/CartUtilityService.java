@@ -13,6 +13,8 @@ import pn.market.vitroBack.repo.UserDataRepo;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
+
 @Service
 public class CartUtilityService {
 
@@ -33,6 +35,32 @@ public class CartUtilityService {
     public Flux<Item> cartItemsFluxToItemFlux(Flux<CartItems> cartItemsFlux) {
         Flux<Mono<Item>> fmit = cartItemsFlux.map(ff -> {
             Mono<Item> ii = itemRepo.findById(ff.getItemId());
+            ii = Mono.zip(ii, cartItemsFlux.collectList())
+                    .map(t -> {
+                                Item im = t.getT1();
+                                List<CartItems> cartItemsList = t.getT2();
+                                System.out.println("  SIZEE  OF LIST  " + cartItemsList.size() + " EMPTY  " + cartItemsList.isEmpty());
+                                if (!cartItemsList.isEmpty()) {
+                                    CartItems ci = cartItemsList.get(0);
+                                    System.out.println("   CART ID ----   " + ci.getCartId());
+                                    Mono<Long> longMono = countOfCartAndItemIdId(im.getId(), ci.getCartId());
+                                    Mono<Item> itemMono = Mono.zip(Mono.just(im), longMono)
+                                            .map(t1 -> {
+                                                Item i = t1.getT1();
+                                                Long count = t1.getT2();
+                                                System.out.println(i.getId() + "     MONO  LONG--     COUNT: " + count);
+                                                i.setCount(count);
+                                                return i;
+                                            });
+                                    itemMono.subscribe();
+                                }
+
+                                //   System.out.println(" CI ID " + ci.getItemId() + " ITEM ID " + im.getId() + "   EQ  " + (ci.getItemId() == im.getId()));
+                                System.out.println(im);
+                                System.out.println(" \n******************\n    ");
+                                return im;
+                            }
+                    );
             return ii;
         });
         Flux<Item> result = fmit.flatMap(fk -> fk);
@@ -80,7 +108,7 @@ public class CartUtilityService {
         return userDataRepo.save(u);
     }
 
-    public Flux<CartItems> findByCartAndItemIdId(Long itemId, Long cartId) {
-        return cartItemsRepo.findByCartAndItemIdId(itemId, cartId);
+    public Mono<Long> countOfCartAndItemIdId(Long itemId, Long cartId) {
+        return cartItemsRepo.countOfCartAndItemIdId(itemId, cartId);
     }
 }

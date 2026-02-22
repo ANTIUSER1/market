@@ -18,6 +18,8 @@ public class Item implements Comparable<Item> {
     private String description;
     private String imgPath;
     private Long price;
+
+
     private Long count;
 
     public Long getId() {
@@ -62,6 +64,10 @@ public class Item implements Comparable<Item> {
 
     public Long getCount() {
         return count;
+    }
+
+    public void setCount(Long count) {
+        this.count = count;
     }
 
     public void increaseCount() {
