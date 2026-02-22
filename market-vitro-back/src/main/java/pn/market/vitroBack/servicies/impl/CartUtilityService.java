@@ -2,6 +2,7 @@ package pn.market.vitroBack.servicies.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pn.market.market_entities.data.UserData;
 import pn.market.market_entities.forWEB.Cart;
 import pn.market.market_entities.forWEB.CartItems;
 import pn.market.market_entities.forWEB.Item;
@@ -65,5 +66,17 @@ public class CartUtilityService {
 
     public Flux<CartItems> findByCartId(Long cartId) {
         return cartItemsRepo.findByCartId(cartId);
+    }
+
+    public Flux<Cart> findAllCarts() {
+        return cartRepo.findAll();
+    }
+
+    public Mono<UserData> findUserById(Long userId) {
+        return userDataRepo.findById(userId);
+    }
+
+    public Mono<UserData> saveUser(UserData u) {
+        return userDataRepo.save(u);
     }
 }

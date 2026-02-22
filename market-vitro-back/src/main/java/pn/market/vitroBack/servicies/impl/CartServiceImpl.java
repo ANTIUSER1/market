@@ -9,10 +9,6 @@ import pn.market.market_entities.data.UserData;
 import pn.market.market_entities.forWEB.Cart;
 import pn.market.market_entities.forWEB.CartItems;
 import pn.market.market_entities.forWEB.Item;
-import pn.market.vitroBack.repo.CartItemsRepo;
-import pn.market.vitroBack.repo.CartRepo;
-import pn.market.vitroBack.repo.ItemRepo;
-import pn.market.vitroBack.repo.UserDataRepo;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -23,24 +19,24 @@ import java.util.List;
 public class CartServiceImpl implements TService<Cart> {
 
 
-    @Autowired
-    private CartRepo cartRepo;
+//    @Autowired
+//    private CartRepo cartRepo;
 
-    @Autowired
-    private CartItemsRepo cartItemsRepo;
+//    @Autowired
+//    private CartItemsRepo cartItemsRepo;
 
-    @Autowired
-    private ItemRepo itemRepo;
+//    @Autowired
+//    private ItemRepo itemRepo;
 
-    @Autowired
-    private UserDataRepo userDataRepo;
+//    @Autowired
+//    private UserDataRepo userDataRepo;
 
     @Autowired
     private CartUtilityService cartUtilityService;
 
     @Override
     public Flux<Cart> findAll() {
-        return cartRepo.findAll();
+        return cartUtilityService.findAllCarts();
     }
 
     @Override
@@ -72,10 +68,10 @@ public class CartServiceImpl implements TService<Cart> {
         System.out.println("   ===::createNewCartOfUser:::IID  " + itemId + "   UID " + userId);
         System.out.println("  0  FFFFF   -TH :: " + Thread.currentThread());
         Mono<Cart> cartMono = cartUtilityService.createOrTestExistCart(userId);
-        Mono<UserData> userDataMono = userDataRepo.findById(userId);
+        Mono<UserData> userDataMono = cartUtilityService.findUserById(userId);
         Mono<Flux<CartItems>> cartItemsFlux0 = cartMono.map(c -> {
 //            return cartUtilityService.findByCartId(c.getId());
-            return cartItemsRepo.findByCartId(c.getId());
+            return cartUtilityService.findByCartId(c.getId());
         }).map(cv -> cv);
 
         Mono<Cart> cartMono0 = Mono.zip(cartMono, cartItemsFlux0)
@@ -133,7 +129,7 @@ public class CartServiceImpl implements TService<Cart> {
 //        });
 //    }
 
-
+/*
     private Mono<Cart> updateByUserData(Mono<Cart> cartMono, Mono<UserData> userDataMono) {
         return Mono.zip(cartMono, userDataMono)
                 .map(t -> {
@@ -141,10 +137,12 @@ public class CartServiceImpl implements TService<Cart> {
                     Cart c = t.getT1();
                     UserData u = t.getT2();
                     u.setCartId(c.getId());
-                    userDataRepo.save(u).subscribe();
+                    cartUtilityService.saveUser(u).subscribe();
                     return c;
                 });
     }
+
+ */
 
     //-------------------------
 //    private Mono<Cart> createOrTestExistCart(Long userId) {
