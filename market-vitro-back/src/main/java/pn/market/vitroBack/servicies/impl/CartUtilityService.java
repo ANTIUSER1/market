@@ -79,4 +79,8 @@ public class CartUtilityService {
     public Mono<UserData> saveUser(UserData u) {
         return userDataRepo.save(u);
     }
+
+    public Flux<CartItems> findByCartAndItemIdId(Long itemId, Long cartId) {
+        return cartItemsRepo.findByCartAndItemIdId(itemId, cartId);
+    }
 }
