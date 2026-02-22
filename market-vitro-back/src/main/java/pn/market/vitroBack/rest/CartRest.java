@@ -1,10 +1,7 @@
 package pn.market.vitroBack.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pn.market.market_entities.forWEB.Cart;
 import pn.market.market_entities.forWEB.Item;
 import pn.market.vitroBack.servicies.impl.CartServiceImpl;
@@ -21,9 +18,10 @@ public class CartRest {
     @GetMapping("/create/{userId}/{itemId}")
     public Mono<Cart> createCartOfUser(
             @PathVariable("itemId") Long itemId,
-            @PathVariable("userId") Long userId
+            @PathVariable("userId") Long userId,
+            @RequestParam("u") boolean u
     ) {
-        return cartService.createOrUseCartOfUser(itemId, userId);
+        return cartService.createOrUseCartOfUser(itemId, userId, u);
     }
 
     @GetMapping("/remove/{userId}/{itemId}")

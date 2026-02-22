@@ -9,4 +9,7 @@ public interface CartItemsRepo extends ReactiveCrudRepository<CartItems, Long> {
 
     @Query("SELECT * FROM carts_items ci WHERE ci.cart_id = $1    ")
     Flux<CartItems> findByCartId(Long cartId);
+
+    @Query("SELECT * FROM carts_items ci WHERE ci.item_id = $1 AND  ci.cart_id = $2    ")
+    Flux<CartItems> findByCartAndItemIdId(Long itemId, Long cartId);
 }

@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -33,6 +34,10 @@ public class Cart implements Comparable<Cart> {
 
     public Integer getCount() {
         return items.size();
+    }
+
+    public void addItemsSet(List<Item> itemsList) {
+        items.addAll(itemsList);
     }
 
     public long getTotalSumm() {
