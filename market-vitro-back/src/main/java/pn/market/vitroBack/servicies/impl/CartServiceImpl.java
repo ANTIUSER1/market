@@ -95,28 +95,6 @@ public class CartServiceImpl implements TService<Cart> {
             }
         });
 
-
-
-/*
-        Flux<CartItems> cartItemsFlux = cartItemsRepo.findByCartId(176L);
-
-        Flux<Item> itemFlux = cartItemsFluxToItemFlux(cartItemsFlux);
-        Mono<Cart> cartMono1 = Mono.zip(cartMono, itemFlux.collectList())
-                .map(t -> {
-                    Cart cart = t.getT1();
-                    List<Item> itemsList = t.getT2();
-                    cart.addItemsSet(itemsList);
-                    return cart;
-                });
-        cartMono1.subscribe(cc -> {
-            System.out.println("\n---------------------------\n" + LocalDateTime.now() + "\n CI:\n");
-
-            for (Item i : cc.getItems()) {
-                System.out.println("   ---  ITEM :::  " + i);
-            }
-        });
-        */
-
         System.out.println("   --T  FFFFF   -TH -----1 :: " + Thread.currentThread());
         return cartMono;
     }
