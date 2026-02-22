@@ -68,15 +68,19 @@ public class CartUtilityService {
     }
 
     public Mono<Cart> createOrTestExistCart(Long userId) {
+        System.out.println( "    USER ID "+userId);
         return userDataRepo.findById(userId)
                 .map(u -> {
                     System.out.println("   ----C-TH :: " + Thread.currentThread());
+                    System.out.println( "    USER ID "+userId+ "   (u.getCartId() == null): "+(u.getCartId() == null) );
                     Mono<Cart> c;
                     if (u.getCartId() == null) {
+                        System.out.println( " CREATE   NEW CART ");
                         c = cartRepo.save(new Cart());
                     } else {
                         c = cartRepo.findById(u.getCartId());
                     }
+
                     return c;
                 }).flatMap(c -> c);
 
