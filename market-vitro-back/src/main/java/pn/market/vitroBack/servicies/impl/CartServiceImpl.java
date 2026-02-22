@@ -12,7 +12,6 @@ import pn.market.market_entities.forWEB.Item;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -47,8 +46,7 @@ public class CartServiceImpl implements TService<Cart> {
 //            return cartUtilityService.findByCartId(c.getId());
             return cartUtilityService.findByCartId(c.getId());
         }).map(cv -> cv);
-
-        Mono<Cart> cartMono0 = Mono.zip(cartMono, cartItemsFlux0)
+        cartMono = Mono.zip(cartMono, cartItemsFlux0)
                 .map(t -> {
                     Mono<Cart> cartM = Mono.just(t.getT1());
                     Flux<CartItems> cartItemsFlux = t.getT2();
@@ -62,13 +60,6 @@ public class CartServiceImpl implements TService<Cart> {
                             });
                     return cartM;
                 }).flatMap(mm -> mm);
-        cartMono0.subscribe(cc -> {
-            System.out.println("\n---------------------------\n" + LocalDateTime.now() + "\n CI:\n");
-
-            for (Item i : cc.getItems()) {
-                System.out.println("   -----cartMono0----  ITEM :::  " + i);
-            }
-        });
 
         System.out.println("   --T  FFFFF   -TH -----1 :: " + Thread.currentThread());
         return cartMono;
