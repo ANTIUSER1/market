@@ -77,7 +77,7 @@ public class CartServiceImpl implements TService<Cart> {
 
     public Mono<Item> removeFromCartOfUser(Long userId, Long itemId) {
         Mono<Item> itemMono=  cartUtilityService.removeFromCartOfUser(userId, itemId);
-        return Mono.empty();
+        return itemMono;
     }
 
 

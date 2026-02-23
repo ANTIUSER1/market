@@ -38,6 +38,7 @@ public class CartUtilityService {
                                             .map(t1 -> {
                                                 Item i = t1.getT1();
                                                 Long count = t1.getT2();
+                                                System.out.println("    PLUS COUNT VALUE "+count);
                                                 i.setCount(count);
                                                 cartControlUtilityService.saveItem(i).subscribe();
                                                 return i;
@@ -63,7 +64,8 @@ public class CartUtilityService {
                                 //cartRepo.save(new Cart())
                                 .map(ccc -> {
                                     u.setCartId(ccc.getId());
-                                    cartControlUtilityService.saveUser(u).subscribe();
+
+                                     cartControlUtilityService.saveUser(u).subscribe();
                                     return ccc;
                                 });
                     } else {
@@ -102,9 +104,9 @@ public class CartUtilityService {
 
         Mono<Item> result = cartRemoveUtilityService.removeItemFromCartOfUser(cartItemsListMono, itemMono,userId);
 
-        result.subscribe();
 
-        return Mono.empty();
+
+        return result;
     }
 
     private Mono<List<CartItems>> findCartItemsByUserId( Mono<Cart> cartMono, Long userId) {

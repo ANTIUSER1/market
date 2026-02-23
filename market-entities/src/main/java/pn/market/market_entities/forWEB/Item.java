@@ -70,13 +70,7 @@ public class Item implements Comparable<Item> {
         this.count = count;
     }
 
-    public void increaseCount() {
-        count++;
-    }
 
-    public void decreaseCount() {
-        count--;
-    }
 
     @Override
     public int compareTo(Item o) {
