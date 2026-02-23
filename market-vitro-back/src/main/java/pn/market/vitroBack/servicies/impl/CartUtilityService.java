@@ -15,6 +15,8 @@ public class CartUtilityService {
 
     @Autowired
     private CartControlUtilityService cartControlUtilityService;
+    @Autowired
+    private CartRemoveUtilityService cartRemoveUtilityService;
 
 
 
@@ -84,23 +86,46 @@ public class CartUtilityService {
 
 
     public Mono<Item> removeFromCartOfUser(Long userId, Long itemId) {
-       Mono<Cart> userDataMono= cartControlUtilityService.findUserById(userId)
+        System.out.println("           REMOVING ITEM  "+itemId +"  : USER :  "+userId);
+       Mono<Cart> cartMono= cartControlUtilityService.findUserById(userId)
                 .map(u->{
-                    Mono<Cart> c=cartControlUtilityService.findCartById(u.getCartId());
+                    System.out.println("REQUESTED USER:");
+                    Mono<Cart> c=cartControlUtilityService.findCartById(u.getCartId())
+                            .map(ccc->{
+                                System.out.println("CCCC "+ccc);
+                                return ccc;
+                            });
                     return  c;
                 }).flatMap(v->v);
-        Flux<CartItems> cartItemsFlux=findCartItemsByUserId(userId);
+        Mono<List<CartItems>> cartItemsListMono=findCartItemsByUserId(cartMono,userId);
+        Mono<Item> itemMono=cartControlUtilityService.findItemById(itemId);
+
+        Mono<Item> result = cartRemoveUtilityService.removeItemFromCartOfUser(cartItemsListMono, itemMono,userId);
+
+        result.subscribe();
 
         return Mono.empty();
     }
 
-
-
-
-
-
-
+    private Mono<List<CartItems>> findCartItemsByUserId( Mono<Cart> cartMono, Long userId) {
+        Mono<List<CartItems>> fci=cartMono.map(c-> {
+            Flux<CartItems> f = cartControlUtilityService.findCartItemsByCartId(c.getId()  );
+            return f.collectList();
+        } ).flatMap(v->v);
+        return fci;
+    }
 
 
 
 }
+
+
+
+
+
+
+
+
+
+
+

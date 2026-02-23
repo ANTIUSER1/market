@@ -74,4 +74,7 @@ public class CartControlUtilityService {
     }
 
 
+    public Mono<Void> deleteCartItemsById(Long ciID) {
+      return   cartItemsRepo.deleteById(ciID);
     }
+}
