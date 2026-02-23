@@ -94,33 +94,4 @@ public class CartUtilityService {
         ci.setItemId(itemId);
         return        cartItemsRepo.save(ci);
     }
-
-//    public Mono<Cart> createAndSaveCartsItemsData(Mono<Cart> cartMono, Long itemId, boolean u) {
-//        return cartMono.map(c -> {
-//            if (u) {
-//                CartItems cartItems = new CartItems(itemId, c.getId());
-//                cartItemsRepo.save(cartItems).subscribe();
-//            }
-//            return c;
-//        });
-//    }
-//    public Flux<CartItems> findCartItems(Long cartId ) {
-//       return cartItemsRepo.findByCartId(cartId);
-//    }
-//
-//    public Flux<Cart> findAllCarts() {
-//        return cartRepo.findAll();
-//    }
-//
-//    public Mono<UserData> findUserById(Long userId) {
-//        return userDataRepo.findById(userId);
-//    }
-//
-//    public Mono<UserData> saveUser(UserData u) {
-//        return userDataRepo.save(u);
-//    }
-//
-//    public Mono<Long> countOfCartAndItemIdId(Long itemId, Long cartId) {
-//        return cartItemsRepo.countOfCartAndItemIdId(itemId, cartId);
-//    }
 }
