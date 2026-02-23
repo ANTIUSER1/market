@@ -13,8 +13,6 @@ import pn.market.vitroBack.repo.UserDataRepo;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.Optional;
-
 @Service
 public class CartControlUtilityService {
 
@@ -38,11 +36,13 @@ public class CartControlUtilityService {
         return         itemRepo.save(i);
     }
 
-//    public Mono<UserData> findUserById(Long userId) {
-//        return userDataRepo.findById(userId);
-//    }
-    public Flux<CartItems> findCartItems(Long cartId) {
+
+    public Flux<CartItems> findCartItemsByCartId(Long cartId) {
         return cartItemsRepo.findByCartId(cartId);
+    }
+
+    public Flux<CartItems> findCartItemsByItemId(Long itemId) {
+        return cartItemsRepo.findByItemId(itemId);
     }
 
     public Flux<Cart> findAllCarts() {
@@ -70,12 +70,8 @@ public class CartControlUtilityService {
     }
 
     public Mono<Long> countOfCartAndItemIdId(Long itemId, Long cartId) {
-        return cartItemsRepo.countOfCartAndItemIdId(itemId, cartId);
+        return cartItemsRepo.countOfCartAndItemId(itemId, cartId);
     }
 
 
-//
-//    public Mono<Cart> saveCart(Cart cart) {
-//        return cartRepo.save(cart);
-//    }
     }
