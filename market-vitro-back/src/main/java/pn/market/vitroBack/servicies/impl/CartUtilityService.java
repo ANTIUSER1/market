@@ -33,6 +33,7 @@ public class CartUtilityService {
 
 
     public Flux<Item> cartItemsFluxToItemFlux(Flux<CartItems> cartItemsFlux) {
+        System.out.println("11111111111-RRRRRRRRRRRRRR");
         Flux<Mono<Item>> fmit = cartItemsFlux.map(ff -> {
             Mono<Item> ii = itemRepo.findById(ff.getItemId());
             ii = Mono.zip(ii, cartItemsFlux.collectList())
@@ -68,15 +69,20 @@ public class CartUtilityService {
     }
 
     public Mono<Cart> createOrTestExistCart(Long userId) {
-        System.out.println( "    USER ID "+userId);
+        System.out.println("    USER ID " + userId);
         return userDataRepo.findById(userId)
                 .map(u -> {
                     System.out.println("   ----C-TH :: " + Thread.currentThread());
-                    System.out.println( "    USER ID "+userId+ "   (u.getCartId() == null): "+(u.getCartId() == null) );
+                    System.out.println("    USER ID " + userId + "   (u.getCartId() == null): " + (u.getCartId() == null));
                     Mono<Cart> c;
                     if (u.getCartId() == null) {
-                        System.out.println( " CREATE   NEW CART ");
-                        c = cartRepo.save(new Cart());
+                        System.out.println(" CREATE   NEW CART ");
+                        c = cartRepo.save(new Cart())
+                                .map(ccc -> {
+                                    u.setCartId(ccc.getId());
+                                    userDataRepo.save(u).subscribe();
+                                    return ccc;
+                                });
                     } else {
                         c = cartRepo.findById(u.getCartId());
                     }
@@ -95,9 +101,15 @@ public class CartUtilityService {
             return c;
         });
     }
+    public Mono<CartItems> createAndSaveCartItems(Long cartId, Long itemId){
+        CartItems ci = new CartItems();
+        ci.setCartId(cartId);
+        ci.setItemId(itemId);
+        return        cartItemsRepo.save(ci);
+    }
 
-    public Flux<CartItems> findByCartId(Long cartId) {
-        return cartItemsRepo.findByCartId(cartId);
+    public Flux<CartItems> findCartItems(Long cartId ) {
+       return cartItemsRepo.findByCartId(cartId);
     }
 
     public Flux<Cart> findAllCarts() {

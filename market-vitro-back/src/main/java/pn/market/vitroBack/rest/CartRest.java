@@ -18,10 +18,9 @@ public class CartRest {
     @GetMapping("/create/{userId}/{itemId}")
     public Mono<Cart> createCartOfUser(
             @PathVariable("itemId") Long itemId,
-            @PathVariable("userId") Long userId,
-            @RequestParam("u") boolean u
+            @PathVariable("userId") Long userId
     ) {
-        return cartService.createOrUseCartOfUser(itemId, userId, u);
+        return cartService.createOrUseCartOfUser(itemId, userId);
     }
 
     @GetMapping("/remove/{userId}/{itemId}")
