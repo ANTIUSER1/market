@@ -14,6 +14,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Service
 public class CartUtilityService {
@@ -32,40 +34,43 @@ public class CartUtilityService {
     private UserDataRepo userDataRepo;
 
 
-    public Flux<Item> cartItemsFluxToItemFlux(Flux<CartItems> cartItemsFlux) {
-        System.out.println("11111111111-RRRRRRRRRRRRRR");
-        Flux<Mono<Item>> fmit = cartItemsFlux.map(ff -> {
+    public Flux<Item> cartItemsFluxToItemFlux(Flux<CartItems> cartItemsFlux, Long itemId) {
+
+        Mono<List<CartItems>> cartItemsMonoList =cartItemsFlux .collectList();
+         Flux<Mono<Item>> fmit = cartItemsFlux.map(ff -> {
             Mono<Item> ii = itemRepo.findById(ff.getItemId());
             ii = Mono.zip(ii, cartItemsFlux.collectList())
                     .map(t -> {
                                 Item im = t.getT1();
-                                List<CartItems> cartItemsList = t.getT2();
-                                System.out.println("  SIZEE  OF LIST  " + cartItemsList.size() + " EMPTY  " + cartItemsList.isEmpty());
-                                if (!cartItemsList.isEmpty()) {
+                                 List<CartItems> cartItemsList = t.getT2();          if (!cartItemsList.isEmpty()) {
                                     CartItems ci = cartItemsList.get(0);
-                                    System.out.println("   CART ID ----   " + ci.getCartId());
+//                                    System.out.println("   W  EXISTING CI "+ci);
+//                                    System.out.println("   CART ID ----   " + ci.getCartId());
                                     Mono<Long> longMono = countOfCartAndItemIdId(im.getId(), ci.getCartId());
+                            //  if(im.getId()==itemId){
                                     Mono<Item> itemMono = Mono.zip(Mono.just(im), longMono)
                                             .map(t1 -> {
                                                 Item i = t1.getT1();
                                                 Long count = t1.getT2();
-                                                System.out.println(i.getId() + "     MONO  LONG--     COUNT: " + count);
+                                              System.out.println(i.getId() + "     MONO  I--     COUNT: " + i);
+//                                                System.out.println(i.getId() + "     MONO  LONG--     COUNT: " + count);
                                                 i.setCount(count);
+                                                itemRepo.save(i);
                                                 return i;
                                             });
                                     itemMono.subscribe();
                                 }
-
-                                //   System.out.println(" CI ID " + ci.getItemId() + " ITEM ID " + im.getId() + "   EQ  " + (ci.getItemId() == im.getId()));
-                                System.out.println(im);
-                                System.out.println(" \n******************\n    ");
+                    //}
                                 return im;
                             }
                     );
             return ii;
         });
         Flux<Item> result = fmit.flatMap(fk -> fk);
-        return result;
+
+
+
+      return result;
     }
 
     public Mono<Cart> createOrTestExistCart(Long userId) {

@@ -38,12 +38,14 @@ public class CartServiceImpl implements TService<Cart> {
 
 
     public Mono<Cart> createOrUseCartOfUser(Long itemId, Long userId) {
+
+
+
           Mono<Cart> cartMono = cartUtilityService.createOrTestExistCart(userId);
        // Mono<UserData> userDataMono = cartUtilityService.findUserById(userId);
         Mono<CartItems>  cartItemsMono=cartMono.map(c->{
       return       cartUtilityService.createAndSaveCartItems( c.getId(), itemId)
               .map(cci->{
-                  System.out.println( ":::: CCI "+cci);
                   return cci;
               });
                 }).flatMap(cv -> cv);
@@ -54,31 +56,21 @@ public class CartServiceImpl implements TService<Cart> {
         }).map(n->{
             return cartUtilityService.findCartItems( n );
         });
-        /*
-        Mono<Flux<CartItems>> cartItemsFlux0 = cartMono.map(c -> {
-//            return cartUtilityService.findByCartId(c.getId());
-            return cartUtilityService.findCartItems(c.getId(), itemId);
-        }).map(cv -> cv);
-        */
+
         cartMono = Mono.zip(cartMono, cartItemsFlux0)
                 .map(t -> {
-                    System.out.println("   ----------- IN  ZIP ::::::::::");
                     Mono<Cart> cartM = Mono.just(t.getT1());
                     Flux<CartItems> cartItemsFlux = t.getT2();
-                    Flux<Item> itemFlux = cartUtilityService.cartItemsFluxToItemFlux(cartItemsFlux);
+                    Flux<Item> itemFlux = cartUtilityService.cartItemsFluxToItemFlux(cartItemsFlux, itemId);
                     cartM = Mono.zip(cartM, itemFlux.collectList())
                             .map(t1 -> {
                                 Cart c1 = t1.getT1();
                                 List<Item> itemsList = t1.getT2();
-                                System.out.println("      C-1----------   "+c1);
-                                System.out.println("      ILS----------   "+itemsList.size());
                                 c1.addItemsSet(itemsList);
                                 return c1;
                             });
                     return cartM;
                 }).flatMap(mm -> mm);
-
-        System.out.println("   --T  FFFFF   -TH -----1 :: " + Thread.currentThread());
         return cartMono;
     }
 

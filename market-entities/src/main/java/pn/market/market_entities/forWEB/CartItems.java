@@ -10,7 +10,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @ToString
 @NoArgsConstructor
 @Table(name = "carts_items", schema = "market")
-public class CartItems {
+public class CartItems  implements Comparable<CartItems>  {
 
 
     @Getter
@@ -27,4 +27,8 @@ public class CartItems {
         this.cartId = cartId;
     }
 
+    @Override
+    public int compareTo(CartItems o) {
+        return (int) (this.id-o.id);
+    }
 }
