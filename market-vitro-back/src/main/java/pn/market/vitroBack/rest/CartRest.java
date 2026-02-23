@@ -25,11 +25,11 @@ public class CartRest {
 
     @GetMapping("/remove/{userId}/{itemId}")
     public Mono<Item> removeCartOfUser(
-            @PathVariable("itemId") Long itemId,
-            @PathVariable("userId") Long userId
+            @PathVariable("userId") Long userId,
+                    @PathVariable("itemId") Long itemId
 
     ) {
-        return cartService.removeFromCartOfUser(itemId, userId);
+        return cartService.removeFromCartOfUser(  userId, itemId);
     }
 
 

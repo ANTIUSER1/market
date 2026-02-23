@@ -5,7 +5,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pn.market.market_entities.Paging;
 import pn.market.market_entities.TService;
-import pn.market.market_entities.data.UserData;
 import pn.market.market_entities.forWEB.Cart;
 import pn.market.market_entities.forWEB.CartItems;
 import pn.market.market_entities.forWEB.Item;
@@ -52,12 +51,11 @@ public class CartServiceImpl implements TService<Cart> {
                   return cci;
               });
                 }).flatMap(cv -> cv);
-       // cartItemsMono.subscribe();
 
         Mono<Flux<CartItems>> cartItemsFlux0 =cartItemsMono.map(ci->{
             return ci.getCartId();
         }).map(n->{
-            return cartControlUtilityService.findCartItems( n );
+            return cartControlUtilityService.findCartItemsByCartId( n );
         });
 
         cartMono = Mono.zip(cartMono, cartItemsFlux0)
@@ -77,7 +75,8 @@ public class CartServiceImpl implements TService<Cart> {
         return cartMono;
     }
 
-    public Mono<Item> removeFromCartOfUser(Long itemId, Long userId) {
+    public Mono<Item> removeFromCartOfUser(Long userId, Long itemId) {
+        Mono<Item> itemMono=  cartUtilityService.removeFromCartOfUser(userId, itemId);
         return Mono.empty();
     }
 

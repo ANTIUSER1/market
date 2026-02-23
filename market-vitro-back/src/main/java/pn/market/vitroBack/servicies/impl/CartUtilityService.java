@@ -5,8 +5,6 @@ import org.springframework.stereotype.Service;
 import pn.market.market_entities.forWEB.Cart;
 import pn.market.market_entities.forWEB.CartItems;
 import pn.market.market_entities.forWEB.Item;
-import pn.market.vitroBack.repo.CartItemsRepo;
-import pn.market.vitroBack.repo.UserDataRepo;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -83,4 +81,26 @@ public class CartUtilityService {
         return    cartControlUtilityService.saveCartItems(ci)  ;
                 //cartItemsRepo.save(ci);
     }
+
+
+    public Mono<Item> removeFromCartOfUser(Long userId, Long itemId) {
+       Mono<Cart> userDataMono= cartControlUtilityService.findUserById(userId)
+                .map(u->{
+                    Mono<Cart> c=cartControlUtilityService.findCartById(u.getCartId());
+                    return  c;
+                }).flatMap(v->v);
+        Flux<CartItems> cartItemsFlux=findCartItemsByUserId(userId);
+
+        return Mono.empty();
+    }
+
+
+
+
+
+
+
+
+
+
 }
