@@ -38,13 +38,16 @@ public class CartServiceImpl implements TService<Cart> {
 
 
     public Mono<Cart> createOrUseCartOfUser(Long itemId, Long userId) {
-        System.out.println("   ===::createNewCartOfUser:::IID  " + itemId + "   UID " + userId);
-        System.out.println("  0  FFFFF   -TH :: " + Thread.currentThread());
-        Mono<Cart> cartMono = cartUtilityService.createOrTestExistCart(userId);
-        Mono<UserData> userDataMono = cartUtilityService.findUserById(userId);
+          Mono<Cart> cartMono = cartUtilityService.createOrTestExistCart(userId);
+       // Mono<UserData> userDataMono = cartUtilityService.findUserById(userId);
         Mono<CartItems>  cartItemsMono=cartMono.map(c->{
-      return       cartUtilityService.createAndSaveCartItems( c.getId(), itemId);
-                }).flatMap(cv -> cv);;
+      return       cartUtilityService.createAndSaveCartItems( c.getId(), itemId)
+              .map(cci->{
+                  System.out.println( ":::: CCI "+cci);
+                  return cci;
+              });
+                }).flatMap(cv -> cv);
+       // cartItemsMono.subscribe();
 
         Mono<Flux<CartItems>> cartItemsFlux0 =cartItemsMono.map(ci->{
             return ci.getCartId();
