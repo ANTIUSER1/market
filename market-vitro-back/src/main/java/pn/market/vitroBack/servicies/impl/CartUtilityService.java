@@ -20,6 +20,9 @@ import java.util.TreeSet;
 @Service
 public class CartUtilityService {
 
+    @Autowired
+    private CartControlUtilityService cartControlUtilityService;
+
 
     @Autowired
     private ItemRepo itemRepo;
@@ -37,19 +40,21 @@ public class CartUtilityService {
     public Flux<Item> cartItemsFluxToItemFlux(Flux<CartItems> cartItemsFlux, Long itemId) {
         Mono<List<CartItems>> cartItemsMonoList =cartItemsFlux .collectList();
          Flux<Mono<Item>> fmit = cartItemsFlux.map(ff -> {
-            Mono<Item> ii = itemRepo.findById(ff.getItemId());
+            Mono<Item> ii = cartControlUtilityService.findItemById(ff.getItemId());
+
             ii = Mono.zip(ii, cartItemsFlux.collectList())
                     .map(t -> {
                                 Item im = t.getT1();
-                                 List<CartItems> cartItemsList = t.getT2();          if (!cartItemsList.isEmpty()) {
+                                 List<CartItems> cartItemsList = t.getT2();
+                                 if (!cartItemsList.isEmpty()) {
                                     CartItems ci = cartItemsList.get(0);
-                                    Mono<Long> longMono = countOfCartAndItemIdId(im.getId(), ci.getCartId());
+                                    Mono<Long> longMono = cartControlUtilityService.countOfCartAndItemIdId(im.getId(), ci.getCartId());
                                     Mono<Item> itemMono = Mono.zip(Mono.just(im), longMono)
                                             .map(t1 -> {
                                                 Item i = t1.getT1();
                                                 Long count = t1.getT2();
                                                 i.setCount(count);
-                                                itemRepo.save(i);
+                                                cartControlUtilityService.saveItem(i).subscribe();
                                                 return i;
                                             });
                                     itemMono.subscribe();
@@ -83,15 +88,6 @@ public class CartUtilityService {
 
     }
 
-    public Mono<Cart> createAndSaveCartsItemsData(Mono<Cart> cartMono, Long itemId, boolean u) {
-        return cartMono.map(c -> {
-            if (u) {
-                CartItems cartItems = new CartItems(itemId, c.getId());
-                cartItemsRepo.save(cartItems).subscribe();
-            }
-            return c;
-        });
-    }
     public Mono<CartItems> createAndSaveCartItems(Long cartId, Long itemId){
         CartItems ci = new CartItems();
         ci.setCartId(cartId);
@@ -99,23 +95,32 @@ public class CartUtilityService {
         return        cartItemsRepo.save(ci);
     }
 
-    public Flux<CartItems> findCartItems(Long cartId ) {
-       return cartItemsRepo.findByCartId(cartId);
-    }
-
-    public Flux<Cart> findAllCarts() {
-        return cartRepo.findAll();
-    }
-
-    public Mono<UserData> findUserById(Long userId) {
-        return userDataRepo.findById(userId);
-    }
-
-    public Mono<UserData> saveUser(UserData u) {
-        return userDataRepo.save(u);
-    }
-
-    public Mono<Long> countOfCartAndItemIdId(Long itemId, Long cartId) {
-        return cartItemsRepo.countOfCartAndItemIdId(itemId, cartId);
-    }
+//    public Mono<Cart> createAndSaveCartsItemsData(Mono<Cart> cartMono, Long itemId, boolean u) {
+//        return cartMono.map(c -> {
+//            if (u) {
+//                CartItems cartItems = new CartItems(itemId, c.getId());
+//                cartItemsRepo.save(cartItems).subscribe();
+//            }
+//            return c;
+//        });
+//    }
+//    public Flux<CartItems> findCartItems(Long cartId ) {
+//       return cartItemsRepo.findByCartId(cartId);
+//    }
+//
+//    public Flux<Cart> findAllCarts() {
+//        return cartRepo.findAll();
+//    }
+//
+//    public Mono<UserData> findUserById(Long userId) {
+//        return userDataRepo.findById(userId);
+//    }
+//
+//    public Mono<UserData> saveUser(UserData u) {
+//        return userDataRepo.save(u);
+//    }
+//
+//    public Mono<Long> countOfCartAndItemIdId(Long itemId, Long cartId) {
+//        return cartItemsRepo.countOfCartAndItemIdId(itemId, cartId);
+//    }
 }

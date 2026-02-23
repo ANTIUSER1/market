@@ -17,13 +17,16 @@ import java.util.List;
 @Service
 public class CartServiceImpl implements TService<Cart> {
 
-
     @Autowired
     private CartUtilityService cartUtilityService;
 
+    @Autowired
+    private CartControlUtilityService cartControlUtilityService;
+
+
     @Override
     public Flux<Cart> findAll() {
-        return cartUtilityService.findAllCarts();
+        return cartControlUtilityService.findAllCarts();
     }
 
     @Override
@@ -54,7 +57,7 @@ public class CartServiceImpl implements TService<Cart> {
         Mono<Flux<CartItems>> cartItemsFlux0 =cartItemsMono.map(ci->{
             return ci.getCartId();
         }).map(n->{
-            return cartUtilityService.findCartItems( n );
+            return cartControlUtilityService.findCartItems( n );
         });
 
         cartMono = Mono.zip(cartMono, cartItemsFlux0)
