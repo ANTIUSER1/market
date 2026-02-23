@@ -38,9 +38,9 @@ public class CartControlUtilityService {
         return         itemRepo.save(i);
     }
 
-    public Mono<UserData> findCartById(Long userId) {
-        return userDataRepo.findById(userId);
-    }
+//    public Mono<UserData> findUserById(Long userId) {
+//        return userDataRepo.findById(userId);
+//    }
     public Flux<CartItems> findCartItems(Long cartId) {
         return cartItemsRepo.findByCartId(cartId);
     }
@@ -57,9 +57,25 @@ public class CartControlUtilityService {
         return userDataRepo.save(u);
     }
 
+    public Mono<Cart> findCartById(Long cartId){
+        return cartRepo.findById(cartId);
+
+   }
+    public Mono<Cart> saveCart(Cart c){
+        return cartRepo.save(c);
+    }
+
+    public Mono<CartItems> saveCartItems(CartItems ci) {
+        return cartItemsRepo.save(ci);
+    }
+
     public Mono<Long> countOfCartAndItemIdId(Long itemId, Long cartId) {
         return cartItemsRepo.countOfCartAndItemIdId(itemId, cartId);
     }
 
 
-}
+//
+//    public Mono<Cart> saveCart(Cart cart) {
+//        return cartRepo.save(cart);
+//    }
+    }

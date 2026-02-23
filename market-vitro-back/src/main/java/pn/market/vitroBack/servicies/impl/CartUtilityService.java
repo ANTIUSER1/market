@@ -2,20 +2,15 @@ package pn.market.vitroBack.servicies.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pn.market.market_entities.data.UserData;
 import pn.market.market_entities.forWEB.Cart;
 import pn.market.market_entities.forWEB.CartItems;
 import pn.market.market_entities.forWEB.Item;
 import pn.market.vitroBack.repo.CartItemsRepo;
-import pn.market.vitroBack.repo.CartRepo;
-import pn.market.vitroBack.repo.ItemRepo;
 import pn.market.vitroBack.repo.UserDataRepo;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 @Service
 public class CartUtilityService {
@@ -24,17 +19,7 @@ public class CartUtilityService {
     private CartControlUtilityService cartControlUtilityService;
 
 
-    @Autowired
-    private ItemRepo itemRepo;
 
-    @Autowired
-    private CartRepo cartRepo;
-
-    @Autowired
-    private CartItemsRepo cartItemsRepo;
-
-    @Autowired
-    private UserDataRepo userDataRepo;
 
 
     public Flux<Item> cartItemsFluxToItemFlux(Flux<CartItems> cartItemsFlux, Long itemId) {
@@ -69,18 +54,21 @@ public class CartUtilityService {
     }
 
     public Mono<Cart> createOrTestExistCart(Long userId) {
-        return userDataRepo.findById(userId)
-                .map(u -> {                     Mono<Cart> c;
+        return cartControlUtilityService.findUserById(userId)
+                 .map(u -> {
+                     Mono<Cart> c;
                     if (u.getCartId() == null) {
                         System.out.println(" CREATE   NEW CART ");
-                        c = cartRepo.save(new Cart())
+                        c =cartControlUtilityService.saveCart(new Cart())
+                                //cartRepo.save(new Cart())
                                 .map(ccc -> {
                                     u.setCartId(ccc.getId());
-                                    userDataRepo.save(u).subscribe();
+                                    cartControlUtilityService.saveUser(u).subscribe();
                                     return ccc;
                                 });
                     } else {
-                        c = cartRepo.findById(u.getCartId());
+                     c = cartControlUtilityService.findCartById(u.getCartId());
+                             //cartRepo.findById(u.getCartId());
                     }
 
                     return c;
@@ -92,6 +80,7 @@ public class CartUtilityService {
         CartItems ci = new CartItems();
         ci.setCartId(cartId);
         ci.setItemId(itemId);
-        return        cartItemsRepo.save(ci);
+        return    cartControlUtilityService.saveCartItems(ci)  ;
+                //cartItemsRepo.save(ci);
     }
 }
