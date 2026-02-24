@@ -225,5 +225,19 @@ public class ItemServiceImpl implements TService<Item> {
         Flux<Item> itemFlux = getCartOfUser(userId);
         return getTotalSum(itemFlux);
     }
+
+    public Mono<Item> placeItemToOrderOfUser(Long userId, Long orderId, Long itemId) {
+
+
+        return Mono.empty();
+    }
 }
+
+
+
+
+
+
+
+
 

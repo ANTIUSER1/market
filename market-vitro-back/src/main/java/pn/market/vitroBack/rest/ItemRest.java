@@ -29,14 +29,16 @@ public class ItemRest {
          return itemService.findById(id);
     }
 
-    @GetMapping("/addOrder/{orderId}/{itemId}")
+    @GetMapping("/addOrder/{userId}/{orderId}/{itemId}")
     public Mono<Item> itemSaveId(
+            @PathVariable("userId") Long userId,
             @PathVariable("orderId") Long orderId,
             @PathVariable("itemId") Long itemId) {
-        return itemService.findById(itemId)
-                .map(i -> {
-                    return itemService.save(i);
-                }).flatMap(i -> i);
+        return  itemService.placeItemToOrderOfUser(userId, orderId,itemId);
+//                itemService.findById(itemId)
+//                .map(i -> {
+//                    return itemService.save(i);
+//                }).flatMap(i -> i);
     }
 
     @GetMapping("/get-cart-of-user/{userId}")
