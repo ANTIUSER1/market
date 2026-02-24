@@ -26,8 +26,7 @@ public class ItemRest {
 
     @GetMapping("/{id}")
     public Mono<Item> itemById(@PathVariable("id") Long id) {
-        System.out.println("   ITEM BY ID " + id);
-        return itemService.findById(id);
+         return itemService.findById(id);
     }
 
     @GetMapping("/addOrder/{orderId}/{itemId}")

@@ -18,14 +18,15 @@ public interface ItemRepo extends ReactiveCrudRepository<Item, Long> {
     @Query("SELECT * FROM items i WHERE i.cart_id = :cartId  ORDER BY i.id ASC")
     Flux<Item> findByCartId(Long cartId);
 
-
     @Query(
-            """ 
-                            SELECT * FROM  items i  
-                            WHERE   i.cart_id IN( SELECT id FROM carts c WHERE c.user_id = :userId )
-                    
-                    """)
-    Flux<Item> findByUserId(Long userId);
+        """ 
+                SELECT * FROM items i  WHERE i.id in  (
+                      SELECT   DISTINCT ci.item_id   FROM carts_items ci
+                          WHERE    ci.cart_id  
+                           IN ( SELECT cart_id FROM user_data ud WHERE  ud.id =  $1  )   )
+                
+                """)
+Flux<Item> findByUserId(Long userId);
 
 
     @Query("SELECT * FROM items i WHERE i.order_id = :orderId  ORDER BY i.id ASC")
