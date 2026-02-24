@@ -50,26 +50,26 @@ public class ItemRest {
         return itemService.getTotalSumCartOfUser(userId);
     }
 
-    @GetMapping("/remove-order/{orderId}")
-    public Flux<Item> removeItemsFromOrderId(@PathVariable("orderId") Long orderId) {
-        return itemService.removeItemsFromOrderId(orderId);
-    }
+//    @GetMapping("/remove-order/{orderId}")
+//    public Flux<Item> removeItemsFromOrderId(@PathVariable("orderId") Long orderId) {
+//        return itemService.removeItemsFromOrderId(orderId);
+//    }
 
     @GetMapping("/by-order/{orderId}")
     public Flux<Item> getItemsByOrderId(@PathVariable("orderId") Long orderId) {
         return itemService.getItemsByOrderId(orderId);
     }
 
-    @GetMapping("/add-cart/{itemID}/{cartID}/{action}")
-    public Mono<Item> addToCart(
-            @PathVariable("itemID") Long itemId,
-            @PathVariable("cartID") Long cartId,
-            @PathVariable("action") String action) {
-        Mono<Item> itemMono = itemService.findById(itemId)
-                .map(i -> itemService.addToCart(i, cartId, action))
-                .flatMap(i -> i);
-        return itemMono;
-    }
+//    @GetMapping("/add-item-to-cart/{itemID}/{cartID}/{action}")
+//    public Mono<Item> addToCart(
+//            @PathVariable("itemID") Long itemId,
+//            @PathVariable("cartID") Long cartId,
+//            @PathVariable("action") String action) {
+//        Mono<Item> itemMono = itemService.findById(itemId)
+//                .map(i -> itemService.addToCart(i, cartId, action))
+//                .flatMap(i -> i);
+//        return itemMono;
+//    }
 
 
 //
