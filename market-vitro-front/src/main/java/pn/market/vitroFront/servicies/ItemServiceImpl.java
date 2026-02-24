@@ -13,6 +13,7 @@ import reactor.core.publisher.Mono;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static pn.market.vitroFront.config.AuthPaths.VITRO_CART_API;
 import static pn.market.vitroFront.config.AuthPaths.VITRO_ITEM_API;
 
 @Service
@@ -104,15 +105,16 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Mono<Long> getTotalSum(Long cartId) {
+        System.out.println("----TOTAL CART SUMM " + cartId);
         return webClient.get()
-                .uri("/api/vitro/items/get-total-sum/" + cartId)
+                .uri(VITRO_CART_API + "/total-sum-of-cart/" + cartId)
                 .retrieve().bodyToMono(Long.class);
     }
 
     @Override
     public Long getCartFromMonoItem(Mono<Item> itemMono) {
         AtomicReference<Long> cartId = new AtomicReference<>(0L);
-       // itemMono.subscribe(i -> cartId.set(i.getCartId()));
+        // itemMono.subscribe(i -> cartId.set(i.getCartId()));
         return cartId.get();
     }
 
@@ -127,7 +129,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Flux<Item> getItemsByCartDataFromMonoToFlux(Long cartId) {
         return webClient.get()
-                .uri(VITRO_ITEM_API + "/get-by-cart/" + cartId)
+                .uri(VITRO_ITEM_API + "/get-items-by-cart/" + cartId)
                 .retrieve().bodyToFlux(Item.class);
     }
 

@@ -36,9 +36,6 @@ public class CartController {
     @GetMapping("/{cartId}")
     public Mono<Rendering> itemsList(@PathVariable("cartId") long cartId) {
         Long userId = loginService.getUserData().getId();
-        System.out.println("  CCC  CART " + cartId + "   USER_DATA ID " + userId);
-
-
         Flux<Item> itemsFlux = itemService.getItemsByCartDataFromMonoToFlux(cartId);
         Mono<Long> total = itemService.getTotalSum(cartId);
         //  itemsFlux.subscribe(ii -> System.out.println("       III ID " + ii.getId()));

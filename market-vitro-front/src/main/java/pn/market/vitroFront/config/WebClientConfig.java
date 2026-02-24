@@ -16,7 +16,7 @@ public class WebClientConfig {
 
     @Value("${oauth.data.host}")
     private String auth2Host;
- 
+
 
     @Bean
     public ReactiveOAuth2AuthorizedClientManager authorizedClientManager(

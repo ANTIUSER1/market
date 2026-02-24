@@ -59,15 +59,15 @@ public class PaymentSupplierImpl implements Supplier<Mono<String>> {
         }
 
 //        Mono<String> result =
-                orderService.getById(orderId);
+        orderService.getById(orderId);
 //                        .map(order -> {
 //                                    redisTemplate.opsForValue()
 //                                            .set(orderKey,
 //                         //                           userId + ";" + orderId + ";" + order.totalSumm() + ";" + localTime
 //                                            );
 //                                    return order.toString();
-                            //    }
-                       //);
+        //    }
+        //);
         return Mono.empty();
     }
 }
