@@ -20,9 +20,6 @@ public class Order {
 
     @Id
     private Long id;
-    @Getter
-    @Setter
-    private Long userId;
     @Setter
     @Transient
     private Set<Item> items;
