@@ -63,9 +63,9 @@ public class Order {
         items.addAll(itemsList);
     }
 
-    public long totalSumm() {
+    public long getTotalSumm() {
         return items.stream().mapToLong(
-                i -> i.getPrice()
+                i -> i.getPrice() * i.getCount()
         ).sum();
     }
 
@@ -73,7 +73,7 @@ public class Order {
     public String toString() {
         String sb = "Order{ " + "id=" + id +
                 ", items=" + items +
-                ", totalSum=" + totalSumm() +
+                ", totalSum=" + getTotalSumm() +
                 " } ";
         return sb;
     }
