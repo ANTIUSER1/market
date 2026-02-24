@@ -82,7 +82,7 @@ public class OrderServiceImpl implements TService<Order> {
 
     public Mono<Order> creare(Long userId, Long itemId) {
         Order order = new Order();
-        order.setUserId(userId);
+       // order.setUserId(userId);
         System.out.println("   saveWithUser   NEW ORDER: ITEM  " + itemId + "   USER " + userId);
         Mono<Order> orderMono = save(order)
                 .map(o -> {
@@ -149,6 +149,7 @@ public class OrderServiceImpl implements TService<Order> {
     }
 
     public void buyOrderOfUser(Long userId, Long orderId) {
+       /*
         System.out.println("   -----PROCESS    BUY ORDER OF USER: --: ORDER: " + orderId + "  USER:  " + userId);
         itemService.getItemsByOrderId(orderId)
                 .map(i -> {
@@ -172,6 +173,7 @@ public class OrderServiceImpl implements TService<Order> {
 
                         }
                 );
+        */
     }
 
 
