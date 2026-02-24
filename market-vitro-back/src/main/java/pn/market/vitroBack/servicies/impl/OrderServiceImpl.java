@@ -6,10 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import pn.market.market_entities.Paging;
 import pn.market.market_entities.TService;
-import pn.market.market_entities.data.UserData;
-import pn.market.market_entities.forWEB.Cart;
-import pn.market.market_entities.forWEB.Item;
-import pn.market.market_entities.forWEB.Order;
+import pn.market.market_entities.forWEB.*;
 import pn.market.vitroBack.repo.OrderRepo;
 import pn.market.vitroBack.repo.UserDataRepo;
 import reactor.core.publisher.Flux;
@@ -28,6 +25,9 @@ public class OrderServiceImpl implements TService<Order> {
 
     @Autowired
     private OrderControlUtilityService orderControlUtilityService;
+    @Autowired
+    private OrderUtilityService orderUtilityService;
+
     @Autowired
     private UserEntityServiceImpl userService;
 
@@ -176,8 +176,40 @@ public class OrderServiceImpl implements TService<Order> {
 
 
 
-    public Mono<Item> placeItemToOrderOfUser(Long userId, Long orderId, Long itemId) {
-        Mono<Order> userDataMono=orderControlUtilityService.findUserById(userId)
+    public Mono<Order> createOrUseCartOfUser(Long userId, Long orderId, Long itemId) {
+        Mono<Order> orderMono= orderUtilityService.createOrTestExistOrder(userId);
+        Mono<OrderItems>  orderItemsMono=orderMono.map(o->{
+            return      orderUtilityService.createAndSaveOrderItems( o.getId(), itemId)
+                    .map(cci->{
+                        return cci;
+                    });
+        }).flatMap(cv -> cv);
+
+        Mono<Flux<OrderItems>> orderItemsFlux0 =orderItemsMono.map(oi->{
+            return oi.getOrderId();
+        }).map(n->{
+            return orderControlUtilityService.findOrderItemsByOrderId( n );
+        });
+
+        orderMono = Mono.zip(orderMono, orderItemsFlux0)
+                .map(t -> {
+                    Mono<Order> cartM = Mono.just(t.getT1());
+                    Flux<OrderItems> cartItemsFlux = t.getT2();
+                    Flux<Item> itemFlux = orderUtilityService.orderItemsFluxToItemFlux(cartItemsFlux, itemId);
+                    cartM = Mono.zip(cartM, itemFlux.collectList())
+                            .map(t1 -> {
+                                Order o1 = t1.getT1();
+                                List<Item> itemsList = t1.getT2();
+                               o1.addItemsSet(itemsList);
+                                return o1;
+                            });
+                    return cartM;
+                }).flatMap(mm -> mm);
+        orderMono.subscribe();
+
+      return   orderMono ;
+                /*
+                orderControlUtilityService.findUserById(userId)
                 .map(u->{
                     Mono<Order> o;
                     if (u.getOrderId()  == null) {
@@ -196,10 +228,10 @@ public class OrderServiceImpl implements TService<Order> {
                     } return o;
                 }).flatMap(v->v);
 
+*/
 
 
-
-        return Mono.empty();
+       // return Mono.empty();
     }
 }
 

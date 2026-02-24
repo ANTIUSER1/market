@@ -9,6 +9,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Table;
 
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -57,6 +58,10 @@ public class Order {
         items.add(item);
     }
 
+
+    public void addItemsSet(List<Item> itemsList) {
+        items.addAll(itemsList);
+    }
 
     public long totalSumm() {
         return items.stream().mapToLong(

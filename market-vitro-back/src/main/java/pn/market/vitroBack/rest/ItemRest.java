@@ -3,7 +3,7 @@ package pn.market.vitroBack.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pn.market.market_entities.forWEB.Item;
-import pn.market.vitroBack.servicies.impl.CartServiceImpl;
+import pn.market.market_entities.forWEB.Order;
 import pn.market.vitroBack.servicies.impl.ItemServiceImpl;
 import pn.market.vitroBack.servicies.impl.OrderServiceImpl;
 import reactor.core.publisher.Flux;
@@ -31,11 +31,12 @@ public class ItemRest {
     }
 
     @GetMapping("/addOrder/{userId}/{orderId}/{itemId}")
-    public Mono<Item> itemSaveId(
+    public Mono<Order> itemSaveId(
+//    public Mono<Item> itemSaveId(
             @PathVariable("userId") Long userId,
             @PathVariable("orderId") Long orderId,
             @PathVariable("itemId") Long itemId) {
-        return  orderService.placeItemToOrderOfUser(userId, orderId,itemId);
+        return  orderService.createOrUseCartOfUser(userId, orderId,itemId);
 //                itemService.findById(itemId)
 //                .map(i -> {
 //                    return itemService.save(i);
