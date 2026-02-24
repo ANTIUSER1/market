@@ -38,4 +38,8 @@ public class UserEntityServiceImpl {
         }
         return userDataRepo.saveAll(result);
     }
+
+    public Mono<UserData> findUserById(Long userId) {
+        return userDataRepo.findById(userId);
+    }
 }
