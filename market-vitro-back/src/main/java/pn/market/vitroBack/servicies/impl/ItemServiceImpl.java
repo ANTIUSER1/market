@@ -87,10 +87,7 @@ public class ItemServiceImpl implements TService<Item> {
         return null;
     }
 
-    public Flux<Item> getItemsByCart(Long id) {
-        Flux<Item> items = itemRepo.findByCartId(id);
-        return items;
-    }
+
 
     public Flux<Item> getItemsByOrderId(Long orderId) {
         return itemRepo.findItemsByOrderId(orderId);
@@ -167,8 +164,8 @@ public class ItemServiceImpl implements TService<Item> {
         return itemRepo.save(item);
     }
 
-    public Flux<Item> getItemsByCartIdToFlux(Long id) {
-        return itemRepo.findByCartId(id);
+    public Flux<Item> getItemsByCartIdT(Long cart_id) {
+        return itemRepo.findItemsByCartId(cart_id);
     }
 
     public Mono<Item> minusForMono(Item item) {
@@ -183,9 +180,6 @@ public class ItemServiceImpl implements TService<Item> {
 //        }).flatMapMany(f -> f);
     }
 
-    public Flux<Item> getItemsByCartDataFromMonoToFlux(long cartId) {
-        return itemRepo.findByCartId(cartId);
-    }
 
     public void removeFromOrder(long orderId) {
         itemRepo.findByOrderId(orderId).collectList()
@@ -232,6 +226,8 @@ public class ItemServiceImpl implements TService<Item> {
         Flux<Item> itemFlux = getItemsOfUser(userId);
         return getTotalSum(itemFlux);
     }
+
+
 }
 
 

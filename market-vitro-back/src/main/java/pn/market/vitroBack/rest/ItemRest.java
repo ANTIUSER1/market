@@ -40,6 +40,13 @@ public class ItemRest {
 
 
 
+    @GetMapping("/get-items-by-cart/{cartId}")
+    public Flux<Item> getItemsByCartId(
+            @PathVariable("cartId") Long cartId
+    ){
+        return itemService.getItemsByCartIdT(cartId);
+    }
+
     @GetMapping("/get-cart-of-user/{userId}")
     public Flux<Item> getCartOfUser(@PathVariable("userId") Long userId) {
         return itemService.getItemsOfUser(userId);

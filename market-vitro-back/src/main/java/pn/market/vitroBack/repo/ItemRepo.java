@@ -15,8 +15,6 @@ import reactor.core.publisher.Flux;
 @Transactional
 public interface ItemRepo extends ReactiveCrudRepository<Item, Long> {
 
-    @Query("SELECT * FROM items i WHERE i.cart_id = :cartId  ORDER BY i.id ASC")
-    Flux<Item> findByCartId(Long cartId);
 
     @Query(
             """ 

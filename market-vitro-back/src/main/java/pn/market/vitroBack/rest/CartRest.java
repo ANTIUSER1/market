@@ -23,6 +23,15 @@ public class CartRest {
         return cartService.createOrUseCartOfUser(itemId, userId);
     }
 
+    @GetMapping("/total-sum-of-cart/{cartId}")
+    public Mono<Long> getTotalSumOfCart (
+   @PathVariable("cartId") Long cartId
+    ){
+        return cartService.getTotalSumOfCart(cartId);
+    }
+
+
+
     @GetMapping("/remove/{userId}/{itemId}")
     public Mono<Item> removeCartOfUser(
             @PathVariable("userId") Long userId,

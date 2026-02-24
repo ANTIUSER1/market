@@ -77,4 +77,10 @@ public class CartServiceImpl implements TService<Cart> {
     }
 
 
+    public Mono<Long> getTotalSumOfCart(Long cartId) {
+        return cartControlUtilityService.findCartById(cartId)
+                .map(c->{
+                    return c.getTotalSumm();
+                });
+    }
 }
