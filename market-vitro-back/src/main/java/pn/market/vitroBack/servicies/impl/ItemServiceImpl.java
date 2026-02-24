@@ -25,6 +25,7 @@ public class ItemServiceImpl implements TService<Item> {
     private int pageSize;
     private int offset;
     @Value("${spring.web.resources.static-locations}")
+
     private String imgPath;
     @Autowired
     private FileServiceImpl fileService;
@@ -224,12 +225,6 @@ public class ItemServiceImpl implements TService<Item> {
     public Mono<Long> getTotalSumCartOfUser(Long userId) {
         Flux<Item> itemFlux = getCartOfUser(userId);
         return getTotalSum(itemFlux);
-    }
-
-    public Mono<Item> placeItemToOrderOfUser(Long userId, Long orderId, Long itemId) {
-
-
-        return Mono.empty();
     }
 }
 

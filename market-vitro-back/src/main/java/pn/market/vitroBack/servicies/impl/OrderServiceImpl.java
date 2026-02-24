@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import pn.market.market_entities.Paging;
 import pn.market.market_entities.TService;
+import pn.market.market_entities.data.UserData;
+import pn.market.market_entities.forWEB.Cart;
 import pn.market.market_entities.forWEB.Item;
 import pn.market.market_entities.forWEB.Order;
 import pn.market.vitroBack.repo.OrderRepo;
@@ -23,6 +25,11 @@ public class OrderServiceImpl implements TService<Order> {
 
     @Autowired
     private OrderRepo orderRepo;
+
+    @Autowired
+    private OrderControlUtilityService orderControlUtilityService;
+    @Autowired
+    private UserEntityServiceImpl userService;
 
     @Autowired
     private UserDataRepo userDataRepo;
@@ -167,4 +174,42 @@ public class OrderServiceImpl implements TService<Order> {
                 );
     }
 
+
+
+    public Mono<Item> placeItemToOrderOfUser(Long userId, Long orderId, Long itemId) {
+        Mono<Order> userDataMono=orderControlUtilityService.findUserById(userId)
+                .map(u->{
+                    Mono<Order> o;
+                    if (u.getOrderId()  == null) {
+                        System.out.println(" CREATE   NEW CART ");
+                       o =orderControlUtilityService.saveOrder(new Order())
+                                //cartRepo.save(new Cart())
+                                .map(ooo -> {
+                                    u.setCartId(ooo.getId());
+
+                                  orderControlUtilityService.saveUser(u).subscribe();
+                                    return ooo;
+                                });
+                    } else {
+                     o = orderControlUtilityService.findOrderById(u.getCartId());
+                        //cartRepo.findById(u.getCartId());
+                    } return o;
+                }).flatMap(v->v);
+
+
+
+
+        return Mono.empty();
+    }
 }
+
+
+
+
+
+
+
+
+
+
+

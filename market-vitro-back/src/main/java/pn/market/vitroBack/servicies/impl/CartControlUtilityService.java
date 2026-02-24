@@ -69,7 +69,7 @@ public class CartControlUtilityService {
         return cartItemsRepo.save(ci);
     }
 
-    public Mono<Long> countOfCartAndItemIdId(Long itemId, Long cartId) {
+    public Mono<Long> countOfCartAndItemId(Long itemId, Long cartId) {
         return cartItemsRepo.countOfCartAndItemId(itemId, cartId);
     }
 

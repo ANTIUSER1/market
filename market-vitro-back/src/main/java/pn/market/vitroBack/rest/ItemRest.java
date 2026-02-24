@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import pn.market.market_entities.forWEB.Item;
 import pn.market.vitroBack.servicies.impl.CartServiceImpl;
 import pn.market.vitroBack.servicies.impl.ItemServiceImpl;
+import pn.market.vitroBack.servicies.impl.OrderServiceImpl;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -17,7 +18,7 @@ public class ItemRest {
     private ItemServiceImpl itemService;
 
     @Autowired
-    private CartServiceImpl cartService;
+    private OrderServiceImpl orderService;
 
     @GetMapping
     public Flux<Item> allItems() {
@@ -34,7 +35,7 @@ public class ItemRest {
             @PathVariable("userId") Long userId,
             @PathVariable("orderId") Long orderId,
             @PathVariable("itemId") Long itemId) {
-        return  itemService.placeItemToOrderOfUser(userId, orderId,itemId);
+        return  orderService.placeItemToOrderOfUser(userId, orderId,itemId);
 //                itemService.findById(itemId)
 //                .map(i -> {
 //                    return itemService.save(i);

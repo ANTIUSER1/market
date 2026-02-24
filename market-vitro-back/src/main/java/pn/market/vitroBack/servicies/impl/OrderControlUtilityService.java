@@ -56,7 +56,7 @@ public class OrderControlUtilityService {
         return orderRepo.findById(orderId);
 
    }
-    public Mono<Order> saveCOrder(Order o){
+    public Mono<Order> saveOrder(Order o){
         return orderRepo.save(o);
     }
 
@@ -64,7 +64,7 @@ public class OrderControlUtilityService {
         return orderItemsRepo.save(oi);
     }
 
-    public Mono<Long> countOfOrderAndItemIdId(Long itemId, Long orderId) {
+    public Mono<Long> countOfOrderAndItemId(Long itemId, Long orderId) {
         return orderItemsRepo.countOfOrderAndItemId(itemId, orderId);
     }
 

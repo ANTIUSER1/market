@@ -33,7 +33,7 @@ public class CartUtilityService {
                                  List<CartItems> cartItemsList = t.getT2();
                                  if (!cartItemsList.isEmpty()) {
                                     CartItems ci = cartItemsList.get(0);
-                                    Mono<Long> longMono = cartControlUtilityService.countOfCartAndItemIdId(im.getId(), ci.getCartId());
+                                    Mono<Long> longMono = cartControlUtilityService.countOfCartAndItemId(im.getId(), ci.getCartId());
                                     Mono<Item> itemMono = Mono.zip(Mono.just(im), longMono)
                                             .map(t1 -> {
                                                 Item i = t1.getT1();
