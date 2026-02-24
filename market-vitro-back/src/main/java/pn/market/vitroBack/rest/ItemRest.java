@@ -30,18 +30,15 @@ public class ItemRest {
          return itemService.findById(id);
     }
 
-    @GetMapping("/addOrder/{userId}/{orderId}/{itemId}")
-    public Mono<Order> itemSaveId(
+    @GetMapping("/addOrder/{userId}/{itemId}")
+    public Mono<Order> addToExistingOrderOfUser(
 //    public Mono<Item> itemSaveId(
             @PathVariable("userId") Long userId,
-            @PathVariable("orderId") Long orderId,
             @PathVariable("itemId") Long itemId) {
-        return  orderService.createOrUseCartOfUser(userId, orderId,itemId);
-//                itemService.findById(itemId)
-//                .map(i -> {
-//                    return itemService.save(i);
-//                }).flatMap(i -> i);
+        return  orderService.createOrUseCartOfUser(userId,itemId);
     }
+
+
 
     @GetMapping("/get-cart-of-user/{userId}")
     public Flux<Item> getCartOfUser(@PathVariable("userId") Long userId) {

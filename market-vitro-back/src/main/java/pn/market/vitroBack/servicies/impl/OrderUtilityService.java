@@ -56,21 +56,18 @@ public class OrderUtilityService {
         return orderControlUtilityService.findUserById(userId)
                  .map(u -> {
                      Mono<Order> o;
-                    if (u.getCartId() == null) {
-                        System.out.println(" CREATE   NEW ORDER ");
+                    if (     u.getOrderId() == null) {
+                        System.out.println(" ---------CREATE   NEW ORDER------- ");
                         o =orderControlUtilityService.saveOrder(new Order())
-                                //cartRepo.save(new Cart())
                                 .map(ooo -> {
-                                    u.setCartId(ooo.getId());
+                                    u.setOrderId(ooo.getId());
 
                                     orderControlUtilityService.saveUser(u).subscribe();
                                     return ooo;
                                 });
                     } else {
                     o= orderControlUtilityService.findOrderById(u.getOrderId());
-                             //cartRepo.findById(u.getCartId());
                     }
-
                     return o;
                 }).flatMap(c -> c);
 
