@@ -112,7 +112,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Long getCartFromMonoItem(Mono<Item> itemMono) {
         AtomicReference<Long> cartId = new AtomicReference<>(0L);
-        itemMono.subscribe(i -> cartId.set(i.getCartId()));
+       // itemMono.subscribe(i -> cartId.set(i.getCartId()));
         return cartId.get();
     }
 
@@ -202,16 +202,19 @@ public class ItemServiceImpl implements ItemService {
     }
 
     public void addOrder(Item item, Long orderId) {
+
+        /*
         long id = item.getId();
         System.out.println("    SAVING --- " + id);
         System.out.println("    SAVING --- " + item);
         webClient.get()
                 .uri(VITRO_ITEM_API + "/addOrder/" + orderId + "/" + id)
                 .retrieve().bodyToMono(Item.class)
-                .subscribe(
-                        i -> System.out.println("----SSII " + i.getOrderId())
-
-                );
+//                .subscribe(
+//                        i -> System.out.println("----SSII " + i.getOrderId())
+//
+//                );
+  */
     }
 
     public Flux<Item> itemOfUser(Long userId) {

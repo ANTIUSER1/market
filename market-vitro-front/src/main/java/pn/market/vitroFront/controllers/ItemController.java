@@ -113,23 +113,6 @@ public class ItemController {
                     .build());
         }
     }
-/*
-    @GetMapping("/items/{id}")
-    public Mono<Rendering> itemById(
-            @PathVariable("id") Long id,
-            @RequestParam(value = "action", required = false) String action
-    ) {
-        Mono<Item> itemMono = cartService.placeItemToCart(id, action);
-
-        Mono<Long> src = Mono.just(-2L);
-        Mono<Rendering> r = Mono.just(Rendering.view("item")
-                .modelAttribute("item", itemMono)
-                .modelAttribute("action", action)
-                .modelAttribute("src", src)
-                .build());
-        return r;
-    }
-*/
 
     //************* add roles ***
     @GetMapping("/items/{itemId}")

@@ -98,6 +98,7 @@ public class OrderServiceImpl implements TService<Order> {
     }
 
     public Mono<List<Order>> addItemsToAll() {
+   /*
         Flux<Order> orderFlux = findAll();//.filter(oo -> !oo.getItems().isEmpty());
         Mono<List<Order>> orderMonList = orderFlux.collectList();
 
@@ -120,6 +121,8 @@ public class OrderServiceImpl implements TService<Order> {
                     return Mono.just(ol);
                 }).flatMap(oo -> oo);
         return orderMonList;
+    */
+  return Mono.empty();
     }
 
     public Mono<Order> showCompleteOrderById(Long orderId) {
