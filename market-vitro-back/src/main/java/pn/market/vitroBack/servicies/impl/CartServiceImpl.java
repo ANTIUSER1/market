@@ -41,17 +41,17 @@ public class CartServiceImpl implements TService<Cart> {
 
     public Mono<Cart> createOrUseCartOfUser(Long itemId, Long userId) {
         Mono<Cart> cartMono = cartUtilityService.createOrTestExistCart(userId);
-        Mono<CartItems>  cartItemsMono=cartMono.map(c->{
-      return       cartUtilityService.createAndSaveCartItems( c.getId(), itemId)
-              .map(cci->{
-                  return cci;
-              });
-                }).flatMap(cv -> cv);
+        Mono<CartItems> cartItemsMono = cartMono.map(c -> {
+            return cartUtilityService.createAndSaveCartItems(c.getId(), itemId)
+                    .map(cci -> {
+                        return cci;
+                    });
+        }).flatMap(cv -> cv);
 
-        Mono<Flux<CartItems>> cartItemsFlux0 =cartItemsMono.map(ci->{
+        Mono<Flux<CartItems>> cartItemsFlux0 = cartItemsMono.map(ci -> {
             return ci.getCartId();
-        }).map(n->{
-            return cartControlUtilityService.findCartItemsByCartId( n );
+        }).map(n -> {
+            return cartControlUtilityService.findCartItemsByCartId(n);
         });
 
         cartMono = Mono.zip(cartMono, cartItemsFlux0)
@@ -72,15 +72,12 @@ public class CartServiceImpl implements TService<Cart> {
     }
 
     public Mono<Item> removeFromCartOfUser(Long userId, Long itemId) {
-        Mono<Item> itemMono=  cartUtilityService.removeFromCartOfUser(userId, itemId);
+        Mono<Item> itemMono = cartUtilityService.removeFromCartOfUser(userId, itemId);
         return itemMono;
     }
 
 
     public Mono<Long> getTotalSumOfCart(Long cartId) {
-        return cartControlUtilityService.findCartById(cartId)
-                .map(c->{
-                    return c.getTotalSumm();
-                });
+        return cartControlUtilityService.getTotalSumOfCart(cartId);
     }
 }

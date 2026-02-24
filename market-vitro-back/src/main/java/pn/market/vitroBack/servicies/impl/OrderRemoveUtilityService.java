@@ -2,7 +2,6 @@ package pn.market.vitroBack.servicies.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pn.market.market_entities.forWEB.CartItems;
 import pn.market.market_entities.forWEB.Item;
 import pn.market.market_entities.forWEB.OrderItems;
 import reactor.core.publisher.Mono;
@@ -33,20 +32,20 @@ public class OrderRemoveUtilityService {
                         }
                     }
                     if (!orderItemsListTMP.isEmpty()) {
-                      OrderItems ci = orderItemsListTMP.get(0);
+                        OrderItems ci = orderItemsListTMP.get(0);
                         System.out.println("REMOVING      " + ci + "   " + ci.getId() + "  /  " + ci.getItemId());
                         orderControlUtilityService.deleteOrderItemsById(ci.getId()).subscribe();
                         System.out.println(" CI TO REMOVR  " + ci + " \nITEM " + i);
-                        Mono<Item>  countMono= orderControlUtilityService. countOfOrderAndItemId(i.getId(), ci.getOrderId())
-                                .map(totalCount->{
-                                     long cnt=totalCount-1;
-                                    System .out.println("  ---------    COUNT MONO ::: "+totalCount+" /"+cnt
-                                            +"   CRETERIA i.getId() "+i.getId() +"   AND  ci.getCartId() "+ ci.getOrderId());
-                                if(cnt>0)    {
-                                    i.setCount(cnt);}
-                                else {
-                                    i.setCount(0L);
-                                }
+                        Mono<Item> countMono = orderControlUtilityService.countOfOrderAndItemId(i.getId(), ci.getOrderId())
+                                .map(totalCount -> {
+                                    long cnt = totalCount - 1;
+                                    System.out.println("  ---------    COUNT MONO ::: " + totalCount + " /" + cnt
+                                            + "   CRETERIA i.getId() " + i.getId() + "   AND  ci.getCartId() " + ci.getOrderId());
+                                    if (cnt > 0) {
+                                        i.setCount(cnt);
+                                    } else {
+                                        i.setCount(0L);
+                                    }
                                     orderControlUtilityService.saveItem(i).subscribe();
 
                                     return i;

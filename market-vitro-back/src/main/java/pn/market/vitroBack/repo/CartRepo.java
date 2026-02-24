@@ -18,7 +18,12 @@ public interface CartRepo extends ReactiveCrudRepository<Cart, Long> {
     Mono<Long> findMaxId();
 
 
-//    @Query("SELECT * FROM carts c  WHERE   c.user_id = :userId ORDER BY c.id ASC")
-//    Flux<Cart> findByUserId(Long userId);
+    @Query("""
+             select sum(i.count *i.price)  as cp from items i  where i.id in (
+               select distinct oi.item_id  from carts_items  oi where oi.cart_id = $1
+               )
+            
+            """)
+    Mono<Long> calcTotalSumOfCartId(Long calcId);
 
 }

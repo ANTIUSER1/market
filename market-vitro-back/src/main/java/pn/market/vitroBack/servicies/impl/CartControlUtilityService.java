@@ -33,7 +33,7 @@ public class CartControlUtilityService {
     }
 
     public Mono<Item> saveItem(Item i) {
-        return         itemRepo.save(i);
+        return itemRepo.save(i);
     }
 
 
@@ -57,11 +57,12 @@ public class CartControlUtilityService {
         return userDataRepo.save(u);
     }
 
-    public Mono<Cart> findCartById(Long cartId){
+    public Mono<Cart> findCartById(Long cartId) {
         return cartRepo.findById(cartId);
 
-   }
-    public Mono<Cart> saveCart(Cart c){
+    }
+
+    public Mono<Cart> saveCart(Cart c) {
         return cartRepo.save(c);
     }
 
@@ -75,6 +76,10 @@ public class CartControlUtilityService {
 
 
     public Mono<Void> deleteCartItemsById(Long ciID) {
-      return   cartItemsRepo.deleteById(ciID);
+        return cartItemsRepo.deleteById(ciID);
+    }
+
+    public Mono<Long> getTotalSumOfCart(Long cartId) {
+        return cartRepo.calcTotalSumOfCartId(cartId);
     }
 }

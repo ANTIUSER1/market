@@ -36,15 +36,15 @@ public class CartRemoveUtilityService {
                         System.out.println("REMOVING      " + ci + "   " + ci.getId() + "  /  " + ci.getItemId());
                         cartControlUtilityService.deleteCartItemsById(ci.getId()).subscribe();
                         System.out.println(" CI TO REMOVR  " + ci + " \nITEM " + i);
-                        Mono<Item>  countMono= cartControlUtilityService.countOfCartAndItemId(i.getId(), ci.getCartId())
-                                .map(totalCount->{
-                                     long cnt=totalCount-1;
-                                    System .out.println("  ---------    COUNT MONO ::: "+totalCount+" /"+cnt+"   CRETERIA i.getId() "+i.getId() +"   AND  ci.getCartId() "+ ci.getCartId());
-                                if(cnt>0)    {
-                                    i.setCount(cnt);}
-                                else {
-                                    i.setCount(0L);
-                                }
+                        Mono<Item> countMono = cartControlUtilityService.countOfCartAndItemId(i.getId(), ci.getCartId())
+                                .map(totalCount -> {
+                                    long cnt = totalCount - 1;
+                                    System.out.println("  ---------    COUNT MONO ::: " + totalCount + " /" + cnt + "   CRETERIA i.getId() " + i.getId() + "   AND  ci.getCartId() " + ci.getCartId());
+                                    if (cnt > 0) {
+                                        i.setCount(cnt);
+                                    } else {
+                                        i.setCount(0L);
+                                    }
                                     cartControlUtilityService.saveItem(i).subscribe();
 
                                     return i;
