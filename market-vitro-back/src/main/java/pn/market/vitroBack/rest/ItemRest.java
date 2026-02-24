@@ -42,7 +42,7 @@ public class ItemRest {
 
     @GetMapping("/get-cart-of-user/{userId}")
     public Flux<Item> getCartOfUser(@PathVariable("userId") Long userId) {
-        return itemService.getCartOfUser(userId);
+        return itemService.getItemsOfUser(userId);
     }
 
     @GetMapping("/get-total-sum-cart-of-user/{userId}")
@@ -71,28 +71,22 @@ public class ItemRest {
         return itemMono;
     }
 
-    @PutMapping("/get-items-by-cart")
-    public Flux<Item> getItemsByCartDataFromMonoToFlux(
-            @RequestBody Item item) {
-        System.out.println("   GET ITEMS BY CART ");
-        return itemService.getItemsByCartDataFromMonoToFlux(
-                Mono.just(item));
-    }
 
-    @GetMapping("/get-by-cart/{cartId}")
-    public Flux<Item> getItemsByCartIdToFlux(
-            @PathVariable("cartId") Long cartId
-    ) {
-        return itemService.getItemsByCartIdToFlux(cartId);
-    }
-
-    @GetMapping("/get-total-sum/{cartId}")
-    public Mono<Long> getTotalSum(
-            @PathVariable("cartId") Long cartId) {
-        Flux<Item> itemsFlux = this.getItemsByCartIdToFlux(cartId);
-        System.out.println("   NNN --- TOTAL SUM ");
-        return itemService.getTotalSum(itemsFlux);
-    }
+//
+//    @GetMapping("/get-by-cart/{cartId}")
+//    public Flux<Item> getItemsByCartIdToFlux(
+//            @PathVariable("cartId") Long cartId
+//    ) {
+//        return itemService.getItemsByCartIdToFlux(cartId);
+//    }
+//
+//    @GetMapping("/get-total-sum/{cartId}")
+//    public Mono<Long> getTotalSum(
+//            @PathVariable("cartId") Long cartId) {
+//        Flux<Item> itemsFlux = this.getItemsByCartIdToFlux(cartId);
+//        System.out.println("   NNN --- TOTAL SUM ");
+//        return itemService.getTotalSum(itemsFlux);
+//    }
 
 
 }

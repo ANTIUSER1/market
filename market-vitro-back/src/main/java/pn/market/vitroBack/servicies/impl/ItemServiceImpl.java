@@ -91,8 +91,8 @@ public class ItemServiceImpl implements TService<Item> {
         return items;
     }
 
-    public Flux<Item> getItemsByOrderId(Long id) {
-        return itemRepo.findByOrderId(id);
+    public Flux<Item> getItemsByOrderId(Long orderId) {
+        return itemRepo.findItemsByOrderId(orderId);
     }
 
 
@@ -214,8 +214,8 @@ public class ItemServiceImpl implements TService<Item> {
         return itemRepo.saveAll(itemFlux);
     }
 
-    public Flux<Item> getCartOfUser(Long userId) {
-        return itemRepo.findByUserId(userId)
+    public Flux<Item> getItemsOfUser(Long userId) {
+        return itemRepo.findItemsByUserId(userId)
                 .map(i -> {
                     System.out.println("-----I III " + i);
                     return i;
@@ -223,7 +223,7 @@ public class ItemServiceImpl implements TService<Item> {
     }
 
     public Mono<Long> getTotalSumCartOfUser(Long userId) {
-        Flux<Item> itemFlux = getCartOfUser(userId);
+        Flux<Item> itemFlux = getItemsOfUser(userId);
         return getTotalSum(itemFlux);
     }
 }
