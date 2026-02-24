@@ -32,6 +32,11 @@ public class CartController {
     @Autowired
     private LoginService loginService;
 
+    @GetMapping
+    public Mono<String> cartIndex(){
+        return Mono.just("/cart");
+    }
+
     //************* add roles ***
     @GetMapping("/{cartId}")
     public Mono<Rendering> itemsList(@PathVariable("cartId") long cartId) {
@@ -79,7 +84,10 @@ public class CartController {
 //        return Mono.just("redirect:/cart/" + cid);
 //        return cartMono.map(cm -> "redirect:/cart/" + cm.getId());
         cartMono.subscribe(cm -> System.out.println("redirect:/cart/" + cm.getId()));
-        return Mono.just("/items");
+        return cartMono.map(cm->{
+            return "redirect:/cart/" +cm.getId();
+        });
+//        return Mono.just("/cart");
     }
 /*
     @GetMapping("/items")
