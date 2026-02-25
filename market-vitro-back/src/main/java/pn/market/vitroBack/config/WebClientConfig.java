@@ -10,7 +10,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 public class WebClientConfig {
 
 
-    @Value("${remote-server}")
+    @Value("${remote-payment-server}")
     private String remoteServer;
 
     @Bean

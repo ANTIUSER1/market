@@ -66,4 +66,4 @@ management:
         include: mappings
 
 order-key: 'order:payment'
-remote-server: 'http://localhost:8502'  # payment-server
+remote-payment-server: 'http://localhost:8502'  # payment-server

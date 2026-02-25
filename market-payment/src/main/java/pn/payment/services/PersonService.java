@@ -39,6 +39,7 @@ public class PersonService {
     }
 
     public Mono<PersonData> removeMoney(long id, long money) {
+        System.out.println("REmove MONEY EXECUTE "+id+"  MONEY "+money);
         return repo.findById(id).map(u -> {
             u.removeMoney(money);
             return u;

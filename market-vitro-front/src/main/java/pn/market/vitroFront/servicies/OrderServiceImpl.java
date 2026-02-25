@@ -55,26 +55,6 @@ public class OrderServiceImpl implements TService<Order> {
         return Mono.empty();
     }
 
-    public Mono<Order> save(Order order) {
-        return webClient.get()
-                .uri(VITRO_ORDER_API + "/save/" + order.getId())
-                .retrieve().bodyToMono(Order.class);
-
-    }
-
-    public Mono<Order> saveNewOrder(Long userId, Long itemId) {
-        return webClient.get()
-                .uri(VITRO_ORDER_API + "/create/" + userId + "/" + itemId)
-                .retrieve().bodyToMono(Order.class);
-
-    }
-
-    public Mono<Order> updateOrder(Long userId, Long itemId) {
-        return webClient.get()
-                .uri(VITRO_ORDER_API + "/update/" + userId + "/" + itemId)
-                .retrieve().bodyToMono(Order.class);
-
-    }
 
     public void buyOrder(long orderId) {
         getPaymentInfoFromRemote(orderId)
@@ -162,11 +142,29 @@ public class OrderServiceImpl implements TService<Order> {
     }
 
     public void buyOrderOfUser(Long userId, Long orderId) {
-        System.out.println(".****..***********...BUY ORDER " + orderId + "  OF  USER :  " + userId);
         webClient.get()
                 .uri(VITRO_ORDER_API + "/buy/" + userId + "/" + orderId)
                 .retrieve().bodyToMono(Order.class).subscribe();
 
+    }
+    public Mono<Order> save(Order order) {
+        return webClient.get()
+                .uri(VITRO_ORDER_API + "/save/" + order.getId())
+                .retrieve().bodyToMono(Order.class);
+
+    }
+
+    public Mono<Order> saveNewOrder(Long userId, Long itemId) {
+        return webClient.get()
+                .uri(VITRO_ORDER_API + "/create/" + userId + "/" + itemId)
+                .retrieve().bodyToMono(Order.class);
+
+    }
+
+    public Mono<Order> updateOrder(Long userId, Long itemId) {
+        return webClient.get()
+                .uri(VITRO_ORDER_API + "/update/" + userId + "/" + itemId)
+                .retrieve().bodyToMono(Order.class);
 
     }
 }

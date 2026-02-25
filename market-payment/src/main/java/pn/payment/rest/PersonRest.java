@@ -39,6 +39,7 @@ public class PersonRest {
             @PathVariable("id") long id,
             @PathVariable("money") long money
     ) {
+        System.out.println("   REMOVE  MONEY "+money);
         return personService.removeMoney(id, money);
     }
 

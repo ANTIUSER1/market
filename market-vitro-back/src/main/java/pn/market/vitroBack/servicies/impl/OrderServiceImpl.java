@@ -42,7 +42,7 @@ public class OrderServiceImpl implements TService<Order> {
 
 
     @Autowired
-    private WebClient webClient;
+    private PaymentService  paymentService;
 
     @Override
     public Flux<Order> findAll() {
@@ -71,18 +71,18 @@ public class OrderServiceImpl implements TService<Order> {
         return orderRepo.save(order);
     }
 
-
-    public void buyOrder(long orderId) {
-        getPaymentInfoFromRemote(orderId)
-                .map(s -> "OK").subscribe();
-        itemService.removeFromOrder(orderId);
-    }
-
-    private Mono<String> getPaymentInfoFromRemote(long orderId) {
-        System.out.println("     BUY ORDER " + orderId);
-        return webClient.get().uri("/users/remove-money-for-order")
-                .exchangeToMono(clientResponse -> clientResponse.bodyToMono(String.class));
-    }
+//
+//    public void buyOrder(long orderId) {
+//        getPaymentInfoFromRemote(orderId)
+//                .map(s -> "OK").subscribe();
+//        itemService.removeFromOrder(orderId);
+//    }
+//
+//    private Mono<String> getPaymentInfoFromRemote(long orderId) {
+//        System.out.println("     BUY ORDER " + orderId);
+//        return webClient.get().uri("/users/remove-money-for-order")
+//                .exchangeToMono(clientResponse -> clientResponse.bodyToMono(String.class));
+//    }
 
     public Mono<Order> create(Long userId, Long itemId) {
         Order order = new Order();
@@ -156,6 +156,19 @@ public class OrderServiceImpl implements TService<Order> {
     }
 
     public void buyOrderOfUser(Long userId, Long orderId) {
+        this.getByUserId(userId)
+                .map(o->{
+                    System.out.println( "    ORDER TO PAY "+o.getId());
+                    System.out.println("            CONTAINS ITEM ");
+                    for(Item i : o.getItems()){
+                        System.out.println( " ITEM: "+i);
+                    }
+                    System.out.println("   TOTAL SUM: "+o.getTotalSumm());
+                    paymentService.buyOrder(o.getId()).subscribe();
+return o;
+                }).subscribe();
+
+
        /*
         System.out.println("   -----PROCESS    BUY ORDER OF USER: --: ORDER: " + orderId + "  USER:  " + userId);
         itemService.getItemsByOrderId(orderId)
