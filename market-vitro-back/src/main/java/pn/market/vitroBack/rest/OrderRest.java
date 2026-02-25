@@ -25,6 +25,11 @@ public class OrderRest {
     public Flux<Order> findAll() {
         return orderService.findAll();
     }
+    @GetMapping("/order-by-user-uid/{uid}")
+    public Mono<Order> getByUserId(@PathVariable("uid") Long uid) {
+        return orderService.getByUserId(uid);
+    }
+
 
     @GetMapping("/{id}")
     public Mono<Order> getById(@PathVariable("id") Long id) {

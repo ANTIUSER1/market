@@ -15,9 +15,19 @@ import reactor.core.publisher.Mono;
 @Transactional
 public interface OrderRepo extends ReactiveCrudRepository<Order, Long> {
 
+/*
 
-    @Query("SELECT * FROM orders o  WHERE  o.user_id = :userId ORDER BY o.id ASC")
-    Flux<Order> findByUserId(Long userId);
+ SELECT * FROM orders o  WHERE  id in(
+ select ud.order_id   from user_data ud  where ud.id = 2
+ )
+ */
+    @Query(
+            """ 
+                SELECT * FROM orders o  WHERE  id in(
+                   select ud.order_id   from user_data ud  where ud.id = $1
+                     )
+            """)
+    Mono<Order> findByUserId(Long userId);
 
     @Query("""
              select sum(i.count *i.price)  as cp from items i  where i.id in (

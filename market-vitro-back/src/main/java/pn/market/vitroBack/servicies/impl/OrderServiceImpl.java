@@ -39,6 +39,8 @@ public class OrderServiceImpl implements TService<Order> {
     @Autowired
     private ItemServiceImpl itemService;
 
+
+
     @Autowired
     private WebClient webClient;
 
@@ -104,6 +106,7 @@ public class OrderServiceImpl implements TService<Order> {
 
     public Mono<Order> updateExisting(Long userId, Long itemId) {
         System.out.println("----------updateExisting: IteM:" + itemId + "   ::::  UserM:: " + userId);
+    /*
         Mono<List<Order>> udmonoList = orderRepo.findByUserId(userId).collectList();
         Mono<Order> orderMono = udmonoList.map(
                 ud -> {
@@ -118,6 +121,7 @@ public class OrderServiceImpl implements TService<Order> {
                     return o;
                 }
         );
+
         Mono<Item> itemMono = itemService.findById(itemId);
 
         orderMono = Mono.zip(orderMono, itemMono)
@@ -133,7 +137,8 @@ public class OrderServiceImpl implements TService<Order> {
                     itemService.save(i).subscribe();
                     return o;
                 });
-        return orderMono;
+     */
+        return Mono.empty();
     }
 
     public Mono<Order> showOderOfUser(Long userId, Long orderId) {
@@ -235,6 +240,20 @@ public class OrderServiceImpl implements TService<Order> {
 
 
         // return Mono.empty();
+    }
+
+    public Mono<Order> getByUserId(Long uid) {
+        Mono<Order> orderMono=orderRepo.findByUserId(uid) ;
+        Flux<Item> itemFlux= itemService.getItemsOfUser(uid);
+        orderMono=Mono.zip(orderMono, itemFlux.collectList())
+                .map(t->{
+                    Order o=t.getT1();
+                    List<Item> itemList=t.getT2();
+                    o.getItems().addAll(itemList);
+
+                    return  o;
+                });
+         return orderMono;
     }
 }
 
