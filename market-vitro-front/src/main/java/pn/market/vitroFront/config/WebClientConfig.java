@@ -40,11 +40,6 @@ public class WebClientConfig {
         oauth2Client.setDefaultClientRegistrationId("keycloak");
 
         return WebClient.create(auth2Host);
-//        return WebClient.builder()
-//                // Добавляем OAuth2-авторизацию ко всем запросам
-//                .filter(oauth2Client)
-//                .codecs(configurer -> configurer.defaultCodecs().maxInMemorySize(1024 * 1024))
-//                .build();
     }
 
 }

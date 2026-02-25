@@ -1,13 +1,14 @@
 order-key: 'order:payment'
+remote-server: 'http://localhost:8502'
 
 oauth:
   data:
     host: http://localhost:8521
 
 
-
 server:
   port: 8511
+
 
 
 spring:
