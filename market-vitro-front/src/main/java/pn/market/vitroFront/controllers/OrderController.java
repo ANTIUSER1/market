@@ -52,7 +52,6 @@ public class OrderController {
     public Mono<Rendering> saveNewOrderOfUser(
             @PathVariable("itemId") Long itemId) {
         Long userId = loginService.getUserData().getId();
-        System.out.println("   saveNewOrderOfUser   NEW ORDER: ITEM  " + itemId + "   USER " + userId);
         Mono<Order> order = orderService.saveNewCompleteOrderOfUserById(userId, itemId);
 
         Mono<Rendering> r =
