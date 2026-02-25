@@ -36,6 +36,7 @@ public class OrderController {
 
     @GetMapping
     public Mono<Rendering> allOrders() {
+        System.out.println("ALL---");
         Mono<List<Order>> orders = orderService.addItemsToAll();
         Mono<Rendering> r =
                 Mono.just(Rendering.view("orders")
