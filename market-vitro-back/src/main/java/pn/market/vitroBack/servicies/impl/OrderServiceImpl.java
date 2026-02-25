@@ -3,7 +3,6 @@ package pn.market.vitroBack.servicies.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
 import pn.market.market_entities.Paging;
 import pn.market.market_entities.TService;
 import pn.market.market_entities.forWEB.Item;
@@ -40,9 +39,8 @@ public class OrderServiceImpl implements TService<Order> {
     private ItemServiceImpl itemService;
 
 
-
     @Autowired
-    private PaymentService  paymentService;
+    private PaymentService paymentService;
 
     @Override
     public Flux<Order> findAll() {
@@ -157,15 +155,15 @@ public class OrderServiceImpl implements TService<Order> {
 
     public void buyOrderOfUser(Long userId, Long orderId) {
         this.getByUserId(userId)
-                .map(o->{
-                    System.out.println( "    ORDER TO PAY "+o.getId());
+                .map(o -> {
+                    System.out.println("    ORDER TO PAY " + o.getId());
                     System.out.println("            CONTAINS ITEM ");
-                    for(Item i : o.getItems()){
-                        System.out.println( " ITEM: "+i);
+                    for (Item i : o.getItems()) {
+                        System.out.println(" ITEM: " + i);
                     }
-                    System.out.println("   TOTAL SUM: "+o.getTotalSumm());
-                    paymentService.buyOrder(o.getId()).subscribe();
-return o;
+                    System.out.println("   TOTAL SUM: " + o.getTotalSumm());
+
+                    return o;
                 }).subscribe();
 
 
@@ -198,7 +196,7 @@ return o;
 
 
     public Mono<Order> createOrUseCartOfUser(Long userId, Long itemId) {
-  Mono<Order> orderMono = orderUtilityService.createOrTestExistOrder(userId);
+        Mono<Order> orderMono = orderUtilityService.createOrTestExistOrder(userId);
         Mono<OrderItems> orderItemsMono = orderMono.map(o -> {
             return orderUtilityService.createAndSaveOrderItems(o.getId(), itemId)
                     .map(cci -> {
@@ -231,17 +229,17 @@ return o;
     }
 
     public Mono<Order> getByUserId(Long uid) {
-        Mono<Order> orderMono=orderRepo.findByUserId(uid) ;
-        Flux<Item> itemFlux= itemService.getItemsOfUser(uid);
-        orderMono=Mono.zip(orderMono, itemFlux.collectList())
-                .map(t->{
-                    Order o=t.getT1();
-                    List<Item> itemList=t.getT2();
+        Mono<Order> orderMono = orderRepo.findByUserId(uid);
+        Flux<Item> itemFlux = itemService.getItemsOfUser(uid);
+        orderMono = Mono.zip(orderMono, itemFlux.collectList())
+                .map(t -> {
+                    Order o = t.getT1();
+                    List<Item> itemList = t.getT2();
                     o.getItems().addAll(itemList);
 
-                    return  o;
+                    return o;
                 });
-         return orderMono;
+        return orderMono;
     }
 }
 

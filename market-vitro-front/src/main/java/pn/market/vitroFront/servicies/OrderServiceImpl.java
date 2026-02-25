@@ -56,22 +56,6 @@ public class OrderServiceImpl implements TService<Order> {
     }
 
 
-    public void buyOrder(long orderId) {
-        getPaymentInfoFromRemote(orderId)
-                .map(s -> {
-                    System.out.println("    ----SSSSSSS--- " + s);
-                    System.out.println("    ----SSSSSSS--- " + s);
-                    System.out.println("    ----SSSSSSS--- " + s);
-                    System.out.println("    ----SSSSSSS--- " + s);
-                    return s;
-                })
-                .map(s -> "OK").subscribe();
-
-
-        System.out.println("     BUY ORDER " + orderId);
-        itemService.removeFromOrder(orderId);
-    }
-
     private Mono<String> getPaymentInfoFromRemote(long orderId) {
         System.out.println("     BUY ORDER " + orderId);
         return webClient.get().uri(VITRO_ITEM_API + "//remove-order/" + orderId)
@@ -147,6 +131,7 @@ public class OrderServiceImpl implements TService<Order> {
                 .retrieve().bodyToMono(Order.class).subscribe();
 
     }
+
     public Mono<Order> save(Order order) {
         return webClient.get()
                 .uri(VITRO_ORDER_API + "/save/" + order.getId())
@@ -166,5 +151,21 @@ public class OrderServiceImpl implements TService<Order> {
                 .uri(VITRO_ORDER_API + "/update/" + userId + "/" + itemId)
                 .retrieve().bodyToMono(Order.class);
 
+    }
+
+    public void buyOrder(long orderId) {
+        getPaymentInfoFromRemote(orderId)
+                .map(s -> {
+                    System.out.println("    ----SSSSSSS--- " + s);
+                    System.out.println("    ----SSSSSSS--- " + s);
+                    System.out.println("    ----SSSSSSS--- " + s);
+                    System.out.println("    ----SSSSSSS--- " + s);
+                    return s;
+                })
+                .map(s -> "OK").subscribe();
+
+
+        System.out.println("     BUY ORDER " + orderId);
+        itemService.removeFromOrder(orderId);
     }
 }

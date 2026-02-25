@@ -75,6 +75,8 @@ public class OrderController {
                         .modelAttribute("newOrder", false)
                         .build());
         paymentService.configurePayments(userId, orderId);
+
+//      REDIS!
         return r;
     }
 
@@ -84,7 +86,8 @@ public class OrderController {
     public String buyOrder(@PathVariable("orderId") Long orderId) {
         Long userId = loginService.getUserData().getId();
         System.out.println("............BUY ORDER " + orderId + "  OF  USER :  " + userId);
-        orderService.buyOrderOfUser(userId, orderId);
+        orderService.buyOrder(orderId);
+//        orderService.buyOrderOfUser(userId, orderId);
         return "redirect:/orders";
     }
 
