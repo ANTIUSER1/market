@@ -48,7 +48,7 @@ public class OrderController {
     }
 
     //************* add roles ***
-    @GetMapping("/save/{itemId}")
+    @GetMapping("/item-to-order/{itemId}")
     public Mono<Rendering> saveNewOrderOfUser(
             @PathVariable("itemId") Long itemId) {
         Long userId = loginService.getUserData().getId();
