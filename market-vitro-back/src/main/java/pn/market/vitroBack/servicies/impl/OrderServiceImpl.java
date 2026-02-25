@@ -84,7 +84,7 @@ public class OrderServiceImpl implements TService<Order> {
                 .exchangeToMono(clientResponse -> clientResponse.bodyToMono(String.class));
     }
 
-    public Mono<Order> creare(Long userId, Long itemId) {
+    public Mono<Order> create(Long userId, Long itemId) {
         Order order = new Order();
         // order.setUserId(userId);
         System.out.println("   saveWithUser   NEW ORDER: ITEM  " + itemId + "   USER " + userId);
@@ -185,8 +185,7 @@ public class OrderServiceImpl implements TService<Order> {
 
 
     public Mono<Order> createOrUseCartOfUser(Long userId, Long itemId) {
-
-        Mono<Order> orderMono = orderUtilityService.createOrTestExistOrder(userId);
+  Mono<Order> orderMono = orderUtilityService.createOrTestExistOrder(userId);
         Mono<OrderItems> orderItemsMono = orderMono.map(o -> {
             return orderUtilityService.createAndSaveOrderItems(o.getId(), itemId)
                     .map(cci -> {
@@ -216,30 +215,6 @@ public class OrderServiceImpl implements TService<Order> {
                 }).flatMap(mm -> mm);
 
         return orderMono;
-                /*
-                orderControlUtilityService.findUserById(userId)
-                .map(u->{
-                    Mono<Order> o;
-                    if (u.getOrderId()  == null) {
-                        System.out.println(" CREATE   NEW CART ");
-                       o =orderControlUtilityService.saveOrder(new Order())
-                                //cartRepo.save(new Cart())
-                                .map(ooo -> {
-                                    u.setCartId(ooo.getId());
-
-                                  orderControlUtilityService.saveUser(u).subscribe();
-                                    return ooo;
-                                });
-                    } else {
-                     o = orderControlUtilityService.findOrderById(u.getCartId());
-                        //cartRepo.findById(u.getCartId());
-                    } return o;
-                }).flatMap(v->v);
-
-*/
-
-
-        // return Mono.empty();
     }
 
     public Mono<Order> getByUserId(Long uid) {

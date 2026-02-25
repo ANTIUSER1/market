@@ -50,7 +50,9 @@ public class OrderRest {
             @PathVariable("itemId") Long itemId,
             @PathVariable("userId") Long userId) {
 
-        Mono<Order> orderMono = orderService.creare(userId, itemId);
+        Mono<Order> orderMono =orderService.createOrUseCartOfUser(userId,itemId);
+
+                //orderService.create(userId, itemId);
 
         return orderMono;
     }

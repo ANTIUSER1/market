@@ -151,9 +151,13 @@ public class OrderServiceImpl implements TService<Order> {
     public Mono<Order> saveNewCompleteOrderOfUserById(Long userId, Long itemId) {
         System.out.println("   saveNewCompleteOrderOfUserById   NEW ORDER: ITEM  " + itemId + "   USER " + userId);
 
-        Mono<Order> orderMono = saveNewOrder(userId, itemId);
+        //Mono<Order> orderMono =
+        return webClient.get()
+                .uri(VITRO_ORDER_API + "/create/" + userId + "/" + itemId)
+                .retrieve().bodyToMono(Order.class);
+             //   saveNewOrder(userId, itemId);
 /*
-
+/create/{userId}/{itemId}
                 .map(od -> {
                     itemService.getById(itemId)
                             .map(i -> {
@@ -165,7 +169,7 @@ public class OrderServiceImpl implements TService<Order> {
                 });
 
  */
-        return orderMono;
+        //return orderMono;
     }
 
     public Mono<Order> showOrderOfUserById(Long userId, Long orderId) {

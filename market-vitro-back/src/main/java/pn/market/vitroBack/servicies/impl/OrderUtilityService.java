@@ -35,7 +35,6 @@ public class OrderUtilityService {
                                             .map(t1 -> {
                                                 Item i = t1.getT1();
                                                 Long count = t1.getT2();
-                                                System.out.println("   ORDER PLUS COUNT VALUE " + count);
                                                 i.setCount(count);
                                                 orderControlUtilityService.saveItem(i).subscribe();
                                                 return i;
