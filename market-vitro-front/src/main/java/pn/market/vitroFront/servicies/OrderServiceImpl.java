@@ -11,6 +11,7 @@ import pn.market.market_entities.forWEB.Order;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -97,34 +98,15 @@ public class OrderServiceImpl implements TService<Order> {
                 .exchangeToMono(clientResponse -> clientResponse.bodyToMono(String.class));
     }
 
-    public Mono<List<Order>> addItemsToAll() {
-
-
-   /*
-        Flux<Order> orderFlux = findAll();//.filter(oo -> !oo.getItems().isEmpty());
-        Mono<List<Order>> orderMonList = orderFlux.collectList();
-
-        Flux<Item> itemFlux = orderFlux.map(o -> {
-            Flux<Item> itm = itemService.getItemsByOrderId(o.getId());
-            return itm;
-        }).flatMap(i -> i);
-        Mono<List<Item>> itemMonList = itemFlux.collectList();
-
-        orderMonList = Mono.zip(orderFlux.collectList(), itemFlux.collectList())
-                .map(t -> {
-                    List<Order> ol = t.getT1();
-                    List<Item> il = t.getT2();
-                    for (Order o : ol) {
-                        for (Item i : il)
-                            if (i.getOrderId() == o.getId()) {
-                                o.addItem(i);
-                            }
-                    }
-                    return Mono.just(ol);
-                }).flatMap(oo -> oo);
-        return orderMonList;
-    */
-        return Mono.empty();
+    public  Mono<List<Order>> addItemsToAllByUserId( Long userId) {
+        Mono<Order> orderMono=   webClient.get()
+                .uri(VITRO_ORDER_API+"/order-by-user-uid/"+userId)
+                .retrieve().bodyToMono(Order.class);
+return orderMono.map(o->{
+    List<Order> orders=new ArrayList<>();
+    orders.add(o);
+    return orders;
+});
     }
 
     public Mono<Order> showCompleteOrderById(Long orderId) {
