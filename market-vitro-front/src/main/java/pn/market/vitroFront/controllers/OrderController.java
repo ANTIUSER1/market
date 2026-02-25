@@ -53,16 +53,13 @@ public class OrderController {
             @PathVariable("itemId") Long itemId) {
         Long userId = loginService.getUserData().getId();
         Mono<Order> order = orderService.saveNewCompleteOrderOfUserById(userId, itemId);
-
         Mono<Rendering> r =
                 Mono.just(Rendering.view("order")
                         .modelAttribute("orderData", order)
                         .modelAttribute("newOrder", false)
                         .build());
         return r;
-
     }
-
 
     //************* add roles ***
     //---------detect not done---
