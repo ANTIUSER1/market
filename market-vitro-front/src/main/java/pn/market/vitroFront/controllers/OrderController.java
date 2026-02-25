@@ -34,10 +34,12 @@ public class OrderController {
     @Autowired
     private LoginService loginService;
 
+    //************* add roles ***
     @GetMapping
     public Mono<Rendering> allOrders() {
-        System.out.println("ALL---");
-        Mono<List<Order>> orders = orderService.addItemsToAll();
+        Long userId = loginService.getUserData().getId();
+        Mono<List<Order>> orders = orderService.addItemsToAllByUserId(userId);
+        //order-by-user-uid
         Mono<Rendering> r =
                 Mono.just(Rendering.view("orders")
                         .modelAttribute("orderData", orders)
@@ -45,10 +47,10 @@ public class OrderController {
         return r;
     }
 
+    //************* add roles ***
     @GetMapping("/save/{itemId}")
     public Mono<Rendering> saveNewOrderOfUser(
             @PathVariable("itemId") Long itemId) {
-
         Long userId = loginService.getUserData().getId();
         System.out.println("   saveNewOrderOfUser   NEW ORDER: ITEM  " + itemId + "   USER " + userId);
         Mono<Order> order = orderService.saveNewCompleteOrderOfUserById(userId, itemId);

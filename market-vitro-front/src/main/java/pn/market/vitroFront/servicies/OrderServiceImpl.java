@@ -98,15 +98,15 @@ public class OrderServiceImpl implements TService<Order> {
                 .exchangeToMono(clientResponse -> clientResponse.bodyToMono(String.class));
     }
 
-    public  Mono<List<Order>> addItemsToAllByUserId( Long userId) {
-        Mono<Order> orderMono=   webClient.get()
-                .uri(VITRO_ORDER_API+"/order-by-user-uid/"+userId)
+    public Mono<List<Order>> addItemsToAllByUserId(Long userId) {
+        Mono<Order> orderMono = webClient.get()
+                .uri(VITRO_ORDER_API + "/order-by-user-uid/" + userId)
                 .retrieve().bodyToMono(Order.class);
-return orderMono.map(o->{
-    List<Order> orders=new ArrayList<>();
-    orders.add(o);
-    return orders;
-});
+        return orderMono.map(o -> {
+            List<Order> orders = new ArrayList<>();
+            orders.add(o);
+            return orders;
+        });
     }
 
     public Mono<Order> showCompleteOrderById(Long orderId) {
