@@ -57,15 +57,6 @@ public class OrderRest {
         return orderMono;
     }
 
-    @GetMapping("/update/{userId}/{itemId}")
-    public Mono<Order> updateWithUser(
-            @PathVariable("orderId") Long itemId,
-            @PathVariable("userId") Long userId) {
-        System.out.println("---UPDATE: IteM:" + itemId + "   ::::  UserM:: " + userId);
-        Mono<Order> orderMono = orderService.updateExisting(userId, itemId);
-
-        return orderMono;
-    }
 
     @GetMapping("/show/{userId}/{orderId}")
     public Mono<Order> showOderOfUser(
