@@ -54,21 +54,23 @@ public class PaymentSupplierImpl implements Supplier<Mono<String>> {
 
     @Override
     public Mono<String> get() {
+        System.out.println("   PAYMENT-SUPPLIER GET RUN!!  ---- " + orderId);
         if (orderId == null || userId == null) {
             return Mono.empty();
         }
 
-//        Mono<String> result =
-        orderService.getById(orderId)
-                .map(order -> {
-                            redisTemplate.opsForValue()
-                                    .set(
-                                            orderKey,
-                                            userId + ";" + orderId + ";" + order.getTotalSumm() + ";" + localTime
-                                    );
-                            return order.toString();
-                        }
-                );
-        return Mono.empty();
+        Mono<String> result =
+                orderService.getById(orderId)
+                        .map(order -> {
+                                    redisTemplate.opsForValue()
+                                            .set(
+                                                    orderKey,
+                                                    userId + ";" + orderId + ";" + order.getTotalSumm() + ";" + localTime
+                                            );
+                                    return order.toString();
+                                }
+                        );
+        return result;
+        //return Mono.empty();
     }
 }
