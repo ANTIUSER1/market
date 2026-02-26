@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import pn.market.market_entities.forPAYMENTS.PersonData;
-import pn.payment.repo.PersonDataRepo;
+import pn.payment.repo.UserDataRepo;
 import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -18,9 +18,9 @@ class PersonServiceTest {
 
 
     @MockitoBean
-    private PersonDataRepo repo;
+    private UserDataRepo repo;
     @Autowired
-    private PersonService service;
+    private UserDataService service;
     @MockitoBean
     private RedisTemplate<String, String> redisTemplate;
 

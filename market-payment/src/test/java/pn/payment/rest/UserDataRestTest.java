@@ -9,21 +9,21 @@ import org.springframework.context.annotation.Import;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.reactive.server.WebTestClient;
 import pn.market.market_entities.forPAYMENTS.PersonData;
-import pn.payment.services.PersonService;
+import pn.payment.services.UserDataService;
 import reactor.core.publisher.Mono;
 
-@WebFluxTest({PersonRest.class})
-@Import({PersonService.class})
-class PersonRestTest {
+@WebFluxTest({UserDataRest.class})
+@Import({UserDataService.class})
+class UserDataRestTest {
 
     @MockitoBean
-    private PersonService personService;
+    private UserDataService userDataService;
     @Autowired
     private WebTestClient webTestClient;
 
     @Test
     void removeMoneyFromFirstSuccsessTest() {
-        Mockito.when(personService.removeMoneySuccess(1L, 10L)).thenReturn(Mono.just(true));
+        Mockito.when(userDataService.removeMoneySuccess(1L, 10L)).thenReturn(Mono.just(true));
         webTestClient.get().uri("/users/remove-money-from-first-success/10")
                 .exchange()
                 .expectStatus().isOk();
@@ -32,7 +32,7 @@ class PersonRestTest {
 
     @Test
     void addMoney() {
-        Mockito.when(personService.addMoney(1L, 10L))
+        Mockito.when(userDataService.addMoney(1L, 10L))
                 .thenReturn(Mono.just(new PersonData("", "", 44L)));
         webTestClient.get().uri("/users/add-money/1/555")
                 .exchange()
@@ -41,7 +41,7 @@ class PersonRestTest {
 
     @Test
     void removeMoneyForOrder() {
-        Mockito.when(personService.removeMoneyForOrder())
+        Mockito.when(userDataService.removeMoneyForOrder())
                 .thenReturn(Mono.just(true));
         webTestClient.get().uri("/users/remove-money-for-order")
                 .exchange()

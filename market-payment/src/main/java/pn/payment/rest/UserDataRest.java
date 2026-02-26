@@ -3,27 +3,27 @@ package pn.payment.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import pn.market.market_entities.forPAYMENTS.PersonData;
-import pn.payment.services.PersonService;
+import pn.payment.services.UserDataService;
 import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("/api/payment/users")
-public class PersonRest {
+public class UserDataRest {
 
 
     @Autowired
-    private PersonService personService;
+    private UserDataService userDataService;
 
     @PostMapping("/create")
     public Mono<PersonData> getUsers() {
-        return personService.create();
+        return userDataService.create();
     }
 
     @GetMapping("/find/{id}")
     public Mono<PersonData> findUserById(
             @PathVariable("id") long id
     ) {
-        return personService.findById(id);
+        return userDataService.findById(id);
     }
 
     @GetMapping("/add-money/{id}/{money}")
@@ -31,7 +31,7 @@ public class PersonRest {
             @PathVariable("id") long id,
             @PathVariable("money") long money
     ) {
-        return personService.addMoney(id, money);
+        return userDataService.addMoney(id, money);
     }
 
     @GetMapping("/remove-money/{id}/{money}")
@@ -40,13 +40,13 @@ public class PersonRest {
             @PathVariable("money") long money
     ) {
         System.out.println("   REMOVE  MONEY "+money);
-        return personService.removeMoney(id, money);
+        return userDataService.removeMoney(id, money);
     }
 
     @GetMapping("/remove-money-for-order")
     public Mono<Boolean> removeMoneyForOrder() {
         System.out.println( " /remove-money-for-order "  );
-        return personService.removeMoneyForOrder();
+        return userDataService.removeMoneyForOrder();
 
     }
 
@@ -54,7 +54,7 @@ public class PersonRest {
     public Mono<Boolean> removeMoneyFromFirstSuccsess(
             @PathVariable("money") long money
     ) {
-        return personService.removeMoneySuccess(1, money);
+        return userDataService.removeMoneySuccess(1, money);
     }
 
     @GetMapping("/ooooo")

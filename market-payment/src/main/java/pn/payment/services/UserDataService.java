@@ -5,18 +5,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import pn.market.market_entities.forPAYMENTS.PersonData;
-import pn.payment.repo.PersonDataRepo;
+import pn.payment.repo.UserDataRepo;
 import reactor.core.publisher.Mono;
 
 @Service
-public class PersonService {
+public class UserDataService {
 
 
     @Value("${order-key}")
     private String orderKey;
 
     @Autowired
-    private PersonDataRepo repo;
+    private UserDataRepo repo;
 
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
