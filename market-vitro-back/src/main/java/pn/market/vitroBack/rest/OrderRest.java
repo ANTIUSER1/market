@@ -31,20 +31,17 @@ public class OrderRest {
         return orderService.getByUserId(uid);
     }
 
-
     @GetMapping("/{id}")
     public Mono<Order> getById(@PathVariable("id") Long id) {
         return orderService.getById(id);
     }
-
 
     @GetMapping("/save/{orderId}")
     public Mono<Order> save(
             @PathVariable("orderId") Long orderId) {
         return orderService.getById(orderId)
                 .map(o -> orderService.save(o)).flatMap(o -> o);
-
-    }
+   }
 
     @GetMapping("/create/{userId}/{itemId}")
     public Mono<Order> createWithUser(
@@ -52,12 +49,8 @@ public class OrderRest {
             @PathVariable("userId") Long userId) {
 
         Mono<Order> orderMono = orderService.createOrUseCartOfUser(userId, itemId);
-
-        //orderService.create(userId, itemId);
-
-        return orderMono;
+  return orderMono;
     }
-
 
     @GetMapping("/show/{userId}/{orderId}")
     public Mono<Order> showOderOfUser(
@@ -71,7 +64,6 @@ public class OrderRest {
     public void buyOrderOfUser(
             @PathVariable("orderId") Long orderId,
             @PathVariable("userId") Long userId) {
-        System.out.println("..............RUN....BUY ORDER " + orderId + "  OF  USER :  " + userId);
         orderService.buyOrderOfUser(userId, orderId);
     }
 

@@ -33,7 +33,6 @@ public class CartRest {
         return cartService.getTotalSumOfCart(cartId);
     }
 
-
     @GetMapping("/remove/{userId}/{itemId}")
     public Mono<Item> removeCartOfUser(
             @PathVariable("userId") Long userId,
@@ -42,6 +41,5 @@ public class CartRest {
     ) {
         return cartService.removeFromCartOfUser(userId, itemId);
     }
-
 
 }
