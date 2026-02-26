@@ -66,8 +66,8 @@ public class OrderServiceImpl implements TService<Order> {
 
 
         System.out.println("REQUEST TO URL  "
-                + VITRO_PAYMENT_API + "/remove-money-for-order/" + orderId);
-        return webPaymentClient.get().uri(VITRO_PAYMENT_API + "/remove-money-for-order/" + orderId)
+                + VITRO_PAYMENT_API + "/remove-money-for-order");
+        return webPaymentClient.get().uri(VITRO_PAYMENT_API + "/remove-money-for-order")
                 .exchangeToMono(clientResponse -> {
                     System.out.println("   EXCHANGE: " + clientResponse.headers().contentType());
                     return clientResponse.bodyToMono(String.class);

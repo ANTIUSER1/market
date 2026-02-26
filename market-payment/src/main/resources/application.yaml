@@ -28,6 +28,14 @@ spring:
 
 
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Указываем полный путь до нашего Realm в Keycloak
+          issuer-uri: http://192.168.2.200:8282/realms/absolute
+
+
 
 springdoc:
   api-docs:
