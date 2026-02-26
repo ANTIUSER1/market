@@ -8,17 +8,17 @@ import org.springframework.security.core.GrantedAuthority;
 @Getter
 @ToString
 public class GrantedAuthorityImpl implements GrantedAuthority {
-	
-	private final String authority;
-	
-	public GrantedAuthorityImpl(String authority) {
-		this.authority = authority;
-	}
-	
-	@Override
-	public @Nullable String getAuthority() {
-		return authority;
-	}
+
+    private final String authority;
+
+    public GrantedAuthorityImpl(String authority) {
+        this.authority = authority;
+    }
+
+    @Override
+    public @Nullable String getAuthority() {
+        return authority;
+    }
 
 
 }

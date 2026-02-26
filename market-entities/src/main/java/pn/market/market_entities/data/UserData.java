@@ -58,13 +58,13 @@ public class UserData implements UserDetails {
     }
 
 
-    public UserData addMoney(Long m){
-        this.money+=m;
+    public UserData addMoney(Long m) {
+        this.money += m;
         return this;
     }
 
-    public UserData removeMoney(Long m){
-        this.money-=m;
+    public UserData removeMoney(Long m) {
+        this.money -= m;
         return this;
     }
 }

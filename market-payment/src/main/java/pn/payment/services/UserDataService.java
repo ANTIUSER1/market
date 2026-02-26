@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import pn.market.market_entities.data.UserData;
-import pn.market.market_entities.forPAYMENTS.PersonData;
 import pn.payment.repo.UserDataRepo;
 import reactor.core.publisher.Mono;
 
@@ -40,9 +39,9 @@ public class UserDataService {
 //    }
 
     public Mono<UserData> removeMoney(long id, long money) {
-        System.out.println("REmove MONEY EXECUTE "+id+"  MONEY "+money);
+        System.out.println("REmove MONEY EXECUTE " + id + "  MONEY " + money);
         return repo.findById(id).map(u -> {
-            u.removeMoney( money);
+            u.removeMoney(money);
             return u;
         }).flatMap(repo::save);
     }
@@ -61,7 +60,7 @@ public class UserDataService {
     public Mono<Boolean> removeMoneyForOrder() {
         System.out.println("    personService.removeMoneyForOrder();    ");
         String s = redisTemplate.opsForValue().get(orderKey);
-        System.out.println("REDIS DATA "+s);
+        System.out.println("REDIS DATA " + s);
         String[] split = s.split(";");
         long id = Long.parseLong(split[0]);
         long money = Long.parseLong(split[2]);

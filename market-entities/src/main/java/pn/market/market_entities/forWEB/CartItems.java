@@ -6,11 +6,12 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
+
 @Data
 @ToString
 @NoArgsConstructor
 @Table(name = "carts_items", schema = "market")
-public class CartItems  implements Comparable<CartItems>  {
+public class CartItems implements Comparable<CartItems> {
 
 
     @Getter
@@ -29,6 +30,6 @@ public class CartItems  implements Comparable<CartItems>  {
 
     @Override
     public int compareTo(CartItems o) {
-        return (int) (this.id-o.id);
+        return (int) (this.id - o.id);
     }
 }

@@ -212,7 +212,7 @@ public class ItemServiceImpl implements TService<Item> {
     }
 
     public Flux<Item> getItemsOfUser(Long userId) {
-        return itemRepo.findItemsByUserId(userId) ;
+        return itemRepo.findItemsByUserId(userId);
     }
 
     public Mono<Long> getTotalSumCartOfUser(Long userId) {

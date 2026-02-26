@@ -71,7 +71,6 @@ public class Item implements Comparable<Item> {
     }
 
 
-
     @Override
     public int compareTo(Item o) {
         return (int) (this.id - o.getId());

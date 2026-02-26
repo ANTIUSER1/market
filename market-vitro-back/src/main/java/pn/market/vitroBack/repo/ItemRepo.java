@@ -29,17 +29,17 @@ public interface ItemRepo extends ReactiveCrudRepository<Item, Long> {
 
     @Query(
             """ 
-                select * from items i  where i.id in (\s
-                     select distinct oi.item_id  from orders_items  oi where oi.order_id = $1
-                     )
+                    select * from items i  where i.id in (\s
+                         select distinct oi.item_id  from orders_items  oi where oi.order_id = $1
+                         )
                     """)
     Flux<Item> findItemsByOrderId(Long orderId);
 
     @Query(
             """ 
-                select * from items i  where i.id in (\s
-                     select distinct oi.item_id  from carts_items  oi where oi.cart_id = $1
-                     ) 
+                    select * from items i  where i.id in (\s
+                         select distinct oi.item_id  from carts_items  oi where oi.cart_id = $1
+                         ) 
                     """)
     Flux<Item> findItemsByCartId(Long cartId);
 
