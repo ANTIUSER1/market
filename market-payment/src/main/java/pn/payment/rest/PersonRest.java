@@ -45,7 +45,7 @@ public class PersonRest {
 
     @GetMapping("/remove-money-for-order")
     public Mono<Boolean> removeMoneyForOrder() {
-        //   personService.removeMoneyForOrder();
+        System.out.println( " /remove-money-for-order "  );
         return personService.removeMoneyForOrder();
 
     }

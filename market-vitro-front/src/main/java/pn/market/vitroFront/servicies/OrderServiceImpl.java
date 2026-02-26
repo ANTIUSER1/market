@@ -28,19 +28,22 @@ public class OrderServiceImpl implements TService<Order> {
     private ItemServiceImpl itemService;
 
     @Autowired
+    @Qualifier("PAYMENT")
+    private WebClient webPaymentClient;
+    @Autowired
     @Qualifier("BACK")
-    private WebClient webClient;
+    private WebClient webBackClient;
 
     @Override
     public Flux<Order> findAll() {
-        return webClient.get()
+        return webBackClient.get()
                 .uri(VITRO_ORDER_API)
                 .retrieve().bodyToFlux(Order.class);
     }
 
     @Override
     public Mono<Order> getById(Long id) {
-        Mono<Order> order = webClient.get()
+        Mono<Order> order = webBackClient.get()
                 .uri(VITRO_ORDER_API + "/" + id)
                 .retrieve().bodyToMono(Order.class);
         Flux<Item> items = itemService.getItemsByOrderId(id);
@@ -59,14 +62,21 @@ public class OrderServiceImpl implements TService<Order> {
 
 
     private Mono<String> getPaymentInfoFromRemote(long orderId) {
-        System.out.println("     BUY ORDER " + orderId);
-        return webClient.get().uri(VITRO_ORDER_API + "/users/remove-money-for-orde/" + orderId)
-                .exchangeToMono(clientResponse -> clientResponse.bodyToMono(String.class));
+        System.out.println("    +++++++++ BUY ORDER " + orderId);
+
+
+        System.out.println("REQUEST TO URL  "
+                + VITRO_PAYMENT_API + "/remove-money-for-order/" + orderId);
+        return webPaymentClient.get().uri(VITRO_PAYMENT_API + "/remove-money-for-order/" + orderId)
+                .exchangeToMono(clientResponse -> {
+                    System.out.println("   EXCHANGE: " + clientResponse.headers().contentType());
+                    return clientResponse.bodyToMono(String.class);
+                });
     }
 
     public Mono<List<Order>> addItemsToAllByUserId(Long userId) {
-        Mono<Order> orderMono = webClient.get()
-                .uri(VITRO_PAYMENT_API + "/order-by-user-uid/" + userId)
+        Mono<Order> orderMono = webBackClient.get()
+                .uri(VITRO_ORDER_API + "/order-by-user-uid/" + userId)
                 .retrieve().bodyToMono(Order.class);
         return orderMono.map(o -> {
             List<Order> orders = new ArrayList<>();
@@ -115,48 +125,48 @@ public class OrderServiceImpl implements TService<Order> {
     }
 
     public Mono<Order> saveNewCompleteOrderOfUserById(Long userId, Long itemId) {
-        return webClient.get()
+        return webBackClient.get()
                 .uri(VITRO_ORDER_API + "/create/" + userId + "/" + itemId)
                 .retrieve().bodyToMono(Order.class);
     }
 
     public Mono<Order> showOrderOfUserById(Long userId, Long orderId) {
-        return webClient.get()
+        return webBackClient.get()
                 .uri(VITRO_ORDER_API + "/show/" + userId + "/" + orderId)
                 .retrieve().bodyToMono(Order.class);
 
     }
 
     public void buyOrderOfUser(Long userId, Long orderId) {
-        webClient.get()
+        webBackClient.get()
                 .uri(VITRO_ORDER_API + "/buy/" + userId + "/" + orderId)
                 .retrieve().bodyToMono(Order.class).subscribe();
 
     }
 
     public Mono<Order> save(Order order) {
-        return webClient.get()
+        return webBackClient.get()
                 .uri(VITRO_ORDER_API + "/save/" + order.getId())
                 .retrieve().bodyToMono(Order.class);
 
     }
 
     public Mono<Order> saveNewOrder(Long userId, Long itemId) {
-        return webClient.get()
+        return webBackClient.get()
                 .uri(VITRO_ORDER_API + "/create/" + userId + "/" + itemId)
                 .retrieve().bodyToMono(Order.class);
 
     }
 
     public Mono<Order> updateOrder(Long userId, Long itemId) {
-        return webClient.get()
+        return webBackClient.get()
                 .uri(VITRO_ORDER_API + "/update/" + userId + "/" + itemId)
                 .retrieve().bodyToMono(Order.class);
 
     }
 
     public void buyOrder(long orderId) {
-        System.out.println("BUY  " + orderId);
+        System.out.println("----BUY  :: " + orderId);
         getPaymentInfoFromRemote(orderId)
                 .map(s -> {
                     System.out.println("    ----SSSSSSS--- " + s);
