@@ -38,7 +38,6 @@ public class CartServiceImpl implements TService<Cart> {
         return null;
     }
 
-
     public Mono<Cart> createOrUseCartOfUser(Long itemId, Long userId) {
         Mono<Cart> cartMono = cartUtilityService.createOrTestExistCart(userId);
         Mono<CartItems> cartItemsMono = cartMono.map(c -> {
@@ -75,8 +74,6 @@ public class CartServiceImpl implements TService<Cart> {
         Mono<Item> itemMono = cartUtilityService.removeFromCartOfUser(userId, itemId);
         return itemMono;
     }
-
-
     public Mono<Long> getTotalSumOfCart(Long cartId) {
         return cartControlUtilityService.getTotalSumOfCart(cartId);
     }
