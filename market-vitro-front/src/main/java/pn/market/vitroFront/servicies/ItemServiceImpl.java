@@ -1,6 +1,7 @@
 package pn.market.vitroFront.servicies;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -88,6 +89,7 @@ public class ItemServiceImpl implements ItemService {
 
 
     @Autowired
+    @Qualifier("BACK")
     private WebClient webClient;
 
     @Override

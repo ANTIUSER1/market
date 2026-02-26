@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 @Service
 public class PaymentSupplierImpl implements Supplier<Mono<String>> {
 
-    @Value("${order-key}")
+    @Value("${payment.data.order-key}")
     private String orderKey;
     @Autowired
     private OrderServiceImpl orderService;

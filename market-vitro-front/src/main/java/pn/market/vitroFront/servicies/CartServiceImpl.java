@@ -1,6 +1,7 @@
 package pn.market.vitroFront.servicies;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -19,6 +20,7 @@ import static pn.market.vitroFront.config.AuthPaths.VITRO_ITEM_API;
 public class CartServiceImpl implements TService<Cart> {
 
     @Autowired
+    @Qualifier("BACK")
     private WebClient webClient;
 
     @Override

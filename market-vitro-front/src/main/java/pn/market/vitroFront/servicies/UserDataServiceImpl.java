@@ -1,6 +1,7 @@
 package pn.market.vitroFront.servicies;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import pn.market.market_entities.data.UserData;
@@ -13,6 +14,7 @@ import static pn.market.vitroFront.config.AuthPaths.VITRO_USERS_API;
 public class UserDataServiceImpl {
 
     @Autowired
+    @Qualifier("BACK")
     private WebClient webClient;
 
     public Mono<UserData> findUser(String name) {

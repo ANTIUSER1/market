@@ -1,5 +1,7 @@
-order-key: 'order:payment'
-remote-server: 'http://localhost:8502'
+payment:
+  data:
+    host: http://localhost:8502
+    order-key: 'order:payment'
 
 oauth:
   data:

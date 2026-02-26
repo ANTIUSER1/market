@@ -1,6 +1,7 @@
 package pn.market.vitroFront.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,13 +28,14 @@ public class CartController {
     private ItemServiceImpl itemService;
 
     @Autowired
+    @Qualifier("BACK")
     private WebClient webClient;
 
     @Autowired
     private LoginService loginService;
 
     @GetMapping
-    public Mono<String> cartIndex(){
+    public Mono<String> cartIndex() {
         return Mono.just("/cart");
     }
 
@@ -84,8 +86,8 @@ public class CartController {
 //        return Mono.just("redirect:/cart/" + cid);
 //        return cartMono.map(cm -> "redirect:/cart/" + cm.getId());
         cartMono.subscribe(cm -> System.out.println("redirect:/cart/" + cm.getId()));
-        return cartMono.map(cm->{
-            return "redirect:/cart/" +cm.getId();
+        return cartMono.map(cm -> {
+            return "redirect:/cart/" + cm.getId();
         });
     }
 

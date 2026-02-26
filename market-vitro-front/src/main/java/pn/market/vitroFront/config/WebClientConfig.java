@@ -16,6 +16,8 @@ public class WebClientConfig {
 
     @Value("${oauth.data.host}")
     private String auth2Host;
+    @Value("${payment.data.host}")
+    private String paymentHost;
 
 
     @Bean
@@ -31,8 +33,8 @@ public class WebClientConfig {
         return authorizedClientManager;
     }
 
-    @Bean
-    public WebClient webClient(ReactiveOAuth2AuthorizedClientManager authorizedClientManager) {
+    @Bean("BACK")
+    public WebClient webBackClient(ReactiveOAuth2AuthorizedClientManager authorizedClientManager) {
         // Создаём функцию-фильтр для WebClient, которая будет автоматически
         // запрашивать и прикреплять OAuth2-токены к каждому HTTP-запросу
         var oauth2Client = new ServerOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager);
@@ -42,4 +44,14 @@ public class WebClientConfig {
         return WebClient.create(auth2Host);
     }
 
+    @Bean("PAYMENT")
+    public WebClient webPaymentClient(ReactiveOAuth2AuthorizedClientManager authorizedClientManager) {
+        // Создаём функцию-фильтр для WebClient, которая будет автоматически
+        // запрашивать и прикреплять OAuth2-токены к каждому HTTP-запросу
+        var oauth2Client = new ServerOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager);
+        // Указываем ID регистрации OAuth2-клиента по умолчанию (должен совпадать с именем в application.yml)
+        oauth2Client.setDefaultClientRegistrationId("keycloak");
+
+        return WebClient.create(paymentHost);
+    }
 }

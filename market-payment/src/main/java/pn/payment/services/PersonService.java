@@ -58,7 +58,9 @@ public class PersonService {
     }
 
     public Mono<Boolean> removeMoneyForOrder() {
+        System.out.println("    personService.removeMoneyForOrder();    ");
         String s = redisTemplate.opsForValue().get(orderKey);
+        System.out.println("REDIS DATA "+s);
         String[] split = s.split(";");
         long id = Long.parseLong(split[0]);
         long money = Long.parseLong(split[2]);

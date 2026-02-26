@@ -67,6 +67,7 @@ public class OrderController {
     public Mono<Rendering> getOrderById(
             @PathVariable("orderId") Long orderId
     ) {
+        System.out.println("FIX-ORDER " + orderId);
         Long userId = loginService.getUserData().getId();
         Mono<Order> order = orderService.showOrderOfUserById(userId, orderId);
         Mono<Rendering> r =

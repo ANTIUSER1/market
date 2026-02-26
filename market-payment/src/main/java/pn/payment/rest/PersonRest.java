@@ -7,7 +7,7 @@ import pn.payment.services.PersonService;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/payment/users")
 public class PersonRest {
 
 
@@ -45,6 +45,7 @@ public class PersonRest {
 
     @GetMapping("/remove-money-for-order")
     public Mono<Boolean> removeMoneyForOrder() {
+        //   personService.removeMoneyForOrder();
         return personService.removeMoneyForOrder();
 
     }

@@ -1,6 +1,7 @@
 package pn.market.vitroFront.servicies;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -16,8 +17,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import static pn.market.vitroFront.config.AuthPaths.VITRO_ITEM_API;
 import static pn.market.vitroFront.config.AuthPaths.VITRO_ORDER_API;
+import static pn.market.vitroFront.config.AuthPaths.VITRO_PAYMENT_API;
 
 @Service
 public class OrderServiceImpl implements TService<Order> {
@@ -27,6 +28,7 @@ public class OrderServiceImpl implements TService<Order> {
     private ItemServiceImpl itemService;
 
     @Autowired
+    @Qualifier("BACK")
     private WebClient webClient;
 
     @Override
@@ -58,13 +60,13 @@ public class OrderServiceImpl implements TService<Order> {
 
     private Mono<String> getPaymentInfoFromRemote(long orderId) {
         System.out.println("     BUY ORDER " + orderId);
-        return webClient.get().uri(VITRO_ITEM_API + "//remove-order/" + orderId)
+        return webClient.get().uri(VITRO_ORDER_API + "/users/remove-money-for-orde/" + orderId)
                 .exchangeToMono(clientResponse -> clientResponse.bodyToMono(String.class));
     }
 
     public Mono<List<Order>> addItemsToAllByUserId(Long userId) {
         Mono<Order> orderMono = webClient.get()
-                .uri(VITRO_ORDER_API + "/order-by-user-uid/" + userId)
+                .uri(VITRO_PAYMENT_API + "/order-by-user-uid/" + userId)
                 .retrieve().bodyToMono(Order.class);
         return orderMono.map(o -> {
             List<Order> orders = new ArrayList<>();
@@ -154,6 +156,7 @@ public class OrderServiceImpl implements TService<Order> {
     }
 
     public void buyOrder(long orderId) {
+        System.out.println("BUY  " + orderId);
         getPaymentInfoFromRemote(orderId)
                 .map(s -> {
                     System.out.println("    ----SSSSSSS--- " + s);
