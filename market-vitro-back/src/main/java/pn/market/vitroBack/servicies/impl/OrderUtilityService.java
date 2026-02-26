@@ -73,31 +73,7 @@ public class OrderUtilityService {
         oi.setOrderId(orderId);
         oi.setItemId(itemId);
         return orderControlUtilityService.saveOrderItems(oi);
-        //cartItemsRepo.save(ci);
     }
-
-/*
-    public Mono<Item> removeFromOrderOfUser(Long userId, Long itemId) {
-        System.out.println("           REMOVING ITEM  " + itemId + "  : USER :  " + userId);
-        Mono<Order> orderMono = orderControlUtilityService.findUserById(userId)
-                .map(u -> {
-                    System.out.println("REQUESTED USER:");
-                    Mono<Order> c = orderControlUtilityService.findOrderById(u.getCartId())
-                            .map(ccc -> {
-                                System.out.println("CCCC " + ccc);
-                                return ccc;
-                            });
-                    return c;
-                }).flatMap(v -> v);
-        Mono<List<OrderItems>> orderItemsListMono = findOrderItemsByUserId(orderMono, userId);
-        Mono<Item> itemMono = orderControlUtilityService.findItemById(itemId);
-
-        Mono<Item> result = orderRemoveUtilityService.removeItemFromCartOfUser(orderItemsListMono, itemMono, userId);
-
-
-        return result;
-    }
-    */
 
     private Mono<List<OrderItems>> findOrderItemsByUserId(Mono<Order> orderMono, Long userId) {
         Mono<List<OrderItems>> fci = orderMono.map(o -> {

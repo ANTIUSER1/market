@@ -32,15 +32,9 @@ public class OrderServiceImpl implements TService<Order> {
     @Autowired
     private UserEntityServiceImpl userService;
 
-    @Autowired
-    private UserDataRepo userDataRepo;
 
     @Autowired
     private ItemServiceImpl itemService;
-
-
-    @Autowired
-    private PaymentService paymentService;
 
     @Override
     public Flux<Order> findAll() {
@@ -69,22 +63,8 @@ public class OrderServiceImpl implements TService<Order> {
         return orderRepo.save(order);
     }
 
-//
-//    public void buyOrder(long orderId) {
-//        getPaymentInfoFromRemote(orderId)
-//                .map(s -> "OK").subscribe();
-//        itemService.removeFromOrder(orderId);
-//    }
-//
-//    private Mono<String> getPaymentInfoFromRemote(long orderId) {
-//        System.out.println("     BUY ORDER " + orderId);
-//        return webClient.get().uri("/users/remove-money-for-order")
-//                .exchangeToMono(clientResponse -> clientResponse.bodyToMono(String.class));
-//    }
-
     public Mono<Order> create(Long userId, Long itemId) {
         Order order = new Order();
-        // order.setUserId(userId);
         System.out.println("   saveWithUser   NEW ORDER: ITEM  " + itemId + "   USER " + userId);
         Mono<Order> orderMono = save(order)
                 .map(o -> {
@@ -101,10 +81,9 @@ public class OrderServiceImpl implements TService<Order> {
                 });
         return orderMono;
     }
-
+/*
     public Mono<Order> updateExisting(Long userId, Long itemId) {
         System.out.println("----------updateExisting: IteM:" + itemId + "   ::::  UserM:: " + userId);
-    /*
         Mono<List<Order>> udmonoList = orderRepo.findByUserId(userId).collectList();
         Mono<Order> orderMono = udmonoList.map(
                 ud -> {
@@ -135,9 +114,9 @@ public class OrderServiceImpl implements TService<Order> {
                     itemService.save(i).subscribe();
                     return o;
                 });
-     */
         return Mono.empty();
     }
+    */
 
     public Mono<Order> showOderOfUser(Long userId, Long orderId) {
         System.out.println("   --   SHOW ORDER OF USER: --: ORDER: " + orderId + "  USER:  " + userId);
@@ -165,33 +144,6 @@ public class OrderServiceImpl implements TService<Order> {
 
                     return o;
                 }).subscribe();
-
-
-       /*
-        System.out.println("   -----PROCESS    BUY ORDER OF USER: --: ORDER: " + orderId + "  USER:  " + userId);
-        itemService.getItemsByOrderId(orderId)
-                .map(i -> {
-                    itemService.save(i)
-                            .subscribe();
-                    return i;
-                }).subscribe(
-                        ii -> {
-                            orderRepo.findById(orderId)
-                                    .map(o -> {
-                                        System.out.println("    EQUALS TEST " + (o.getUserId() == userId));
-                                        if (o.getUserId() == userId) {
-                                            try {
-                                                orderRepo.delete(o).subscribe();
-                                            } catch (Error e) {
-
-                                            }
-                                        }
-                                        return new Order();
-                                    }).subscribe();
-
-                        }
-                );
-        */
     }
 
 
