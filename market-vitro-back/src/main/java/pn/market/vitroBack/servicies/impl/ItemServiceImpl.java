@@ -17,6 +17,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 @Service
@@ -33,10 +34,10 @@ public class ItemServiceImpl implements TService<Item> {
     private ItemRepo itemRepo;
     @Autowired
     private OrderRepo orderRepo;
-    @Autowired
-    private CartServiceImpl cartService;
-    @Autowired
-    private DatabaseClient databaseClient;
+//    @Autowired
+//    private CartServiceImpl cartService;
+//    @Autowired
+//    private DatabaseClient databaseClient;
 
     public Mono<Item> findById(Long id) {
         return itemRepo.findById(id);
@@ -55,7 +56,7 @@ public class ItemServiceImpl implements TService<Item> {
     @Override
     public Mono<Paging> findAllAndPaging(Mono<Pageable> pageable) {
 
-    /*
+
         Mono<Pageable> pageableMono = pageable.map(p -> {
                     pageSize = p.getPageSize();
                     offset = p.getPageNumber() * pageSize;
@@ -81,9 +82,6 @@ public class ItemServiceImpl implements TService<Item> {
                             hasNext, hasPrevious);
                     return paging;
                 });
-
-     */
-        return null;
     }
 
 
@@ -102,8 +100,6 @@ public class ItemServiceImpl implements TService<Item> {
     }
 
     public Mono<Item> plusForMono(Item item, long cartId) {
-        System.out.println("-----BEFORE -----");
-
         return itemRepo.save(item);//.flatMap(i -> itemRepo.findById(i.getId())).log();
     }
 
@@ -139,15 +135,9 @@ public class ItemServiceImpl implements TService<Item> {
 
         return imgPath;
     }
-
+ /*
     public Mono<Item> addToCart(Item i, long cartId, String action) {
-
-
-        System.out.println("*******  " + (ActionType.PLUS.name().equalsIgnoreCase(action.trim())));
         if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
-            System.out.println("      ++++++++");
-
-
             return this.plusForMono(i, cartId);
         }
         if (ActionType.MINUS.name().equalsIgnoreCase(action.trim())) {
@@ -155,6 +145,7 @@ public class ItemServiceImpl implements TService<Item> {
         }
         return Mono.just(i);
     }
+    */
 
     public Mono<Item> save(Item item) {
         System.out.println("           ITEM SAVING  \n " + item);
@@ -170,14 +161,15 @@ public class ItemServiceImpl implements TService<Item> {
     }
 
 
+/*
     public Flux<Item> getItemsByCartDataFromMonoToFlux(Mono<Item> itemMono) {
         return Flux.empty();
 //        return itemMono.map(i -> {
 //            return this.getItemsByCartIdToFlux(i.getCartId());
 //        }).flatMapMany(f -> f);
     }
-
-
+*/
+/*
     public void removeFromOrder(long orderId) {
         itemRepo.findByOrderId(orderId).collectList()
                 .map(items -> {
@@ -202,7 +194,8 @@ public class ItemServiceImpl implements TService<Item> {
                 .subscribe();
         System.out.println("removed from order id: " + orderId);
     }
-
+*/
+    /*
     public Flux<Item> removeItemsFromOrderId(Long orderId) {
         Flux<Item> itemFlux = itemRepo.findByOrderId(orderId)
                 .map(ii -> {
@@ -210,6 +203,7 @@ public class ItemServiceImpl implements TService<Item> {
                 }).flatMap(i -> i);
         return itemRepo.saveAll(itemFlux);
     }
+    */
 
     public Flux<Item> getItemsOfUser(Long userId) {
         return itemRepo.findItemsByUserId(userId);
