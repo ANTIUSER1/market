@@ -28,6 +28,7 @@ public class UserData implements UserDetails {
     private String authority;
 
     @Setter
+    @Getter
     private Long money;
 
     @Setter
@@ -37,7 +38,7 @@ public class UserData implements UserDetails {
     private Long orderId;
 
     public UserData() {
-        this.money = 10_000_000L;
+        this.money = 100_000_000L;
     }
 
     public UserData(String username, String password, String authority) {
@@ -54,5 +55,16 @@ public class UserData implements UserDetails {
         return Arrays.stream(authority.trim().split(","))
                 .map(s -> new GrantedAuthorityImpl(s))
                 .collect(Collectors.toSet());
+    }
+
+
+    public UserData addMoney(Long m){
+        this.money+=m;
+        return this;
+    }
+
+    public UserData removeMoney(Long m){
+        this.money-=m;
+        return this;
     }
 }
