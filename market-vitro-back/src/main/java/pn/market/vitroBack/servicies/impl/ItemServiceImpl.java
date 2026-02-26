@@ -134,17 +134,7 @@ public class ItemServiceImpl implements TService<Item> {
 
         return imgPath;
     }
- /*
-    public Mono<Item> addToCart(Item i, long cartId, String action) {
-        if (ActionType.PLUS.name().equalsIgnoreCase(action.trim())) {
-            return this.plusForMono(i, cartId);
-        }
-        if (ActionType.MINUS.name().equalsIgnoreCase(action.trim())) {
-            return this.minusForMono(i);
-        }
-        return Mono.just(i);
-    }
-    */
+
 
     public Mono<Item> save(Item item) {
         System.out.println("           ITEM SAVING  \n " + item);
