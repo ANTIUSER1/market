@@ -15,9 +15,6 @@ public class OrderUtilityService {
 
     @Autowired
     private OrderControlUtilityService orderControlUtilityService;
-    @Autowired
-    private OrderRemoveUtilityService orderRemoveUtilityService;
-
 
     public Flux<Item> orderItemsFluxToItemFlux(Flux<OrderItems> orderItemsFlux, Long itemId) {
         Mono<List<OrderItems>> cartItemsMonoList = orderItemsFlux.collectList();
@@ -79,7 +76,7 @@ public class OrderUtilityService {
         //cartItemsRepo.save(ci);
     }
 
-
+/*
     public Mono<Item> removeFromOrderOfUser(Long userId, Long itemId) {
         System.out.println("           REMOVING ITEM  " + itemId + "  : USER :  " + userId);
         Mono<Order> orderMono = orderControlUtilityService.findUserById(userId)
@@ -100,6 +97,7 @@ public class OrderUtilityService {
 
         return result;
     }
+    */
 
     private Mono<List<OrderItems>> findOrderItemsByUserId(Mono<Order> orderMono, Long userId) {
         Mono<List<OrderItems>> fci = orderMono.map(o -> {
