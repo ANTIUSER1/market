@@ -20,7 +20,7 @@ public class CartUtilityService {
 
 
     public Flux<Item> cartItemsFluxToItemFlux(Flux<CartItems> cartItemsFlux, Long itemId) {
-        Mono<List<CartItems>> cartItemsMonoList = cartItemsFlux.collectList();
+    //    Mono<List<CartItems>> cartItemsMonoList = cartItemsFlux.collectList();
         Flux<Mono<Item>> fmit = cartItemsFlux.map(ff -> {
             Mono<Item> ii = cartControlUtilityService.findItemById(ff.getItemId());
 
@@ -35,7 +35,6 @@ public class CartUtilityService {
                                             .map(t1 -> {
                                                 Item i = t1.getT1();
                                                 Long count = t1.getT2();
-                                                System.out.println("    PLUS COUNT VALUE " + count);
                                                 i.setCount(count);
                                                 cartControlUtilityService.saveItem(i).subscribe();
                                                 return i;
@@ -56,23 +55,18 @@ public class CartUtilityService {
                 .map(u -> {
                     Mono<Cart> c;
                     if (u.getCartId() == null) {
-                        System.out.println(" CREATE   NEW CART ");
                         c = cartControlUtilityService.saveCart(new Cart())
                                 //cartRepo.save(new Cart())
                                 .map(ccc -> {
                                     u.setCartId(ccc.getId());
-
                                     cartControlUtilityService.saveUser(u).subscribe();
                                     return ccc;
                                 });
                     } else {
                         c = cartControlUtilityService.findCartById(u.getCartId());
-                        //cartRepo.findById(u.getCartId());
                     }
-
                     return c;
                 }).flatMap(c -> c);
-
     }
 
     public Mono<CartItems> createAndSaveCartItems(Long cartId, Long itemId) {
@@ -80,7 +74,6 @@ public class CartUtilityService {
         ci.setCartId(cartId);
         ci.setItemId(itemId);
         return cartControlUtilityService.saveCartItems(ci);
-        //cartItemsRepo.save(ci);
     }
 
 
@@ -100,8 +93,6 @@ public class CartUtilityService {
         Mono<Item> itemMono = cartControlUtilityService.findItemById(itemId);
 
         Mono<Item> result = cartRemoveUtilityService.removeItemFromCartOfUser(cartItemsListMono, itemMono, userId);
-
-
         return result;
     }
 
@@ -112,8 +103,6 @@ public class CartUtilityService {
         }).flatMap(v -> v);
         return fci;
     }
-
-
 }
 
 
