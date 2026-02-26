@@ -1,9 +1,9 @@
 package pn.payment.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-import pn.market.market_entities.data.UserData;
-import pn.market.market_entities.forPAYMENTS.PersonData;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import pn.payment.services.UserDataService;
 import reactor.core.publisher.Mono;
 
@@ -15,47 +15,12 @@ public class UserDataRest {
     @Autowired
     private UserDataService userDataService;
 
-//    @PostMapping("/create")
-//    public Mono<UserData> getUsers() {
-//        return userDataService.create();
-//    }
-
-//    @GetMapping("/find/{id}")
-//    public Mono<UserData> findUserById(
-//            @PathVariable("id") long id
-//    ) {
-//        return userDataService.findById(id);
-//    }
-
-//    @GetMapping("/add-money/{id}/{money}")
-//    public Mono<UserData> addMoney(
-//            @PathVariable("id") long id,
-//            @PathVariable("money") long money
-//    ) {
-//        return userDataService.addMoney(id, money);
-//    }
-
-//    @GetMapping("/remove-money/{id}/{money}")
-//    public Mono<UserData> removeMoney(
-//            @PathVariable("id") long id,
-//            @PathVariable("money") long money
-//    ) {
-//        System.out.println("   REMOVE  MONEY "+money);
-//        return userDataService.removeMoney(id, money);
-//    }
-
     @GetMapping("/remove-money-for-order")
     public Mono<Boolean> removeMoneyForOrder() {
-        System.out.println( " /remove-money-for-order "  );
+        System.out.println(" /remove-money-for-order ");
         return userDataService.removeMoneyForOrder();
 
     }
 
-//    @GetMapping("/remove-money-from-first-success/{money}")
-//    public Mono<Boolean> removeMoneyFromFirstSuccsess(
-//            @PathVariable("money") long money
-//    ) {
-//        return userDataService.removeMoneySuccess(1, money);
-//    }
 
 }
