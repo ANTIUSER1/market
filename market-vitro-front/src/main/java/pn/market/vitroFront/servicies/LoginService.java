@@ -30,21 +30,9 @@ public class LoginService extends MapReactiveUserDetailsService {
         if (userData.getAuthority() == null || userData.getAuthority().trim().isEmpty())
             userData.setAuthority("EMPTY");
 
-        System.out.println("*******"
-                + "\n      ID            " + userData.getId()
-                + "\n      USERNAME      " + userData.getUsername()
-                + "\n      PASSWORD      " + userData.getPassword()
-                + "\n      AUTHORITIES   " + userData.getAuthorities()
-                + "\n      AUTHORITY     " + userData.getAuthority()
-                + "\n********"
-        );
         this.userData = userData;
         return User.withUsername(userData.getUsername())
                 .password(userData.getPassword())
-                // .authorities( userData.getAuthority())
-                // .authorities(userData.getAuthorities())
-//				   .authorities(List.of(
-//						   new GrantedAuthorityImpl(AuthorityValues.ADMIN.name())))
                 .accountExpired(false)
                 .accountLocked(false)
                 .credentialsExpired(false)
