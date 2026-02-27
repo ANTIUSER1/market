@@ -4,10 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.AuthenticatedPrincipal;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.result.view.Rendering;
 import pn.market.market_entities.Paging;
-import pn.market.market_entities.data.UserData;
 import pn.market.market_entities.forWEB.Item;
 import pn.market.vitroFront.servicies.CartServiceImpl;
 import pn.market.vitroFront.servicies.ItemServiceImpl;
@@ -24,8 +19,6 @@ import pn.market.vitroFront.servicies.LoginService;
 import pn.market.vitroFront.servicies.ModelService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.security.Principal;
 
 import static pn.market.vitroFront.config.AuthPaths.VITRO_ITEM_API;
 
@@ -50,8 +43,8 @@ public class ItemController {
     @Autowired
     private LoginService loginService;
 
-@Autowired
-String securityCode;
+    @Autowired
+    String securityCode;
 
 
     @GetMapping
@@ -61,17 +54,17 @@ String securityCode;
             @RequestParam(value = "search", required = false, defaultValue = "") String search,
             @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted
     ) {
-        System.out.println("      ITEMS 0 ---SECURITY CODE "+securityCode);
+        System.out.println("      ITEMS 0 ---SECURITY CODE " + securityCode);
         try {
             Flux<Item> itemFlux = webClient.get()
                     .uri(VITRO_ITEM_API)
                     .retrieve()
                     .bodyToFlux(Item.class);
             Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
-     Mono<Paging> pageMono = itemService.findAllAndPagingWithFluxItem(pageableMono, itemFlux);
-String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
+            Mono<Paging> pageMono = itemService.findAllAndPagingWithFluxItem(pageableMono, itemFlux);
+            String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
                     + page + "&pageSize=" + pageSize + "&src=0";
- Mono<String> additional = Mono.just(additionalParams);
+            Mono<String> additional = Mono.just(additionalParams);
 
             Mono<Rendering> r = Mono.just(Rendering.view("items")
                     .modelAttribute("items", itemFlux)
@@ -96,14 +89,14 @@ String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
             @RequestParam(value = "itemId", required = false, defaultValue = "0") long itemId,
             @RequestParam(value = "action", required = false, defaultValue = "NONE") String action
     ) {
-        System.out.println("      ITEMS 1 ---SECURITY CODE "+securityCode);
+        System.out.println("      ITEMS 1 ---SECURITY CODE " + securityCode);
         try {
             Flux<Item> itemFlux = webClient.get()
                     .uri(VITRO_ITEM_API)
                     .retrieve()
                     .bodyToFlux(Item.class);
             Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
-   Mono<Paging> pageMono = itemService
+            Mono<Paging> pageMono = itemService
                     .findAllAndPagingWithFluxItem(pageableMono, itemFlux);
 
             String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
@@ -129,8 +122,11 @@ String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
     public Mono<Rendering> showitemToCartOfUserById(
             @PathVariable("itemId") Long itemId
     ) {
-        System.out.println("    ITEMS 2   ---SECURITY CODE "+securityCode);
-    //    Long userId = loginService.getUserData().getId();
+        System.out.println("    ITEMS 2   ---SECURITY CODE " + securityCode);
+        System.out.println("    ITEMS 2   ---SECURITY CODE " + securityCode);
+        System.out.println("    ITEMS 2   ---SECURITY CODE " + securityCode);
+        System.out.println("    ITEMS 2   ---SECURITY CODE " + securityCode);
+        //    Long userId = loginService.getUserData().getId();
         Mono<Item> itemMono = cartService.placeItemToCartOfUser(null, itemId, "action");
 
         Mono<Long> src = Mono.just(-2L);
@@ -143,14 +139,17 @@ String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
     }
 
     //************* add roles ***
-   // @PreAuthorize("#ud.username == authentication.name")
-//    @PreAuthorize("#username == authentication.name")
-    @GetMapping("/items/{itemId}/{action}")
+     @PreAuthorize("#username ==  authentication.principal.username ")
+      @GetMapping("/items/{username}/{itemId}/{action}")
     public Mono<Rendering> additemToCartOfUserById(
+            @PathVariable("username") String username,
             @PathVariable("itemId") Long itemId,
             @PathVariable(value = "action", required = false) String action
     ) {
-        System.out.println("      ITEMS 3 ---SECURITY CODE "+securityCode);
+        System.out.println("      ITEMS 3 ---SECURITY CODE " + securityCode);
+        System.out.println("      ITEMS 3 ---SECURITY CODE " + securityCode);
+        System.out.println("      ITEMS 3 ---SECURITY CODE " + securityCode);
+        System.out.println("      ITEMS 3 ---SECURITY CODE " + securityCode);
         Long userId = loginService.getUserData().getId();
         System.out.println(loginService.getUserData());
         Mono<Item> itemMono = cartService.placeItemToCartOfUser(userId, itemId, action);
@@ -163,7 +162,6 @@ String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
                 .build());
         return r;
     }
-
 
 
 }

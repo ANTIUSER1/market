@@ -18,8 +18,9 @@ public class EventsHandler {
     public void handleAuthorizationDenied(AuthorizationDeniedEvent event) {
         // Извлекаем информацию о пользователе и ресурсе.
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-System.out.println("     AUTH  NAME "+auth.getName());
-System.out.println("     AUTH  PRINCIPAL "+auth.getPrincipal());
+
+System.out.println("   AUTH PRINCIPAL "+auth.getPrincipal());
+System.out.println("   AUTH NAME "+auth.getName());
                 //event.getAuthentication().get();
         Object protectedResource = event.getObject();
         // Логируем факт отказа в доступе.
