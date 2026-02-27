@@ -9,6 +9,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class UserPWConfig {
 
+@Bean
+public   String securityCode(){
+    return Long.toHexString(System.nanoTime());
+}
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
