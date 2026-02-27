@@ -19,8 +19,7 @@ public class UserDataRest {
     public Mono<Boolean> removeMoneyForOrder() {
         System.out.println(" /remove-money-for-order ");
         return userDataService.removeMoneyForOrder();
-
-    }
+  }
 
 
 }

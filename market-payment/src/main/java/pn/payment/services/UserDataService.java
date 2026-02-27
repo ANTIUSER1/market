@@ -22,21 +22,9 @@ public class UserDataService {
     private RedisTemplate<String, String> redisTemplate;
 
 
-//    public Mono<UserData> create() {
-//        UserData result = new UserData( );
-//        return repo.save(result);
-//    }
-
     public Mono<UserData> findById(long id) {
         return repo.findById(id);
     }
-
-//    public Mono<UserData> addMoney(long id, long money) {
-//        return repo.findById(id).map(u -> {
-//            u.addMoney(money);
-//            return u;
-//        }).flatMap(repo::save);
-//    }
 
     public Mono<UserData> removeMoney(long id, long money) {
         System.out.println("REmove MONEY EXECUTE " + id + "  MONEY " + money);
@@ -47,8 +35,6 @@ public class UserDataService {
     }
 
     public Mono<Boolean> removeMoneySuccess(long id, long money) {
-        System.out.println();
-        System.out.println();
         return removeMoney(id, money).map(u -> {
             if (u.getMoney() < money) {
                 return false;
@@ -60,7 +46,6 @@ public class UserDataService {
     public Mono<Boolean> removeMoneyForOrder() {
         System.out.println("    personService.removeMoneyForOrder();    ");
         String s = redisTemplate.opsForValue().get(orderKey);
-        System.out.println("REDIS DATA " + s);
         String[] split = s.split(";");
         long id = Long.parseLong(split[0]);
         long money = Long.parseLong(split[2]);
