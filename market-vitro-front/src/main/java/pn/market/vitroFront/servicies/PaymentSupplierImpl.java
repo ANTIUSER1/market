@@ -25,8 +25,6 @@ public class PaymentSupplierImpl implements Supplier<Mono<String>> {
 
     private Long userId;
 
-    private Long orderSum;
-
     private LocalDateTime localTime;
 
     public PaymentSupplierImpl setOrderId(Long orderId) {
@@ -36,11 +34,6 @@ public class PaymentSupplierImpl implements Supplier<Mono<String>> {
 
     public PaymentSupplierImpl setUserId(Long userId) {
         this.userId = userId;
-        return this;
-    }
-
-    public PaymentSupplierImpl setOrderSum(Long userSum) {
-        this.orderSum = userSum;
         return this;
     }
 

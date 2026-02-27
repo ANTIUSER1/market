@@ -30,6 +30,7 @@ public class OrderServiceImpl implements TService<Order> {
     @Autowired
     @Qualifier("PAYMENT")
     private WebClient webPaymentClient;
+
     @Autowired
     @Qualifier("BACK")
     private WebClient webBackClient;
@@ -62,14 +63,8 @@ public class OrderServiceImpl implements TService<Order> {
 
 
     private Mono<String> getPaymentInfoFromRemote(long orderId) {
-        System.out.println("    +++++++++ BUY ORDER " + orderId);
-
-
-        System.out.println("REQUEST TO URL  "
-                + VITRO_PAYMENT_API + "/remove-money-for-order");
         return webPaymentClient.get().uri(VITRO_PAYMENT_API + "/remove-money-for-order")
                 .exchangeToMono(clientResponse -> {
-                    System.out.println("   EXCHANGE: " + clientResponse.headers().contentType());
                     return clientResponse.bodyToMono(String.class);
                 });
     }
@@ -85,45 +80,6 @@ public class OrderServiceImpl implements TService<Order> {
         });
     }
 
-    public Mono<Order> showCompleteOrderById(Long orderId) {
-        Mono<Order> orderMono = this.getById(orderId)
-                .map(od -> {
-                    itemService.getItemsByOrderId(od.getId())
-                            .subscribe(u -> {
-                                od.addItem(u);
-                            });
-                    return od;
-                });
-
-        return orderMono;
-    }
-
-    public Mono<Order> showCompleteOrderById(Long orderId, Long itemId) {
-        System.out.println("      ITEM_ID " + itemId);
-        Mono<Order> orderMono = this.getById(orderId)
-                .map(od -> {
-
-                    itemService.getItemsByOrderId(od.getId())
-                            .subscribe(u -> {
-                                od.addItem(u);
-                                System.out.println(u.getId() + "--   OOO  " + od.getItems().size());
-                            });
-                    return od;
-                })
-                .map(od -> {
-                    System.out.println("   SSB ITEM ID " + itemId);
-                    itemService.getById(itemId)
-                            .subscribe(u -> {
-                                od.addItem(u);
-                                System.out.println("--   OOO--000  " + od.getItems().size());
-                                System.out.println("   NEW SAVE:   \n" + u);
-                                itemService.addOrder(u, orderId);
-                            });
-                    return od;
-                });
-        return orderMono;
-    }
-
     public Mono<Order> saveNewCompleteOrderOfUserById(Long userId, Long itemId) {
         return webBackClient.get()
                 .uri(VITRO_ORDER_API + "/create/" + userId + "/" + itemId)
@@ -134,51 +90,14 @@ public class OrderServiceImpl implements TService<Order> {
         return webBackClient.get()
                 .uri(VITRO_ORDER_API + "/show/" + userId + "/" + orderId)
                 .retrieve().bodyToMono(Order.class);
-
-    }
-
-    public void buyOrderOfUser(Long userId, Long orderId) {
-        webBackClient.get()
-                .uri(VITRO_ORDER_API + "/buy/" + userId + "/" + orderId)
-                .retrieve().bodyToMono(Order.class).subscribe();
-
-    }
-
-    public Mono<Order> save(Order order) {
-        return webBackClient.get()
-                .uri(VITRO_ORDER_API + "/save/" + order.getId())
-                .retrieve().bodyToMono(Order.class);
-
-    }
-
-    public Mono<Order> saveNewOrder(Long userId, Long itemId) {
-        return webBackClient.get()
-                .uri(VITRO_ORDER_API + "/create/" + userId + "/" + itemId)
-                .retrieve().bodyToMono(Order.class);
-
-    }
-
-    public Mono<Order> updateOrder(Long userId, Long itemId) {
-        return webBackClient.get()
-                .uri(VITRO_ORDER_API + "/update/" + userId + "/" + itemId)
-                .retrieve().bodyToMono(Order.class);
-
     }
 
     public void buyOrder(long orderId) {
-        System.out.println("----BUY  :: " + orderId);
         getPaymentInfoFromRemote(orderId)
                 .map(s -> {
-                    System.out.println("    ----SSSSSSS--- " + s);
-                    System.out.println("    ----SSSSSSS--- " + s);
-                    System.out.println("    ----SSSSSSS--- " + s);
-                    System.out.println("    ----SSSSSSS--- " + s);
                     return s;
                 })
                 .map(s -> "OK").subscribe();
-
-
-        System.out.println("     BUY ORDER " + orderId);
         itemService.removeFromOrder(orderId);
     }
 }
