@@ -14,13 +14,12 @@ public class PaymentSupplierImpl implements Supplier<Mono<String>> {
 
     @Value("${payment.data.order-key}")
     private String orderKey;
+
     @Autowired
     private OrderServiceImpl orderService;
 
-
     @Autowired
     private RedisTemplate<String, String> redisTemplate;
-
 
     private Long orderId;
 
@@ -29,7 +28,6 @@ public class PaymentSupplierImpl implements Supplier<Mono<String>> {
     private Long orderSum;
 
     private LocalDateTime localTime;
-
 
     public PaymentSupplierImpl setOrderId(Long orderId) {
         this.orderId = orderId;
@@ -54,11 +52,9 @@ public class PaymentSupplierImpl implements Supplier<Mono<String>> {
 
     @Override
     public Mono<String> get() {
-        System.out.println("   PAYMENT-SUPPLIER GET RUN!!  ---- " + orderId);
         if (orderId == null || userId == null) {
             return Mono.empty();
         }
-
         Mono<String> result =
                 orderService.getById(orderId)
                         .map(order -> {
@@ -71,6 +67,6 @@ public class PaymentSupplierImpl implements Supplier<Mono<String>> {
                                 }
                         );
         return result;
-        //return Mono.empty();
     }
+
 }
