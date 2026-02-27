@@ -26,5 +26,4 @@ public class EventPublisherConfig {
        System.out.println("\t\t ---EVENT PUBLISHER CONFIG "+securityCode);
         return new SpringAuthorizationEventPublisher(applicationEventPublisher);
     }
-
 }
