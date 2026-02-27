@@ -39,8 +39,7 @@ public class CartServiceImpl implements TService<Cart> {
     }
 
     public Mono<Item> itemById(long itemId) {
-        System.out.println("::::::::---ITEM BY ID---:::::::::::");
-        return webClient.get()
+       return webClient.get()
                 .uri(VITRO_ITEM_API + "/" + itemId)
                 .retrieve()
                 .bodyToMono(Item.class);

@@ -56,13 +56,10 @@ public class ItemController {
                     .retrieve()
                     .bodyToFlux(Item.class);
             Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
-
-            Mono<Paging> pageMono = itemService.findAllAndPagingWithFluxItem(pageableMono, itemFlux);
-
-            String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
+     Mono<Paging> pageMono = itemService.findAllAndPagingWithFluxItem(pageableMono, itemFlux);
+String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
                     + page + "&pageSize=" + pageSize + "&src=0";
-
-            Mono<String> additional = Mono.just(additionalParams);
+ Mono<String> additional = Mono.just(additionalParams);
 
             Mono<Rendering> r = Mono.just(Rendering.view("items")
                     .modelAttribute("items", itemFlux)
@@ -93,8 +90,7 @@ public class ItemController {
                     .retrieve()
                     .bodyToFlux(Item.class);
             Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
-
-            Mono<Paging> pageMono = itemService
+   Mono<Paging> pageMono = itemService
                     .findAllAndPagingWithFluxItem(pageableMono, itemFlux);
 
             String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
@@ -133,6 +129,5 @@ public class ItemController {
                 .build());
         return r;
     }
-
 
 }

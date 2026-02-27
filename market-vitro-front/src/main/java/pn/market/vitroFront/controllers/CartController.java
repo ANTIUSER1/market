@@ -82,9 +82,6 @@ public class CartController {
         Mono<Cart> cartMono = webClient.get()
                 .uri(VITRO_CART_API + "/create/" + userId + "/" + itemId)
                 .retrieve().bodyToMono(Cart.class);
-//        System.out.println("   CM ID " + cm.getId());
-//        return Mono.just("redirect:/cart/" + cid);
-//        return cartMono.map(cm -> "redirect:/cart/" + cm.getId());
         cartMono.subscribe(cm -> System.out.println("redirect:/cart/" + cm.getId()));
         return cartMono.map(cm -> {
             return "redirect:/cart/" + cm.getId();

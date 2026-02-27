@@ -39,7 +39,6 @@ public class OrderController {
     public Mono<Rendering> allOrders() {
         Long userId = loginService.getUserData().getId();
         Mono<List<Order>> orders = orderService.addItemsToAllByUserId(userId);
-        //order-by-user-uid
         Mono<Rendering> r =
                 Mono.just(Rendering.view("orders")
                         .modelAttribute("orderData", orders)
@@ -67,7 +66,6 @@ public class OrderController {
     public Mono<Rendering> getOrderById(
             @PathVariable("orderId") Long orderId
     ) {
-        System.out.println("FIX-ORDER " + orderId);
         Long userId = loginService.getUserData().getId();
         Mono<Order> order = orderService.showOrderOfUserById(userId, orderId);
         Mono<Rendering> r =
@@ -76,8 +74,6 @@ public class OrderController {
                         .modelAttribute("newOrder", false)
                         .build());
         paymentService.configurePayments(userId, orderId);
-
-//      REDIS!
         return r;
     }
 
@@ -85,10 +81,7 @@ public class OrderController {
     //---------detect not done---
     @GetMapping("/buy/{orderId}")
     public String buyOrder(@PathVariable("orderId") Long orderId) {
-        Long userId = loginService.getUserData().getId();
-        System.out.println("............BUY ORDER " + orderId + "  OF  USER :  " + userId);
         orderService.buyOrder(orderId);
-//        orderService.buyOrderOfUser(userId, orderId);
         return "redirect:/orders";
     }
 
