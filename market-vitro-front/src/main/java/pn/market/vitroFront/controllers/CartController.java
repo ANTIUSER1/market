@@ -78,8 +78,7 @@ public class CartController {
             @PathVariable("itemId") long itemId
     ) {
         Long userId = loginService.getUserData().getId();
-        System.out.println("   add-item-to-cart-of-user  " + userId);
-        Mono<Cart> cartMono = webClient.get()
+         Mono<Cart> cartMono = webClient.get()
                 .uri(VITRO_CART_API + "/create/" + userId + "/" + itemId)
                 .retrieve().bodyToMono(Cart.class);
         cartMono.subscribe(cm -> System.out.println("redirect:/cart/" + cm.getId()));

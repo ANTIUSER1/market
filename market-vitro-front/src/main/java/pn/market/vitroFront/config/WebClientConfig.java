@@ -16,6 +16,7 @@ public class WebClientConfig {
 
     @Value("${oauth.data.host}")
     private String auth2Host;
+
     @Value("${payment.data.host}")
     private String paymentHost;
 
