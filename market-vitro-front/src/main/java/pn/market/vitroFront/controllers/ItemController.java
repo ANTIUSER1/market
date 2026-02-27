@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.AuthenticatedPrincipal;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -135,15 +136,17 @@ String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
     }
 
     //************* add roles ***
-//    @PreAuthorize("#username == principal.name")
+    @PreAuthorize("#username == loginService.userData.username")
     @GetMapping("/items/{itemId}/{action}")
     public Mono<Rendering> additemToCartOfUserById(
             @PathVariable("itemId") Long itemId,
             @PathVariable(value = "action", required = false) String action
     ) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println( ".getAuthentication();   "+authentication.getPrincipal());
         Long userId = loginService.getUserData().getId();
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+     Authentication authentication = securityContext.getAuthentication();
+    System.out.println( ".getAuthentication();   "+authentication);
+
         Mono<Item> itemMono = cartService.placeItemToCartOfUser(userId, itemId, action);
 
         Mono<Long> src = Mono.just(-2L);
@@ -154,6 +157,7 @@ String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
                 .build());
         return r;
     }
+
 
 
 }
