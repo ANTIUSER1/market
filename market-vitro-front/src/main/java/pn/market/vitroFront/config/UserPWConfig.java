@@ -5,13 +5,16 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.UUID;
+
 
 @Configuration
 public class UserPWConfig {
 
 @Bean
 public   String securityCode(){
-    return Long.toHexString(System.nanoTime());
+    return Long.toHexString(System.nanoTime())+ UUID.randomUUID().toString()
+            .replace("-","");
 }
 
 
