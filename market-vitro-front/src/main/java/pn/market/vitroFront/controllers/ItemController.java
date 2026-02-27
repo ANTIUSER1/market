@@ -143,10 +143,6 @@ String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
             @PathVariable(value = "action", required = false) String action
     ) {
         Long userId = loginService.getUserData().getId();
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-     Authentication authentication = securityContext.getAuthentication();
-    System.out.println( ".getAuthentication();   "+authentication);
-
         Mono<Item> itemMono = cartService.placeItemToCartOfUser(userId, itemId, action);
 
         Mono<Long> src = Mono.just(-2L);
