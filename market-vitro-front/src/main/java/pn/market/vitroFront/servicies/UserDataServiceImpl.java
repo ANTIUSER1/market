@@ -41,5 +41,4 @@ public class UserDataServiceImpl {
                 .bodyToMono(UserData.class);
     }
 
-
 }
