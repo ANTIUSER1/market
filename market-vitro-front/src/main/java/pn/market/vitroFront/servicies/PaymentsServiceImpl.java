@@ -20,6 +20,7 @@ public class PaymentsServiceImpl {
             value = PAYMENT_KEY_NAME,               // Имя кеша и первая часть ключа
             key = "#keyName"   // Вторая часть ключа (берётся по имени из аргумента)
     )
+
     public Mono<String> sendPaymentInfo(String keyName, Supplier<Mono<String>> paymentInfo) {
         Mono<String> res = paymentInfo.get()
                 .map(s -> {
@@ -30,7 +31,6 @@ public class PaymentsServiceImpl {
     }
 
     public void configurePayments(Long userId, Long orderId) {
-        System.out.println("CONFIG-PAYMENTS UID " + userId + "      ORDER: " + orderId);
         paymentSupplier = paymentSupplier.setUserId(userId);
         paymentSupplier = paymentSupplier.setOrderId(orderId);
         paymentSupplier = paymentSupplier.setLocalTime(LocalDateTime.now());
@@ -39,4 +39,5 @@ public class PaymentsServiceImpl {
                 () -> paymentSupplier.get()
         );
     }
+
 }
