@@ -107,17 +107,9 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Mono<Long> getTotalSum(Long cartId) {
-        System.out.println("----TOTAL CART SUMM " + cartId);
         return webClient.get()
                 .uri(VITRO_CART_API + "/total-sum-of-cart/" + cartId)
                 .retrieve().bodyToMono(Long.class);
-    }
-
-    @Override
-    public Long getCartFromMonoItem(Mono<Item> itemMono) {
-        AtomicReference<Long> cartId = new AtomicReference<>(0L);
-        // itemMono.subscribe(i -> cartId.set(i.getCartId()));
-        return cartId.get();
     }
 
     @Override
@@ -127,7 +119,6 @@ public class ItemServiceImpl implements ItemService {
                 .retrieve().bodyToFlux(Item.class);
     }
 
-
     @Override
     public Flux<Item> getItemsByCartDataFromMonoToFlux(Long cartId) {
         return webClient.get()
@@ -135,30 +126,14 @@ public class ItemServiceImpl implements ItemService {
                 .retrieve().bodyToFlux(Item.class);
     }
 
-    /*
-        public Flux<Item> getItemsByCartDataFromMonoToFlux1(long cartId) {
-            return webClient.get()
-                    .uri(VITRO_ITEM_API+"/i/" + cartId)
-                    .retrieve()
-                    .bodyToFlux(Item.class)
-                    .map(i -> {
-                        return webClient.put()
-                                .uri(VITRO_ITEM_API+"/get-items-by-cart")
-                                .bodyValue(i)
-                                .retrieve().bodyToFlux(Item.class);
-                    })
-                    .flatMap(f -> f);
-        }
-    */
     @Override
     public Mono<Paging> findAllAndPaging(Mono<Pageable> pageable) {
         return null;
     }
 
     @Override
-    public Mono<Paging> findAllAndPagingWithFluxItem(Mono<Pageable> pageable,
-                                                     Flux<Item> itemFlux) {
-
+    public Mono<Paging> findAllAndPagingWithFluxItem(
+            Mono<Pageable> pageable,   Flux<Item> itemFlux) {
         Mono<Pageable> pageableMono = pageable.map(p -> {
                     pageSize = p.getPageSize();
                     offset = p.getPageNumber() * pageSize;
@@ -177,7 +152,6 @@ public class ItemServiceImpl implements ItemService {
                     Pageable p = tuple.getT3();
                     boolean hasPrevious = p.hasPrevious();
                     boolean hasNext = p.next() == null;
-
                     Paging paging = new Paging(
                             p.getPageSize(), p.getPageNumber(),
                             (int) (total / p.getPageSize() + 1),
@@ -187,38 +161,9 @@ public class ItemServiceImpl implements ItemService {
 
 
     }
-/*
-    @Override
-    public void updateCartInfo(Long itemId, String action) {
-        Mono<Item> itemMono = cartService.placeItemToCart(itemId, action);
-        Long cartId = this.getCartFromMonoItem(itemMono);
-        Flux<Item> itemsFlux = this.getItemsByCartDataFromMonoToFlux(cartId);
-        Mono<Long> total = this.getTotalSum(cartId);
-        Mono<Long> cartIdMono = itemMono.map(Item::getCartId);
-        itemsFlux.subscribe();
-        total.subscribe();
-        cartIdMono.subscribe();
-    }
-*/
 
     @Override
     public void removeFromOrder(long orderId) {
-    }
-
-    public void addOrder(Item item, Long orderId) {
-
-        /*
-        long id = item.getId();
-        System.out.println("    SAVING --- " + id);
-        System.out.println("    SAVING --- " + item);
-        webClient.get()
-                .uri(VITRO_ITEM_API + "/addOrder/" + orderId + "/" + id)
-                .retrieve().bodyToMono(Item.class)
-//                .subscribe(
-//                        i -> System.out.println("----SSII " + i.getOrderId())
-//
-//                );
-  */
     }
 
     public Flux<Item> itemOfUser(Long userId) {
@@ -226,8 +171,6 @@ public class ItemServiceImpl implements ItemService {
                 .uri(VITRO_ITEM_API + "/get-cart-of-user/" + userId)
                 .retrieve().bodyToFlux(Item.class);
     }
-
-    //   get-total-sum-cart-of-user
 
     public Mono<Long> getTotalOfSum(Long userId) {
         return webClient.get()
