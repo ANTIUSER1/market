@@ -47,8 +47,15 @@ public class CartServiceImpl implements TService<Cart> {
     }
 
     public Mono<Item> placeItemToCartOfUser(
-            Long userId, Long itemId,
+            Long userId,
+            Long itemId,
             String action) {
+        if ((userId== null)){
+            Mono<Item>  itemMono= webClient.get()
+                    .uri(VITRO_ITEM_API +  "/" + itemId)
+                    .retrieve().bodyToMono(Item.class);
+            return itemMono;
+        }
         if (ActionType.PLUS.name().equalsIgnoreCase(action)) {
             Mono<Cart> cartMono = webClient.get()
                     .uri(VITRO_CART_API + "/create/" + userId + "/" + itemId)
@@ -60,7 +67,7 @@ public class CartServiceImpl implements TService<Cart> {
                     .retrieve().bodyToMono(Item.class);
             return cartMono.map(c -> itemById(itemId)).flatMap(i -> i);
         }
-        return Mono.just(new Item());
+       return Mono.just(new Item());
     }
 
 }

@@ -17,7 +17,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebFluxSecurity
-@EnableMethodSecurity
+//@EnableMethodSecurity
 public class SecurityConfig {
     // Защищаем пароли шифрованием
 
@@ -41,7 +41,7 @@ public class SecurityConfig {
                                                             RedirectServerLogoutSuccessHandler redirectServerLogoutSuccessHandler) {
 
         http.authorizeExchange(exchanges -> exchanges
-                .pathMatchers("/", "/login").permitAll()
+                .pathMatchers("/", "/items/*", "/login").permitAll()
                 .anyExchange().authenticated()
         );
 

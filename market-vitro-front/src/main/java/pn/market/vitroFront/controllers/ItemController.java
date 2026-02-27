@@ -112,11 +112,27 @@ String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
         }
     }
 
-    //************* add roles ***
     @GetMapping("/items/{itemId}")
+    public Mono<Rendering> showitemToCartOfUserById(
+            @PathVariable("itemId") Long itemId
+    ) {
+    //    Long userId = loginService.getUserData().getId();
+        Mono<Item> itemMono = cartService.placeItemToCartOfUser(null, itemId, "action");
+
+        Mono<Long> src = Mono.just(-2L);
+        Mono<Rendering> r = Mono.just(Rendering.view("item")
+                .modelAttribute("item", itemMono)
+                .modelAttribute("action", "action")
+                .modelAttribute("src", src)
+                .build());
+        return r;
+    }
+
+    //************* add roles ***
+    @GetMapping("/items/{itemId}/{action}")
     public Mono<Rendering> additemToCartOfUserById(
             @PathVariable("itemId") Long itemId,
-            @RequestParam(value = "action", required = false) String action
+            @PathVariable(value = "action", required = false) String action
     ) {
         Long userId = loginService.getUserData().getId();
         Mono<Item> itemMono = cartService.placeItemToCartOfUser(userId, itemId, action);
@@ -129,5 +145,6 @@ String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
                 .build());
         return r;
     }
+
 
 }
