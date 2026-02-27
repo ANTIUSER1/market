@@ -17,7 +17,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @EnableWebFluxSecurity
-//@EnableMethodSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
     // Защищаем пароли шифрованием
 

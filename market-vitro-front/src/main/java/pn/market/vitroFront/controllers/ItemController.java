@@ -3,6 +3,10 @@ package pn.market.vitroFront.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.AuthenticatedPrincipal;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +22,8 @@ import pn.market.vitroFront.servicies.LoginService;
 import pn.market.vitroFront.servicies.ModelService;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.security.Principal;
 
 import static pn.market.vitroFront.config.AuthPaths.VITRO_ITEM_API;
 
@@ -129,11 +135,14 @@ String additionalParams = "&search=" + search + "&sorted=" + sorted + "&page="
     }
 
     //************* add roles ***
+//    @PreAuthorize("#username == principal.name")
     @GetMapping("/items/{itemId}/{action}")
     public Mono<Rendering> additemToCartOfUserById(
             @PathVariable("itemId") Long itemId,
             @PathVariable(value = "action", required = false) String action
     ) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println( ".getAuthentication();   "+authentication.getPrincipal());
         Long userId = loginService.getUserData().getId();
         Mono<Item> itemMono = cartService.placeItemToCartOfUser(userId, itemId, action);
 
