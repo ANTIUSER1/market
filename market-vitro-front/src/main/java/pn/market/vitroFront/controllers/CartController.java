@@ -45,8 +45,7 @@ public class CartController {
         Long userId = loginService.getUserData().getId();
         Flux<Item> itemsFlux = itemService.getItemsByCartDataFromMonoToFlux(cartId);
         Mono<Long> total = itemService.getTotalSum(cartId);
-        //  itemsFlux.subscribe(ii -> System.out.println("       III ID " + ii.getId()));
-        total.subscribe(t -> System.out.println("    TOTAL " + t));
+       total.subscribe();
         Mono<Rendering> r =
                 Mono.just(Rendering.view("cart")
                         .modelAttribute("items", itemsFlux)
@@ -59,10 +58,9 @@ public class CartController {
     @GetMapping("/item-of-user")
     public Mono<Rendering> itemsOfUser() {
         Long userId = loginService.getUserData().getId();
-        System.out.println("   USER_DATA ID " + userId);
-        Flux<Item> itemsFlux = itemService.itemOfUser(userId);
+         Flux<Item> itemsFlux = itemService.itemOfUser(userId);
         Mono<Long> total = itemService.getTotalOfSum(userId);
-        total.subscribe(t -> System.out.println("    USER-TOTAL-SUM " + t));
+        total.subscribe( );
         Mono<Rendering> r =
                 Mono.just(Rendering.view("cart")
                         .modelAttribute("items", itemsFlux)
@@ -81,7 +79,7 @@ public class CartController {
          Mono<Cart> cartMono = webClient.get()
                 .uri(VITRO_CART_API + "/create/" + userId + "/" + itemId)
                 .retrieve().bodyToMono(Cart.class);
-        cartMono.subscribe(cm -> System.out.println("redirect:/cart/" + cm.getId()));
+        cartMono.subscribe( );
         return cartMono.map(cm -> {
             return "redirect:/cart/" + cm.getId();
         });
