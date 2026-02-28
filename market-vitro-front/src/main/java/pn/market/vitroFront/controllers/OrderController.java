@@ -1,6 +1,7 @@
 package pn.market.vitroFront.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,8 +36,10 @@ public class OrderController {
     private LoginService loginService;
 
     //************* add roles ***
-    @GetMapping
-    public Mono<Rendering> allOrders() {
+    @PreAuthorize("#username ==  authentication.principal.username ")
+    @GetMapping("/{username}")
+    public Mono<Rendering> allOrders(   @PathVariable("username") String username
+                                        ) {
         Long userId = loginService.getUserData().getId();
         Mono<List<Order>> orders = orderService.addItemsToAllByUserId(userId);
         Mono<Rendering> r =
@@ -47,8 +50,10 @@ public class OrderController {
     }
 
     //************* add roles ***
-    @GetMapping("/item-to-order/{itemId}")
+    @PreAuthorize("#username ==  authentication.principal.username ")
+    @GetMapping("/item-to-order/{username}/{itemId}")
     public Mono<Rendering> saveNewOrderOfUser(
+            @PathVariable("username") String username,
             @PathVariable("itemId") Long itemId) {
         Long userId = loginService.getUserData().getId();
         Mono<Order> order = orderService.saveNewCompleteOrderOfUserById(userId, itemId);
@@ -61,9 +66,10 @@ public class OrderController {
     }
 
     //************* add roles ***
-    //---------detect not done---
-    @GetMapping("/{orderId}")
+    @PreAuthorize("#username ==  authentication.principal.username ")
+    @GetMapping("/{username}/{orderId}")
     public Mono<Rendering> getOrderById(
+            @PathVariable("username") String username,
             @PathVariable("orderId") Long orderId
     ) {
         Long userId = loginService.getUserData().getId();
@@ -78,9 +84,10 @@ public class OrderController {
     }
 
     //************* add roles ***
-    //---------detect not done---
-    @GetMapping("/buy/{orderId}")
-    public String buyOrder(@PathVariable("orderId") Long orderId) {
+    @PreAuthorize("#username ==  authentication.principal.username ")
+    @GetMapping("/buy/{username}/{orderId}")
+    public String buyOrder(   @PathVariable("username") String username,
+                              @PathVariable("orderId") Long orderId) {
         orderService.buyOrder(orderId);
         return "redirect:/orders";
     }
