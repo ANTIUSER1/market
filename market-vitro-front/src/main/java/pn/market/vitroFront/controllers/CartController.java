@@ -2,6 +2,7 @@ package pn.market.vitroFront.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,8 +44,10 @@ public class CartController {
     String securityCode;
 
     //************* add roles ***
-    @GetMapping("/{cartId}")
-    public Mono<Rendering> itemsList(@PathVariable("cartId") long cartId) {
+    @PreAuthorize("#username ==  authentication.principal.username ")
+    @GetMapping("/{username}/{cartId}")
+    public Mono<Rendering> itemsList(       @PathVariable("username") String username,
+                                            @PathVariable("cartId") long cartId) {
         System.out.println("     CART   ---SECURITY CODE "+securityCode);
 
         Long userId = loginService.getUserData().getId();
@@ -60,8 +63,10 @@ public class CartController {
     }
 
     //************* add roles ***
-    @GetMapping("/item-of-user")
-    public Mono<Rendering> itemsOfUser() {
+    @PreAuthorize("#username ==  authentication.principal.username ")
+    @GetMapping("/item-of-user/{username}")
+    public Mono<Rendering> itemsOfUser(       @PathVariable("username") String username
+                                              ) {
         Long userId = loginService.getUserData().getId();
          Flux<Item> itemsFlux = itemService.itemOfUser(userId);
         Mono<Long> total = itemService.getTotalOfSum(userId);
@@ -76,8 +81,10 @@ public class CartController {
 
 
     //**********  ADD ROLES *************
-    @GetMapping("/add-item-to-cart-of-user/{itemId}")
+    @PreAuthorize("#username ==  authentication.principal.username ")
+    @GetMapping("/add-item-to-cart-of-user/{username}/{itemId}")
     public Mono<String> additemsList(
+            @PathVariable("username") String username,
             @PathVariable("itemId") long itemId
     ) {
         Long userId = loginService.getUserData().getId();
