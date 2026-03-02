@@ -1,0 +1,102 @@
+package pn.market.vitroBack.rest;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import pn.market.market_entities.forWEB.Item;
+import pn.market.market_entities.forWEB.Order;
+import pn.market.vitroBack.servicies.impl.ItemServiceImpl;
+import pn.market.vitroBack.servicies.impl.OrderServiceImpl;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest
+class ItemRestTest {
+
+    @MockitoBean
+    private ItemServiceImpl itemService;
+
+    @MockitoBean
+    private OrderServiceImpl orderService;
+
+    private Flux<Item>itemFlux;
+    private Mono<Item>itemMono ;
+    private Mono<Order>orderMono ;
+    private Mono<Long>longMono ;
+    private final List<Item> items = new ArrayList<>();
+    private Item item;
+
+
+    @BeforeEach
+    void init() {
+        item = new Item();
+        item.setId(1L);
+        for (int i = 1; i < 10; i++) {
+            Item item = new Item();
+            item.setId((long) i);
+            items.add(item);
+        }
+        itemFlux = Flux.fromIterable(items);
+        orderMono=Mono.just(new Order());
+        itemMono=Mono.just(new Item());
+        longMono=Mono.just(1L);
+    }
+
+    @Test
+    void allItems() {
+        Mockito.when(orderService.createOrUseCartOfUser(1L, 1L))
+                .thenReturn(orderMono);
+        Assertions.assertEquals(orderMono, orderService.createOrUseCartOfUser(1L, 1L));
+    }
+
+    @Test
+    void itemById() {
+        Mockito.when(itemService.findById(1L))
+                .thenReturn(itemMono);
+        Assertions.assertEquals(itemMono, itemService.findById(1L) );
+    }
+
+    @Test
+    void addToExistingOrderOfUser() {
+        Mockito.when(  orderService.createOrUseCartOfUser(1L, 1L) )
+                .thenReturn(orderMono);
+        Assertions.assertEquals(orderMono, orderService.createOrUseCartOfUser(1L, 1L)  );
+    }
+
+    @Test
+    void getItemsByCartId() {
+        Mockito.when(itemService.getItemsByCartIdT(1L))
+                .thenReturn(itemFlux);
+        Assertions.assertEquals(itemFlux, orderService.createOrUseCartOfUser(1L, 1L));
+    }
+
+    @Test
+    void getCartOfUser() {
+        Mockito.when(   itemService.getItemsOfUser(1L) )
+                .thenReturn(itemFlux);
+        Assertions.assertEquals(itemFlux,  itemService.getItemsOfUser(1L)) ;
+    }
+
+    @Test
+    void getTotalCartOfUser() {
+        Mockito.when(  itemService.getTotalSumCartOfUser(1L)  )
+                .thenReturn(longMono);
+        Assertions.assertEquals(longMono,  itemService.getTotalSumCartOfUser(1L)) ;
+    }
+
+    @Test
+    void getItemsByOrderId() {
+        Mockito.when(  itemService.getItemsByOrderId(1L) )
+                .thenReturn(itemFlux);
+        Assertions.assertEquals(itemFlux,   itemService.getItemsByOrderId(1L)   ) ;
+    }
+}
