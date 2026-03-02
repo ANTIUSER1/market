@@ -12,7 +12,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static pn.market.vitroFront.config.AuthPaths.VITRO_CART_API;
 import static pn.market.vitroFront.config.AuthPaths.VITRO_ITEM_API;
@@ -23,67 +22,10 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     private CartServiceImpl cartService;
 
-//    @Autowired
-//    private FileServiceImpl fileService;
-//    @Autowired
-//    private ItemRepo itemRepo;
-//    @Autowired
-//    private OrderRepo orderRepo;
-/*
- @Override
-    public Mono<Paging> findAllAndPaging(
-            Mono<Pageable> pageable,
-            Flux<Item> itemsFlux
-    ) {
-
-        Mono<Pageable> pageableMono = pageable.map(p -> {
-                    pageSize = p.getPageSize();
-                    offset = p.getPageNumber() * pageSize;
-                    return p;
-                }
-        );
-        itemsFlux = itemsFlux
-                .skip(offset)
-                .take(pageSize);
-        Mono<Long> countMono = itemsFlux.count();
-
-        return Mono.zip(itemsFlux.collectList(), countMono, pageable)
-                .map(tuple -> {
-                    List<Item> items = tuple.getT1();
-                    long total = tuple.getT2();
-                    Pageable p = tuple.getT3();
-                    boolean hasPrevious = p.hasPrevious();
-                    boolean hasNext = p.next() == null;
-
-                    Paging paging = new Paging(
-                            p.getPageSize(), p.getPageNumber(),
-                            (int) (total / p.getPageSize() + 1),
-                            hasNext, hasPrevious);
-                    return paging;
-                });
-
-    }
-
-    @Override
-    public Flux<Item> getItemsByCartDataFromMonoToFlux(Item item) {
-        return webClient.put()
-                .uri(authHost + "/api/get-items-by-cart")
-                .bodyValue(item)
-                .retrieve().bodyToFlux(Item.class);
-    }
-
-    @Override
-    public Mono<Long> getTotalSum(Flux<Item> itemsFlux) {
-        return webClient.put()
-                .uri(authHost + "/api/get-total-sum")
-                .bodyValue(itemsFlux)
-                .retrieve().bodyToMono(Long.class);
-    }
-    */
-
 
     private int pageSize;
     private int offset;
+
     @Value("${spring.web.resources.static-locations}")
     private String imgPath;
 
@@ -133,7 +75,7 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public Mono<Paging> findAllAndPagingWithFluxItem(
-            Mono<Pageable> pageable,   Flux<Item> itemFlux) {
+            Mono<Pageable> pageable, Flux<Item> itemFlux) {
         Mono<Pageable> pageableMono = pageable.map(p -> {
                     pageSize = p.getPageSize();
                     offset = p.getPageNumber() * pageSize;
