@@ -17,7 +17,7 @@ import java.util.List;
 public class OrderItemsRepoTest {
 
     private Flux<OrderItems> orderItemsFlux;
-private  Mono<Long> longMono;
+    private Mono<Long> longMono;
     @MockitoBean
     private OrderItemsRepo orderItemsRepo;
 
@@ -29,7 +29,7 @@ private  Mono<Long> longMono;
         List<OrderItems> orderItems1 = new ArrayList<>();
         orderItems1.add(orderItems);
         orderItemsFlux = Flux.fromIterable(orderItems1);
-        longMono=Mono.just(1L);
+        longMono = Mono.just(1L);
     }
 
     @Test
@@ -50,7 +50,7 @@ private  Mono<Long> longMono;
     @Test
     void countOfOrderAndItemId() {
         Mockito.when(orderItemsRepo.countOfOrderAndItemId(1L, 1L))
-                .thenReturn(Mono.just(1L));
+                .thenReturn(longMono);
         Assertions.assertEquals(longMono, orderItemsRepo.countOfOrderAndItemId(1L, 1L));
     }
 
