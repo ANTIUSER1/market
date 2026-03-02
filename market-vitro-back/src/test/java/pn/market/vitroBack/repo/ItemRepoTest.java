@@ -4,10 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import pn.market.market_entities.forWEB.Item;
 import reactor.core.publisher.Flux;
@@ -23,16 +20,11 @@ class ItemRepoTest {
     private final List<Item> items = new ArrayList<>();
     private Item item;
     private Flux<Item> itemsFlux = null;
-    private Pageable pageable;
-    @MockitoBean
-    private CartRepo cartRepo;
-    @MockitoBean
-    private OrderRepo orderRepo;
+
+
     @MockitoBean
     private ItemRepo itemRepo;
 
-    @Autowired
-    private DatabaseClient databaseClient;
 
     @BeforeEach
     void init() {

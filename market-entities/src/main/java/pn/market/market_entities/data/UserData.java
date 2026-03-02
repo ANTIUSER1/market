@@ -15,6 +15,7 @@ import java.util.HashSet;
 import java.util.stream.Collectors;
 
 @Getter
+@Setter
 @ToString
 @Table("user_data")
 public class UserData implements UserDetails {
@@ -24,17 +25,12 @@ public class UserData implements UserDetails {
     private String username;
     private String password;
 
-    @Setter
     private String authority;
 
-    @Setter
-    @Getter
     private Long money;
 
-    @Setter
     private Long cartId;
 
-    @Setter
     private Long orderId;
 
     public UserData() {
