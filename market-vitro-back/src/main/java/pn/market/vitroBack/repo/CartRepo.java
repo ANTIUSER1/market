@@ -17,13 +17,12 @@ public interface CartRepo extends ReactiveCrudRepository<Cart, Long> {
     @Query("SELECT MAX(id) FROM carts    ")
     Mono<Long> findMaxId();
 
-
     @Query("""
              select sum(i.count *i.price)  as cp from items i  where i.id in (
                select distinct oi.item_id  from carts_items  oi where oi.cart_id = $1
                )
             
             """)
-    Mono<Long> calcTotalSumOfCartId(Long calcId);
+    Mono<Long> calcTotalSumOfCartId(Long cartId);
 
 }
