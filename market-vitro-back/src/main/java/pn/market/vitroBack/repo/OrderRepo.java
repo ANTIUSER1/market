@@ -14,12 +14,7 @@ import reactor.core.publisher.Mono;
 @Transactional
 public interface OrderRepo extends ReactiveCrudRepository<Order, Long> {
 
-    /*
 
-     SELECT * FROM orders o  WHERE  id in(
-     select ud.order_id   from user_data ud  where ud.id = 2
-     )
-     */
     @Query(
             """ 
                         SELECT * FROM orders o  WHERE  id in(
@@ -27,14 +22,6 @@ public interface OrderRepo extends ReactiveCrudRepository<Order, Long> {
                              )
                     """)
     Mono<Order> findByUserId(Long userId);
-
-    @Query("""
-             select sum(i.count *i.price)  as cp from items i  where i.id in (
-               select distinct oi.item_id  from orders_items  oi where oi.order_id = $1
-               )
-            
-            """)
-    Mono<Long> calcTotalSumOfOrderId(Long orderId);
 
 
 }
