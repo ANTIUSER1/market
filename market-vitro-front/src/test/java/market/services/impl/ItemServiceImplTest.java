@@ -1,14 +1,21 @@
 package market.services.impl;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.web.reactive.server.WebTestClient;
 import org.springframework.web.multipart.MultipartFile;
 import pn.market.market_entities.forWEB.Item;
 import pn.market.vitroFront.servicies.ItemServiceImpl;
 
 import java.util.List;
+
+import static pn.market.vitroFront.config.AuthPaths.VITRO_ITEM_API;
 
 @SpringBootTest
 class ItemServiceImplTest {
@@ -25,6 +32,9 @@ class ItemServiceImplTest {
 
     @Mock
     private ItemServiceImpl itemService;
+    @Autowired
+    private WebTestClient webTestClient;
+
     private List<Item> items;
 
     @BeforeEach
@@ -43,6 +53,25 @@ class ItemServiceImplTest {
         item.setImgPath(imgPath);
         items = List.of(item);
     }
+
+    @Test
+    void getById() {
+
+        webTestClient.get()
+//                .uri("/")
+                .uri(VITRO_ITEM_API + "/1")
+                .exchange()
+                .expectStatus().isOk()
+                .expectHeader().contentType(MediaType.TEXT_HTML)
+                .expectBody(String.class)
+                .consumeWith(response -> {
+                    String body = response.getResponseBody();
+                    Assertions.assertNotNull(body);
+                    Assertions.assertTrue(body.contains("<html")); // Проверяем, что страница содержит форму
+                });
+
+    }
+
 /*
     @Test
     void findAllAndPagingTest() {
