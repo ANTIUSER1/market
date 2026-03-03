@@ -9,7 +9,6 @@ import pn.market.market_entities.forWEB.Item;
 import pn.market.market_entities.forWEB.Order;
 import pn.market.market_entities.forWEB.OrderItems;
 import pn.market.vitroBack.repo.OrderRepo;
-import pn.market.vitroBack.repo.UserDataRepo;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -81,42 +80,6 @@ public class OrderServiceImpl implements TService<Order> {
                 });
         return orderMono;
     }
-/*
-    public Mono<Order> updateExisting(Long userId, Long itemId) {
-        System.out.println("----------updateExisting: IteM:" + itemId + "   ::::  UserM:: " + userId);
-        Mono<List<Order>> udmonoList = orderRepo.findByUserId(userId).collectList();
-        Mono<Order> orderMono = udmonoList.map(
-                ud -> {
-                    Order o = null;
-                    if (ud.size() > 0) {
-                        o = ud.get(0);
-                    } else {
-                        o = new Order();
-                    }
-                    System.out.println("--------*****ORDER:::" + o);
-
-                    return o;
-                }
-        );
-
-        Mono<Item> itemMono = itemService.findById(itemId);
-
-        orderMono = Mono.zip(orderMono, itemMono)
-                .map(t -> {
-                    System.out.println("  EXISTING--OOOO  UUU");
-                    Order o = t.getT1();
-                    Item i = t.getT2();
-                    System.out.println("  EXISTING--OOOO " + o);
-
-                    System.out.println("  START ITEM-UPDATE:  " + i);
-                    System.out.println("   FINISH ITEM-UPDATE:  " + i);
-                    System.out.println("   SAVE   ITEM-UPDATE:  " + i);
-                    itemService.save(i).subscribe();
-                    return o;
-                });
-        return Mono.empty();
-    }
-    */
 
     public Mono<Order> showOderOfUser(Long userId, Long orderId) {
         Mono<Order> orderMono = orderRepo.findById(orderId);
