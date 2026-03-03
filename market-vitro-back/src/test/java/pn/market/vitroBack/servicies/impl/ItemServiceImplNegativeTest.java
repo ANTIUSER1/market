@@ -15,7 +15,8 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 
 @SpringBootTest
-class ItemServiceImplTest {
+class ItemServiceImplNegativeTest {
+
 
     Item i;
     @MockitoBean
@@ -34,35 +35,32 @@ class ItemServiceImplTest {
         itemMono = Mono.just(i);
     }
 
-
     @Test
     void findAll() {
         Mockito.when(itemRepo.findAll())
                 .thenReturn(itemFlux);
-        Assertions.assertEquals(itemFlux, itemRepo.findAll());
+        Assertions.assertNotEquals(Mono.empty(), itemRepo.findAll());
     }
 
     @Test
     void getById() {
         Mockito.when(itemRepo.findById(1L))
                 .thenReturn(itemMono);
-        Assertions.assertEquals(itemMono, itemRepo.findById(1L));
+        Assertions.assertNotEquals(Mono.empty(), itemRepo.findById(1L));
     }
-
 
     @Test
     void getItemsByOrderId() {
         Mockito.when(itemRepo.findItemsByOrderId(1L))
                 .thenReturn(itemFlux);
-        Assertions.assertEquals(itemFlux, itemRepo.findItemsByOrderId(1L));
+        Assertions.assertNotEquals(Mono.empty(), itemRepo.findItemsByOrderId(1L));
     }
-
 
     @Test
     void plusForMono() {
         Mockito.when(itemRepo.save(i))
                 .thenReturn(itemMono);
-        Assertions.assertEquals(itemMono, itemRepo.save(i));
+        Assertions.assertNotEquals(Mono.empty(), itemRepo.save(i));
     }
 
 

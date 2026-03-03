@@ -3,7 +3,6 @@ package pn.market.vitroBack.servicies.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
-import org.springframework.r2dbc.core.DatabaseClient;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import pn.market.market_entities.Paging;
@@ -25,18 +24,15 @@ public class ItemServiceImpl implements TService<Item> {
     private int pageSize;
     private int offset;
     @Value("${spring.web.resources.static-locations}")
-
     private String imgPath;
+
     @Autowired
     private FileServiceImpl fileService;
     @Autowired
     private ItemRepo itemRepo;
     @Autowired
     private OrderRepo orderRepo;
-//    @Autowired
-//    private CartServiceImpl cartService;
-//    @Autowired
-//    private DatabaseClient databaseClient;
+
 
     public Mono<Item> findById(Long id) {
         return itemRepo.findById(id);
@@ -92,7 +88,6 @@ public class ItemServiceImpl implements TService<Item> {
     public Mono<Long> getTotalSum(Flux<Item> items) {
         return items.collectList()
                 .map(i -> {
-                    System.out.println("   SUM COUNT!!!   " + i);
                     return i.stream()
                             .mapToLong(it -> it.getPrice() * 100000).sum();
                 });
@@ -149,50 +144,6 @@ public class ItemServiceImpl implements TService<Item> {
         return itemRepo.save(item);
     }
 
-
-/*
-    public Flux<Item> getItemsByCartDataFromMonoToFlux(Mono<Item> itemMono) {
-        return Flux.empty();
-//        return itemMono.map(i -> {
-//            return this.getItemsByCartIdToFlux(i.getCartId());
-//        }).flatMapMany(f -> f);
-    }
-*/
-/*
-    public void removeFromOrder(long orderId) {
-        itemRepo.findByOrderId(orderId).collectList()
-                .map(items -> {
-                    for (Item item : items) {
-                        System.out.println("    remove order links in item: " + item);
-                        itemRepo.save(item)
-                                .map(
-                                        i -> {
-                                            System.out.println("    remove order links in item: "
-                                                    + i + "\n        DONE! ");
-                                            return i;
-                                        }
-                                )
-                                .map(i -> {
-                                    orderRepo.deleteById(orderId).log().subscribe();
-                                    return i;
-                                }).log()
-                                .subscribe();
-                    }
-                    return items;
-                })
-                .subscribe();
-        System.out.println("removed from order id: " + orderId);
-    }
-*/
-    /*
-    public Flux<Item> removeItemsFromOrderId(Long orderId) {
-        Flux<Item> itemFlux = itemRepo.findByOrderId(orderId)
-                .map(ii -> {
-                    return Mono.just(ii);
-                }).flatMap(i -> i);
-        return itemRepo.saveAll(itemFlux);
-    }
-    */
 
     public Flux<Item> getItemsOfUser(Long userId) {
         return itemRepo.findItemsByUserId(userId);
