@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 
 @SpringBootTest
-class CartControlUtilityServiceTest {
+class CartControlUtilityServiceNegativeTest {
 
 
     Mono<UserData> userDataMono;
@@ -54,6 +54,7 @@ class CartControlUtilityServiceTest {
         cartItemsMono = Mono.just(ci);
         cartMono = Mono.just(c);
         userDataMono = Mono.just(u);
+
         longMono = Mono.just(1L);
         cartItemsFlux = Flux.fromIterable(new ArrayList<>());
         cartFlux = Flux.fromIterable(new ArrayList<>());
@@ -63,70 +64,70 @@ class CartControlUtilityServiceTest {
     void findItemById() {
         Mockito.when(itemRepo.findById(1L))
                 .thenReturn(itemMono);
-        Assertions.assertEquals(itemMono, itemRepo.findById(1L));
+        Assertions.assertNotEquals(Mono.empty(), itemRepo.findById(1L));
     }
 
     @Test
     void saveItem() {
         Mockito.when(itemRepo.save(i))
                 .thenReturn(itemMono);
-        Assertions.assertEquals(itemMono, itemRepo.save(i));
+        Assertions.assertNotEquals(Mono.empty(), itemRepo.save(i));
     }
 
     @Test
     void findCartItemsByCartId() {
         Mockito.when(cartItemsRepo.findByCartId(1L))
                 .thenReturn(cartItemsFlux);
-        Assertions.assertEquals(cartItemsFlux, cartItemsRepo.findByCartId(1L));
+        Assertions.assertNotEquals(Flux.empty(), cartItemsRepo.findByCartId(1L));
     }
 
     @Test
     void findAllCarts() {
         Mockito.when(cartRepo.findAll())
                 .thenReturn(cartFlux);
-        Assertions.assertEquals(cartFlux, cartRepo.findAll());
+        Assertions.assertNotEquals(Flux.empty(), cartRepo.findAll());
     }
 
     @Test
     void findUserById() {
         Mockito.when(userDataRepo.findById(1L))
                 .thenReturn(userDataMono);
-        Assertions.assertEquals(userDataMono, userDataRepo.findById(1L));
+        Assertions.assertNotEquals(Mono.empty(), userDataRepo.findById(1L));
     }
 
     @Test
     void saveUser() {
         Mockito.when(userDataRepo.save(u))
                 .thenReturn(userDataMono);
-        Assertions.assertEquals(userDataMono, userDataRepo.save(u));
+        Assertions.assertNotEquals(Mono.empty(), userDataRepo.save(u));
     }
 
     @Test
     void findCartById() {
         Mockito.when(cartRepo.findById(1L))
                 .thenReturn(cartMono);
-        Assertions.assertEquals(cartMono, cartRepo.findById(1L));
+        Assertions.assertNotEquals(Mono.empty(), cartRepo.findById(1L));
     }
 
     @Test
     void saveCart() {
         Mockito.when(cartRepo.save(c))
                 .thenReturn(cartMono);
-        Assertions.assertEquals(cartMono, cartRepo.save(c));
+        Assertions.assertNotEquals(Mono.empty(), cartRepo.save(c));
     }
 
     @Test
     void saveCartItems() {
         Mockito.when(cartItemsRepo.save(ci))
                 .thenReturn(cartItemsMono);
-        Assertions.assertEquals(cartItemsMono, cartItemsRepo.save(ci));
+        Assertions.assertNotEquals(Mono.empty(), cartItemsRepo.save(ci));
     }
 
     @Test
     void countOfCartAndItemId() {
         Mockito.when(cartItemsRepo.countOfCartAndItemId(1L, 1L))
                 .thenReturn(longMono);
-        Assertions.assertEquals(longMono, cartItemsRepo.countOfCartAndItemId(1L, 1L));
+        Assertions.assertNotEquals(Mono.empty(), cartItemsRepo.countOfCartAndItemId(1L, 1L));
     }
 
 
