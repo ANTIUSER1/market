@@ -36,17 +36,8 @@ public class OrderControlUtilityService {
         return itemRepo.save(i);
     }
 
-
     public Flux<OrderItems> findOrderItemsByOrderId(Long orderId) {
         return orderItemsRepo.findByOrderId(orderId);
-    }
-
-    public Flux<OrderItems> findOrderItemsByItemId(Long itemId) {
-        return orderItemsRepo.findByItemId(itemId);
-    }
-
-    public Flux<Order> findAllOrders() {
-        return orderRepo.findAll();
     }
 
     public Mono<UserData> findUserById(Long userId) {
@@ -73,8 +64,4 @@ public class OrderControlUtilityService {
         return orderItemsRepo.countOfOrderAndItemId(itemId, orderId);
     }
 
-
-    public Mono<Void> deleteOrderItemsById(Long ciID) {
-        return orderItemsRepo.deleteById(ciID);
-    }
 }
