@@ -1,4 +1,4 @@
-package pn.market.vitroBack.repo;
+package pn.market.vitroBack.servicies.impl;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -7,6 +7,7 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import pn.market.market_entities.data.UserData;
+import pn.market.vitroBack.repo.UserDataRepo;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -14,11 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootTest
-public class UserDataRepoTest {
-
+class UserEntityServiceImplTest {
     @MockitoBean
     private UserDataRepo userDataRepo;
-
 
     private UserData userData;
     private Mono<UserData> userDataMono;
@@ -39,16 +38,18 @@ public class UserDataRepoTest {
     }
 
     @Test
+    void findAllUsers() {
+        Mockito.when(userDataRepo.findAllUsers())
+                .thenReturn(userDataFlux);
+        Assertions.assertEquals(userDataFlux, userDataRepo.findAllUsers());
+    }
+
+    @Test
     void findByName() {
         Mockito.when(userDataRepo.findByName("a"))
                 .thenReturn(userDataMono);
         Assertions.assertEquals(userDataMono, userDataRepo.findByName("a"));
     }
 
-    @Test
-    void findAllUsers() {
-        Mockito.when(userDataRepo.findAllUsers())
-                .thenReturn(userDataFlux);
-        Assertions.assertEquals(userDataFlux, userDataRepo.findAllUsers());
-    }
+
 }
