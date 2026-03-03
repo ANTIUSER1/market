@@ -24,11 +24,6 @@ public class UserEntityServiceImpl {
         return userDataRepo.findByName(name);
     }
 
-    public Mono<UserData> addUserData(String name, String autority) {
-        UserData ud = new UserData(name, "p-" + name, autority);
-        return userDataRepo.save(ud);
-    }
-
     public Flux<UserData> addUserDataSet(int n, String autority) {
         List<UserData> result = new ArrayList<>(n);
         int K = (int) (1 + Math.random() * 100);
