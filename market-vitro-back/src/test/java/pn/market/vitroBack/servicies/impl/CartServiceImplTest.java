@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import pn.market.market_entities.forWEB.Cart;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -15,10 +15,10 @@ import java.util.ArrayList;
 @SpringBootTest
 class CartServiceImplTest {
 
-    @Autowired
+    @MockitoBean
     private CartUtilityService cartUtilityService;
 
-    @Autowired
+    @MockitoBean
     private CartControlUtilityService cartControlUtilityService;
 
     private Flux<Cart> cartFlux;
