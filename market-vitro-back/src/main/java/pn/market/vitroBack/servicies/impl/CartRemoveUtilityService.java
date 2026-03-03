@@ -19,7 +19,6 @@ public class CartRemoveUtilityService {
         return Mono.zip(cartItemsListMono, itemMono)
                 .map(t -> {
                     Item i = t.getT2();
-                    System.out.println("***------------REMOVED ITEM " + i);
                     List<CartItems> cartItemsList = t.getT1();
                     List<CartItems> cartItemsListTMP = new ArrayList<>();
 
