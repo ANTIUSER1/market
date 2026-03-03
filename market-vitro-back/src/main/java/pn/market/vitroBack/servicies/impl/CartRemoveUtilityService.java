@@ -12,7 +12,6 @@ import java.util.List;
 @Service
 public class CartRemoveUtilityService {
 
-
     @Autowired
     private CartControlUtilityService cartControlUtilityService;
 
