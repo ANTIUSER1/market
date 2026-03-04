@@ -43,8 +43,6 @@ public class ItemController {
     @Autowired
     private LoginService loginService;
 
-    @Autowired
-    String securityCode;
 
 
     @GetMapping
@@ -54,7 +52,6 @@ public class ItemController {
             @RequestParam(value = "search", required = false, defaultValue = "") String search,
             @RequestParam(value = "sorted", required = false, defaultValue = "ALPHA") String sorted
     ) {
-        System.out.println("      ITEMS 0 ---SECURITY CODE " + securityCode);
         try {
             Flux<Item> itemFlux = webClient.get()
                     .uri(VITRO_ITEM_API)
@@ -78,6 +75,7 @@ public class ItemController {
                     .modelAttribute("errorInfo", e.getCause())
                     .build());
         }
+
     }
 
     @GetMapping("/items")
@@ -89,7 +87,6 @@ public class ItemController {
             @RequestParam(value = "itemId", required = false, defaultValue = "0") long itemId,
             @RequestParam(value = "action", required = false, defaultValue = "NONE") String action
     ) {
-        System.out.println("      ITEMS 1 ---SECURITY CODE " + securityCode);
         try {
             Flux<Item> itemFlux = webClient.get()
                     .uri(VITRO_ITEM_API)
@@ -116,17 +113,14 @@ public class ItemController {
                     .modelAttribute("errorInfo", e.getCause())
                     .build());
         }
+
     }
 
     @GetMapping("/items/{itemId}")
     public Mono<Rendering> showitemToCartOfUserById(
             @PathVariable("itemId") Long itemId
     ) {
-        System.out.println("    ITEMS 2   ---SECURITY CODE " + securityCode);
-        System.out.println("    ITEMS 2   ---SECURITY CODE " + securityCode);
-        System.out.println("    ITEMS 2   ---SECURITY CODE " + securityCode);
-        System.out.println("    ITEMS 2   ---SECURITY CODE " + securityCode);
-        //    Long userId = loginService.getUserData().getId();
+        Long userId = loginService.getUserData().getId();
         Mono<Item> itemMono = cartService.placeItemToCartOfUser(null, itemId, "action");
 
         Mono<Long> src = Mono.just(-2L);
@@ -146,10 +140,6 @@ public class ItemController {
             @PathVariable("itemId") Long itemId,
             @PathVariable(value = "action", required = false) String action
     ) {
-        System.out.println("      ITEMS 3 ---SECURITY CODE " + securityCode);
-        System.out.println("      ITEMS 3 ---SECURITY CODE " + securityCode);
-        System.out.println("      ITEMS 3 ---SECURITY CODE " + securityCode);
-        System.out.println("      ITEMS 3 ---SECURITY CODE " + securityCode);
         Long userId = loginService.getUserData().getId();
         System.out.println(loginService.getUserData());
         Mono<Item> itemMono = cartService.placeItemToCartOfUser(userId, itemId, action);

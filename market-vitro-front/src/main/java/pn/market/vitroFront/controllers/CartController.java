@@ -40,17 +40,14 @@ public class CartController {
         return Mono.just("/cart");
     }
 
-    @Autowired
-    String securityCode;
 
     //************* add roles ***
     @PreAuthorize("#username ==  authentication.principal.username ")
     @GetMapping("/{username}/{cartId}")
     public Mono<Rendering> itemsList(       @PathVariable("username") String username,
                                             @PathVariable("cartId") long cartId) {
-        System.out.println("     CART   ---SECURITY CODE "+securityCode);
 
-        Long userId = loginService.getUserData().getId();
+  Long userId = loginService.getUserData().getId();
         Flux<Item> itemsFlux = itemService.getItemsByCartDataFromMonoToFlux(cartId);
         Mono<Long> total = itemService.getTotalSum(cartId);
        total.subscribe();

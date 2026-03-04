@@ -15,9 +15,6 @@ public class LoginService extends MapReactiveUserDetailsService {
     @Autowired
     private UserDataServiceImpl userDataService;
 
-    @Autowired
-    String securityCode;
-
     private UserData userData;
 
     public LoginService() {
