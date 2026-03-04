@@ -26,7 +26,6 @@ class OrdersCreateServiceNegativeTest {
     void init() {
         order = new Order();
         cart = new Cart();
-        cart.setId(100L);
     }
 
 //    @Test
