@@ -30,7 +30,6 @@ public class LoginService extends MapReactiveUserDetailsService {
     private UserDetails convertToUserDetails(UserData userData) {
         if (userData.getAuthority() == null || userData.getAuthority().trim().isEmpty())
             userData.setAuthority("EMPTY");
-      //  userData.setSecurityCode(securityCode);
 System.out.println(
         "     USER_DATA "+userData
 );
