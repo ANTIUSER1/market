@@ -13,9 +13,6 @@ import org.springframework.security.authorization.event.AuthorizationGrantedEven
 public class EventPublisherConfig {
 
 
-    @Autowired
-    String securityCode;
-
     @Bean
     public AuthorizationEventPublisher authorizationEventPublisher(
             ApplicationEventPublisher applicationEventPublisher
@@ -23,7 +20,6 @@ public class EventPublisherConfig {
         // Используем стандартный публикатор событий авторизации Spring Security
         applicationEventPublisher.publishEvent(AuthorizationGrantedEvent.class);
         applicationEventPublisher.publishEvent(AuthorizationEvent.class);
-       System.out.println("\t\t ---EVENT PUBLISHER CONFIG "+securityCode);
         return new SpringAuthorizationEventPublisher(applicationEventPublisher);
     }
 }
