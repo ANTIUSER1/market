@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Import({
         CartServiceImpl.class,
         ItemServiceImpl.class,
-     SecurityConfig.class,
+        SecurityConfig.class,
         WebClientConfig.class
 })
 class ItemControllerTest {
@@ -59,7 +59,7 @@ class ItemControllerTest {
     private Item item;
 
     @BeforeEach
-    void setUp(  ) {
+    void setUp() {
         item = new Item();
         item.setPrice(100L);
         item.setId(100L);
@@ -89,7 +89,7 @@ class ItemControllerTest {
 
     @Test
     void items() throws Exception {
-          webTestClient.get()
+        webTestClient.get()
                 .uri("/items")
                 .exchange()
                 .expectStatus().isOk()
@@ -101,7 +101,6 @@ class ItemControllerTest {
                     assertTrue(body.contains("<html")); // Проверяем, что страница содержит форму
                 });
     }
-
 
 
     @Test
