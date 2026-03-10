@@ -23,8 +23,6 @@ public class OrderController {
     @Autowired
     private OrderServiceImpl orderService;
 
-//    @Autowired
-//    private ItemServiceImpl itemService;
 
     @Autowired
     private PaymentsServiceImpl paymentService;
@@ -92,4 +90,10 @@ public class OrderController {
         return "redirect:/orders";
     }
 
+    //************* add roles ***
+    @PreAuthorize("#username ==  authentication.principal.username ")
+    @GetMapping("/tmp/{username}")
+    public Mono<String> tmp(   @PathVariable("username") String username) {
+         return Mono.just("tmp" );
+    }
 }

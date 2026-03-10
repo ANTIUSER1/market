@@ -106,21 +106,21 @@ class ItemControllerTest {
     @Test
     @WithMockUser(username = "user", roles = "USER")
     void itemById() {
-        var mockUriSpec = Mockito.mock(WebClient.RequestHeadersUriSpec.class);
-        var mockHeadersSpec = Mockito.mock(WebClient.RequestHeadersSpec.class);
-        WebClient.ResponseSpec mockResponseSpec = Mockito.mock(WebClient.ResponseSpec.class);
+//        var mockUriSpec = Mockito.mock(WebClient.RequestHeadersUriSpec.class);
+//        var mockHeadersSpec = Mockito.mock(WebClient.RequestHeadersSpec.class);
+//        WebClient.ResponseSpec mockResponseSpec = Mockito.mock(WebClient.ResponseSpec.class);
 
-        Mockito.when(webClient.get()).thenReturn(mockUriSpec);
-        Mockito.when(mockUriSpec.uri(ArgumentMatchers.anyString())).thenReturn(mockHeadersSpec);
-        Mockito.when(mockHeadersSpec.retrieve()).thenReturn(mockResponseSpec);
-        Mockito.when(mockResponseSpec.bodyToMono(String.class))
-                .thenReturn(Mono.just("Hello World!"));
-        Mockito.when(
-                cartService.placeItemToCartOfUser(
-                        ArgumentMatchers.any(),
-                        ArgumentMatchers.eq(2L),
-                        ArgumentMatchers.eq("action")
-                )).thenReturn(Mono.just(item));
+//        Mockito.when(webClient.get()).thenReturn(mockUriSpec);
+//        Mockito.when(mockUriSpec.uri(ArgumentMatchers.anyString())).thenReturn(mockHeadersSpec);
+//        Mockito.when(mockHeadersSpec.retrieve()).thenReturn(mockResponseSpec);
+//        Mockito.when(mockResponseSpec.bodyToMono(String.class))
+//                .thenReturn(Mono.just("Hello World!"));
+//        Mockito.when(
+//                cartService.placeItemToCartOfUser(
+//                        ArgumentMatchers.any(),
+//                        ArgumentMatchers.eq(2L),
+//                        ArgumentMatchers.eq("action")
+//                )).thenReturn(Mono.just(item));
 
         Mockito.when(loginService.getUserData()).thenReturn(new UserData());
 
