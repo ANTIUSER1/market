@@ -25,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
         CartServiceImpl.class,
         ItemServiceImpl.class,
         SecurityConfig.class,
+        LoginController.class,
         WebClientConfig.class
 })
 class LoginControllerTest {
