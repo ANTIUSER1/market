@@ -2,7 +2,6 @@ package pn.market.vitroFront.rest;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,14 +18,11 @@ import static pn.market.vitroFront.config.AuthPaths.VITRO_TEST_API;
 @RequestMapping("/test-api")
 public class HomeRest {
 
+    @Autowired
+    //   @Qualifier("BACK")
+    WebClient webClient;
     @Value("${oauth.data.host}")
     private String auth2Host;
-
-
-    @Autowired
- //   @Qualifier("BACK")
-    WebClient webClient;
-
 
     @GetMapping("/time")
     public Mono<Date> testRest() {
@@ -37,14 +33,14 @@ public class HomeRest {
     @GetMapping("/time-1")
     public Mono<Date> testRest11() {
         return webClient.get()
-                .uri(auth2Host+VITRO_TEST_API + "/time")
+                .uri(auth2Host + VITRO_TEST_API + "/time")
                 .retrieve().bodyToMono(Date.class);
     }
 
     @GetMapping("/date/{n}")
     public Mono<Date> testRest1Date1(@PathVariable("n") int n) {
         return webClient.put()
-                .uri(auth2Host+VITRO_TEST_API + "/date/" + n
+                .uri(auth2Host + VITRO_TEST_API + "/date/" + n
 
                 )
                 .retrieve().bodyToMono(Date.class);

@@ -2,7 +2,6 @@ package pn.market.vitroFront.controllers;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webflux.test.autoconfigure.AutoConfigureWebFlux;
@@ -21,8 +20,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @WebFluxTest({ItemController.class,
         CartServiceImpl.class,
@@ -44,17 +41,13 @@ import static org.junit.jupiter.api.Assertions.*;
 class OrderControllerTest {
 
     @MockitoBean
+    public PaymentSupplierImpl paymentSupplier;
+    @MockitoBean
     private ItemServiceImpl itemService;
-
     @MockitoBean
     private CartServiceImpl cartService;
-
     @MockitoBean
     private PaymentsServiceImpl paymentService;
-
-    @MockitoBean
-    public PaymentSupplierImpl paymentSupplier;
-
     @MockitoBean
     private LoginService loginService;
 
@@ -69,9 +62,8 @@ class OrderControllerTest {
     private WebClient webClient;
 
 
-
     @Test
-            @WithMockUser(username = "a", roles = "USER")
+    @WithMockUser(username = "a", roles = "USER")
     void allOrders() {
 //        var mockUriSpec = Mockito.mock(WebClient.RequestHeadersUriSpec.class);
 //        var mockHeadersSpec = Mockito.mock(WebClient.RequestHeadersSpec.class);
@@ -88,9 +80,9 @@ class OrderControllerTest {
 //                        ArgumentMatchers.eq(2L),
 //                        ArgumentMatchers.eq("action")
 //                )).thenReturn(Mono.empty());
-        UserData ud=new UserData();
+        UserData ud = new UserData();
         Mockito.when(loginService.getUserData()).thenReturn(ud);
-        List<Order> orders=new ArrayList<>();
+        List<Order> orders = new ArrayList<>();
         Mockito.when(orderService.addItemsToAllByUserId(1L)).thenReturn(Mono.just(orders));
         webTestClient
                 .get()
@@ -195,7 +187,7 @@ class OrderControllerTest {
         webTestClient
                 .get().uri("/orders/b/2")
                 .exchange()
-                .expectStatus().is4xxClientError() ;
+                .expectStatus().is4xxClientError();
     }
 
 

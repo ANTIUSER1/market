@@ -1,7 +1,6 @@
 package pn.market.vitroFront.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -33,7 +32,7 @@ public class CartController {
     private ItemServiceImpl itemService;
 
     @Autowired
-   // @Qualifier("BACK")
+    // @Qualifier("BACK")
     private WebClient webClient;
 
     @Autowired
@@ -48,13 +47,14 @@ public class CartController {
     //************* add roles ***
     @PreAuthorize("#username ==  authentication.principal.username ")
     @GetMapping("/{username}/{cartId}")
-    public Mono<Rendering> itemsList(       @PathVariable("username") String username,
-                                            @PathVariable("cartId") long cartId) {
+    public Mono<Rendering> itemsList(
+            @PathVariable("username") String username,
+            @PathVariable("cartId") long cartId) {
 
-  Long userId = loginService.getUserData().getId();
+        Long userId = loginService.getUserData().getId();
         Flux<Item> itemsFlux = itemService.getItemsByCartDataFromMonoToFlux(cartId);
         Mono<Long> total = itemService.getTotalSum(cartId);
-       total.subscribe();
+        total.subscribe();
         Mono<Rendering> r =
                 Mono.just(Rendering.view("cart")
                         .modelAttribute("items", itemsFlux)
@@ -66,12 +66,12 @@ public class CartController {
     //************* add roles ***
     @PreAuthorize("#username ==  authentication.principal.username ")
     @GetMapping("/item-of-user/{username}")
-    public Mono<Rendering> itemsOfUser(       @PathVariable("username") String username
-                                              ) {
+    public Mono<Rendering> itemsOfUser(@PathVariable("username") String username
+    ) {
         Long userId = loginService.getUserData().getId();
-         Flux<Item> itemsFlux = itemService.itemOfUser(userId);
+        Flux<Item> itemsFlux = itemService.itemOfUser(userId);
         Mono<Long> total = itemService.getTotalOfSum(userId);
-        total.subscribe( );
+        total.subscribe();
         Mono<Rendering> r =
                 Mono.just(Rendering.view("cart")
                         .modelAttribute("items", itemsFlux)
@@ -89,10 +89,10 @@ public class CartController {
             @PathVariable("itemId") long itemId
     ) {
         Long userId = loginService.getUserData().getId();
-         Mono<Cart> cartMono = webClient.get()
-                .uri(auth2Host+VITRO_CART_API + "/create/" + userId + "/" + itemId)
+        Mono<Cart> cartMono = webClient.get()
+                .uri(auth2Host + VITRO_CART_API + "/create/" + userId + "/" + itemId)
                 .retrieve().bodyToMono(Cart.class);
-        cartMono.subscribe( );
+        cartMono.subscribe();
         return cartMono.map(cm -> {
             return "redirect:/cart/" + cm.getId();
         });

@@ -12,21 +12,20 @@ import org.springframework.stereotype.Component;
 public class EventsHandler {
 
 
-
     // Обработчик события отказа в доступе
     @EventListener
     public void handleAuthorizationDenied(AuthorizationDeniedEvent event) {
         // Извлекаем информацию о пользователе и ресурсе.
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
-System.out.println("   AUTH PRINCIPAL "+auth.getPrincipal());
-System.out.println("   AUTH NAME "+auth.getName());
-                //event.getAuthentication().get();
+        System.out.println("   AUTH PRINCIPAL " + auth.getPrincipal());
+        System.out.println("   AUTH NAME " + auth.getName());
+        //event.getAuthentication().get();
         Object protectedResource = event.getObject();
         // Логируем факт отказа в доступе.
-       System.out.println("Доступ ОТКЛОНЁН: пользователь " +
-                       "не autorizovan для ресурса   " +
-                auth.getName()  + "   "+protectedResource);
+        System.out.println("Доступ ОТКЛОНЁН: пользователь " +
+                "не autorizovan для ресурса   " +
+                auth.getName() + "   " + protectedResource);
         // Можно добавить дополнительную логику, например увеличение счётчика метрик.
         // Отправка события в систему мониторинга или оповещение службы безопасности.
     }
@@ -35,12 +34,12 @@ System.out.println("   AUTH NAME "+auth.getName());
     @EventListener
     public void handleAuthorizationGranted(AuthorizationEvent event) {
         Authentication auth = event
-                .getAuthentication().get()      ;
+                .getAuthentication().get();
         AuthorizationResult protectedResource = event.getAuthorizationResult();
 
         System.out.println(" \n\tпользователь  " +
-                        " получил доступ к ресурсу   "+
-                auth.getPrincipal() +" "+ protectedResource.isGranted()+"\n");
+                " получил доступ к ресурсу   " +
+                auth.getPrincipal() + " " + protectedResource.isGranted() + "\n");
         // Здесь можно добавить действия для аудита успешных доступов.
         // Обратите внимание: данное событие будет публиковаться, только если оно включено специально.
     }

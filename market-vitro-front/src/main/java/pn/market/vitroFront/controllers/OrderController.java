@@ -36,8 +36,8 @@ public class OrderController {
     //************* add roles ***
     @PreAuthorize("#username ==  authentication.principal.username ")
     @GetMapping("/{username}")
-    public Mono<Rendering> allOrders(   @PathVariable("username") String username
-                                        ) {
+    public Mono<Rendering> allOrders(@PathVariable("username") String username
+    ) {
         Long userId = loginService.getUserData().getId();
         Mono<List<Order>> orders = orderService.addItemsToAllByUserId(userId);
         Mono<Rendering> r =
@@ -84,8 +84,8 @@ public class OrderController {
     //************* add roles ***
     @PreAuthorize("#username ==  authentication.principal.username ")
     @GetMapping("/buy/{username}/{orderId}")
-    public String buyOrder(   @PathVariable("username") String username,
-                              @PathVariable("orderId") Long orderId) {
+    public String buyOrder(@PathVariable("username") String username,
+                           @PathVariable("orderId") Long orderId) {
         orderService.buyOrder(orderId);
         return "redirect:/orders";
     }
@@ -93,7 +93,7 @@ public class OrderController {
     //************* add roles ***
     @PreAuthorize("#username ==  authentication.principal.username ")
     @GetMapping("/tmp/{username}")
-    public Mono<String> tmp(   @PathVariable("username") String username) {
-         return Mono.just("tmp" );
+    public Mono<String> tmp(@PathVariable("username") String username) {
+        return Mono.just("tmp");
     }
 }

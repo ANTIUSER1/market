@@ -4,7 +4,6 @@ package pn.market.vitroFront.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.EnableReactiveMethodSecurity;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
@@ -42,7 +41,7 @@ public class SecurityConfig {
                                                             RedirectServerLogoutSuccessHandler redirectServerLogoutSuccessHandler) {
 
         http.authorizeExchange(exchanges -> exchanges
-                .pathMatchers("/", "/items",   "/login").permitAll()
+                .pathMatchers("/", "/items", "/login").permitAll()
                 .anyExchange().authenticated()
         );
 
@@ -57,7 +56,7 @@ public class SecurityConfig {
                         .logoutUrl("/"))
                 // Настройка security-заголовков
                 .headers(headers -> headers
-                                .frameOptions(Customizer.withDefaults())
+                        .frameOptions(Customizer.withDefaults())
                 );
         return http.build();
     }

@@ -7,9 +7,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class MarketVitroFrontApplicationTests {
 
-	@Test
-	void contextLoads() {
-		Assertions.assertEquals(2*2,4);
-	}
+    @Test
+    void contextLoads() {
+        Assertions.assertEquals(2 * 2, 4);
+    }
 
 }

@@ -1,7 +1,6 @@
 package pn.market.vitroFront.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -41,12 +40,11 @@ public class ItemController {
     private ModelService modelService;
 
     @Autowired
-  //  @Qualifier("BACK")
+    //  @Qualifier("BACK")
     private WebClient webClient;
 
     @Autowired
     private LoginService loginService;
-
 
 
     @GetMapping
@@ -58,7 +56,7 @@ public class ItemController {
     ) {
         try {
             Flux<Item> itemFlux = webClient.get()
-                    .uri(auth2Host+VITRO_ITEM_API)
+                    .uri(auth2Host + VITRO_ITEM_API)
                     .retrieve()
                     .bodyToFlux(Item.class);
             Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
@@ -93,7 +91,7 @@ public class ItemController {
     ) {
         try {
             Flux<Item> itemFlux = webClient.get()
-                    .uri(auth2Host+VITRO_ITEM_API)
+                    .uri(auth2Host + VITRO_ITEM_API)
                     .retrieve()
                     .bodyToFlux(Item.class);
             Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
@@ -137,8 +135,8 @@ public class ItemController {
     }
 
     //************* add roles ***
-     @PreAuthorize("#username ==  authentication.principal.username ")
-      @GetMapping("/items/{username}/{itemId}/{action}")
+    @PreAuthorize("#username ==  authentication.principal.username ")
+    @GetMapping("/items/{username}/{itemId}/{action}")
     public Mono<Rendering> additemToCartOfUserById(
             @PathVariable("username") String username,
             @PathVariable("itemId") Long itemId,

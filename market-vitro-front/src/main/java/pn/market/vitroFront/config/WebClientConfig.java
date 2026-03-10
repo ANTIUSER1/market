@@ -33,8 +33,9 @@ public class WebClientConfig {
         authorizedClientManager.setAuthorizedClientProvider(authorizedClientProvider);
         return authorizedClientManager;
     }
+
     @Bean
-    public WebClient webClient(ReactiveOAuth2AuthorizedClientManager authorizedClientManager){
+    public WebClient webClient(ReactiveOAuth2AuthorizedClientManager authorizedClientManager) {
         // Создаём функцию-фильтр для WebClient, которая будет автоматически
         // запрашивать и прикреплять OAuth2-токены к каждому HTTP-запросу
         var oauth2Client = new ServerOAuth2AuthorizedClientExchangeFilterFunction(authorizedClientManager);
