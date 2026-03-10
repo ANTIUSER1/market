@@ -42,7 +42,7 @@ public class SecurityConfig {
                                                             RedirectServerLogoutSuccessHandler redirectServerLogoutSuccessHandler) {
 
         http.authorizeExchange(exchanges -> exchanges
-                .pathMatchers("/", "/items/*", "/login").permitAll()
+                .pathMatchers("/", "/items",   "/login").permitAll()
                 .anyExchange().authenticated()
         );
 

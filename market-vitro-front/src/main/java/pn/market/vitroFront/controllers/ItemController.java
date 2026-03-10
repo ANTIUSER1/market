@@ -2,6 +2,7 @@ package pn.market.vitroFront.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,9 @@ import static pn.market.vitroFront.config.AuthPaths.VITRO_ITEM_API;
 @RequestMapping("/")
 public class ItemController {
 
+    @Value("${oauth.data.host}")
+    private String auth2Host;
+
     @Autowired
     private ItemServiceImpl itemService;
 
@@ -37,7 +41,7 @@ public class ItemController {
     private ModelService modelService;
 
     @Autowired
-    @Qualifier("BACK")
+  //  @Qualifier("BACK")
     private WebClient webClient;
 
     @Autowired
@@ -54,7 +58,7 @@ public class ItemController {
     ) {
         try {
             Flux<Item> itemFlux = webClient.get()
-                    .uri(VITRO_ITEM_API)
+                    .uri(auth2Host+VITRO_ITEM_API)
                     .retrieve()
                     .bodyToFlux(Item.class);
             Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);
@@ -89,7 +93,7 @@ public class ItemController {
     ) {
         try {
             Flux<Item> itemFlux = webClient.get()
-                    .uri(VITRO_ITEM_API)
+                    .uri(auth2Host+VITRO_ITEM_API)
                     .retrieve()
                     .bodyToFlux(Item.class);
             Mono<Pageable> pageableMono = modelService.createPageble(page, pageSize, sorted);

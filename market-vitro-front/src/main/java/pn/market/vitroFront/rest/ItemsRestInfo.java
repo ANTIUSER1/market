@@ -2,6 +2,7 @@ package pn.market.vitroFront.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,14 +16,17 @@ import static pn.market.vitroFront.config.AuthPaths.VITRO_ITEM_API;
 @RequestMapping("/api")
 public class ItemsRestInfo {
 
+    @Value("${oauth.data.host}")
+    private String auth2Host;
+
     @Autowired
-    @Qualifier("BACK")
+   // @Qualifier("BACK")
     private WebClient webClient;
 
     @GetMapping("/items")
     public Flux<Item> allItems() {
         return webClient.get()
-                .uri(VITRO_ITEM_API)
+                .uri(auth2Host+VITRO_ITEM_API)
                 .retrieve()
                 .bodyToFlux(Item.class);
     }

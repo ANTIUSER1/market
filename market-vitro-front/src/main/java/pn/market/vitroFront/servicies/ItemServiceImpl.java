@@ -30,8 +30,11 @@ public class ItemServiceImpl implements ItemService {
     private String imgPath;
 
 
+    @Value("${oauth.data.host}")
+    private String auth2Host;
+
     @Autowired
-    @Qualifier("BACK")
+   // @Qualifier("BACK")
     private WebClient webClient;
 
     @Override
@@ -42,7 +45,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Mono<Item> getById(Long id) {
         return webClient.get()
-                .uri(VITRO_ITEM_API + "/" + id)
+                .uri(auth2Host+VITRO_ITEM_API + "/" + id)
                 .retrieve().bodyToMono(Item.class);
 
     }
@@ -50,21 +53,21 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public Mono<Long> getTotalSum(Long cartId) {
         return webClient.get()
-                .uri(VITRO_CART_API + "/total-sum-of-cart/" + cartId)
+                .uri(auth2Host+VITRO_CART_API + "/total-sum-of-cart/" + cartId)
                 .retrieve().bodyToMono(Long.class);
     }
 
     @Override
     public Flux<Item> getItemsByOrderId(Long id) {
         return webClient.get()
-                .uri(VITRO_ITEM_API + "/by-order/" + id)
+                .uri(auth2Host+VITRO_ITEM_API + "/by-order/" + id)
                 .retrieve().bodyToFlux(Item.class);
     }
 
     @Override
     public Flux<Item> getItemsByCartDataFromMonoToFlux(Long cartId) {
         return webClient.get()
-                .uri(VITRO_ITEM_API + "/get-items-by-cart/" + cartId)
+                .uri(auth2Host+VITRO_ITEM_API + "/get-items-by-cart/" + cartId)
                 .retrieve().bodyToFlux(Item.class);
     }
 
@@ -110,13 +113,13 @@ public class ItemServiceImpl implements ItemService {
 
     public Flux<Item> itemOfUser(Long userId) {
         return webClient.get()
-                .uri(VITRO_ITEM_API + "/get-cart-of-user/" + userId)
+                .uri(auth2Host+VITRO_ITEM_API + "/get-cart-of-user/" + userId)
                 .retrieve().bodyToFlux(Item.class);
     }
 
     public Mono<Long> getTotalOfSum(Long userId) {
         return webClient.get()
-                .uri(VITRO_ITEM_API + "/get-total-sum-cart-of-user/" + userId)
+                .uri(auth2Host+VITRO_ITEM_API + "/get-total-sum-cart-of-user/" + userId)
                 .retrieve().bodyToMono(Long.class);
     }
 }

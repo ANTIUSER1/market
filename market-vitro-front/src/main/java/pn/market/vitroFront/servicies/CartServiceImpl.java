@@ -2,6 +2,7 @@ package pn.market.vitroFront.servicies;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -19,8 +20,11 @@ import static pn.market.vitroFront.config.AuthPaths.VITRO_ITEM_API;
 @Service
 public class CartServiceImpl implements TService<Cart> {
 
+    @Value("${oauth.data.host}")
+    private String auth2Host;
+
     @Autowired
-    @Qualifier("BACK")
+    //@Qualifier("BACK")
     private WebClient webClient;
 
     @Override
@@ -52,18 +56,18 @@ public class CartServiceImpl implements TService<Cart> {
             String action) {
         if ((userId== null)){
             Mono<Item>  itemMono= webClient.get()
-                    .uri(VITRO_ITEM_API +  "/" + itemId)
+                    .uri(auth2Host+VITRO_ITEM_API +  "/" + itemId)
                     .retrieve().bodyToMono(Item.class);
             return itemMono;
         }
         if (ActionType.PLUS.name().equalsIgnoreCase(action)) {
             Mono<Cart> cartMono = webClient.get()
-                    .uri(VITRO_CART_API + "/create/" + userId + "/" + itemId)
+                    .uri(auth2Host+VITRO_CART_API + "/create/" + userId + "/" + itemId)
                     .retrieve().bodyToMono(Cart.class);
             return cartMono.map(c -> itemById(itemId)).flatMap(i -> i);
         } else if (ActionType.MINUS.name().equalsIgnoreCase(action)) {
             Mono<Item> cartMono = webClient.get()
-                    .uri(VITRO_CART_API + "/remove/" + userId + "/" + itemId)
+                    .uri(auth2Host+VITRO_CART_API + "/remove/" + userId + "/" + itemId)
                     .retrieve().bodyToMono(Item.class);
             return cartMono.map(c -> itemById(itemId)).flatMap(i -> i);
         }

@@ -2,6 +2,7 @@ package pn.market.vitroFront.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,13 +24,16 @@ import static pn.market.vitroFront.config.AuthPaths.VITRO_CART_API;
 @RequestMapping("/cart")
 public class CartController {
 
+    @Value("${oauth.data.host}")
+    private String auth2Host;
+
     @Autowired
     private CartServiceImpl cartService;
     @Autowired
     private ItemServiceImpl itemService;
 
     @Autowired
-    @Qualifier("BACK")
+   // @Qualifier("BACK")
     private WebClient webClient;
 
     @Autowired
@@ -86,7 +90,7 @@ public class CartController {
     ) {
         Long userId = loginService.getUserData().getId();
          Mono<Cart> cartMono = webClient.get()
-                .uri(VITRO_CART_API + "/create/" + userId + "/" + itemId)
+                .uri(auth2Host+VITRO_CART_API + "/create/" + userId + "/" + itemId)
                 .retrieve().bodyToMono(Cart.class);
         cartMono.subscribe( );
         return cartMono.map(cm -> {
