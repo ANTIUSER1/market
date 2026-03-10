@@ -27,10 +27,7 @@ import reactor.core.publisher.Mono;
 @AutoConfigureWebFlux
 @Import({
         CartServiceImpl.class,
-//        PaymentsServiceImpl.class,
-//        PaymentSupplierImpl.class,
-//        OrderController.class,
-//        OrderServiceImpl.class,
+        CartController.class,
         ItemServiceImpl.class,
         SecurityConfig.class,
         WebClientConfig.class
@@ -55,14 +52,13 @@ class CartControllerTest {
     @Test
     @WithMockUser(username = "a", roles = "USER")
     void itemsList() {
-
         Mockito.when(loginService.getUserData()).thenReturn(new UserData());
         Mockito.when(itemService.getItemsByCartDataFromMonoToFlux(2L))
                 .thenReturn(Flux.empty());
         Mockito.when(itemService.getTotalSum(2L))
                 .thenReturn(Mono.just(22L));
 
-        webTestClient
+   webTestClient
                 .get().uri("/cart/a/2")
                 .exchange()
                 .expectStatus().isOk()
@@ -77,10 +73,24 @@ class CartControllerTest {
     @Test
     @WithMockUser(username = "a", roles = "USER")
     void itemsOfUser() {
+        Mockito.when(loginService.getUserData()).thenReturn(new UserData());
+        Mockito.when(itemService.getItemsByCartDataFromMonoToFlux(2L))
+                .thenReturn(Flux.empty());
+        Mockito.when(itemService.getTotalSum(2L))
+                .thenReturn(Mono.just(22L));
+
+
+        webTestClient
+                .get().uri("/cart/item-of-user/a")
+                .exchange()
+                .expectStatus().isOk()
+                .expectBody(String.class)
+                .value(body ->
+                {
+                    assert body != null;
+                    Assertions.assertTrue(body.contains("Витрина магазина"));
+                });
     }
 
-    @Test
-    @WithMockUser(username = "a", roles = "USER")
-    void additemsList() {
-    }
+
 }
