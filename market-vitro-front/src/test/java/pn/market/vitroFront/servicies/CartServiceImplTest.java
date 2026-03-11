@@ -74,9 +74,7 @@ class CartServiceImplTest {
                 itemMono.block().getId());
         Assertions.assertEquals(1L,
                 mockResponse.bodyToMono(Item.class).block().getId()  );
-    }
-
-
+    } 
 
     @Test
     void placeItemToCartOfUserMinus() {
