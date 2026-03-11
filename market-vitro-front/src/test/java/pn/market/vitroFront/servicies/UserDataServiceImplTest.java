@@ -1,5 +1,6 @@
 package pn.market.vitroFront.servicies;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
@@ -19,52 +20,37 @@ class UserDataServiceImplTest {
     @MockitoBean
     private WebClient webClient;
 
+    private WebClient.RequestBodyUriSpec requestBodyUriMock;
+    private WebClient.RequestHeadersSpec requestHeadersMock;
+    private WebClient.RequestBodySpec requestBodyMock;
+    private WebClient.ResponseSpec mockResponse;
+
     private String auth2Host;
+
 
     @BeforeEach
     void init() {
         auth2Host = "http://localhost:8521";
+
+        requestBodyUriMock = Mockito.mock(WebClient.RequestBodyUriSpec.class);
+        requestHeadersMock = Mockito.mock(WebClient.RequestHeadersSpec.class);
+        requestBodyMock = Mockito.mock(WebClient.RequestBodySpec.class);
+        mockResponse = Mockito.mock(WebClient.ResponseSpec.class);
     }
 
     @Test
     void findUser() {
         UserData ud = new UserData();
         ud.setUsername("a");
-
-        var mockUriSpec = Mockito.mock(WebClient.RequestHeadersUriSpec.class);
-        var mockHeadersSpec = Mockito.mock(WebClient.RequestHeadersSpec.class);
-        WebClient.ResponseSpec mockResponseSpec = Mockito.mock(WebClient.ResponseSpec.class);
-
-        //Mockito.when(webClient.get()).thenReturn(mockUriSpec);
-
-        Mockito.when(mockUriSpec.uri(
+        Mockito.when(requestBodyUriMock.uri(
                         ArgumentMatchers.matches(auth2Host + VITRO_USERS_API + "/ud/b")))
-                .thenReturn(mockHeadersSpec);
+                .thenReturn(requestBodyMock);
 
-//    var g=    Mockito.when(mockUriSpec.uri(auth2Host + VITRO_USERS_API + "/ud/a")
-//                .retrieve()
-//                .bodyToMono(Mono.just(ud))
-//                .thenReturn(mockHeadersSpec);
-////        Mockito.when(mockUriSpec.uri(ArgumentMatchers.anyString())).thenReturn(mockHeadersSpec);
-        //  Mockito.when(mockHeadersSpec.retrieve()).thenReturn(mockResponseSpec);
-        Mockito.when(mockResponseSpec.bodyToMono(UserData.class))
+        Mockito.when(mockResponse.bodyToMono(UserData.class))
                 .thenReturn(Mono.just(ud));
-
-
+        Assertions.assertEquals(
+                mockResponse.bodyToMono(UserData.class).block().getUsername(),
+                ud.getUsername());
     }
 
-    @Test
-    void userEntSt() {
-        UserData ud = new UserData();
-        ud.setUsername("a");
-        WebClient.ResponseSpec mockResponseSpec = Mockito.mock(WebClient.ResponseSpec.class);
-        Mockito.when(mockResponseSpec.bodyToMono(UserData.class))
-                .thenReturn(Mono.just(ud));
-
-
-    }
-
-    @Test
-    void addUsersSet() {
-    }
 }
