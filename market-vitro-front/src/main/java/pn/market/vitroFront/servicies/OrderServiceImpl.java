@@ -33,12 +33,8 @@ public class OrderServiceImpl implements TService<Order> {
     @Value("${payment.data.host}")
     private String paymentHost;
 
-//    @Autowired
-//    @Qualifier("PAYMENT")
-//    private WebClient webPaymentClient;
 
     @Autowired
-    // @Qualifier("BACK")
     private WebClient webClient;
 
     @Override

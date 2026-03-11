@@ -58,7 +58,7 @@ class CartControllerTest {
         Mockito.when(itemService.getTotalSum(2L))
                 .thenReturn(Mono.just(22L));
 
-   webTestClient
+        webTestClient
                 .get().uri("/cart/a/2")
                 .exchange()
                 .expectStatus().isOk()
